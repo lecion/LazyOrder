@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <corners android:radius="3dp"/>
+            <solid android:color="#ff8c8c8c"/>
+            <gradient
+                android:type="radial"
+                android:angle="0"
+                android:startColor="#000"
+                android:endColor="#ffd9d9d9"
+                android:gradientRadius="5"
+                />
+        </shape>
+
+    </item>
+
+    <item
+        android:bottom="1dp"
+        android:left="1dp"
+        android:drawable="@drawable/goods_price_bg"/>
+</layer-list>

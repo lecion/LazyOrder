@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="goods_btn_bg_color">#fff</color>
+    <color name="red">#ffff0000</color>
+    <color name="price_shadow_color">#ffc50000</color>
+
+    <color name="text_title_color">#ff282828</color>
+    <color name="text_light_gray_color">#ff8b8b8b</color>
+    <color name="text_gray_color">#ff555555</color>
+
+    <color name="list_divider_color">#ffdedede</color>
 </resources>

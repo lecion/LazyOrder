@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@android:color/white"
     tools:context="com.cisoft.lazyorder.ui.goods.GoodsActivity">
     <!--顶部广告图-->
     <ImageView
@@ -49,7 +50,13 @@
         android:id="@+id/lv_goods"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="8"
-        android:background="#fff"></ListView>
+        android:layout_weight="7"
+        android:layout_marginBottom="0dp"
+        android:layout_marginTop="8dp"
+        android:background="#fff"
+        android:divider="@color/list_divider_color"
+        android:dividerHeight="1dp"
+        >
+        </ListView>
 
 </LinearLayout>
