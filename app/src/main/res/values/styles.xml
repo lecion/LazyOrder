@@ -4,5 +4,37 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
     </style>
+    <!--android:layout_width="48dp"
+                android:layout_height="36dp"
+                android:background="@drawable/goods_btn_bg"
+                android:button="@null"
+                android:checked="true"
+                android:gravity="center"
+                android:text="人气"
+                android:textColor="#ff282828"
+                android:textSize="16sp"
+                android:paddingBottom="8dp"-->
+    <style name="goods_btn_style">
+        <item name="android:layout_width">48dp</item>
+        <item name="android:layout_height">36dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">#ff282828</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:layout_alignParentBottom">true</item>
+    </style>
+
+    <style name="goods_switch_btn_style" parent="goods_btn_style">
+        <item name="android:background">@drawable/goods_btn_bg</item>
+        <item name="android:button">@null</item>
+    </style>
+    
+    <style name="goods_drop_down_btn_style" parent="goods_btn_style">
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:layout_marginBottom">1px</item>
+        <item name="android:background">#fff6f6f6</item>
+        <item name="android:drawableRight">@drawable/triangle</item>
+        <item name="android:layout_marginRight">16dp</item>
+    </style>
 
 </resources>
