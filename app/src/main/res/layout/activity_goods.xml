@@ -1,0 +1,81 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.cisoft.lazyorder.ui.goods.GoodsActivity">
+    <!--顶部广告图-->
+    <ImageView
+        android:src="@drawable/goods_top_image"
+        android:scaleType="fitXY"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="41dp"
+        android:background="@drawable/bg_select_bar"
+        android:orientation="horizontal">
+
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="16dp"
+            android:orientation="horizontal"
+            >
+
+            <RadioButton
+                android:id="@+id/btn_pop"
+                android:layout_width="48dp"
+                android:layout_height="36dp"
+                android:background="@drawable/goods_btn_bg"
+                android:button="@null"
+                android:checked="true"
+                android:gravity="center"
+                android:text="人气"
+                android:textColor="#ff282828"
+                android:textSize="16sp"
+                android:paddingBottom="8dp"
+                />
+
+            <RadioButton
+                android:id="@+id/btn_price"
+                android:layout_width="48dp"
+                android:layout_height="36dp"
+                android:layout_alignParentBottom="true"
+                android:layout_toRightOf="@id/btn_pop"
+                android:background="@drawable/goods_btn_bg"
+                android:button="@null"
+                android:gravity="center"
+                android:text="价格"
+                android:textColor="#ff282828"
+                android:textSize="16sp"
+                android:paddingBottom="8dp"
+                />
+        </RadioGroup>
+
+
+        <Button
+            android:layout_width="48dp"
+            android:layout_height="36dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="1px"
+            android:layout_marginRight="8dp"
+            android:background="#fff6f6f6"
+            android:drawableRight="@drawable/triangle"
+            android:paddingBottom="8dp"
+            android:text="类别"
+            android:textColor="#ff282828"
+            android:textSize="16sp" />
+    </RelativeLayout>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="8"
+        android:background="#fff"></ListView>
+
+</LinearLayout>

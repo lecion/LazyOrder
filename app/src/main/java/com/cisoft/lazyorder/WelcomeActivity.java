@@ -22,4 +22,6 @@ public class WelcomeActivity extends BaseSplash {
         skipActivity(this, ShopActivity.class);
         showActivity(this, ShopActivity.class);
     }
+
+
 }
