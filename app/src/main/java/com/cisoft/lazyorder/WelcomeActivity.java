@@ -19,8 +19,8 @@ public class WelcomeActivity extends BaseSplash {
     @Override
     protected void redirectTo() {
         super.redirectTo();
+        //skipActivity(this, GoodsActivity.class);
         skipActivity(this, ShopActivity.class);
-        showActivity(this, ShopActivity.class);
     }
 
 

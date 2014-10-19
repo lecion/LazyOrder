@@ -74,7 +74,7 @@
         android:layout_alignBottom="@id/iv_goods_thumb"
         />
     
-    <TextView
+    <Button
         android:id="@+id/tv_goods_price"
         android:layout_width="60dp"
         android:layout_height="26dp"

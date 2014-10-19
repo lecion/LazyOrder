@@ -9,4 +9,6 @@
     <color name="text_gray_color">#ff555555</color>
 
     <color name="list_divider_color">#ffdedede</color>
+    
+    <color name="actionbar_bg_color">#e60012</color>
 </resources>
