@@ -9,4 +9,12 @@
     <string name="action_search">搜索</string>
     <string name="title_activity_search">搜索</string>
 
+    <string name="loading_shop_list">正在加载商家列表中,请稍候...</string>
+    <string name="fail_to_load_shop_list">加载商家列表失败,请稍候再试</string>
+    <string name="success_to_load_shop_list">加载商家列表成功</string>
+    <string name="fail_to_load_shop_category_list">加载商家类别列表失败,请稍候再试</string>
+    <string name="success_to_load_shop_category_list">加载商家类别列表成功</string>
+    <string name="no_net_receiver">抱歉,网络状况不好,请检查你是网络设置</string>
+    <string name="have_not_shop_list">抱歉,目前还没有店家列表的数据</string>
+    <string name="service_have_error_exception">抱歉！服务器出现异常，请稍候再试</string>
 </resources>
