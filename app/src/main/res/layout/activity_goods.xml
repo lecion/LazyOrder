@@ -45,17 +45,14 @@
             android:text="类别" />
     </RelativeLayout>
 
-    <ListView
-        android:id="@+id/lv_goods"
+    <FrameLayout
+        android:id="@+id/fl_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="7"
-        android:layout_marginBottom="0dp"
-        android:layout_marginTop="8dp"
-        android:background="#fff"
-        android:divider="@color/list_divider_color"
-        android:dividerHeight="1dp"
-        >
-        </ListView>
+        android:layout_weight="7">
+
+        </FrameLayout>
+
+
 
 </LinearLayout>

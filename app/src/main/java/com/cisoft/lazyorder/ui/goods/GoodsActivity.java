@@ -1,14 +1,10 @@
 package com.cisoft.lazyorder.ui.goods;
 
 import android.content.Intent;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.ListView;
+import android.widget.FrameLayout;
 import android.widget.SearchView;
 
 import com.cisoft.lazyorder.R;
@@ -19,10 +15,12 @@ import org.kymjs.aframe.KJLoger;
 import org.kymjs.aframe.ui.BindView;
 import org.kymjs.aframe.ui.activity.BaseActivity;
 
-public class GoodsActivity extends BaseActivity {
+public class GoodsActivity extends BaseActivity implements GoodsFragment.OnFragmentInteractionListener{
 
-    @BindView(id=R.id.lv_goods)
-    private ListView lvGoods;
+    @BindView(id = R.id.fl_container)
+    private FrameLayout flContainer;
+
+
 
     public GoodsActivity() {
         super();
@@ -51,27 +49,7 @@ public class GoodsActivity extends BaseActivity {
     @Override
     protected void initWidget() {
         super.initWidget();
-        lvGoods.setAdapter(new BaseAdapter() {
-            @Override
-            public int getCount() {
-                return 18;
-            }
-
-            @Override
-            public Object getItem(int position) {
-                return null;
-            }
-
-            @Override
-            public long getItemId(int position) {
-                return position;
-            }
-
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-                return LayoutInflater.from(GoodsActivity.this).inflate(R.layout.goods_list_cell, null);
-            }
-        });
+        getFragmentManager().beginTransaction().replace(R.id.fl_container, GoodsFragment.newInstance("pop"), "pop").commit();
     }
 
 
@@ -99,5 +77,10 @@ public class GoodsActivity extends BaseActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onFragmentInteraction(String id) {
+
     }
 }
