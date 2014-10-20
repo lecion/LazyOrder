@@ -1,8 +1,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.cisoft.lazyorder.core.shop.ShopActivity" >
-    <item android:id="@+id/action_settings"
-        android:title="@string/action_settings"
+    xmlns:app="schemas.android.com/apk/res-auto"
+    tools:context="com.cisoft.lazyorder.core.shop.ShopActivity">
+    <item android:id="@+id/menu_login"
+        android:title="登录"
         android:orderInCategory="100"
-        android:showAsAction="never" />
+        app:showAsAction="always" />
+
+    <item android:id="@+id/menu_serach"
+        android:title="搜索"
+        android:icon="@android:drawable/ic_menu_search"
+        android:orderInCategory="200"
+        app:showAsAction="always" />
+
 </menu>
