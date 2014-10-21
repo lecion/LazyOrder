@@ -85,7 +85,9 @@ public class ShopService extends AbsService{
             @Override
             public void onFailure(int stateCode) {
                 ViewInject.toast(getResponseStateInfo(stateCode));
-                ((ShopActivity)context).showNoValueTip();
+                if (page == 1) {
+                    ((ShopActivity)context).showNoValueTip();
+                }
             }
         });
     }
@@ -143,7 +145,9 @@ public class ShopService extends AbsService{
             @Override
             public void onFailure(int stateCode) {
                 ViewInject.toast(getResponseStateInfo(stateCode));
-                ((ShopActivity)context).showNoValueTip();
+                if (page == 1) {
+                    ((ShopActivity)context).showNoValueTip();
+                }
             }
         });
     }

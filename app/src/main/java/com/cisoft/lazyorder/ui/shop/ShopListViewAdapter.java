@@ -1,20 +1,20 @@
 package com.cisoft.lazyorder.ui.shop;
 
 import android.content.Context;
-import android.util.Log;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.cisoft.lazyorder.R;
 import com.cisoft.lazyorder.bean.shop.Shop;
-
+import com.cisoft.lazyorder.widget.AdRotator;
 import org.kymjs.aframe.bitmap.KJBitmap;
-import org.kymjs.aframe.ui.ViewInject;
-
-import java.util.ArrayList;
+import org.kymjs.aframe.utils.DensityUtils;
 import java.util.List;
 
 /**
@@ -25,11 +25,13 @@ public class ShopListViewAdapter extends BaseAdapter {
     private Context context;
     private KJBitmap kjb;
     private List<Shop> data;
+    private Bitmap loadingBitmap;
 
-    public ShopListViewAdapter(Context context, List<Shop> data, KJBitmap kjb){
+    public ShopListViewAdapter(Context context, List<Shop> data){
         this.context = context;
-        this.kjb = kjb;
         this.data = data;
+        this.kjb = KJBitmap.create();
+        this.loadingBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher);
     }
 
 
@@ -43,8 +45,6 @@ public class ShopListViewAdapter extends BaseAdapter {
 
     public void refresh(){
         notifyDataSetChanged();
-        notifyDataSetInvalidated();
-        ((ShopActivity)context).setListViewHeightBasedOnChildren();
     }
 
     @Override
@@ -82,7 +82,8 @@ public class ShopListViewAdapter extends BaseAdapter {
         holder.tvShopName.setText(shop.getName());
         holder.tvOpenTime.setText(shop.getOpenTime() + "-" + shop.getCloseTime());
         holder.tvMonthSales.setText(String.valueOf(shop.getMonthSales()));
-        kjb.display(holder.ivShopFaceImg, shop.getFaceImgUrl());
+        kjb.display(holder.ivShopFaceImg, shop.getFaceImgUrl(), loadingBitmap,
+                DensityUtils.dip2px(context, 100), DensityUtils.dip2px(context, 100));
         if (shop.getOpenState() == 0) {
             convertView.setBackgroundResource(R.drawable.shop_bg_open);
         } else {
@@ -91,6 +92,7 @@ public class ShopListViewAdapter extends BaseAdapter {
         convertView.setPadding(0, 0, 0, 0);
 
         return convertView;
+
     }
 
     public static class ViewHolder{

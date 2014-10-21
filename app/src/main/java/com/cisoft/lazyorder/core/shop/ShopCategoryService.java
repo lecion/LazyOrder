@@ -34,7 +34,7 @@ public class ShopCategoryService extends AbsService {
     	KJStringParams params = new KJStringParams();
 //        params.put(ApiConstants.KEY_MER_PAGE, String.valueOf(page));
 
-        super.asyncUrlGet(ApiConstants.METHOD_MER_CATEGORY_FIND_ALL, params, false, new SuccessCallback() {
+        super.asyncUrlGet(ApiConstants.METHOD_MER_CATEGORY_FIND_ALL, params, new SuccessCallback() {
             @Override
             public void onSuccess(String result) {
             	List<ShopCategory> shopCategorys = new ArrayList<ShopCategory>();

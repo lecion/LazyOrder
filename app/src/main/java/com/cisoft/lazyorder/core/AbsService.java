@@ -102,18 +102,20 @@ public abstract class AbsService {
 
             @Override
             public void onFailure(Throwable t, int errorNo, String strMsg) {
+                KJLoger.debug("URL:"+url);
+
                 if (AppConfig.IS_DEBUG) {
                     if (t instanceof MalformedURLException) {
                         ViewInject.longToast("不是标准的URL");
                     } else if (t instanceof IOException) {
-                        ViewInject.longToast("网络响应缓慢");
+                        ViewInject.longToast("网络响应缓慢，连接超时");
                     } else {
                         ViewInject.longToast("未知异常");
                     }
-                } else {
-                    if (failureCallback != null) {
-                        failureCallback.onFailure(ApiConstants.RESPONSE_STATE_FAILURE);
-                    }
+                }
+
+                if (failureCallback != null) {
+                    failureCallback.onFailure(ApiConstants.RESPONSE_STATE_FAILURE);
                 }
             }
         });
@@ -193,14 +195,14 @@ public abstract class AbsService {
                     if (t instanceof MalformedURLException) {
                         ViewInject.longToast("不是标准的URL");
                     } else if (t instanceof IOException) {
-                        ViewInject.longToast("网络响应缓慢");
+                        ViewInject.longToast("连接超时");
                     } else {
                         ViewInject.longToast("未知异常");
                     }
-                } else {
-                    if (failureCallback != null) {
-                        failureCallback.onFailure(ApiConstants.RESPONSE_STATE_FAILURE);
-                    }
+                }
+
+                if (failureCallback != null) {
+                    failureCallback.onFailure(ApiConstants.RESPONSE_STATE_FAILURE);
                 }
             }
         });

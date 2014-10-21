@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <attr name="autoPlay" forMymat="boolean" />
+    <attr name="changeTimeInterval" format="integer" />
+    <attr name="count" format="integer" />
+    <declare-styleable name="adRotatorAttrs">
+        <attr name="autoPlay" />
+        <attr name="changeTimeInterval" />
+        <attr name="count" />
+    </declare-styleable>
+
+</resources>
