@@ -10,5 +10,5 @@ public class AppConfig {
 	public static final long CACHE_EFFECTIVE_TIME = 60 * 60 * 24 * 2;//两天
 
     //是否是DEBUG模式（缓存会失效）
-	public static final boolean IS_DEBUG = true;
+	public static final boolean IS_DEBUG = false;
 }

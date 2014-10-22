@@ -100,7 +100,7 @@ public class ShopActivity extends BaseActivity implements ActionBar.OnNavigation
     private void initShopList() {
         //自定义广告控件初始化
         arImageAdRotator = new AdRotator(this);
-        arImageAdRotator.setLayoutParams(new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, DensityUtils.dip2px(this, 150)));
+        arImageAdRotator.setLayoutParams(new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, DensityUtils.dip2px(this, 150)));
         arImageAdRotator.setImageUrl(new String[]{
             "http://c.hiphotos.baidu.com/image/w%3D310/sign=9f7ddc689158d109c4e3afb3e158ccd0/fd039245d688d43fc5bd2ee47e1ed21b0ef43b8b.jpg",
             "http://c.hiphotos.baidu.com/image/w%3D310/sign=0bd18105de54564ee565e23883df9cde/c2cec3fdfc039245940d5c198494a4c27d1e256f.jpg",
@@ -138,7 +138,6 @@ public class ShopActivity extends BaseActivity implements ActionBar.OnNavigation
      */
     public void loadingTipShow() {
         llLoadingShopListTip.setVisibility(View.VISIBLE);
-        lvShopList.setVisibility(View.GONE);
         llShowNoValueTip.setVisibility(View.GONE);
     }
 
@@ -148,7 +147,6 @@ public class ShopActivity extends BaseActivity implements ActionBar.OnNavigation
     public void loadingTipHide() {
         llLoadingShopListTip.setVisibility(View.GONE);
         llShowNoValueTip.setVisibility(View.GONE);
-        lvShopList.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -156,7 +154,6 @@ public class ShopActivity extends BaseActivity implements ActionBar.OnNavigation
      */
     public void showNoValueTip() {
         llLoadingShopListTip.setVisibility(View.GONE);
-        lvShopList.setVisibility(View.GONE);
         llShowNoValueTip.setVisibility(View.VISIBLE);
     }
 

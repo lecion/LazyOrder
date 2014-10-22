@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,11 +71,16 @@ public class AdRotator extends FrameLayout {
     //是否能够设置url地址
     private boolean enableSetUrl = false;
 
+    //解决多次初始化的标记位
+    private boolean initFlag = false;
+
 
     public AdRotator(Context context) {
         super(context);
         this.context = context;
         LayoutInflater.from(context).inflate(R.layout.ad_rotator_layout, this);
+
+//        Log.d("wanghong", "AdRotator");
     }
 
 
@@ -86,7 +92,6 @@ public class AdRotator extends FrameLayout {
     public AdRotator(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
-
 
         //读取可选属性
         TypedArray typeArr = context.obtainStyledAttributes(attrs, R.styleable.adRotatorAttrs);
@@ -108,13 +113,15 @@ public class AdRotator extends FrameLayout {
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
-        if (changed) {
+        if (changed && !initFlag) {
+//            Log.d("wanghong", "onLayout");
             initAdImageList();
             initDots();
             initViewPagerAdapter();
             if (isAutoPlay) {
                 startAutoPlay();
             }
+            initFlag = true;
         }
     }
 
@@ -123,6 +130,7 @@ public class AdRotator extends FrameLayout {
      * 初始化广告图的集合
      */
     private void initAdImageList() {
+//        Log.d("wanghong", "initAdImageList");
         adWidth = getWidth();
         adHeight = getHeight();
         ImageView mImageView;
@@ -140,6 +148,7 @@ public class AdRotator extends FrameLayout {
      * 初始化标签点
      */
     private void initDots() {
+//        Log.d("wanghong", "initDots");
         llDotsContainer = (LinearLayout) findViewById(R.id.llPointGroup);
         LayoutParams params;
         for(int i = 0; i < adCount; i++) {
@@ -156,9 +165,11 @@ public class AdRotator extends FrameLayout {
      * 初始化展现广告图的ViewPager
      */
     private void initViewPagerAdapter() {
+//        Log.d("wanghong", "initViewPagerAdapter");
         vpAdImageShow = (ViewPager) findViewById(R.id.vpAdImageShow);
         vpAdImageShow.setAdapter(new ViewPagerAdapter());
         vpAdImageShow.setOnPageChangeListener(new ViewPagerChangeListener());
+        vpAdImageShow.setCurrentItem(0);
     }
 
 
@@ -168,6 +179,7 @@ public class AdRotator extends FrameLayout {
      * @param imageUrlArr
      */
     public void setImageUrl(String[] imageUrlArr) {
+//        Log.d("wanghong", "setImageUrl");
         if (imageUrlArr.length == adCount) {
             this.imageUrlArr = imageUrlArr;
             new AsycLoadAdImage().execute();
@@ -181,6 +193,7 @@ public class AdRotator extends FrameLayout {
      * 开启自动播放功能
      */
     public void startAutoPlay() {
+//        Log.d("wanghong", "startAutoPlay");
         new Timer().scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
