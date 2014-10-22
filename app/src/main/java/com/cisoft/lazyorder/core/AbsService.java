@@ -8,6 +8,9 @@ import org.kymjs.aframe.http.KJStringParams;
 import org.kymjs.aframe.http.StringCallBack;
 import org.kymjs.aframe.http.cache.HttpCache;
 import org.kymjs.aframe.ui.ViewInject;
+import org.kymjs.aframe.utils.ErrHandleUtils;
+import org.kymjs.aframe.utils.SystemTool;
+
 import android.content.Context;
 
 import com.cisoft.lazyorder.AppConfig;
@@ -55,7 +58,6 @@ public abstract class AbsService {
      */
     protected void asyncUrlGet(String methodName, final KJStringParams params, final boolean isSaveCache, final SuccessCallback successCallback, final FailureCallback failureCallback){
         
-    	/*
     	//判断网络状态
     	if (!SystemTool.checkNet(context)) {
     		ErrHandleUtils.sendNotNetReceiver(context);
@@ -63,7 +65,7 @@ public abstract class AbsService {
                 failureCallback.onFailure(ApiConstants.RESPONSE_STATE_NOT_NET);
             }
     		return;
-    	}*/
+    	}
 
         final String url = packageApiUrlByMethodName(methodName) + "?" + params.toString();
 
@@ -102,20 +104,14 @@ public abstract class AbsService {
 
             @Override
             public void onFailure(Throwable t, int errorNo, String strMsg) {
-                KJLoger.debug("URL:"+url);
-
-                if (AppConfig.IS_DEBUG) {
+                if (failureCallback != null) {
                     if (t instanceof MalformedURLException) {
                         ViewInject.longToast("不是标准的URL");
                     } else if (t instanceof IOException) {
-                        ViewInject.longToast("网络响应缓慢，连接超时");
+                        failureCallback.onFailure(ApiConstants.RESPONSE_STATE_NET_POOR);
                     } else {
-                        ViewInject.longToast("未知异常");
+                        failureCallback.onFailure(ApiConstants.RESPONSE_STATE_FAILURE);
                     }
-                }
-
-                if (failureCallback != null) {
-                    failureCallback.onFailure(ApiConstants.RESPONSE_STATE_FAILURE);
                 }
             }
         });
@@ -145,14 +141,16 @@ public abstract class AbsService {
      * @param failureCallback
      */
     protected void asyncUrlPost(String methodName, final KJStringParams params, final boolean isSaveCache, final SuccessCallback successCallback, final FailureCallback failureCallback) {
-    	/*if (!SystemTool.checkNet(context)) {
-    		ErrHandleUtils.sendNotNetReceiver(context);
-    		if (failureCallback != null) {
+
+        //判断网络状态
+        if (!SystemTool.checkNet(context)) {
+            ErrHandleUtils.sendNotNetReceiver(context);
+            if (failureCallback != null) {
                 failureCallback.onFailure(ApiConstants.RESPONSE_STATE_NOT_NET);
             }
-    		return;
-    	}
-    	*/
+            return;
+        }
+
 
         final String url = packageApiUrlByMethodName(methodName);
 
@@ -191,18 +189,14 @@ public abstract class AbsService {
 
             @Override
             public void onFailure(Throwable t, int errorNo, String strMsg) {
-                if (AppConfig.IS_DEBUG) {
+                if (failureCallback != null) {
                     if (t instanceof MalformedURLException) {
                         ViewInject.longToast("不是标准的URL");
                     } else if (t instanceof IOException) {
-                        ViewInject.longToast("连接超时");
+                        failureCallback.onFailure(ApiConstants.RESPONSE_STATE_NET_POOR);
                     } else {
-                        ViewInject.longToast("未知异常");
+                        failureCallback.onFailure(ApiConstants.RESPONSE_STATE_FAILURE);
                     }
-                }
-
-                if (failureCallback != null) {
-                    failureCallback.onFailure(ApiConstants.RESPONSE_STATE_FAILURE);
                 }
             }
         });
@@ -231,7 +225,6 @@ public abstract class AbsService {
      * @return
      */
     public abstract String getResponseStateInfo(int stateCode);
-
 
 
 

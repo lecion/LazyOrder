@@ -11,11 +11,8 @@ import org.kymjs.aframe.ui.ViewInject;
 
 import android.content.Context;
 import com.cisoft.lazyorder.R;
-import com.cisoft.lazyorder.bean.shop.Shop;
 import com.cisoft.lazyorder.bean.shop.ShopCategory;
 import com.cisoft.lazyorder.core.AbsService;
-import com.cisoft.lazyorder.core.AbsService.FailureCallback;
-import com.cisoft.lazyorder.core.AbsService.SuccessCallback;
 import com.cisoft.lazyorder.finals.ApiConstants;
 import com.cisoft.lazyorder.ui.shop.ShopActivity;
 
@@ -82,7 +79,7 @@ public class ShopCategoryService extends AbsService {
                 stateInfo = context.getResources().getString(R.string.success_to_load_shop_category_list);
                 break;
             case ApiConstants.RESPONSE_STATE_NOT_NET:
-                stateInfo = context.getResources().getString(R.string.no_net_receiver);
+                stateInfo = context.getResources().getString(R.string.no_net_service);
                 break;
         }
 

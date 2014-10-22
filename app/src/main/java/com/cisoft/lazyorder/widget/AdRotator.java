@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
@@ -80,7 +81,6 @@ public class AdRotator extends FrameLayout {
         this.context = context;
         LayoutInflater.from(context).inflate(R.layout.ad_rotator_layout, this);
 
-//        Log.d("wanghong", "AdRotator");
     }
 
 
@@ -137,6 +137,7 @@ public class AdRotator extends FrameLayout {
         loadingBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher);
         for(int i = 0; i < adCount; i++) {
             mImageView = new ImageView(context);
+            mImageView.setScaleType(ImageView.ScaleType.FIT_XY);
             mImageView.setImageBitmap(loadingBitmap);
             adImageList.add(mImageView);
         }
@@ -156,7 +157,7 @@ public class AdRotator extends FrameLayout {
             dot.setBackgroundResource(R.drawable.ad_rotator_point_bg);
             params = new LayoutParams(DensityUtils.dip2px(context, 10), DensityUtils.dip2px(context, 5));
             dot.setLayoutParams(params);
-            dot.setEnabled(false);
+            dot.setEnabled(i == 0 ? true : false);
             llDotsContainer.addView(dot);
         }
     }
@@ -194,18 +195,31 @@ public class AdRotator extends FrameLayout {
      */
     public void startAutoPlay() {
 //        Log.d("wanghong", "startAutoPlay");
-        new Timer().scheduleAtFixedRate(new TimerTask() {
+        new Thread(new Runnable() {
             @Override
             public void run() {
-                mHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        vpAdImageShow.setCurrentItem(vpAdImageShow.getCurrentItem() + 1);
-                    }
-                });
+                while (isAutoPlay) {
+                    SystemClock.sleep(changeTimeInterval * 1000);
+                    mHandler.post(new Runnable() {
+                        public void run() {
+                            int index = vpAdImageShow.getCurrentItem() + 1;
+                            if (index >= adImageList.size()) {
+                                index = 0;
+                            }
+                            vpAdImageShow.setCurrentItem(index);
+                        }
+                    });
+                }
             }
-        }, changeTimeInterval * 1000, changeTimeInterval * 1000);
+        }).start();
     }
+
+
+    /**
+     * 停止自动播放
+     */
+    public void  stopAutoPlay() { isAutoPlay = false; }
+
 
 
     /**
@@ -248,7 +262,7 @@ public class AdRotator extends FrameLayout {
 
         @Override
         public void onPageSelected(int position) {
-            int newPosition = position % adCount;
+            int newPosition = position;
             llDotsContainer.getChildAt(prevPointIndex).setEnabled(false);
             llDotsContainer.getChildAt(newPosition).setEnabled(true);
             prevPointIndex = newPosition;
@@ -266,8 +280,7 @@ public class AdRotator extends FrameLayout {
 
         @Override
         public int getCount() {
-            //设置这么大是为了能够无限滚动（不出意外应该是无限。。。）
-            return Integer.MAX_VALUE;
+            return adImageList.size();
         }
 
         /**
@@ -286,7 +299,7 @@ public class AdRotator extends FrameLayout {
          */
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
-            container.removeView((ImageView) adImageList.get(position % adImageList.size()));
+            container.removeView((ImageView) adImageList.get(position));
         }
 
         /**
@@ -297,8 +310,8 @@ public class AdRotator extends FrameLayout {
          */
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            container.addView((ImageView) adImageList.get(position % adImageList.size()));
-            return adImageList.get(position % adImageList.size());
+            container.addView((ImageView) adImageList.get(position));
+            return adImageList.get(position);
         }
     }
 }
