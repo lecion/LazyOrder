@@ -6,10 +6,11 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.kymjs.aframe.http.KJStringParams;
 import org.kymjs.aframe.ui.ViewInject;
 
 import android.content.Context;
+import android.util.Log;
+
 import com.cisoft.lazyorder.R;
 import com.cisoft.lazyorder.bean.shop.ShopCategory;
 import com.cisoft.lazyorder.core.AbsService;
@@ -28,36 +29,59 @@ public class ShopCategoryService extends AbsService {
      * 加载全部店家类别列表的数据
      */
     public void loadAllShopCategoryData(){
-    	KJStringParams params = new KJStringParams();
-//        params.put(ApiConstants.KEY_MER_PAGE, String.valueOf(page));
-
-        super.asyncUrlGet(ApiConstants.METHOD_MER_CATEGORY_FIND_ALL, params, new SuccessCallback() {
-            @Override
-            public void onSuccess(String result) {
-            	List<ShopCategory> shopCategorys = new ArrayList<ShopCategory>();
-            	shopCategorys.add(new ShopCategory(0, "全部"));
-                try {
-                    JSONObject jsonObj = new JSONObject(result);
-                    JSONArray shopCateogyArr = jsonObj.getJSONArray(ApiConstants.KEY_MC_DATA);
-                    JSONObject shopCategoryObj = null;
-                    ShopCategory shopCategory = null;
-                    for (int i = 0; i < shopCateogyArr.length(); i++) {
-                    	shopCategoryObj = shopCateogyArr.getJSONObject(i);
-                    	shopCategory = new ShopCategory(shopCategoryObj);
-                        shopCategorys.add(shopCategory);
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
+    	String url = packageApiUrlByMethodNameAndParams(ApiConstants.METHOD_MER_CATEGORY_FIND_ALL, null);
+        String result = null;
+        result = httpCacher.get(url);
+        if (result != null) {
+            Log.e("wanghong","缓存不为空");
+            List<ShopCategory> shopCategorys = new ArrayList<ShopCategory>();
+            shopCategorys.add(new ShopCategory(0, "全部"));
+            try {
+                JSONObject jsonObj = new JSONObject(result);
+                JSONArray shopCategoryArr = jsonObj.getJSONArray(ApiConstants.KEY_MC_DATA);
+                JSONObject shopCategoryObj = null;
+                ShopCategory shopCategory = null;
+                for (int i = 0; i < shopCategoryArr.length(); i++) {
+                    shopCategoryObj = shopCategoryArr.getJSONObject(i);
+                    shopCategory = new ShopCategory(shopCategoryObj);
+                    shopCategorys.add(shopCategory);
                 }
-                ((ShopActivity)context).shopCategoryListAdapter.addData(shopCategorys);
-                ((ShopActivity)context).shopCategoryListAdapter.refresh();
-            }}, new FailureCallback() {
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            ((ShopActivity)context).shopCategoryListAdapter.addData(shopCategorys);
+            ((ShopActivity)context).shopCategoryListAdapter.refresh();
+        } else {
+            Log.e("wanghong","缓存为空");
+            super.asyncUrlGet(ApiConstants.METHOD_MER_CATEGORY_FIND_ALL, null, new SuccessCallback() {
+                @Override
+                public void onSuccess(String result) {
+                    List<ShopCategory> shopCategorys = new ArrayList<ShopCategory>();
+                    shopCategorys.add(new ShopCategory(0, "全部"));
+                    try {
+                        JSONObject jsonObj = new JSONObject(result);
+                        JSONArray shopCateogyArr = jsonObj.getJSONArray(ApiConstants.KEY_MC_DATA);
+                        JSONObject shopCategoryObj = null;
+                        ShopCategory shopCategory = null;
+                        for (int i = 0; i < shopCateogyArr.length(); i++) {
+                            shopCategoryObj = shopCateogyArr.getJSONObject(i);
+                            shopCategory = new ShopCategory(shopCategoryObj);
+                            shopCategorys.add(shopCategory);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    ((ShopActivity) context).shopCategoryListAdapter.addData(shopCategorys);
+                    ((ShopActivity) context).shopCategoryListAdapter.refresh();
+                }
+            }, new FailureCallback() {
 
                 @Override
                 public void onFailure(int stateCode) {
                     ViewInject.toast(getResponseStateInfo(stateCode));
                 }
-        });
+            });
+        }
     }
 	
 	
@@ -70,6 +94,8 @@ public class ShopCategoryService extends AbsService {
      */
     @Override
     public String getResponseStateInfo(int stateCode) {
+        super.getResponseStateInfo(stateCode);
+
         String stateInfo = "";
         switch (stateCode) {
             case ApiConstants.RESPONSE_STATE_FAILURE:
@@ -78,8 +104,8 @@ public class ShopCategoryService extends AbsService {
             case ApiConstants.RESPONSE_STATE_SUCCESS:
                 stateInfo = context.getResources().getString(R.string.success_to_load_shop_category_list);
                 break;
-            case ApiConstants.RESPONSE_STATE_NOT_NET:
-                stateInfo = context.getResources().getString(R.string.no_net_service);
+            default:
+                stateInfo = super.getResponseStateInfo(stateCode);
                 break;
         }
 

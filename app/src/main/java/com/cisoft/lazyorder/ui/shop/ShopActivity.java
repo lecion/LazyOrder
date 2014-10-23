@@ -85,9 +85,9 @@ public class ShopActivity extends BaseActivity implements ActionBar.OnNavigation
         ActionBar actionbar = getActionBar();
         actionbar.setDisplayShowTitleEnabled(false);
         actionbar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-        shopCategoryService.loadAllShopCategoryData();
         shopCategoryListAdapter = new ShopCategoryListAdapter(this, shopCategoryData);
         actionbar.setListNavigationCallbacks(shopCategoryListAdapter, this);
+        shopCategoryService.loadAllShopCategoryData();
     }
 
     /**

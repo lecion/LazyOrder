@@ -37,7 +37,7 @@ public class ShopService extends AbsService{
         params.put(ApiConstants.KEY_MER_PAGE, String.valueOf(page));
         params.put(ApiConstants.KEY_MER_PAGER, String.valueOf(pager));
 
-        super.asyncUrlGet(ApiConstants.METHOD_MERCHANTS_FIND_ALL, params, new SuccessCallback() {
+        super.asyncUrlGet(ApiConstants.METHOD_MERCHANTS_FIND_ALL, params, false, new SuccessCallback() {
             @Override
             public void onSuccess(String result) {
                 List<Shop> shops = new ArrayList<Shop>();
@@ -82,6 +82,8 @@ public class ShopService extends AbsService{
             @Override
             public void onFailure(int stateCode) {
                 ViewInject.toast(getResponseStateInfo(stateCode));
+                ((ShopActivity)context).lvShopList.stopRefreshData();
+                ((ShopActivity)context).hideLoadingTip();
                 if (page == 1) {
                     ((ShopActivity)context).showNoValueTip();
                 }
@@ -102,7 +104,7 @@ public class ShopService extends AbsService{
         params.put(ApiConstants.KEY_MER_PAGER, String.valueOf(pager));
         params.put(ApiConstants.KEY_MER_TYPE_ID, String.valueOf(typeId));
 
-        super.asyncUrlGet(ApiConstants.METHOD_MERCHANTS_FIND_BY_TYPE_ID, params, new SuccessCallback() {
+        super.asyncUrlGet(ApiConstants.METHOD_MERCHANTS_FIND_BY_TYPE_ID, params, false, new SuccessCallback() {
             @Override
             public void onSuccess(String result) {
                 List<Shop> shops = new ArrayList<Shop>();
@@ -145,6 +147,8 @@ public class ShopService extends AbsService{
             @Override
             public void onFailure(int stateCode) {
                 ViewInject.toast(getResponseStateInfo(stateCode));
+                ((ShopActivity)context).lvShopList.stopRefreshData();
+                ((ShopActivity)context).hideLoadingTip();
                 if (page == 1) {
                     ((ShopActivity)context).showNoValueTip();
                 }
@@ -161,6 +165,7 @@ public class ShopService extends AbsService{
      */
     @Override
     public String getResponseStateInfo(int stateCode) {
+
         String stateInfo = "";
         switch (stateCode) {
             case ApiConstants.RESPONSE_STATE_FAILURE:
@@ -169,14 +174,8 @@ public class ShopService extends AbsService{
             case ApiConstants.RESPONSE_STATE_SUCCESS:
                 stateInfo = context.getResources().getString(R.string.success_to_load_shop_list);
                 break;
-            case ApiConstants.RESPONSE_STATE_NOT_NET:
-                stateInfo = context.getResources().getString(R.string.no_net_service);
-                break;
-            case ApiConstants.RESPONSE_STATE_NET_POOR:
-                stateInfo = context.getResources().getString(R.string.net_too_poor);
-                break;
-            case ApiConstants.RESPONSE_STATE_SERVICE_EXCEPTION:
-                stateInfo = context.getResources().getString(R.string.service_have_error_exception);
+            default:
+                stateInfo = super.getResponseStateInfo(stateCode);
                 break;
         }
 
