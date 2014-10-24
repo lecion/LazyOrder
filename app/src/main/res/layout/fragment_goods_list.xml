@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     tools:context="com.cisoft.lazyorder.ui.goods.GoodsFragment">
 
-    <ListView
+    <org.kymjs.aframe.ui.widget.KJListView
         android:id="@+id/lv_goods"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -15,6 +15,6 @@
         android:divider="@color/list_divider_color"
         android:dividerHeight="1dp"
         >
-    </ListView>
+    </org.kymjs.aframe.ui.widget.KJListView>
 
 </FrameLayout>

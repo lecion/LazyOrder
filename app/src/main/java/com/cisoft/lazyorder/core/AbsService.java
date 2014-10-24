@@ -1,17 +1,17 @@
 package com.cisoft.lazyorder.core;
 
+import android.content.Context;
+
+import com.cisoft.lazyorder.AppConfig;
+import com.cisoft.lazyorder.finals.ApiConstants;
+
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.kymjs.aframe.KJLoger;
 import org.kymjs.aframe.http.KJHttp;
 import org.kymjs.aframe.http.KJStringParams;
 import org.kymjs.aframe.http.StringCallBack;
 import org.kymjs.aframe.http.cache.HttpCache;
 import org.kymjs.aframe.ui.ViewInject;
-import android.content.Context;
-
-import com.cisoft.lazyorder.AppConfig;
-import com.cisoft.lazyorder.finals.ApiConstants;
 
 import java.io.IOException;
 import java.net.MalformedURLException;

@@ -8,6 +8,8 @@ import android.widget.FrameLayout;
 import android.widget.SearchView;
 
 import com.cisoft.lazyorder.R;
+import com.cisoft.lazyorder.core.goods.GoodsService;
+import com.cisoft.lazyorder.finals.ApiConstants;
 import com.cisoft.lazyorder.ui.search.SearchActivity;
 import com.cisoft.lazyorder.ui.shop.ShopActivity;
 
@@ -30,7 +32,7 @@ public class GoodsActivity extends BaseActivity implements GoodsFragment.OnFragm
     @Override
     public void setRootView() {
         setContentView(R.layout.activity_goods);
-        initActionBar();
+
     }
 
     private void initActionBar() {
@@ -39,7 +41,6 @@ public class GoodsActivity extends BaseActivity implements GoodsFragment.OnFragm
         //getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setDisplayShowTitleEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
-
         getActionBar().setIcon(R.drawable.nav_back_arrow);
         getActionBar().setTitle("  返回首页");
 
@@ -49,7 +50,9 @@ public class GoodsActivity extends BaseActivity implements GoodsFragment.OnFragm
     @Override
     protected void initWidget() {
         super.initWidget();
+        initActionBar();
         getFragmentManager().beginTransaction().replace(R.id.fl_container, GoodsFragment.newInstance("pop"), "pop").commit();
+        new GoodsService(this, ApiConstants.MODULE_COMMODITY).loadGoodsDataFromNet(1, 1);
     }
 
 

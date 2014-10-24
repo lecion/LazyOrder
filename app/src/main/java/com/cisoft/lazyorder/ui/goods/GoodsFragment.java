@@ -9,13 +9,14 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListAdapter;
-import android.widget.ListView;
 
 import com.cisoft.lazyorder.R;
 import com.cisoft.lazyorder.ui.goods.dummy.DummyContent;
 
 import org.kymjs.aframe.ui.BindView;
 import org.kymjs.aframe.ui.fragment.BaseFragment;
+import org.kymjs.aframe.ui.widget.KJListView;
+import org.kymjs.aframe.ui.widget.KJRefreshListener;
 
 public class GoodsFragment extends BaseFragment implements AbsListView.OnItemClickListener {
 
@@ -31,7 +32,7 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
      * The fragment's ListView/GridView.
      */
     @BindView(id = R.id.lv_goods)
-    private ListView lvGoods;
+    private KJListView lvGoods;
 
     /**
      * The Adapter which will be used to populate the ListView/GridView with
@@ -95,8 +96,27 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
 
     @Override
     protected void initWidget(View parentView) {
+        initGoodsList();
+
+    }
+
+    /**
+     * 初始化Goods列表
+     */
+    private void initGoodsList() {
         lvGoods.setAdapter(mAdapter);
         lvGoods.setOnItemClickListener(this);
+        lvGoods.setOnRefreshListener(new KJRefreshListener() {
+            @Override
+            public void onRefresh() {
+
+            }
+
+            @Override
+            public void onLoadMore() {
+
+            }
+        });
     }
 
     @Override
