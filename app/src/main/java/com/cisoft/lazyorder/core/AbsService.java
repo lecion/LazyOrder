@@ -234,7 +234,7 @@ public abstract class AbsService {
 
 
     public static interface SuccessCallback{
-        public void onSuccess(String result);
+        public void onSuccess(String result) throws JSONException;
     }
 
     public static interface FailureCallback{

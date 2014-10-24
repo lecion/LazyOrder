@@ -27,15 +27,15 @@
             android:orientation="horizontal">
 
             <RadioButton
-                android:id="@+id/btn_pop"
+                android:id="@+id/rb_pop"
                 style="@style/goods_switch_btn_style"
                 android:checked="true"
                 android:text="人气" />
 
             <RadioButton
-                android:id="@+id/btn_price"
+                android:id="@+id/rb_price"
                 style="@style/goods_switch_btn_style"
-                android:layout_toRightOf="@id/btn_pop"
+                android:layout_toRightOf="@id/rb_pop"
                 android:text="价格" />
         </RadioGroup>
 
