@@ -1,0 +1,31 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:padding="5dp"
+    android:background="@drawable/ad_rotator_bg">
+    
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vpAdImageShow"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#cccccc"/>
+
+    <LinearLayout
+    	android:id="@+id/llPointGroup"
+      	android:layout_width="wrap_content"
+      	android:layout_height="wrap_content"
+      	android:layout_gravity="center_horizontal"
+      	android:orientation="horizontal"
+        android:background="@drawable/ad_rotator_point_parent_bg"
+      	android:layout_alignBottom="@id/vpAdImageShow"
+      	android:layout_alignRight="@id/vpAdImageShow"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+  	</LinearLayout>
+</RelativeLayout>
