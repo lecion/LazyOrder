@@ -33,7 +33,6 @@ public class ShopCategoryService extends AbsService {
         String result = null;
         result = httpCacher.get(url);
         if (result != null) {
-            Log.e("wanghong","缓存不为空");
             List<ShopCategory> shopCategorys = new ArrayList<ShopCategory>();
             shopCategorys.add(new ShopCategory(0, "全部"));
             try {
@@ -52,7 +51,6 @@ public class ShopCategoryService extends AbsService {
             ((ShopActivity)context).shopCategoryListAdapter.addData(shopCategorys);
             ((ShopActivity)context).shopCategoryListAdapter.refresh();
         } else {
-            Log.e("wanghong","缓存为空");
             super.asyncUrlGet(ApiConstants.METHOD_MER_CATEGORY_FIND_ALL, null, new SuccessCallback() {
                 @Override
                 public void onSuccess(String result) {
