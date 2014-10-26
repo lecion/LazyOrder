@@ -2,13 +2,13 @@ package com.cisoft.lazyorder.ui.goods;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cisoft.lazyorder.R;
@@ -33,16 +33,23 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
 
     private List<Goods> goodsData;
 
+//    @BindView(id = R.id.llLoadingGoodsListTip)
+//    private LinearLayout llLoadingGoodsListTip;
+    @BindView(id = R.id.llShowNoValueTip)
+    private LinearLayout llShowNoValueTip;
+
     public static final String ORDER_POP = "pop";
 
     public static final String ORDER_PRICE = "price";
 
-
     private OnFragmentInteractionListener mListener;
+
+    private int shopId;
 
     private int page;
 
-    private int size;
+    public static int size = 5;
+
 
     /**
      * The fragment's ListView/GridView.
@@ -94,16 +101,22 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
         return view;
     }
 
+    /**
+     * 设置数据，如果page为1，则直接使用当前结果
+     * @param goodsData
+     */
     public void setGoodsData(List<Goods> goodsData) {
-        this.goodsData = goodsData;
+        if (page == 1) {
+            this.goodsData = goodsData;
+        }
+        this.goodsData.addAll(goodsData);
         mAdapter.notifyDataSetChanged();
-        Log.d("setGoodsData", goodsOrder + " this :" + this);
-
+        //Log.d("setGoodsData", goodsOrder + " this :" + this);
     }
 
     @Override
     protected void initData() {
-        goodsService.loadGoodsDataFromNet(1, size, goodsOrder);
+        goodsService.loadGoodsDataFromNet(shopId, 1, size, goodsOrder);
     }
 
 
@@ -164,12 +177,14 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
         lvGoods.setOnRefreshListener(new KJRefreshListener() {
             @Override
             public void onRefresh() {
-                goodsService.loadGoodsDataFromNet(1, size, goodsOrder);
+                page = 1;
+                goodsService.loadGoodsDataFromNet(shopId, page, size, goodsOrder);
+                //llLoadingGoodsListTip.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onLoadMore() {
-
+                goodsService.loadGoodsDataFromNet(shopId, ++page, size, goodsOrder);
             }
         });
     }
@@ -179,6 +194,7 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
         super.onAttach(activity);
         try {
             mListener = (OnFragmentInteractionListener) activity;
+            shopId = ((GoodsActivity)activity).getShopId() == 0 ? 1: ((GoodsActivity)activity).getShopId();
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -201,6 +217,23 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
         }
     }
 
+    /**
+     * 显示出没有数据的提示
+     */
+    public void showNoValueTip() {
+        //llLoadingGoodsListTip.setVisibility(View.GONE);
+        lvGoods.setVisibility(View.GONE);
+        llShowNoValueTip.setVisibility(View.VISIBLE);
+    }
+
+    /**
+     * 网络请求结束后回复状态
+     */
+    public void restoreState() {
+        ///llLoadingGoodsListTip.setVisibility(View.GONE);
+        lvGoods.stopRefreshData();
+    }
+
 
     /**
      * This interface must be implemented by activities that contain this
@@ -218,8 +251,8 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
 
     }
 
-    public void refreshData() {
-
+    public void setPullLoadEnable(boolean enable) {
+        lvGoods.setPullLoadEnable(enable);
     }
 
     private class ViewHolder {
@@ -231,4 +264,8 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
     }
 
 
+    public void init(int page) {
+        this.page = page;
+        this.goodsOrder = ORDER_POP;
+    }
 }

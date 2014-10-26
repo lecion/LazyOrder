@@ -24,6 +24,7 @@
     <string name="fail_to_load_goods_category_list">加载商品类别列表失败,请稍候再试</string>
     <string name="success_to_load_goods_category_list">加载商品类别列表成功</string>
     <string name="have_not_goods_list">抱歉,目前还没有商品列表的数据</string>
+    <string name="have_no_more_goods_list">已经加载完所有商品了~</string>
     <string name="listview_footer_hint_normal">listview_footer_hint_normal</string>
     <string name="listview_header_last_time">listview_header_last_time</string>
     <string name="listview_header_hint_normal">listview_header_hint_normal</string>

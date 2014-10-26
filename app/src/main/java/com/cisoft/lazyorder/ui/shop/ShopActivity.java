@@ -1,15 +1,5 @@
 package com.cisoft.lazyorder.ui.shop;
 
-import java.util.ArrayList;
-import java.util.List;
-import org.kymjs.aframe.bitmap.KJBitmap;
-import org.kymjs.aframe.bitmap.KJBitmapConfig;
-import org.kymjs.aframe.bitmap.utils.BitmapCreate;
-import org.kymjs.aframe.ui.BindView;
-import org.kymjs.aframe.ui.activity.BaseActivity;
-import org.kymjs.aframe.ui.widget.KJListView;
-import org.kymjs.aframe.ui.widget.KJRefreshListener;
-import org.kymjs.aframe.utils.DensityUtils;
 import android.app.ActionBar;
 import android.os.Bundle;
 import android.view.Menu;
@@ -18,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
+
 import com.cisoft.lazyorder.R;
 import com.cisoft.lazyorder.WelcomeActivity;
 import com.cisoft.lazyorder.bean.shop.Shop;
@@ -25,6 +16,18 @@ import com.cisoft.lazyorder.bean.shop.ShopCategory;
 import com.cisoft.lazyorder.core.shop.ShopCategoryService;
 import com.cisoft.lazyorder.core.shop.ShopService;
 import com.cisoft.lazyorder.finals.ApiConstants;
+
+import org.kymjs.aframe.bitmap.KJBitmap;
+import org.kymjs.aframe.bitmap.KJBitmapConfig;
+import org.kymjs.aframe.bitmap.utils.BitmapCreate;
+import org.kymjs.aframe.ui.BindView;
+import org.kymjs.aframe.ui.activity.BaseActivity;
+import org.kymjs.aframe.ui.widget.KJListView;
+import org.kymjs.aframe.ui.widget.KJRefreshListener;
+import org.kymjs.aframe.utils.DensityUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by comit on 10/16/14.
@@ -34,7 +37,7 @@ public class ShopActivity extends BaseActivity implements ActionBar.OnNavigation
     @BindView(id = R.id.lvShopList)
     public KJListView lvShopList;
 
-    @BindView(id = R.id.llLoadingShopListTip)
+    @BindView(id = R.id.llLoadingGoodsListTip)
     private LinearLayout llLoadingShopListTip;
     @BindView(id = R.id.llShowNoValueTip)
     private LinearLayout llShowNoValueTip;

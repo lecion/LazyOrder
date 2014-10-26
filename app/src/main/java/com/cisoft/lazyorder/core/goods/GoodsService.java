@@ -14,6 +14,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.kymjs.aframe.KJLoger;
 import org.kymjs.aframe.http.KJStringParams;
+import org.kymjs.aframe.ui.ViewInject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,50 +33,111 @@ public class GoodsService extends AbsService {
      * @param page 页码
      * @param size 每页显示的数量
      */
-    public void loadGoodsDataFromNet(int page, int size) {
-        this.loadGoodsDataFromNet(page, size, ApiConstants.KEY_COM_SALES_NUM);
+    public void loadGoodsDataFromNet(int shopId, int page, int size) {
+        this.loadGoodsDataFromNet(shopId, page, size, ApiConstants.KEY_COM_SALES_NUM);
     }
 
     /**
-     *
+     * 根据店铺ID获得所有商品
      * @param page 页码
      * @param size 每页显示的数量
      * @param sortType 排序方式，默认为人气
      */
-    public void loadGoodsDataFromNet(final int page, int size, final String sortType) {
+    public void loadGoodsDataFromNet(int shopId, final int page, int size, final String sortType) {
         KJStringParams params = new KJStringParams();
+        params.put(ApiConstants.KEY_COM_MER_ID, String.valueOf(shopId));
         params.put(ApiConstants.KEY_COM_PAGE, String.valueOf(page));
         params.put(ApiConstants.KEY_COM_SIZE, String.valueOf(size));
+        params.put(ApiConstants.KEY_COM_SORT, sortType);
+        final GoodsFragment f = getFragmentBySortType(sortType);
         super.asyncUrlGet(ApiConstants.METHOD_COMMODITY_FIND_ALL_BY_MER_ID, params, new SuccessCallback() {
             @Override
-            public void onSuccess(String result) throws JSONException {
+            public void onSuccess(String result) {
                 List<Goods> goodsList = new ArrayList<Goods>();
-                JSONObject jsonObj = new JSONObject(result);
-                JSONArray jsonGoodsDataArr = jsonObj.getJSONArray(ApiConstants.KEY_DATA);
-
-                for (int i = 0; i < jsonGoodsDataArr.length(); i++) {
-                    goodsList.add(new Goods(jsonGoodsDataArr.getJSONObject(i)));
+                JSONObject jsonObj = null;
+                try {
+                    jsonObj = new JSONObject(result);
+                    JSONArray jsonGoodsDataArr = jsonObj.getJSONArray(ApiConstants.KEY_DATA);
+                    //判断数据是否为空
+                    if (jsonGoodsDataArr.length() == 0) {
+                        if (page == 1) {
+                            ViewInject.toast(context.getResources().getString(R.string.have_not_goods_list));
+                            f.showNoValueTip();
+                        } else {
+                            ViewInject.toast(context.getResources().getString(R.string.have_no_more_goods_list));
+                            f.setPullLoadEnable(false);
+                        }
+                        return;
+                    }
+                    for (int i = 0; i < jsonGoodsDataArr.length(); i++) {
+                        goodsList.add(new Goods(jsonGoodsDataArr.getJSONObject(i)));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    ViewInject.toast("解析数据异常，请稍后再试");
                 }
-                if (sortType.equals(GoodsFragment.ORDER_POP)) {
-                    //销量排序
-                    GoodsFragment f = ((GoodsFragment)((Activity)context).getFragmentManager().findFragmentByTag(GoodsFragment.ORDER_POP));
-                    KJLoger.debug("GoodsFragment " + sortType + f);
-                    f.setGoodsData(goodsList);
-                } else {
-                    GoodsFragment f = ((GoodsFragment)((Activity)context).getFragmentManager().findFragmentByTag(GoodsFragment.ORDER_PRICE));
-                    KJLoger.debug("GoodsFragment " + sortType + f);
-                    f.setGoodsData(goodsList);
-                }
+                f.setGoodsData(goodsList);
+                f.restoreState();
                 KJLoger.debug("loadGoodsDataFromNet " + result);
-
-
             }
         }, new FailureCallback() {
             @Override
             public void onFailure(int stateCode) {
                 KJLoger.debug("loadGoodsDataFromNet " + stateCode);
+                ViewInject.toast(getResponseStateInfo(stateCode));
+                f.showNoValueTip();
             }
         });
+    }
+
+
+    public void loadGoodsDataByTypeFromNet(int shopId, int typeId, final int page, int size, final String sortType) {
+        KJStringParams params = new KJStringParams();
+        params.put(ApiConstants.KEY_COM_MER_ID, String.valueOf(shopId));
+        params.put(ApiConstants.KEY_COM_TYPE_ID, String.valueOf(typeId));
+        params.put(ApiConstants.KEY_COM_PAGE, String.valueOf(page));
+        params.put(ApiConstants.KEY_COM_SIZE, String.valueOf(size));
+        params.put(ApiConstants.KEY_COM_SORT, sortType);
+        final GoodsFragment f = getFragmentBySortType(sortType);
+        super.asyncUrlGet(ApiConstants.METHOD_COMMODITY_FIND_BY_MER_AND_TYPE_ID, params, new SuccessCallback() {
+            @Override
+            public void onSuccess(String result) throws JSONException {
+                List<Goods> goodsList = new ArrayList<Goods>();
+                JSONObject jsonObj = null;
+                try {
+                    jsonObj = new JSONObject(result);
+                    JSONArray jsonGoodsDataArr = jsonObj.getJSONArray(ApiConstants.KEY_DATA);
+                    //判断数据是否为空
+                    if (jsonGoodsDataArr.length() == 0) {
+                        if (page == 1) {
+                            ViewInject.toast(context.getResources().getString(R.string.have_not_goods_list));
+                            f.showNoValueTip();
+                        } else {
+                            ViewInject.toast(context.getResources().getString(R.string.have_no_more_goods_list));
+                            f.setPullLoadEnable(false);
+                        }
+                        return;
+                    }
+                    for (int i = 0; i < jsonGoodsDataArr.length(); i++) {
+                        goodsList.add(new Goods(jsonGoodsDataArr.getJSONObject(i)));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    ViewInject.toast("解析数据异常，请稍后再试");
+                }
+                f.setGoodsData(goodsList);
+                f.restoreState();
+                KJLoger.debug("loadGoodsDataByTypeFromNet " + result);
+            }
+        }, new FailureCallback() {
+            @Override
+            public void onFailure(int stateCode) {
+                KJLoger.debug("loadGoodsDataByTypeFromNet " + stateCode);
+                ViewInject.toast(getResponseStateInfo(stateCode));
+                f.showNoValueTip();
+            }
+        });
+
     }
 
     @Override
@@ -97,4 +159,22 @@ public class GoodsService extends AbsService {
         }
         return stateInfo;
     }
+
+    /**
+     * 根据sortType获得相应类型的GoodsFragment
+     * @param sortType
+     * @return
+     */
+    public GoodsFragment getFragmentBySortType(String sortType) {
+        GoodsFragment f = null;
+        if (sortType.equals(GoodsFragment.ORDER_POP)) {
+            //销量排序
+            f = ((GoodsFragment)((Activity)context).getFragmentManager().findFragmentByTag(GoodsFragment.ORDER_POP));
+        } else {
+            f = ((GoodsFragment)((Activity)context).getFragmentManager().findFragmentByTag(GoodsFragment.ORDER_PRICE));
+        }
+        return f;
+    }
+
+
 }
