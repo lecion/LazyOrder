@@ -51,9 +51,9 @@ public class GoodsCategory extends AbsBean{
             String key = null;
             while (iterator.hasNext()) {
                 key = iterator.next();
-                if (key == ApiConstants.KEY_CAT_ID) {
+                if (key.equals(ApiConstants.KEY_CAT_ID)) {
                     this.id = jsonObj.getInt(ApiConstants.KEY_CAT_ID);
-                } else if (key == ApiConstants.KEY_CAT_NAME) {
+                } else if (key.equals(ApiConstants.KEY_CAT_NAME)) {
                     this.cateName = jsonObj.getString(ApiConstants.KEY_CAT_NAME);
                 }
             }
