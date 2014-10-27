@@ -28,6 +28,7 @@
     <string name="listview_footer_hint_normal">listview_footer_hint_normal</string>
     <string name="listview_header_last_time">listview_header_last_time</string>
     <string name="listview_header_hint_normal">listview_header_hint_normal</string>
+    <string name="text_go_to_settle">去结算</string>
 
 
 </resources>

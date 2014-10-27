@@ -67,6 +67,8 @@ public class GoodsActivity extends BaseActivity implements GoodsFragment.OnFragm
 
 
 
+
+
     public GoodsActivity() {
         super();
         setHiddenActionBar(false);
@@ -231,8 +233,8 @@ public class GoodsActivity extends BaseActivity implements GoodsFragment.OnFragm
     }
 
     @Override
-    public void onFragmentInteraction(String id) {
-
+    public void onGoodsItemClick(String id) {
+        ViewInject.toast(""+id);
     }
 
     public int getShopId() {
