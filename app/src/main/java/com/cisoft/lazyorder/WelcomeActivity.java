@@ -1,8 +1,7 @@
 package com.cisoft.lazyorder;
 
 import android.widget.ImageView;
-import com.cisoft.lazyorder.ui.goods.GoodsActivity;
-import com.cisoft.lazyorder.ui.cart.SureOrderActivity;
+
 import com.cisoft.lazyorder.ui.shop.ShopActivity;
 
 import org.kymjs.aframe.ui.activity.BaseSplash;

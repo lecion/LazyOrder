@@ -35,7 +35,7 @@
             android:name=".ui.search.SearchActivity"
             android:label="@string/title_activity_search" />
         <activity
-            android:name=".ui.cart.SureOrderActivity"
+            android:name=".ui.sureorder.SureOrderActivity"
             android:label="@string/title_activity_sure_order" >
         </activity>
     </application>
