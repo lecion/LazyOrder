@@ -31,7 +31,6 @@ public class ShopCategoryListAdapter extends BaseAdapter{
 
     public void refresh(){
         notifyDataSetChanged();
-        notifyDataSetInvalidated();
     }
 	
 	@Override

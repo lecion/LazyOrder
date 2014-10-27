@@ -3,6 +3,7 @@ package com.cisoft.lazyorder.core;
 import android.content.Context;
 
 import com.cisoft.lazyorder.AppConfig;
+import com.cisoft.lazyorder.R;
 import com.cisoft.lazyorder.finals.ApiConstants;
 
 import org.json.JSONException;
@@ -12,6 +13,8 @@ import org.kymjs.aframe.http.KJStringParams;
 import org.kymjs.aframe.http.StringCallBack;
 import org.kymjs.aframe.http.cache.HttpCache;
 import org.kymjs.aframe.ui.ViewInject;
+import org.kymjs.aframe.utils.ErrHandleUtils;
+import org.kymjs.aframe.utils.SystemTool;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -34,7 +37,7 @@ public abstract class AbsService {
 
 
     /**
-     * 以get的方式异步请求Api的网络数据
+     * 以get的方式异步请求Api的网络数据并保存数据到缓存
      * @param methodName Api接口的方法名，如"findAll.json"
      * @param params Api接口的参数对
      * @param successCallback 成功后的回调
@@ -53,9 +56,8 @@ public abstract class AbsService {
      * @param successCallback
      * @param failureCallback
      */
-    protected void asyncUrlGet(String methodName, final KJStringParams params, final boolean isSaveCache, final SuccessCallback successCallback, final FailureCallback failureCallback){
+    protected void asyncUrlGet(String methodName, KJStringParams params, final boolean isSaveCache, final SuccessCallback successCallback, final FailureCallback failureCallback){
         
-    	/*
     	//判断网络状态
     	if (!SystemTool.checkNet(context)) {
     		ErrHandleUtils.sendNotNetReceiver(context);
@@ -63,15 +65,14 @@ public abstract class AbsService {
                 failureCallback.onFailure(ApiConstants.RESPONSE_STATE_NOT_NET);
             }
     		return;
-    	}*/
+    	}
 
-        final String url = packageApiUrlByMethodName(methodName) + "?" + params.toString();
+        final String url = packageApiUrlByMethodNameAndParams(methodName, params);
 
         kjHttp.urlGet(url, new StringCallBack() {
             @Override
             public void onSuccess(String result) {
                 System.out.println("url:" + url);
-                System.out.println("params:" + params.toString());
                 System.out.println("result:" + result);
 
                 try {
@@ -102,16 +103,12 @@ public abstract class AbsService {
 
             @Override
             public void onFailure(Throwable t, int errorNo, String strMsg) {
-                if (AppConfig.IS_DEBUG) {
+                if (failureCallback != null) {
                     if (t instanceof MalformedURLException) {
                         ViewInject.longToast("不是标准的URL");
                     } else if (t instanceof IOException) {
-                        ViewInject.longToast("网络响应缓慢");
+                        failureCallback.onFailure(ApiConstants.RESPONSE_STATE_NET_POOR);
                     } else {
-                        ViewInject.longToast("未知异常");
-                    }
-                } else {
-                    if (failureCallback != null) {
                         failureCallback.onFailure(ApiConstants.RESPONSE_STATE_FAILURE);
                     }
                 }
@@ -123,7 +120,7 @@ public abstract class AbsService {
 
 
     /**
-     * 以post的方式异步请求Api的网络数据
+     * 以post的方式异步请求Api的网络数据并将获取到的数据保存为缓存
      * @param methodName Api接口的方法名，如"findAll.json"
      * @param params Api接口的参数对
      * @param successCallback 成功后的回调
@@ -143,16 +140,18 @@ public abstract class AbsService {
      * @param failureCallback
      */
     protected void asyncUrlPost(String methodName, final KJStringParams params, final boolean isSaveCache, final SuccessCallback successCallback, final FailureCallback failureCallback) {
-    	/*if (!SystemTool.checkNet(context)) {
-    		ErrHandleUtils.sendNotNetReceiver(context);
-    		if (failureCallback != null) {
+
+        //判断网络状态
+        if (!SystemTool.checkNet(context)) {
+            ErrHandleUtils.sendNotNetReceiver(context);
+            if (failureCallback != null) {
                 failureCallback.onFailure(ApiConstants.RESPONSE_STATE_NOT_NET);
             }
-    		return;
-    	}
-    	*/
+            return;
+        }
 
-        final String url = packageApiUrlByMethodName(methodName);
+
+        final String url = packageApiUrlByMethodNameAndParams(methodName, null);
 
         kjHttp.urlPost(url, params, new StringCallBack() {
             @Override
@@ -189,16 +188,12 @@ public abstract class AbsService {
 
             @Override
             public void onFailure(Throwable t, int errorNo, String strMsg) {
-                if (AppConfig.IS_DEBUG) {
+                if (failureCallback != null) {
                     if (t instanceof MalformedURLException) {
                         ViewInject.longToast("不是标准的URL");
                     } else if (t instanceof IOException) {
-                        ViewInject.longToast("网络响应缓慢");
+                        failureCallback.onFailure(ApiConstants.RESPONSE_STATE_NET_POOR);
                     } else {
-                        ViewInject.longToast("未知异常");
-                    }
-                } else {
-                    if (failureCallback != null) {
                         failureCallback.onFailure(ApiConstants.RESPONSE_STATE_FAILURE);
                     }
                 }
@@ -211,13 +206,17 @@ public abstract class AbsService {
      * @param methodName
      * @return
      */
-    protected String packageApiUrlByMethodName (String methodName) {
+    protected String packageApiUrlByMethodNameAndParams(String methodName, KJStringParams params) {
         StringBuilder sb = new StringBuilder();
         sb.append(ApiConstants.SERVER_URL);
         sb.append(ApiConstants.URL_SEPERATOR);
         sb.append(moduleName);
         sb.append(ApiConstants.URL_SEPERATOR);
         sb.append(methodName);
+        if (params != null) {
+            sb.append("?");
+            sb.append(params.toString());
+        }
 
         return sb.toString();
     }
@@ -228,8 +227,22 @@ public abstract class AbsService {
      * @param stateCode
      * @return
      */
-    public abstract String getResponseStateInfo(int stateCode);
+    public String getResponseStateInfo(int stateCode){
+        String stateInfo = "";
+        switch (stateCode) {
+            case ApiConstants.RESPONSE_STATE_NOT_NET:
+                stateInfo = context.getResources().getString(R.string.no_net_service);
+                break;
+            case ApiConstants.RESPONSE_STATE_NET_POOR:
+                stateInfo = context.getResources().getString(R.string.net_too_poor);
+                break;
+            case ApiConstants.RESPONSE_STATE_SERVICE_EXCEPTION:
+                stateInfo = context.getResources().getString(R.string.service_have_error_exception);
+                break;
+        }
 
+        return stateInfo;
+    }
 
 
 

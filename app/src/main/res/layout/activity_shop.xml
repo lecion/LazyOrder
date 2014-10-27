@@ -6,65 +6,28 @@
     android:orientation="vertical"
     tools:context=".ui.shop.ShopActivity">
 
-    <ScrollView
+    <com.cisoft.lazyorder.widget.MyListView
+        android:id="@+id/lvShopList"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <LinearLayout
-            android:layout_width="match_parent"
+
+        android:layout_height="wrap_content"
+        android:divider="@null"
+        android:scrollbars="none"
+        android:dividerHeight="5dp">
+    </com.cisoft.lazyorder.widget.MyListView>
+
+    <LinearLayout
+        android:id="@+id/llShowNoValueTip"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:visibility="gone">
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-           
-            <ImageView
-                android:id="@+id/ivAdvertise"
-                android:layout_width="match_parent"
-                android:layout_height="90dp"
-                android:background="@android:color/holo_green_light" />
-
-            <LinearLayout
-                android:id="@+id/llLoadingGoodsListTip"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:visibility="visible">
-                <ProgressBar
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:indeterminateDrawable="@drawable/red_progressbar_layer_list"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:textSize="12sp"
-                    android:textColor="@color/loading_shop_list_text_color"
-                    android:text="@string/loading_shop_list"/>
-            </LinearLayout>
-            
-            <LinearLayout
-                android:id="@+id/llShowNoValueTip"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:visibility="gone">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="16sp"
-                    android:textColor="@color/loading_shop_list_text_color"
-                    android:text="@string/have_not_shop_list"/>
-            </LinearLayout>
-            <org.kymjs.aframe.ui.widget.KJListView
-                android:id="@+id/lvShopList"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:divider="@null"
-                android:cacheColorHint="@android:color/transparent"
-                android:scrollbars="none"
-                android:dividerHeight="5dp"
-                android:visibility="gone">
-            </org.kymjs.aframe.ui.widget.KJListView>
-        </LinearLayout>
-
-    </ScrollView>
+            android:textSize="16sp"
+            android:textColor="@color/loading_shop_list_text_color"
+            android:text="@string/have_not_shop_list"/>
+    </LinearLayout>
 
 </LinearLayout>

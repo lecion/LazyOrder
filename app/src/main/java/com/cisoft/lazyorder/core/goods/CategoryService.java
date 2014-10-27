@@ -67,7 +67,7 @@ public class CategoryService extends AbsService {
                 stateInfo = context.getResources().getString(R.string.success_to_load_goods_category_list);
                 break;
             case ApiConstants.RESPONSE_STATE_NOT_NET:
-                stateInfo = context.getResources().getString(R.string.no_net_receiver);
+                stateInfo = context.getResources().getString(R.string.no_net_service);
                 break;
         }
 

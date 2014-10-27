@@ -7,15 +7,14 @@ public class ApiConstants {
 
     //public static final String SERVER_URL = "http://wanghong940821.test.cqyun.net/lazyorder/index.php";
     public static final String SERVER_URL = "http://lazyorder.yliec.com";
-
-
     public static final String URL_SEPERATOR = "/";
 
     /* 这里存放响应的状态码 */
     public static final int RESPONSE_STATE_SUCCESS = 200;
     public static final int RESPONSE_STATE_FAILURE = 404;
-    public static final int RESPONSE_STATE_SERVICE_EXCEPTION = 1;
-    public static final int RESPONSE_STATE_NOT_NET = 0;
+    public static final int RESPONSE_STATE_SERVICE_EXCEPTION = 103;
+    public static final int RESPONSE_STATE_NOT_NET = 102;
+    public static final int RESPONSE_STATE_NET_POOR = 101;
 
     /* 这里存放全局使用的key */
     public static final String KEY_STATE = "state";

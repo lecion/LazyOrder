@@ -14,7 +14,8 @@
     <string name="success_to_load_shop_list">加载商家列表成功</string>
     <string name="fail_to_load_shop_category_list">加载商家类别列表失败,请稍候再试</string>
     <string name="success_to_load_shop_category_list">加载商家类别列表成功</string>
-    <string name="no_net_receiver">抱歉,网络状况不好,请检查你是网络设置</string>
+    <string name="no_net_service">抱歉,当前没有网络</string>
+    <string name="net_too_poor">连接超时,请检查你的网络设置</string>
     <string name="have_not_shop_list">抱歉,目前还没有店家列表的数据</string>
     <string name="service_have_error_exception">抱歉！服务器出现异常，请稍候再试</string>
 
@@ -25,10 +26,14 @@
     <string name="success_to_load_goods_category_list">加载商品类别列表成功</string>
     <string name="have_not_goods_list">抱歉,目前还没有商品列表的数据</string>
     <string name="have_no_more_goods_list">已经加载完所有商品了~</string>
-    <string name="listview_footer_hint_normal">listview_footer_hint_normal</string>
-    <string name="listview_header_last_time">listview_header_last_time</string>
-    <string name="listview_header_hint_normal">listview_header_hint_normal</string>
+
+
+    <!-- 自定义的上下拉刷新所用字符串 -->
+    <string name="listview_header_hint_normal">下拉刷新</string>
+    <string name="listview_header_hint_ready">松开刷新数据</string>
+    <string name="listview_header_hint_loading">正在加载...</string>
+    <string name="listview_header_last_time">上次更新时间：</string>
+    <string name="listview_footer_hint_normal">查看更多</string>
+    <string name="listview_footer_hint_ready">松开载入更多</string>
     <string name="text_go_to_settle">去结算</string>
-
-
 </resources>

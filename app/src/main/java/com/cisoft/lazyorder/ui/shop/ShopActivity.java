@@ -1,11 +1,17 @@
 package com.cisoft.lazyorder.ui.shop;
 
+import java.util.ArrayList;
+import java.util.List;
+import org.kymjs.aframe.ui.BindView;
+import org.kymjs.aframe.ui.activity.BaseActivity;
+import org.kymjs.aframe.utils.DensityUtils;
 import android.app.ActionBar;
+import android.app.Dialog;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 
@@ -16,6 +22,10 @@ import com.cisoft.lazyorder.bean.shop.ShopCategory;
 import com.cisoft.lazyorder.core.shop.ShopCategoryService;
 import com.cisoft.lazyorder.core.shop.ShopService;
 import com.cisoft.lazyorder.finals.ApiConstants;
+import com.cisoft.lazyorder.ui.goods.GoodsActivity;
+import com.cisoft.lazyorder.util.DialogFactory;
+import com.cisoft.lazyorder.widget.AdRotator;
+import com.cisoft.lazyorder.widget.MyListView;
 
 import org.kymjs.aframe.bitmap.KJBitmap;
 import org.kymjs.aframe.bitmap.KJBitmapConfig;
@@ -35,7 +45,7 @@ import java.util.List;
 public class ShopActivity extends BaseActivity implements ActionBar.OnNavigationListener, AdapterView.OnItemClickListener{
 
     @BindView(id = R.id.lvShopList)
-    public KJListView lvShopList;
+    public MyListView lvShopList;
 
     @BindView(id = R.id.llLoadingGoodsListTip)
     private LinearLayout llLoadingShopListTip;
@@ -44,20 +54,18 @@ public class ShopActivity extends BaseActivity implements ActionBar.OnNavigation
 
     public ShopListViewAdapter shopListAdapter;
     public ShopCategoryListAdapter shopCategoryListAdapter;
-
-    private KJBitmap kjBitmap;
+    public AdRotator arImageAdRotator;
     private ShopService shopService;
     private ShopCategoryService shopCategoryService;
     private List<Shop> shopsData;
     private List<ShopCategory> shopCategoryData;
 
+    public Dialog loadingTipDialog;
+
+
     private int page = 1;
     private int pager = 10;
-    //加载店家的头像时默认显示的加载图的宽（单位：dp）
-    private int loadingImgWidthForDp = 100;
-    private int loadingImgHeightForDp = 100;
-    //是否正在刷新的标志位（用于网络获取数据时区分是刷新调度的还是没有缓存时调度的）
-    public boolean lvRefreshing = false;
+
 
     public ShopActivity() {
         setHiddenActionBar(false);
@@ -81,11 +89,8 @@ public class ShopActivity extends BaseActivity implements ActionBar.OnNavigation
     @Override
     protected void initWidget() {
         initActionBar();
-        initBitmap();
-        initShopListAdapter();
-
-        loadingTipShow();
-        shopService.loadAllShopDataFromCache(page, pager);
+        initAdRotator();
+        initShopList();
     }
 
     /**
@@ -95,38 +100,46 @@ public class ShopActivity extends BaseActivity implements ActionBar.OnNavigation
         ActionBar actionbar = getActionBar();
         actionbar.setDisplayShowTitleEnabled(false);
         actionbar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-        shopCategoryService.loadAllShopCategoryData();
         shopCategoryListAdapter = new ShopCategoryListAdapter(this, shopCategoryData);
         actionbar.setListNavigationCallbacks(shopCategoryListAdapter, this);
+        shopCategoryService.loadAllShopCategoryData();
     }
 
     /**
-     * 初始化带loadingBitmap的bitmap对象
+     * 初始化广告轮播器
      */
-    private void initBitmap() {
-        KJBitmapConfig bitmapConfig = new KJBitmapConfig();
-        bitmapConfig.loadingBitmap = BitmapCreate.bitmapFromResource(getResources(), R.drawable.ic_launcher,
-                DensityUtils.dip2px(this, loadingImgWidthForDp), DensityUtils.dip2px(this, loadingImgHeightForDp));
-        kjBitmap = KJBitmap.create(bitmapConfig);
+    private void initAdRotator() {
+        arImageAdRotator = new AdRotator(this);
+        arImageAdRotator.setLayoutParams(new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, DensityUtils.dip2px(this, 150)));
+        arImageAdRotator.setImageUrl(new String[]{
+                "http://c.hiphotos.baidu.com/image/w%3D310/sign=9f7ddc689158d109c4e3afb3e158ccd0/fd039245d688d43fc5bd2ee47e1ed21b0ef43b8b.jpg",
+                "http://c.hiphotos.baidu.com/image/w%3D310/sign=0bd18105de54564ee565e23883df9cde/c2cec3fdfc039245940d5c198494a4c27d1e256f.jpg",
+                "http://b.hiphotos.baidu.com/image/w%3D310/sign=115ed965f8f2b211e42e834ffa806511/77c6a7efce1b9d16fc9c2577f0deb48f8c546448.jpg",
+                "http://b.hiphotos.baidu.com/image/w%3D310/sign=76e7a2568735e5dd902ca3de46c6a7f5/32fa828ba61ea8d3c43a3600950a304e251f589d.jpg",
+                "http://f.hiphotos.baidu.com/image/w%3D310/sign=376bbbc61d178a82ce3c79a1c603737f/a8ec8a13632762d0424ee5b5a3ec08fa513dc64c.jpg"
+        });
     }
 
 
-
-    private void initShopListAdapter() {
-        shopListAdapter = new ShopListViewAdapter(this, shopsData, kjBitmap);
+    /**
+     * 初始化店家列表展示控件
+     */
+    private void initShopList() {
+        shopListAdapter = new ShopListViewAdapter(this, shopsData);
+        lvShopList.addHeaderView(arImageAdRotator);
         lvShopList.setAdapter(shopListAdapter);
-        lvShopList.getHeadView().setBackgroundResource(R.drawable.ic_launcher);
-        lvShopList.setOnRefreshListener(new KJRefreshListener() {
+        lvShopList.setOnItemClickListener(this);
+        lvShopList.setPullLoadEnable(true);
+        lvShopList.setOnRefreshListener(new MyListView.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                lvRefreshing = true;
-                shopService.loadAllShopDataFromNet(1, pager);
+                page = 1;
+                shopService.loadAllShopData(page, pager);
             }
 
             @Override
             public void onLoadMore() {
-                lvRefreshing = true;
-                shopService.loadAllShopDataFromNet(++page, pager);
+                shopService.loadAllShopData(++page, pager);
             }
         });
     }
@@ -134,36 +147,35 @@ public class ShopActivity extends BaseActivity implements ActionBar.OnNavigation
 
 
     /**
-     * 显示正在加载的提示,并隐藏店家列表
+     * 显示正在加载的提示
      */
-    public void loadingTipShow() {
-        llLoadingShopListTip.setVisibility(View.VISIBLE);
-        lvShopList.setVisibility(View.GONE);
+    public void showLoadingTip() {
+        loadingTipDialog = DialogFactory.createToastDialog(this, "正在加载,请稍等");
+        loadingTipDialog.show();
         llShowNoValueTip.setVisibility(View.GONE);
     }
 
     /**
-     * 隐藏正在加载的提示,并显示店家列表
+     * 隐藏正在加载的提示
      */
-    public void loadingTipHide() {
-        llLoadingShopListTip.setVisibility(View.GONE);
+    public void hideLoadingTip() {
         llShowNoValueTip.setVisibility(View.GONE);
-        lvShopList.setVisibility(View.VISIBLE);
+        if(loadingTipDialog !=null && loadingTipDialog.isShowing())
+            loadingTipDialog.dismiss();
     }
 
     /**
      * 显示出没有数据的提示
      */
     public void showNoValueTip() {
-        llLoadingShopListTip.setVisibility(View.GONE);
-        lvShopList.setVisibility(View.GONE);
         llShowNoValueTip.setVisibility(View.VISIBLE);
+        if(loadingTipDialog !=null && loadingTipDialog.isShowing())
+            loadingTipDialog.dismiss();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.shop, menu);
-
         return true;
     }
 
@@ -191,13 +203,12 @@ public class ShopActivity extends BaseActivity implements ActionBar.OnNavigation
     @Override
     public boolean onNavigationItemSelected(int position, long l) {
         page = 1;//初始化page
-
-        loadingTipShow();
+        showLoadingTip();
         if (position == 0) {//加载全部的店家列表
-            shopService.loadAllShopDataFromCache(page, pager);
+            shopService.loadAllShopData(page, pager);
         } else {
             int shopTypeId = shopCategoryData.get(position-1).getId();
-            shopService.loadShopDataFromNetByTypeId(shopTypeId, page, pager);
+            shopService.loadShopDataByTypeId(shopTypeId, page, pager);
         }
 
         return true;
@@ -214,20 +225,13 @@ public class ShopActivity extends BaseActivity implements ActionBar.OnNavigation
         bundle.putString(ApiConstants.KEY_MER_ADDRESS, shop.getAddress());
         bundle.putString(ApiConstants.KEY_MER_PROMOTION_INFO, shop.getPromotionInfo());
         bundle.putString(ApiConstants.KEY_MER_NAME, shop.getName());
-        showActivity(this, WelcomeActivity.class, bundle);
+        showActivity(this, GoodsActivity.class, bundle);
     }
 
-    public void setListViewHeightBasedOnChildren() {
 
-        int totalHeight = 0;
-        for (int i = 0; i < shopListAdapter.getCount(); i++) {
-            View listItem = shopListAdapter.getView(i, null, lvShopList);
-            listItem.measure(0, 0);
-            totalHeight += listItem.getMeasuredHeight();
-        }
-
-        ViewGroup.LayoutParams params = lvShopList.getLayoutParams();
-        params.height = totalHeight + (lvShopList.getDividerHeight() * (shopListAdapter.getCount() - 1));
-        lvShopList.setLayoutParams(params);
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        arImageAdRotator.stopAutoPlay();
     }
 }

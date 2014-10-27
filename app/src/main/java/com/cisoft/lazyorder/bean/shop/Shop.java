@@ -151,6 +151,10 @@ public class Shop extends AbsBean{
             	this.faceImgUrl = jsonObj.getString(ApiConstants.KEY_MER_FACE_PIC);
             }
 
+            if (isContainKey(ApiConstants.KEY_MER_OPEN_STATE, jsonObj)) {
+                this.openState = jsonObj.getInt(ApiConstants.KEY_MER_OPEN_STATE);
+            }
+
             if (isContainKey(ApiConstants.KEY_MER_PROMOTION_INFO, jsonObj)) {
             	this.promotionInfo = jsonObj.getString(ApiConstants.KEY_MER_PROMOTION_INFO);
             }
