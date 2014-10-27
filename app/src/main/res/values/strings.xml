@@ -8,7 +8,6 @@
     <string name="title_activity_goods">商品</string>
     <string name="action_search">搜索</string>
     <string name="title_activity_search">搜索</string>
-
     <string name="loading_shop_list">正在加载商家列表中,请稍候...</string>
     <string name="fail_to_load_shop_list">加载商家列表失败,请稍候再试</string>
     <string name="success_to_load_shop_list">加载商家列表成功</string>
@@ -36,4 +35,5 @@
     <string name="listview_footer_hint_normal">查看更多</string>
     <string name="listview_footer_hint_ready">松开载入更多</string>
     <string name="text_go_to_settle">去结算</string>
+    <string name="title_activity_sure_order">SureOrderActivity</string>
 </resources>
