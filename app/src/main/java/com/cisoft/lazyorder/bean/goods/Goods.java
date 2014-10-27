@@ -97,19 +97,19 @@ public class Goods extends AbsBean{
             String key = null;
             while (iterator.hasNext()) {
                 key = iterator.next();
-                if (key == ApiConstants.KEY_COM_ID) {
+                if (key.equals(ApiConstants.KEY_COM_ID)) {
                     this.id = jsonObj.getInt(ApiConstants.KEY_COM_ID);
-                } else if (key == ApiConstants.KEY_COM_NAME) {
+                } else if (key.equals(ApiConstants.KEY_COM_NAME)) {
                     this.cmName = jsonObj.getString(ApiConstants.KEY_COM_NAME);
-                } else if(key == ApiConstants.KEY_COM_PICTURE) {
+                } else if(key.equals(ApiConstants.KEY_COM_PICTURE)) {
                     this.cmPicture = jsonObj.getString(ApiConstants.KEY_COM_PICTURE);
-                } else if(key == ApiConstants.KEY_COM_CAT_ID) {
+                } else if(key.equals(ApiConstants.KEY_COM_CAT_ID)) {
                     this.cateId = jsonObj.getInt(ApiConstants.KEY_COM_CAT_ID);
-                } else if(key == ApiConstants.KEY_COM_CAT_NAME) {
+                } else if(key.equals(ApiConstants.KEY_COM_CAT_NAME)) {
                     this.catName = jsonObj.getString(ApiConstants.KEY_COM_CAT_NAME);
-                } else if(key == ApiConstants.KEY_COM_SALES_NUM) {
+                } else if(key.equals(ApiConstants.KEY_COM_SALES_NUM)) {
                     this.salesNum = jsonObj.getInt(ApiConstants.KEY_COM_SALES_NUM);
-                } else if(key == ApiConstants.KEY_COM_PRICE) {
+                } else if(key.equals(ApiConstants.KEY_COM_PRICE)) {
                     this.cmPrice = jsonObj.getInt(ApiConstants.KEY_COM_PRICE);
                 }
             }
