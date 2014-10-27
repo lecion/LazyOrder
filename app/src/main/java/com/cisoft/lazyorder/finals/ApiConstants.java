@@ -5,8 +5,8 @@ package com.cisoft.lazyorder.finals;
  */
 public class ApiConstants {
 
-    //public static final String SERVER_URL = "http://wanghong940821.test.cqyun.net/lazyorder/index.php";
-    public static final String SERVER_URL = "http://lazyorder.yliec.com";
+    public static final String SERVER_URL = "http://wanghong940821.test.cqyun.net/lazyorder/index.php";
+//    public static final String SERVER_URL = "http://lazyorder.yliec.com";
     public static final String URL_SEPERATOR = "/";
 
     /* 这里存放响应的状态码 */

@@ -131,23 +131,23 @@ public class Shop extends AbsBean{
             String key = null;
             while (iterator.hasNext()) {
                 key = iterator.next();
-                if (key == ApiConstants.KEY_MER_ID) {
+                if (key.equals(ApiConstants.KEY_MER_ID)) {
                     this.id = jsonObj.getInt(ApiConstants.KEY_MER_ID);
-                } else if (key == ApiConstants.KEY_MER_NAME) {
+                } else if (key.equals(ApiConstants.KEY_MER_NAME)) {
                     this.name = jsonObj.getString(ApiConstants.KEY_MER_NAME);
-                } else if(key == ApiConstants.KEY_MER_OPEN_TIME) {
+                } else if(key.equals(ApiConstants.KEY_MER_OPEN_TIME)) {
                     this.openTime = jsonObj.getString(ApiConstants.KEY_MER_OPEN_TIME);
-                } else if(key == ApiConstants.KEY_MER_CLOSE_TIME) {
+                } else if(key.equals(ApiConstants.KEY_MER_CLOSE_TIME)) {
                     this.closeTime = jsonObj.getString(ApiConstants.KEY_MER_CLOSE_TIME);
-                } else if(key == ApiConstants.KEY_MER_MONTH_SALES) {
+                } else if(key.equals(ApiConstants.KEY_MER_MONTH_SALES)) {
                     this.monthSales = jsonObj.getInt(ApiConstants.KEY_MER_MONTH_SALES);
-                } else if(key == ApiConstants.KEY_MER_FACE_PIC) {
+                } else if(key.equals(ApiConstants.KEY_MER_FACE_PIC)) {
                     this.faceImgUrl = jsonObj.getString(ApiConstants.KEY_MER_FACE_PIC);
-                } else if(key == ApiConstants.KEY_MER_OPEN_STATE) {
+                } else if(key.equals(ApiConstants.KEY_MER_OPEN_STATE)) {
                     this.openState = jsonObj.getInt(ApiConstants.KEY_MER_OPEN_STATE);
-                } else if(key == ApiConstants.KEY_MER_PROMOTION_INFO) {
+                } else if(key.equals(ApiConstants.KEY_MER_PROMOTION_INFO)) {
                     this.promotionInfo = jsonObj.getString(ApiConstants.KEY_MER_PROMOTION_INFO);
-                } else if(key == ApiConstants.KEY_MER_ADDRESS) {
+                } else if(key.equals(ApiConstants.KEY_MER_ADDRESS)) {
                     this.address = jsonObj.getString(ApiConstants.KEY_MER_ADDRESS);
                 }
             }
