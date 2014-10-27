@@ -6,6 +6,8 @@ import org.json.JSONObject;
 import com.cisoft.lazyorder.bean.AbsBean;
 import com.cisoft.lazyorder.finals.ApiConstants;
 
+import java.util.Iterator;
+
 /**
  * Created by comet on 2014/10/17.
  */
@@ -47,16 +49,18 @@ public class ShopCategory extends AbsBean{
 	@Override
 	public void parse(JSONObject jsonObj) {
         try {
-            if (isContainKey(ApiConstants.KEY_MC_CATEGORY_ID, jsonObj)) {
-            	this.id= jsonObj.getInt(ApiConstants.KEY_MC_CATEGORY_ID);
-            }
-
-            if (isContainKey(ApiConstants.KEY_MC_CATEGORY_NAME, jsonObj)) {
-            	this.name = jsonObj.getString(ApiConstants.KEY_MC_CATEGORY_NAME);
+            Iterator<String> iterator =  jsonObj.keys();
+            String key = null;
+            while (iterator.hasNext()) {
+                key = iterator.next();
+                if (key == ApiConstants.KEY_MC_CATEGORY_ID) {
+                    this.id = jsonObj.getInt(ApiConstants.KEY_MC_CATEGORY_ID);
+                } else if (key == ApiConstants.KEY_MC_CATEGORY_NAME) {
+                    this.name = jsonObj.getString(ApiConstants.KEY_MC_CATEGORY_NAME);
+                }
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        
 	}
 }

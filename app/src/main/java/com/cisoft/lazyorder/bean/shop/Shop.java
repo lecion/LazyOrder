@@ -127,40 +127,29 @@ public class Shop extends AbsBean{
 
     public void parse(JSONObject jsonObj){
         try {
-            if (isContainKey(ApiConstants.KEY_MER_ID, jsonObj)) {
-                this.id = jsonObj.getInt(ApiConstants.KEY_MER_ID);
-            }
-
-            if (isContainKey(ApiConstants.KEY_MER_NAME, jsonObj)) {
-                this.name = jsonObj.getString(ApiConstants.KEY_MER_NAME);
-            }
-
-            if (isContainKey(ApiConstants.KEY_MER_OPEN_TIME, jsonObj)) {
-            	this.openTime = jsonObj.getString(ApiConstants.KEY_MER_OPEN_TIME);
-            }
-
-            if (isContainKey(ApiConstants.KEY_MER_CLOSE_TIME, jsonObj)) {
-            	this.closeTime = jsonObj.getString(ApiConstants.KEY_MER_CLOSE_TIME);
-            }
-
-            if (isContainKey(ApiConstants.KEY_MER_MONTH_SALES, jsonObj)) {
-            	this.monthSales = jsonObj.getInt(ApiConstants.KEY_MER_MONTH_SALES);
-            }
-
-            if (isContainKey(ApiConstants.KEY_MER_FACE_PIC, jsonObj)) {
-            	this.faceImgUrl = jsonObj.getString(ApiConstants.KEY_MER_FACE_PIC);
-            }
-
-            if (isContainKey(ApiConstants.KEY_MER_OPEN_STATE, jsonObj)) {
-                this.openState = jsonObj.getInt(ApiConstants.KEY_MER_OPEN_STATE);
-            }
-
-            if (isContainKey(ApiConstants.KEY_MER_PROMOTION_INFO, jsonObj)) {
-            	this.promotionInfo = jsonObj.getString(ApiConstants.KEY_MER_PROMOTION_INFO);
-            }
-
-            if (isContainKey(ApiConstants.KEY_MER_ADDRESS, jsonObj)) {
-            	this.address = jsonObj.getString(ApiConstants.KEY_MER_ADDRESS);
+            Iterator<String> iterator =  jsonObj.keys();
+            String key = null;
+            while (iterator.hasNext()) {
+                key = iterator.next();
+                if (key == ApiConstants.KEY_MER_ID) {
+                    this.id = jsonObj.getInt(ApiConstants.KEY_MER_ID);
+                } else if (key == ApiConstants.KEY_MER_NAME) {
+                    this.name = jsonObj.getString(ApiConstants.KEY_MER_NAME);
+                } else if(key == ApiConstants.KEY_MER_OPEN_TIME) {
+                    this.openTime = jsonObj.getString(ApiConstants.KEY_MER_OPEN_TIME);
+                } else if(key == ApiConstants.KEY_MER_CLOSE_TIME) {
+                    this.closeTime = jsonObj.getString(ApiConstants.KEY_MER_CLOSE_TIME);
+                } else if(key == ApiConstants.KEY_MER_MONTH_SALES) {
+                    this.monthSales = jsonObj.getInt(ApiConstants.KEY_MER_MONTH_SALES);
+                } else if(key == ApiConstants.KEY_MER_FACE_PIC) {
+                    this.faceImgUrl = jsonObj.getString(ApiConstants.KEY_MER_FACE_PIC);
+                } else if(key == ApiConstants.KEY_MER_OPEN_STATE) {
+                    this.openState = jsonObj.getInt(ApiConstants.KEY_MER_OPEN_STATE);
+                } else if(key == ApiConstants.KEY_MER_PROMOTION_INFO) {
+                    this.promotionInfo = jsonObj.getString(ApiConstants.KEY_MER_PROMOTION_INFO);
+                } else if(key == ApiConstants.KEY_MER_ADDRESS) {
+                    this.address = jsonObj.getString(ApiConstants.KEY_MER_ADDRESS);
+                }
             }
         } catch (JSONException e) {
             e.printStackTrace();

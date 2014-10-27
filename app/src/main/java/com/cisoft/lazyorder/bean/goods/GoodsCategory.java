@@ -6,6 +6,8 @@ import com.cisoft.lazyorder.finals.ApiConstants;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Iterator;
+
 /**
  * Created by Lecion on 10/26/14.
  */
@@ -43,12 +45,17 @@ public class GoodsCategory extends AbsBean{
 
     @Override
     public void parse(JSONObject jsonObj) {
+
         try {
-            if (isContainKey(ApiConstants.KEY_CAT_ID, jsonObj)) {
-                setId(jsonObj.getInt(ApiConstants.KEY_CAT_ID));
-            }
-            if (isContainKey(ApiConstants.KEY_CAT_NAME, jsonObj)) {
-                setCateName(jsonObj.getString(ApiConstants.KEY_CAT_NAME));
+            Iterator<String> iterator =  jsonObj.keys();
+            String key = null;
+            while (iterator.hasNext()) {
+                key = iterator.next();
+                if (key == ApiConstants.KEY_CAT_ID) {
+                    this.id = jsonObj.getInt(ApiConstants.KEY_CAT_ID);
+                } else if (key == ApiConstants.KEY_CAT_NAME) {
+                    this.cateName = jsonObj.getString(ApiConstants.KEY_CAT_NAME);
+                }
             }
         } catch (JSONException e) {
             e.printStackTrace();

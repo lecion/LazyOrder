@@ -6,13 +6,12 @@ import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.cisoft.lazyorder.R;
 import com.cisoft.lazyorder.bean.shop.Shop;
-import com.cisoft.lazyorder.widget.AdRotator;
+
 import org.kymjs.aframe.bitmap.KJBitmap;
 import org.kymjs.aframe.utils.DensityUtils;
 import java.util.List;
@@ -67,7 +66,7 @@ public class ShopListViewAdapter extends BaseAdapter {
         ViewHolder holder = null;
 
         if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.activity_shop_list_cell, null);
+            convertView = LayoutInflater.from(context).inflate(R.layout.shop_list_cell, null);
             holder = new ViewHolder();
             holder.tvShopName = (TextView) convertView.findViewById(R.id.tvShopName);
             holder.tvOpenTime = (TextView) convertView.findViewById(R.id.tvOpenTime);
