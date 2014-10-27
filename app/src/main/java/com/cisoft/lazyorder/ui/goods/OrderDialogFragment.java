@@ -21,7 +21,7 @@ public class OrderDialogFragment extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.goods_order_layout, container, false);
+        View v = inflater.inflate(R.layout.fragment_goods_order_layout, container, false);
         return v;
     }
 }

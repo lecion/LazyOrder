@@ -57,7 +57,9 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:background="#ff3bdfff"
+        >
         <ImageView
             android:id="@+id/iv_cart_logo"
             android:src="@drawable/ic_launcher"
@@ -67,12 +69,16 @@
             android:id="@+id/tv_ordered_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/iv_cart_logo"
+            android:layout_centerInParent="true"
             android:text="7份"
             />
         <TextView
             android:id="@+id/tv_ordered_sum"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/tv_ordered_count"
+            android:layout_centerInParent="true"
             android:text="￥49"
             />
         <Button
@@ -80,6 +86,7 @@
             android:id="@+id/btn_go_settle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
             android:layout_gravity="right"
             />
     </RelativeLayout>

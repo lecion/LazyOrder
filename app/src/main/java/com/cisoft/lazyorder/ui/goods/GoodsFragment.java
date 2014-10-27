@@ -25,7 +25,6 @@ import org.kymjs.aframe.ui.BindView;
 import org.kymjs.aframe.ui.ViewInject;
 import org.kymjs.aframe.ui.fragment.BaseFragment;
 import org.kymjs.aframe.ui.widget.KJListView;
-import org.kymjs.aframe.ui.widget.KJRefreshListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -167,7 +166,7 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
                 ViewHolder holder;
                 if (convertView == null) {
                     holder = new ViewHolder();
-                    convertView = LayoutInflater.from(getActivity()).inflate(R.layout.goods_list_cell, parent, false);
+                    convertView = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_goods_list_cell, parent, false);
                     holder.tvGoodsTitle = (TextView) convertView.findViewById(R.id.tv_goods_title);
                     holder.tvGoodsAddress = (TextView) convertView.findViewById(R.id.tv_address);
                     holder.tvGoodsType = (TextView) convertView.findViewById(R.id.tv_goods_type);
@@ -182,7 +181,7 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
                 holder.tvGoodsPrice.setText(String.valueOf(item.getCmPrice()));
                 holder.tvGoodsCount.setText(String.valueOf(item.getSalesNum()));
                 holder.tvGoodsType.setText(item.getCatName());
-                kjb.display(holder.ivGoodsThumb, item.getCmPicture(), holder.ivGoodsThumb.getWidth(), holder.ivGoodsThumb.getHeight());
+                //kjb.display(holder.ivGoodsThumb, item.getCmPicture(), holder.ivGoodsThumb.getWidth(), holder.ivGoodsThumb.getHeight());
                 return convertView;
             }
         };
@@ -201,6 +200,8 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
                 KJLoger.debug("aaaa");
             }
         });
+        //TODO debug注释，记得取消
+        /** /
         lvGoods.setOnRefreshListener(new KJRefreshListener() {
             @Override
             public void onRefresh() {
@@ -214,6 +215,7 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
                 goodsService.loadGoodsDataFromNet(shopId, ++page, size, goodsOrder);
             }
         });
+        /**/
     }
 
     @Override
@@ -260,7 +262,7 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
      */
     public void restoreState() {
         ///llLoadingGoodsListTip.setVisibility(View.GONE);
-        lvGoods.stopRefreshData();
+        //lvGoods.stopRefreshData();
     }
 
 
@@ -280,7 +282,7 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
     }
 
     public void setPullLoadEnable(boolean enable) {
-        lvGoods.setPullLoadEnable(enable);
+        //lvGoods.setPullLoadEnable(enable);
     }
 
     private class ViewHolder {
