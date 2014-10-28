@@ -125,7 +125,18 @@ public class GoodsCart {
     }
 
 
+    /**
+     * 获取指定商品总价
+     * @return
+     */
+    public double getGoodsPrice(int id) {
+        return getGoodsCount(id) * getGoods(id).getCmPrice();
+    }
 
+    /**
+     * 获取所有商品总价
+     * @return
+     */
     public double getTotalPrice() {
         double price = 0;
         Iterator iterator = goodsList.entrySet().iterator();
@@ -138,6 +149,13 @@ public class GoodsCart {
         return price;
     }
 
+    /**
+     * 清空购物车
+     */
+    public void clear() {
+        goodsList.clear();
+        goodsCount.clear();
+    }
 
 
 }
