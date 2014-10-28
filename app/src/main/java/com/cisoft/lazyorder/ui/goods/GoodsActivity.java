@@ -20,7 +20,10 @@ import android.widget.RadioButton;
 import android.widget.SearchView;
 import android.widget.TextView;
 
+import com.cisoft.lazyorder.AppContext;
 import com.cisoft.lazyorder.R;
+import com.cisoft.lazyorder.bean.goods.Goods;
+import com.cisoft.lazyorder.bean.goods.GoodsCart;
 import com.cisoft.lazyorder.bean.goods.GoodsCategory;
 import com.cisoft.lazyorder.core.goods.CategoryService;
 import com.cisoft.lazyorder.core.goods.GoodsService;
@@ -41,13 +44,24 @@ public class GoodsActivity extends BaseActivity implements GoodsFragment.OnFragm
 
     @BindView(id = R.id.fl_container)
     private FrameLayout flContainer;
+
     @BindView(id = R.id.rb_pop)
     private RadioButton rbPop;
+
     @BindView(id = R.id.rb_price)
     private RadioButton rbPrice;
 
     @BindView(id = R.id.btn_type)
     private Button btnType;
+
+    @BindView(id = R.id.tv_ordered_count)
+    private TextView tvOrderedCount;
+
+    @BindView(id = R.id.tv_ordered_price)
+    private TextView tvOrderedPrice;
+
+    @BindView(id = R.id.btn_go_settle)
+    private Button btnGoSettle;
 
     private ListView lvSwitchCategory;
 
@@ -64,6 +78,7 @@ public class GoodsActivity extends BaseActivity implements GoodsFragment.OnFragm
     private CategoryService categoryService;
 
     private GoodsService goodsService;
+
 
 
 
@@ -232,9 +247,27 @@ public class GoodsActivity extends BaseActivity implements GoodsFragment.OnFragm
         }
     }
 
+    /**
+     * 商品列表被点击时回调
+     * @param id
+     */
     @Override
     public void onGoodsItemClick(String id) {
-        ViewInject.toast(""+id);
+        //TODO 完成商品订单弹窗
+        OrderDialogFragment.newInstance().show(getFragmentManager(), "goods");
+    }
+
+    /**
+     * 加入购物车的回调
+     * @param goods
+     */
+    @Override
+    public void onAddToCart(Goods goods) {
+        AppContext app = (AppContext) getApplication();
+        GoodsCart goodsCart = app.getGoodsCart();
+        goodsCart.addGoods(goods);
+        tvOrderedCount.setText(goodsCart.getTotalCount() + "");
+        tvOrderedPrice.setText("￥" + goodsCart.getTotalPrice());
     }
 
     public int getShopId() {

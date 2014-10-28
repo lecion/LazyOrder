@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -17,14 +18,12 @@ import com.cisoft.lazyorder.R;
 import com.cisoft.lazyorder.bean.goods.Goods;
 import com.cisoft.lazyorder.core.goods.GoodsService;
 import com.cisoft.lazyorder.finals.ApiConstants;
+import com.cisoft.lazyorder.widget.MyListView;
 
-import org.kymjs.aframe.KJLoger;
 import org.kymjs.aframe.bitmap.KJBitmap;
 import org.kymjs.aframe.bitmap.KJBitmapConfig;
 import org.kymjs.aframe.ui.BindView;
-import org.kymjs.aframe.ui.ViewInject;
 import org.kymjs.aframe.ui.fragment.BaseFragment;
-import org.kymjs.aframe.ui.widget.KJListView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +61,7 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
      * The fragment's ListView/GridView.
      */
     @BindView(id = R.id.lv_goods)
-    private KJListView lvGoods;
+    private MyListView lvGoods;
 
     /**
      * The Adapter which will be used to populate the ListView/GridView with
@@ -171,14 +170,23 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
                     holder.tvGoodsAddress = (TextView) convertView.findViewById(R.id.tv_address);
                     holder.tvGoodsType = (TextView) convertView.findViewById(R.id.tv_goods_type);
                     holder.tvGoodsCount = (TextView) convertView.findViewById(R.id.tv_goods_count);
-                    holder.tvGoodsPrice = (TextView) convertView.findViewById(R.id.tv_goods_price);
+                    holder.btnGoodsPrice = (Button) convertView.findViewById(R.id.btn_goods_price);
                     holder.ivGoodsThumb = (ImageView) convertView.findViewById(R.id.iv_goods_thumb);
                     convertView.setTag(holder);
                 }
                 holder = (ViewHolder) convertView.getTag();
-                Goods item = (Goods) getItem(position);
+                final Goods item = (Goods) getItem(position);
                 holder.tvGoodsTitle.setText(item.getCmName());
-                holder.tvGoodsPrice.setText(String.valueOf(item.getCmPrice()));
+                holder.btnGoodsPrice.setText(String.valueOf(item.getCmPrice()));
+                holder.btnGoodsPrice.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //TODO 加入购物车
+                        if (mListener != null) {
+                            mListener.onAddToCart(item);
+                        }
+                    }
+                });
                 holder.tvGoodsCount.setText(String.valueOf(item.getSalesNum()));
                 holder.tvGoodsType.setText(item.getCatName());
                 //kjb.display(holder.ivGoodsThumb, item.getCmPicture(), holder.ivGoodsThumb.getWidth(), holder.ivGoodsThumb.getHeight());
@@ -193,21 +201,12 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
     private void initGoodsList() {
 
         lvGoods.setAdapter(mAdapter);
-        lvGoods.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ViewInject.toast("" + id);
-                KJLoger.debug("aaaa");
-            }
-        });
-        //TODO debug注释，记得取消
-        /** /
-        lvGoods.setOnRefreshListener(new KJRefreshListener() {
+        lvGoods.setOnItemClickListener(this);
+        lvGoods.setOnRefreshListener(new MyListView.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 page = 1;
                 goodsService.loadGoodsDataFromNet(shopId, page, size, goodsOrder);
-                //llLoadingGoodsListTip.setVisibility(View.VISIBLE);
             }
 
             @Override
@@ -215,7 +214,6 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
                 goodsService.loadGoodsDataFromNet(shopId, ++page, size, goodsOrder);
             }
         });
-        /**/
     }
 
     @Override
@@ -237,9 +235,15 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
     }
 
 
+    /**
+     * 商品列表的Item被点击时回调
+     * @param parent
+     * @param view
+     * @param position
+     * @param id
+     */
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        ViewInject.toast("" + id);
         if (null != mListener) {
             if (position >= goodsData.size()) {
                 return;
@@ -262,7 +266,7 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
      */
     public void restoreState() {
         ///llLoadingGoodsListTip.setVisibility(View.GONE);
-        //lvGoods.stopRefreshData();
+        lvGoods.stopRefreshData();
     }
 
 
@@ -279,10 +283,12 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
     public interface OnFragmentInteractionListener {
         public void onGoodsItemClick(String id);
 
+        public void onAddToCart(Goods goods);
+
     }
 
     public void setPullLoadEnable(boolean enable) {
-        //lvGoods.setPullLoadEnable(enable);
+        lvGoods.setPullLoadEnable(enable);
     }
 
     private class ViewHolder {
@@ -290,7 +296,7 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
         TextView tvGoodsAddress;
         TextView tvGoodsType;
         TextView tvGoodsCount;
-        TextView tvGoodsPrice;
+        Button btnGoodsPrice;
         ImageView ivGoodsThumb;
     }
 
