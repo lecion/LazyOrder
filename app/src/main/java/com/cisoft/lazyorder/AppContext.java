@@ -24,4 +24,5 @@ public class AppContext extends Application {
 //        CrashHandler.create(this);
         KJLoger.IS_DEBUG = AppConfig.IS_DEBUG;
     }
+
 }

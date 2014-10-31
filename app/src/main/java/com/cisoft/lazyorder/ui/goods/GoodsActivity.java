@@ -249,12 +249,12 @@ public class GoodsActivity extends BaseActivity implements GoodsFragment.OnFragm
 
     /**
      * 商品列表被点击时回调
-     * @param id
+     * @param goods
      */
     @Override
-    public void onGoodsItemClick(String id) {
+    public void onGoodsItemClick(Goods goods) {
         //TODO 完成商品订单弹窗
-        OrderDialogFragment.newInstance().show(getFragmentManager(), "goods");
+        OrderDialogFragment.newInstance(goods).show(getFragmentManager(), goods.getId()+"");
     }
 
     /**

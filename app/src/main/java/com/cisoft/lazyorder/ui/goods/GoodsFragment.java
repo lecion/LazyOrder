@@ -3,6 +3,7 @@ package com.cisoft.lazyorder.ui.goods;
 import android.app.Activity;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -116,10 +117,13 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
     public void setGoodsData(List<Goods> goodsData) {
         if (page == 1) {
             this.goodsData = goodsData;
+            Log.d("setGoodsData", goodsData + " this :" + this);
+        } else {
+            this.goodsData.addAll(goodsData);
         }
-        this.goodsData.addAll(goodsData);
+
         mAdapter.notifyDataSetChanged();
-        //Log.d("setGoodsData", goodsOrder + " this :" + this);
+
     }
 
     @Override
@@ -248,7 +252,7 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
             if (position >= goodsData.size()) {
                 return;
             }
-            mListener.onGoodsItemClick(String.valueOf(goodsData.get(position).getId()));
+            mListener.onGoodsItemClick(goodsData.get(position));
         }
     }
 
@@ -281,7 +285,7 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        public void onGoodsItemClick(String id);
+        public void onGoodsItemClick(Goods goods);
 
         public void onAddToCart(Goods goods);
 

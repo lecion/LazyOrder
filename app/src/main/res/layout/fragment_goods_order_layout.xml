@@ -1,11 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="vertical" android:layout_width="350dp"
     android:layout_height="match_parent">
+    <ImageView
+        android:id="@+id/iv_goods_order"
+        android:layout_width="match_parent"
+        android:layout_height="90dp" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="加入购物车"
+        android:text="用户评论"
+        />
+    <ListView
+        android:id="@+id/lv_goods_comment"
+        android:layout_width="match_parent"
+        android:layout_height="240dp">
+    </ListView>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+        <TextView
+            android:id="@+id/tv_select_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="请选择订单数量"
+            />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_alignParentRight="true"
+            >
+            <Button
+                android:id="@+id/btn_dec"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="-"
+                />
+
+            <EditText
+                android:id="@+id/et_order_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="33"
+                android:maxLength="5"
+                />
+            <Button
+                android:id="@+id/btn_inc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+"
+                />
+            </LinearLayout>
+        </RelativeLayout>
+    
+    <Button
+        android:id="@+id/btn_ensure_order"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:text="确认点餐"
+        android:background="#ffc50000"
+        android:textColor="@android:color/white"
         />
 </LinearLayout>

@@ -6,12 +6,13 @@ import com.cisoft.lazyorder.finals.ApiConstants;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.Iterator;
 
 /**
  * Created by Lecion on 10/19/14.
  */
-public class Goods extends AbsBean{
+public class Goods extends AbsBean implements Serializable{
     private int id;
     private String cmName;
     private String cmPicture;

@@ -2,6 +2,7 @@ package com.cisoft.lazyorder.core.goods;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 
 import com.cisoft.lazyorder.R;
 import com.cisoft.lazyorder.bean.goods.Goods;
@@ -84,6 +85,7 @@ public class GoodsService extends AbsService {
             @Override
             public void onFailure(int stateCode) {
                 KJLoger.debug("loadGoodsDataFromNet " + stateCode);
+                Log.d("onFailure", "loadGoodsDataFromNet " + stateCode);
                 ViewInject.toast(getResponseStateInfo(stateCode));
                 f.showNoValueTip();
             }
