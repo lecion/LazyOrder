@@ -142,6 +142,7 @@ public class GoodsService extends AbsService {
 
     }
 
+
     @Override
     public String getResponseStateInfo(int stateCode) {
         String stateInfo = "";

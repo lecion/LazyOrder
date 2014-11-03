@@ -253,8 +253,9 @@ public class GoodsActivity extends BaseActivity implements GoodsFragment.OnFragm
      */
     @Override
     public void onGoodsItemClick(Goods goods) {
-        //TODO 完成商品订单弹窗
-        OrderDialogFragment.newInstance(goods).show(getFragmentManager(), goods.getId()+"");
+        //TODO 完成展开评论
+        //OrderDialogFragment.newInstance(goods).show(getFragmentManager(), goods.getId()+
+
     }
 
     /**

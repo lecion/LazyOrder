@@ -1,95 +1,164 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:paddingTop="10dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
     android:paddingBottom="10dp"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
-    android:layout_height="80dp"
-    android:descendantFocusability="blocksDescendants"
-    >
+    android:paddingTop="10dp">
 
-    <ImageView
-        android:id="@+id/iv_goods_thumb"
-        android:layout_width="74dp"
-        android:layout_height="53dp"
-        android:layout_centerVertical="true"
-        android:background="#ff959595" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:descendantFocusability="blocksDescendants">
 
-    <TextView
-        android:id="@+id/tv_goods_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="麻婆豆腐"
-        android:layout_alignTop="@id/iv_goods_thumb"
-        android:layout_toRightOf="@id/iv_goods_thumb"
-        android:layout_marginLeft="17dp"
-        android:textColor="@color/text_gray_color"
-        android:textSize="@dimen/text_title_size"
-        />
-    <TextView
-        android:id="@+id/tv_address"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="中心食堂一楼"
-        android:textSize="@dimen/text_content_size"
-        android:textColor="@color/text_light_gray_color"
-        android:layout_centerInParent="true"
-        android:layout_toRightOf="@id/iv_goods_thumb"
-        android:layout_marginLeft="17dp"
-        />
+        <ImageView
+            android:id="@+id/iv_goods_thumb"
+            android:layout_width="74dp"
+            android:layout_height="53dp"
+            android:layout_centerVertical="true"
+            android:background="#ff959595" />
 
-    <TextView
-        android:id="@+id/tv_goods_type"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="素菜"
-        android:textColor="@color/text_light_gray_color"
-        android:textSize="@dimen/text_content_size"
-        android:layout_toRightOf="@id/tv_address"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="34dp"
-        />
+        <TextView
+            android:id="@+id/tv_goods_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/iv_goods_thumb"
+            android:layout_marginLeft="17dp"
+            android:layout_toRightOf="@id/iv_goods_thumb"
+            android:text="麻婆豆腐"
+            android:textColor="@color/text_gray_color"
+            android:textSize="@dimen/text_title_size" />
 
-    <TextView
-        android:id="@+id/tv_goods_count_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="今日已订"
-        android:textColor="@color/text_light_gray_color"
-        android:textSize="@dimen/text_content_size"
-        android:layout_toRightOf="@id/iv_goods_thumb"
-        android:layout_marginLeft="17dp"
-        android:layout_alignBottom="@id/iv_goods_thumb"
-        />
-    <TextView
-        android:id="@+id/tv_goods_count"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="999份"
-        android:textColor="@color/text_light_gray_color"
-        android:textSize="@dimen/text_content_size"
-        android:layout_toRightOf="@id/tv_goods_count_title"
-        android:layout_marginLeft="17dp"
-        android:layout_alignBottom="@id/iv_goods_thumb"
-        />
-    
-    <Button
-        android:id="@+id/btn_goods_price"
-        android:layout_width="60dp"
-        android:layout_height="26dp"
-        android:text="￥2.5"
-        android:textSize="@dimen/text_title_size"
-        android:textColor="@android:color/white"
-        android:shadowColor="@color/price_shadow_color"
-        android:shadowDx="2"
-        android:shadowDy="2"
-        android:shadowRadius="2"
-        android:gravity="center"
-        android:background="@drawable/goods_price_shadow_bg"
-        android:layout_centerInParent="true"
-        android:layout_alignParentRight="true"
-        />
-</RelativeLayout>
+        <TextView
+            android:id="@+id/tv_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="17dp"
+            android:layout_toRightOf="@id/iv_goods_thumb"
+            android:text="中心食堂一楼"
+            android:textColor="@color/text_light_gray_color"
+            android:textSize="@dimen/text_content_size" />
+
+        <TextView
+            android:id="@+id/tv_goods_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="34dp"
+            android:layout_toRightOf="@id/tv_address"
+            android:text="素菜"
+            android:textColor="@color/text_light_gray_color"
+            android:textSize="@dimen/text_content_size" />
+
+        <TextView
+            android:id="@+id/tv_goods_count_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/iv_goods_thumb"
+            android:layout_marginLeft="17dp"
+            android:layout_toRightOf="@id/iv_goods_thumb"
+            android:text="今日已订"
+            android:textColor="@color/text_light_gray_color"
+            android:textSize="@dimen/text_content_size" />
+
+        <TextView
+            android:id="@+id/tv_goods_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/iv_goods_thumb"
+            android:layout_marginLeft="17dp"
+            android:layout_toRightOf="@id/tv_goods_count_title"
+            android:text="999份"
+            android:textColor="@color/text_light_gray_color"
+            android:textSize="@dimen/text_content_size" />
+
+        <Button
+            android:id="@+id/btn_goods_price"
+            android:layout_width="60dp"
+            android:layout_height="26dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:background="@drawable/goods_price_shadow_bg"
+            android:gravity="center"
+            android:shadowColor="@color/price_shadow_color"
+            android:shadowDx="2"
+            android:shadowDy="2"
+            android:shadowRadius="2"
+            android:text="￥2.5"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/text_title_size" />
+    </RelativeLayout>
+    <!--伸展的view-->
+    <LinearLayout
+        android:id="@+id/ll_expand"
+        android:layout_width="350dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="#fff2f2f2"
+        android:visibility="gone"
+        android:descendantFocusability="blocksDescendants"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="用户评论" />
+
+        <com.cisoft.lazyorder.widget.MyListView
+            android:id="@+id/lv_comment"
+            android:layout_width="match_parent"
+            android:layout_height="120dp">
+
+        </com.cisoft.lazyorder.widget.MyListView>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+
+            <TextView
+                android:id="@+id/tv_select_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="请选择订单数量" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btn_dec"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="-" />
+
+                <EditText
+                    android:id="@+id/et_order_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLength="5"
+                    android:text="33" />
+
+                <Button
+                    android:id="@+id/btn_inc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="+" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/btn_ensure_order"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:background="#ffc50000"
+            android:text="添加到购物车"
+            android:textColor="@android:color/white" />
+
+    </LinearLayout>
+</LinearLayout>

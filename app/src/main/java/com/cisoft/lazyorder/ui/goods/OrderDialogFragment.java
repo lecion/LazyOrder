@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
 
 import com.cisoft.lazyorder.R;
 import com.cisoft.lazyorder.bean.goods.Goods;
@@ -26,8 +25,6 @@ public class OrderDialogFragment extends DialogFragment {
     @BindView(id = R.id.iv_goods_order)
     private ImageView ivGoodsOrder;
 
-    @BindView(id = R.id.lv_goods_comment)
-    private ListView lvComment;
 
     @BindView(id = R.id.btn_dec)
     private Button btnDec;
