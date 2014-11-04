@@ -20,6 +20,7 @@ public class Goods extends AbsBean implements Serializable{
     private String catName;
     private int salesNum;
     private double cmPrice;
+    private int orderNum;
 
     public Goods(int salesNum, int id, String cmName, String cmPicture, int cateId, String catName, double cmPrice) {
         this.salesNum = salesNum;
@@ -29,9 +30,20 @@ public class Goods extends AbsBean implements Serializable{
         this.cateId = cateId;
         this.catName = catName;
         this.cmPrice = cmPrice;
+        this.orderNum = 0;
+    }
+
+    public int getOrderNum() {
+        return orderNum;
+    }
+
+    public void setOrderNum(int orderNum) {
+        this.orderNum = orderNum;
     }
 
     public Goods(JSONObject obj) {
+        this.orderNum = 0;
+
         this.parse(obj);
     }
 

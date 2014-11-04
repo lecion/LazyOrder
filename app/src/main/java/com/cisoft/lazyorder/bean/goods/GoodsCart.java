@@ -1,5 +1,6 @@
 package com.cisoft.lazyorder.bean.goods;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -15,7 +16,7 @@ public class GoodsCart {
     /**
      * 商品对应的数量
      */
-    private HashMap<Integer, Integer> goodsCount;
+//    private HashMap<Integer, Integer> goodsCount;
 
     /**
      * 购物车中的商品列表
@@ -24,7 +25,7 @@ public class GoodsCart {
 
     private GoodsCart() {
         goodsList = new HashMap<Integer, Goods>();
-        goodsCount = new HashMap<Integer, Integer>();
+//        goodsCount = new HashMap<Integer, Integer>();
     }
 
     public static GoodsCart getInstance() {
@@ -43,11 +44,14 @@ public class GoodsCart {
     public void addGoods(Goods g) {
         //不存在商品则添加，存在则数目自增
         if (!isContains(g)) {
+            g.setOrderNum(1);
             goodsList.put(g.getId(), g);
-            goodsCount.put(g.getId(), 1);
+//            goodsCount.put(g.getId(), 1);
         } else {
-            int count = goodsCount.get(g.getId());
-            goodsCount.put(g.getId(), ++count);
+            g.setOrderNum(g.getOrderNum() + 1);
+            goodsList.put(g.getId(), g);
+//            int count = goodsCount.get(g.getId());
+//            goodsCount.put(g.getId(), ++count);
         }
     }
 
@@ -59,16 +63,19 @@ public class GoodsCart {
     public void addGoods(Goods g, int num) {
         //不存在商品则添加，存在则数目自增
         if (!isContains(g)) {
+            g.setOrderNum(num);
             goodsList.put(g.getId(), g);
-            goodsCount.put(g.getId(), num);
+//            goodsCount.put(g.getId(), num);
         } else {
-            int count = goodsCount.get(g.getId());
-            goodsCount.put(g.getId(), count + num);
+//            int count = goodsCount.get(g.getId());
+//            goodsCount.put(g.getId(), count + num);
+            g.setOrderNum(g.getOrderNum() + num);
+            goodsList.put(g.getId(), g);
         }
     }
 
     /**
-     * 获取商品
+     * 根据Id获取商品
      * @param id
      * @return
      */
@@ -76,41 +83,61 @@ public class GoodsCart {
         return goodsList.get(id);
     }
 
-
+    /**
+     * 获取商品
+     * @param g
+     * @return
+     */
     public Goods getGoods(Goods g) {
         return getGoods(g.getId());
     }
 
     /**
-     * 删除商品
+     * 根据Id减少商品数量
      * @param id
      * @return
      */
-    public void delGoods(Integer id) {
-        if (goodsList.containsKey(id)) {
-            goodsCount.put(id, goodsCount.get(id) - 1);
+    public void decGoods(Integer id) {
+        if (isContains(id)) {
+            Goods g = goodsList.get(id);
+            int count = g.getOrderNum();
+            if (count > 1) {
+                g.setOrderNum(count - 1);
+                goodsList.put(id, g);
+            }
+            if (count <= 1) {
+                goodsList.remove(id);
+            }
         }
-        if (goodsCount.get(id) <= 0) {
-            goodsList.remove(id);
-        }
+
     }
 
+    /**
+     * 减少商品数量
+     * @param g
+     */
+    public void decGoods(Goods g) {
+        decGoods(g.getId());
+    }
+
+    /**
+     * 删除同类商品
+     * @param g
+     */
     public void delGoods(Goods g) {
         delGoods(g.getId());
     }
 
     /**
-     * 是否存在商品
-     * @param goods
-     * @return
+     * 根据Id删除同类商品
+     * @param id
      */
-    public boolean isContains(Goods goods) {
-        return goodsList.containsKey(goods.getId()) || goodsList.containsValue(goods);
+    public void delGoods(Integer id) {
+        if (isContains(id)) {
+            this.goodsList.remove(id);
+        }
     }
 
-    public boolean isContains(int id) {
-        return isContains(Integer.valueOf(id));
-    }
 
     /**
      * 获取指定商品的数量
@@ -118,7 +145,7 @@ public class GoodsCart {
      * @return
      */
     public int getGoodsCount(Integer id) {
-        return goodsCount.get(id);
+        return goodsList.get(id).getOrderNum();
     }
 
     public int getGoodsCount(Goods goods) {
@@ -131,11 +158,11 @@ public class GoodsCart {
      */
     public int getTotalCount() {
         int total = 0;
-        Iterator iterator = goodsCount.entrySet().iterator();
+        Iterator iterator = goodsList.entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry entry = (Map.Entry) iterator.next();
-            Integer count = (Integer) entry.getValue();
-            total += count;
+            Goods g = (Goods) entry.getValue();
+            total += g.getOrderNum();
         }
         return total;
     }
@@ -158,11 +185,26 @@ public class GoodsCart {
         Iterator iterator = goodsList.entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry entry = (Map.Entry) iterator.next();
-            int count = getGoodsCount((Integer) entry.getKey());
+//            int count = getGoodsCount((Integer) entry.getKey());
             Goods g = (Goods) entry.getValue();
-            price += count * g.getCmPrice();
+            price += g.getOrderNum() * g.getCmPrice();
         }
         return price;
+    }
+
+    /**
+     * 获取所有商品
+     * @return
+     */
+    public ArrayList<Goods> getAllGoods() {
+        ArrayList<Goods> goods = new ArrayList<Goods>();
+        Iterator iterator = goodsList.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry entry = (Map.Entry) iterator.next();
+            Goods g = (Goods) entry.getValue();
+            goods.add(g);
+        }
+        return goods;
     }
 
     /**
@@ -170,7 +212,24 @@ public class GoodsCart {
      */
     public void clear() {
         goodsList.clear();
-        goodsCount.clear();
+    }
+
+    /**
+     * 是否存在商品
+     * @param goods
+     * @return
+     */
+    public boolean isContains(Goods goods) {
+        return goodsList.containsValue(goods);
+    }
+
+    /**
+     * 是否存在商品
+     * @param id
+     * @return
+     */
+    public boolean isContains(int id) {
+        return goodsList.containsKey(id);
     }
 
 
