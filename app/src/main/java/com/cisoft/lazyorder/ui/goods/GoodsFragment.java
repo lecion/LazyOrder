@@ -51,8 +51,7 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
      */
     private List<Comment> commentData;
 
-//    @BindView(id = R.id.llLoadingGoodsListTip)
-//    private LinearLayout llLoadingGoodsListTip;
+
     @BindView(id = R.id.llShowNoValueTip)
     private LinearLayout llShowNoValueTip;
 
@@ -76,17 +75,9 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
 
     private boolean isExpand = false;
 
-
-    /**
-     * The fragment's ListView/GridView.
-     */
     @BindView(id = R.id.lv_goods)
     private MyListView lvGoods;
 
-    /**
-     * The Adapter which will be used to populate the ListView/GridView with
-     * Views.
-     */
     private BaseAdapter mAdapter;
     private GoodsService goodsService;
     private GoodsCommentService commentService;
@@ -198,7 +189,7 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
 //                Log.d("getView", "mLastVisiblePosition => " + mLastVisiblePosition + "  position=> " + position);
-                //TODO 展开view的复用问题：商品数量选择控件被复用
+
                 final Goods item = (Goods) getItem(position);
                 ViewHolder holder;
                 if (convertView == null) {
@@ -250,6 +241,8 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
                 @Override
                 public void onClick(View v) {
                     mListener.onAddToCart(goods, orderNumView.getNum());
+                    //Did 展开view的复用问题：商品数量选择控件被复用=>暂时先这样解决
+                    orderNumView.setNum(1);
                 }
             }
         };
