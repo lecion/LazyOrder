@@ -52,6 +52,22 @@ public class GoodsCart {
     }
 
     /**
+     * 添加指定数量的商品
+     * @param g
+     * @param num
+     */
+    public void addGoods(Goods g, int num) {
+        //不存在商品则添加，存在则数目自增
+        if (!isContains(g)) {
+            goodsList.put(g.getId(), g);
+            goodsCount.put(g.getId(), num);
+        } else {
+            int count = goodsCount.get(g.getId());
+            goodsCount.put(g.getId(), count + num);
+        }
+    }
+
+    /**
      * 获取商品
      * @param id
      * @return

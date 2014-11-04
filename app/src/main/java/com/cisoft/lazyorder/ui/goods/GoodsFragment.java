@@ -28,7 +28,6 @@ import com.cisoft.lazyorder.widget.OrderNumView;
 import org.kymjs.aframe.bitmap.KJBitmap;
 import org.kymjs.aframe.bitmap.KJBitmapConfig;
 import org.kymjs.aframe.ui.BindView;
-import org.kymjs.aframe.ui.ViewInject;
 import org.kymjs.aframe.ui.fragment.BaseFragment;
 
 import java.util.ArrayList;
@@ -199,7 +198,7 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
 //                Log.d("getView", "mLastVisiblePosition => " + mLastVisiblePosition + "  position=> " + position);
-
+                //TODO 展开view的复用问题：商品数量选择控件被复用
                 final Goods item = (Goods) getItem(position);
                 ViewHolder holder;
                 if (convertView == null) {
@@ -233,25 +232,24 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
 
                 /*以下是展开view*/
                 holder.llExpand.setVisibility(View.GONE);
-                //TODO 展开view的加入购物车
-
-                holder.btnAddToCart.setOnClickListener(new AddToCartListener(holder.orderNumView));
+                holder.btnAddToCart.setOnClickListener(new AddToCartListener(holder.orderNumView, item));
                 if (mLastVisiblePosition == position + 1 && isExpand) {
                     holder.llExpand.setVisibility(View.VISIBLE);
                 }
-
                 return convertView;
             }
 
             class AddToCartListener implements View.OnClickListener {
                 OrderNumView orderNumView;
-                public AddToCartListener(OrderNumView orderNumView) {
+                Goods goods;
+                public AddToCartListener(OrderNumView orderNumView, Goods item) {
                     this.orderNumView = orderNumView;
+                    this.goods = item;
                 }
 
                 @Override
                 public void onClick(View v) {
-                    ViewInject.toast(orderNumView.getNum()+"");
+                    mListener.onAddToCart(goods, orderNumView.getNum());
                 }
             }
         };

@@ -261,9 +261,18 @@ public class GoodsActivity extends BaseActivity implements GoodsFragment.OnFragm
         tvOrderedPrice.setText("￥" + goodsCart.getTotalPrice());
     }
 
+    /**
+     * 加入购物车回调
+     * @param goods
+     * @param count
+     */
     @Override
     public void onAddToCart(Goods goods, int count) {
-
+        AppContext app = (AppContext) getApplication();
+        GoodsCart goodsCart = app.getGoodsCart();
+        goodsCart.addGoods(goods, count);
+        tvOrderedCount.setText(goodsCart.getTotalCount() + "");
+        tvOrderedPrice.setText("￥" + goodsCart.getTotalPrice());
     }
 
     public int getShopId() {
