@@ -23,10 +23,12 @@ import com.cisoft.lazyorder.core.goods.GoodsCommentService;
 import com.cisoft.lazyorder.core.goods.GoodsService;
 import com.cisoft.lazyorder.finals.ApiConstants;
 import com.cisoft.lazyorder.widget.MyListView;
+import com.cisoft.lazyorder.widget.OrderNumView;
 
 import org.kymjs.aframe.bitmap.KJBitmap;
 import org.kymjs.aframe.bitmap.KJBitmapConfig;
 import org.kymjs.aframe.ui.BindView;
+import org.kymjs.aframe.ui.ViewInject;
 import org.kymjs.aframe.ui.fragment.BaseFragment;
 
 import java.util.ArrayList;
@@ -196,6 +198,9 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
 
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
+//                Log.d("getView", "mLastVisiblePosition => " + mLastVisiblePosition + "  position=> " + position);
+
+                final Goods item = (Goods) getItem(position);
                 ViewHolder holder;
                 if (convertView == null) {
                     holder = new ViewHolder();
@@ -207,16 +212,16 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
                     holder.btnGoodsPrice = (Button) convertView.findViewById(R.id.btn_goods_price);
                     holder.ivGoodsThumb = (ImageView) convertView.findViewById(R.id.iv_goods_thumb);
                     holder.llExpand = (LinearLayout) convertView.findViewById(R.id.ll_expand);
+                    holder.orderNumView = (OrderNumView) convertView.findViewById(R.id.order_num_view);
+                    holder.btnAddToCart = (Button) convertView.findViewById(R.id.btn_add_to_cart);
                     convertView.setTag(holder);
                 }
                 holder = (ViewHolder) convertView.getTag();
-                final Goods item = (Goods) getItem(position);
                 holder.tvGoodsTitle.setText(item.getCmName());
                 holder.btnGoodsPrice.setText(String.valueOf(item.getCmPrice()));
                 holder.btnGoodsPrice.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        //TODO 加入购物车
                         if (mListener != null) {
                             mListener.onAddToCart(item);
                         }
@@ -225,12 +230,29 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
                 holder.tvGoodsCount.setText(String.valueOf(item.getSalesNum()));
                 holder.tvGoodsType.setText(item.getCatName());
                 kjb.display(holder.ivGoodsThumb, item.getCmPicture(), holder.ivGoodsThumb.getWidth(), holder.ivGoodsThumb.getHeight());
+
+                /*以下是展开view*/
                 holder.llExpand.setVisibility(View.GONE);
-                Log.d("getView", "mLastVisiblePosition => " + mLastVisiblePosition + "  position=> " + position);
-                if (mLastVisiblePosition == position + 1) {
+                //TODO 展开view的加入购物车
+
+                holder.btnAddToCart.setOnClickListener(new AddToCartListener(holder.orderNumView));
+                if (mLastVisiblePosition == position + 1 && isExpand) {
                     holder.llExpand.setVisibility(View.VISIBLE);
                 }
+
                 return convertView;
+            }
+
+            class AddToCartListener implements View.OnClickListener {
+                OrderNumView orderNumView;
+                public AddToCartListener(OrderNumView orderNumView) {
+                    this.orderNumView = orderNumView;
+                }
+
+                @Override
+                public void onClick(View v) {
+                    ViewInject.toast(orderNumView.getNum()+"");
+                }
             }
         };
     }
@@ -369,19 +391,13 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
 
 
     /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
+     * 与Activity交互接口
      */
     public interface OnFragmentInteractionListener {
-        public void onGoodsItemClick(Goods goods);
 
         public void onAddToCart(Goods goods);
+
+        public void onAddToCart(Goods goods, int count);
 
     }
 
@@ -396,8 +412,11 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
         TextView tvGoodsCount;
         Button btnGoodsPrice;
         ImageView ivGoodsThumb;
+        /*以下是展开的view的控件*/
         LinearLayout llExpand;
         ListView lvGoodsComment;
+        OrderNumView orderNumView;
+        Button btnAddToCart;
 
     }
 

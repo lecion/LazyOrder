@@ -90,7 +90,6 @@ public class SearchActivity extends BaseActivity{
 
 
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }

@@ -247,16 +247,6 @@ public class GoodsActivity extends BaseActivity implements GoodsFragment.OnFragm
         }
     }
 
-    /**
-     * 商品列表被点击时回调
-     * @param goods
-     */
-    @Override
-    public void onGoodsItemClick(Goods goods) {
-        //TODO 完成展开评论
-        //OrderDialogFragment.newInstance(goods).show(getFragmentManager(), goods.getId()+
-
-    }
 
     /**
      * 加入购物车的回调
@@ -269,6 +259,11 @@ public class GoodsActivity extends BaseActivity implements GoodsFragment.OnFragm
         goodsCart.addGoods(goods);
         tvOrderedCount.setText(goodsCart.getTotalCount() + "");
         tvOrderedPrice.setText("￥" + goodsCart.getTotalPrice());
+    }
+
+    @Override
+    public void onAddToCart(Goods goods, int count) {
+
     }
 
     public int getShopId() {

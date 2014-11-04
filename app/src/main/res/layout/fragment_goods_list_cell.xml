@@ -97,11 +97,10 @@
         android:id="@+id/ll_expand"
         android:layout_width="350dp"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:background="#fff2f2f2"
-        android:visibility="gone"
         android:descendantFocusability="blocksDescendants"
-        >
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <TextView
             android:layout_width="wrap_content"
@@ -123,37 +122,21 @@
                 android:id="@+id/tv_select_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
                 android:text="请选择订单数量" />
 
-            <LinearLayout
+            <com.cisoft.lazyorder.widget.OrderNumView
+                android:id="@+id/order_num_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:orientation="horizontal">
+                android:layout_toRightOf="@id/tv_select_count"
+                android:layout_centerVertical="true">
 
-                <Button
-                    android:id="@+id/btn_dec"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="-" />
-
-                <EditText
-                    android:id="@+id/et_order_count"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:maxLength="5"
-                    android:text="33" />
-
-                <Button
-                    android:id="@+id/btn_inc"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="+" />
-            </LinearLayout>
+            </com.cisoft.lazyorder.widget.OrderNumView>
         </RelativeLayout>
 
         <Button
-            android:id="@+id/btn_ensure_order"
+            android:id="@+id/btn_add_to_cart"
             android:layout_width="match_parent"
             android:layout_height="42dp"
             android:background="#ffc50000"

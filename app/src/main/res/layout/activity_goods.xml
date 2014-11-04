@@ -71,7 +71,7 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/iv_cart_logo"
             android:layout_centerInParent="true"
-            android:text="7份"
+            android:text="0份"
             />
         <TextView
             android:id="@+id/tv_ordered_price"
@@ -79,7 +79,7 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/tv_ordered_count"
             android:layout_centerInParent="true"
-            android:text="￥49"
+            android:text="￥0"
             />
         <Button
             android:text="@string/text_go_to_settle"
