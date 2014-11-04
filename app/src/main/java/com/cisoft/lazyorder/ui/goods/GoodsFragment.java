@@ -331,8 +331,9 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
             }
             mLastVisiblePosition = position;
 
-            //TODO 点击后获得当前item的listview，完成listview的评论数据显示
+            //TODO 解决嵌套Listview的滑动监听
             MyListView lvComment = (MyListView) view.findViewById(R.id.lv_comment);
+            //lvComment.getParent().requestDisallowInterceptTouchEvent(true);
             Log.d("onItemClick", lvComment +"");
             loadComment(lvComment, position);
         }
