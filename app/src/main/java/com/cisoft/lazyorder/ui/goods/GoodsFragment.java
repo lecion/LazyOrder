@@ -333,7 +333,7 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
 
             //TODO 解决嵌套Listview的滑动监听
             MyListView lvComment = (MyListView) view.findViewById(R.id.lv_comment);
-            //lvComment.getParent().requestDisallowInterceptTouchEvent(true);
+            lvComment.getParent().requestDisallowInterceptTouchEvent(true);
             Log.d("onItemClick", lvComment +"");
             loadComment(lvComment, position);
         }
@@ -354,6 +354,7 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
                 List<Comment> comments = data;
                 CommentAdapter adapter = new CommentAdapter(getActivity(), comments);
                 lvComment.setAdapter(adapter);
+                //Utility.setListViewHeightBasedOnChildren(lvComment);
             }
         });
     }
