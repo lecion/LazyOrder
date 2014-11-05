@@ -11,21 +11,21 @@
         android:orientation="horizontal">
         <ImageButton
             android:id="@+id/ibSubNum"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:background="@drawable/sub_button_bg"/>
         <TextView
             android:id="@+id/tvInputNum"
-            android:layout_width="40dp"
-            android:layout_height="match_parent"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:gravity="center"
             android:textColor="#626262"
             android:textSize="18sp"
             android:background="@drawable/order_num_edit_bg"/>
         <ImageButton
             android:id="@+id/ibAddNum"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:background="@drawable/add_button"/>
     </LinearLayout>
 </LinearLayout>

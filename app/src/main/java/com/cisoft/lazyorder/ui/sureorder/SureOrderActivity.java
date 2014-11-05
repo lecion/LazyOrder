@@ -1,20 +1,21 @@
 package com.cisoft.lazyorder.ui.sureorder;
 
-import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.ImageView;
+import android.content.Intent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.TextView;
 import com.cisoft.lazyorder.R;
-import com.cisoft.lazyorder.bean.SureOrder.Order;
-import com.cisoft.lazyorder.widget.OrderNumView;
+import com.cisoft.lazyorder.bean.goods.Goods;
+import com.cisoft.lazyorder.bean.goods.GoodsCart;
+import com.cisoft.lazyorder.ui.search.SearchActivity;
+import com.cisoft.lazyorder.ui.shop.ShopActivity;
 
+import org.kymjs.aframe.KJLoger;
 import org.kymjs.aframe.ui.BindView;
 import org.kymjs.aframe.ui.activity.BaseActivity;
-import java.util.ArrayList;
 import java.util.List;
 
 public class SureOrderActivity extends BaseActivity {
@@ -25,7 +26,7 @@ public class SureOrderActivity extends BaseActivity {
     @BindView(id = R.id.lvOrderList)
     private ListView lvOrderList;
 
-    private List<Order> orderListData = new ArrayList<Order>();
+    private List<Goods> orderListData;
     private OrderListAdapter orderListAdapter;
 
     public SureOrderActivity() {
@@ -39,14 +40,7 @@ public class SureOrderActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        Order order = null;
-        for (int i = 0; i < 10; i++) {
-            order = new Order();
-            order.setGoodName("食物" + i);
-            order.setOrderTotal(2);
-            order.setGoodPrice(9.5);
-            orderListData.add(order);
-        }
+        orderListData = GoodsCart.getInstance().getAllGoods();
     }
 
     @Override
@@ -68,70 +62,23 @@ public class SureOrderActivity extends BaseActivity {
         lvOrderList.setAdapter(orderListAdapter);
     }
 
-    private class OrderListAdapter extends BaseAdapter{
 
-        private Context context;
-        private List<Order> data;
-
-        public OrderListAdapter(Context context, List<Order> data) {
-            this.context = context;
-            this.data = data;
-        }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.sure_order, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
 
 
-        public void addData(List<Order> addData) {
-            data.addAll(addData);
-        }
-
-        public void clear() {
-            data.clear();
-        }
-
-        public void refresh() {
-            notifyDataSetChanged();
-        }
-
-        @Override
-        public int getCount() {
-            return data.size();
-        }
-
-        @Override
-        public Order getItem(int position) {
-            return data.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup viewGroup) {
-            ViewHolder viewHolder = null;
-            if (convertView == null) {
-                convertView = LayoutInflater.from(context).inflate(R.layout.sure_order_list_cell, null);
-                viewHolder = new ViewHolder();
-                viewHolder.tvGoodName = (TextView) convertView.findViewById(R.id.tvGoodName);
-                viewHolder.onvGoodTotal = (OrderNumView) convertView.findViewById(R.id.onvGoodTotal);
-                viewHolder.tvGoodPrice = (TextView) convertView.findViewById(R.id.tvGoodPrice);
-                convertView.setTag(viewHolder);
-            } else {
-                viewHolder = (ViewHolder) convertView.getTag();
-            }
-
-            Order order = data.get(position);
-            viewHolder.tvGoodName.setText(order.getGoodName());
-            viewHolder.tvGoodPrice.setText(String.valueOf(order.getGoodPrice()));
-            viewHolder.onvGoodTotal.setNum(order.getOrderTotal());
-
-            return convertView;
-        }
-
-        public class ViewHolder{
-            public TextView tvGoodName;
-            public OrderNumView onvGoodTotal;
-            public TextView tvGoodPrice;
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 }

@@ -3,7 +3,6 @@ package com.cisoft.lazyorder.ui.shop;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,7 +66,7 @@ public class ShopListViewAdapter extends BaseAdapter {
         ViewHolder holder = null;
 
         if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.shop_list_cell, null);
+            convertView = LayoutInflater.from(context).inflate(R.layout.activity_shop_list_cell, null);
             holder = new ViewHolder();
             holder.tvShopName = (TextView) convertView.findViewById(R.id.tvShopName);
             holder.tvOpenTime = (TextView) convertView.findViewById(R.id.tvOpenTime);
