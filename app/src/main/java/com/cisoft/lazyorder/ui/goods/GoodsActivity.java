@@ -30,6 +30,7 @@ import com.cisoft.lazyorder.core.goods.GoodsService;
 import com.cisoft.lazyorder.finals.ApiConstants;
 import com.cisoft.lazyorder.ui.search.SearchActivity;
 import com.cisoft.lazyorder.ui.shop.ShopActivity;
+import com.cisoft.lazyorder.ui.sureorder.SureOrderActivity;
 
 import org.kymjs.aframe.KJLoger;
 import org.kymjs.aframe.ui.BindView;
@@ -123,6 +124,7 @@ public class GoodsActivity extends BaseActivity implements GoodsFragment.OnFragm
         rbPop.setOnClickListener(this);
         rbPrice.setOnClickListener(this);
         btnType.setOnClickListener(this);
+        btnGoSettle.setOnClickListener(this);
     }
 
     private void initPopupWindow() {
@@ -197,6 +199,15 @@ public class GoodsActivity extends BaseActivity implements GoodsFragment.OnFragm
             case R.id.btn_type:
                 popupWindow.showAsDropDown(v, DensityUtils.dip2px(this, -60), DensityUtils.dip2px(this, -10));
                 break;
+
+            case R.id.btn_go_settle:
+                AppContext app = (AppContext) getApplication();
+                GoodsCart goodsCart = app.getGoodsCart();
+                if (goodsCart.getTotalCount() > 0) {
+                    skipActivity(this, SureOrderActivity.class);
+                } else {
+                    ViewInject.toast("请先选择商品加入购物车~");
+                }
         }
 
     }
