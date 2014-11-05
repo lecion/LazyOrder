@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * Created by comet on 2014/11/5.
  */
-public class OrderListAdapter extends BaseAdapter implements View.OnClickListener{
+public class OrderListAdapter extends BaseAdapter implements View.OnClickListener,OrderNumView.OnOrderNumChangeListener{
 
     private Context context;
     private List<Goods> data;
@@ -64,8 +64,9 @@ public class OrderListAdapter extends BaseAdapter implements View.OnClickListene
             convertView = LayoutInflater.from(context).inflate(R.layout.activity_sure_order_list_cell, null);
             viewHolder = new ViewHolder();
             viewHolder.tvGoodName = (TextView) convertView.findViewById(R.id.tvGoodName);
-            viewHolder.onvGoodOrderNum = (OrderNumView) convertView.findViewById(R.id.onvGoodOrderNum);
             viewHolder.tvGoodsTotalPrice = (TextView) convertView.findViewById(R.id.tvGoodsTotalPrice);
+            viewHolder.onvGoodOrderNum = (OrderNumView) convertView.findViewById(R.id.onvGoodOrderNum);
+            viewHolder.onvGoodOrderNum.setOnOrderNumChangeListener(this);
             viewHolder.ibDeleteOrder = (ImageButton) convertView.findViewById(R.id.ibDeleteOrder);
             viewHolder.ibDeleteOrder.setOnClickListener(this);
             convertView.setTag(viewHolder);
@@ -82,12 +83,34 @@ public class OrderListAdapter extends BaseAdapter implements View.OnClickListene
         return convertView;
     }
 
+
+    /**
+     * 当点击删除按钮时
+     * @param view
+     */
     @Override
     public void onClick(View view) {
         View parentView = (View) view.getParent();
         ViewHolder viewHolder = (ViewHolder) parentView.getTag();
         int goodId = viewHolder.goodId;
         GoodsCart.getInstance().delGoods(goodId);
+        this.data = GoodsCart.getInstance().getAllGoods();
+        this.refresh();
+    }
+
+
+    /**
+     * 当订单数量改变时
+     * @param view
+     * @param num
+     */
+    @Override
+    public void onChange(View view, int num) {
+        View parentView = (View) view.getParent();
+        ViewHolder viewHolder = (ViewHolder) parentView.getTag();
+        int goodId = viewHolder.goodId;
+        GoodsCart goodsCart = GoodsCart.getInstance();
+        goodsCart.addGoods(goodsCart.getGoods(goodId), num);
         this.data = GoodsCart.getInstance().getAllGoods();
         this.refresh();
     }

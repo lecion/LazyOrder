@@ -30,6 +30,7 @@ import com.cisoft.lazyorder.core.goods.GoodsService;
 import com.cisoft.lazyorder.finals.ApiConstants;
 import com.cisoft.lazyorder.ui.search.SearchActivity;
 import com.cisoft.lazyorder.ui.shop.ShopActivity;
+import com.cisoft.lazyorder.ui.sureorder.SureOrderActivity;
 
 import org.kymjs.aframe.KJLoger;
 import org.kymjs.aframe.ui.BindView;
@@ -60,7 +61,7 @@ public class GoodsActivity extends BaseActivity implements GoodsFragment.OnFragm
     @BindView(id = R.id.tv_ordered_price)
     private TextView tvOrderedPrice;
 
-    @BindView(id = R.id.btn_go_settle)
+    @BindView(id = R.id.btn_go_settle, click = true)
     private Button btnGoSettle;
 
     private ListView lvSwitchCategory;
@@ -195,6 +196,9 @@ public class GoodsActivity extends BaseActivity implements GoodsFragment.OnFragm
                 break;
             case R.id.btn_type:
                 popupWindow.showAsDropDown(v, DensityUtils.dip2px(this, -60), DensityUtils.dip2px(this, -10));
+                break;
+            case R.id.btn_go_settle:
+                showActivity(this, SureOrderActivity.class);
                 break;
         }
 

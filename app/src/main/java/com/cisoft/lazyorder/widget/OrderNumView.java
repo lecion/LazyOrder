@@ -10,6 +10,9 @@ import android.widget.TextView;
 import com.cisoft.lazyorder.R;
 
 /**
+ *
+ * 一个订单数量的自定义控件
+ *
  * Created by comet on 2014/10/25.
  */
 public class OrderNumView extends FrameLayout{
@@ -20,6 +23,8 @@ public class OrderNumView extends FrameLayout{
     private TextView tvInputNum;
     private int num = 1;
     private OnClickListener btnClickListener;
+    private OnOrderNumChangeListener changeListener;
+    private View thisView;
 
 
     public OrderNumView(Context context) {
@@ -51,6 +56,7 @@ public class OrderNumView extends FrameLayout{
 
 
     private void control() {
+        thisView = this;
         initWidget();
     }
 
@@ -90,6 +96,10 @@ public class OrderNumView extends FrameLayout{
                     tvInputNum.setText(String.valueOf(num));
                     break;
             }
+
+            if(changeListener != null) {
+                changeListener.onChange(thisView, num);
+            }
         }
     }
 
@@ -100,5 +110,21 @@ public class OrderNumView extends FrameLayout{
 
     public int getNum() {
         return num;
+    }
+
+
+    /**
+     * 供外界调用，当num改变时回调
+     */
+    public interface OnOrderNumChangeListener{
+        public void onChange(View view, int num);
+    }
+
+    /**
+     * 设置订单量改变的监听器
+     * @param changeListener
+     */
+    public void setOnOrderNumChangeListener(OnOrderNumChangeListener changeListener){
+        this.changeListener = changeListener;
     }
 }
