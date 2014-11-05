@@ -47,8 +47,6 @@ public class ShopActivity extends BaseActivity implements ActionBar.OnNavigation
     @BindView(id = R.id.lvShopList)
     public MyListView lvShopList;
 
-    @BindView(id = R.id.llLoadingGoodsListTip)
-    private LinearLayout llLoadingShopListTip;
     @BindView(id = R.id.llShowNoValueTip)
     private LinearLayout llShowNoValueTip;
 
@@ -62,9 +60,13 @@ public class ShopActivity extends BaseActivity implements ActionBar.OnNavigation
 
     public Dialog loadingTipDialog;
 
-
     private int page = 1;
     private int pager = 10;
+    private int shopTypeId = 0;
+
+    public enum ActionBarMode{
+        TITLE_BAR_MODE,NAV_LIST_MODE
+    };
 
 
     public ShopActivity() {
@@ -88,22 +90,13 @@ public class ShopActivity extends BaseActivity implements ActionBar.OnNavigation
 
     @Override
     protected void initWidget() {
-        initActionBar();
+        showTitleBarMode("正在加载中...");
+        showLoadingTip();
         initAdRotator();
         initShopList();
     }
 
-    /**
-     * 初始化ActionBar
-     */
-    private void initActionBar() {
-        ActionBar actionbar = getActionBar();
-        actionbar.setDisplayShowTitleEnabled(false);
-        actionbar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-        shopCategoryListAdapter = new ShopCategoryListAdapter(this, shopCategoryData);
-        actionbar.setListNavigationCallbacks(shopCategoryListAdapter, this);
-        shopCategoryService.loadAllShopCategoryData();
-    }
+
 
     /**
      * 初始化广告轮播器
@@ -134,12 +127,12 @@ public class ShopActivity extends BaseActivity implements ActionBar.OnNavigation
             @Override
             public void onRefresh() {
                 page = 1;
-                shopService.loadAllShopData(page, pager);
+                shopService.loadShopDataByTypeId(shopTypeId, page, pager);
             }
 
             @Override
             public void onLoadMore() {
-                shopService.loadAllShopData(++page, pager);
+                shopService.loadShopDataByTypeId(shopTypeId, ++page, pager);
             }
         });
     }
@@ -160,7 +153,7 @@ public class ShopActivity extends BaseActivity implements ActionBar.OnNavigation
      */
     public void hideLoadingTip() {
         llShowNoValueTip.setVisibility(View.GONE);
-        if(loadingTipDialog !=null && loadingTipDialog.isShowing())
+        if(loadingTipDialog != null && loadingTipDialog.isShowing())
             loadingTipDialog.dismiss();
     }
 
@@ -189,13 +182,32 @@ public class ShopActivity extends BaseActivity implements ActionBar.OnNavigation
             case R.id.menu_login:
                 showActivity(this, WelcomeActivity.class);
                 break;
-            case R.id.menu_serach:
-                showActivity(this, WelcomeActivity.class);
-                break;
         }
 
         return true;
     }
+
+
+    /**
+     * 初始化标题栏式的ActionBar
+     */
+    public void showTitleBarMode(String title) {
+        ActionBar actionbar = getActionBar();
+        actionbar.setTitle(title);
+        shopCategoryService.loadAllShopCategoryData();
+    }
+
+    /**
+     * 初始化导航列表式的actionBar
+     */
+    public void showNavListMode(){
+        ActionBar actionbar = getActionBar();
+        actionbar.setDisplayShowTitleEnabled(false);
+        actionbar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+        shopCategoryListAdapter = new ShopCategoryListAdapter(this, shopCategoryData);
+        actionbar.setListNavigationCallbacks(shopCategoryListAdapter, this);
+    }
+
 
     /**
      * ActionBar的下拉列表导航的点击回调
@@ -203,14 +215,11 @@ public class ShopActivity extends BaseActivity implements ActionBar.OnNavigation
     @Override
     public boolean onNavigationItemSelected(int position, long l) {
         page = 1;//初始化page
-        showLoadingTip();
-        if (position == 0) {//加载全部的店家列表
-            shopService.loadAllShopData(page, pager);
-        } else {
-            int shopTypeId = shopCategoryData.get(position-1).getId();
+        shopTypeId = shopCategoryData.get(position).getId();
+        if(shopTypeId != 0)
             shopService.loadShopDataByTypeId(shopTypeId, page, pager);
-        }
-
+        else
+            showNoValueTip();
         return true;
     }
 

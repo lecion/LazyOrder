@@ -34,7 +34,6 @@ public class ShopCategoryService extends AbsService {
         result = httpCacher.get(url);
         if (result != null) {
             List<ShopCategory> shopCategorys = new ArrayList<ShopCategory>();
-            shopCategorys.add(new ShopCategory(0, "全部"));
             try {
                 JSONObject jsonObj = new JSONObject(result);
                 JSONArray shopCategoryArr = jsonObj.getJSONArray(ApiConstants.KEY_MC_DATA);
@@ -48,14 +47,19 @@ public class ShopCategoryService extends AbsService {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            ((ShopActivity)context).shopCategoryListAdapter.addData(shopCategorys);
-            ((ShopActivity)context).shopCategoryListAdapter.refresh();
+
+            if(shopCategorys.size() == 0){
+                ((ShopActivity)context).showTitleBarMode("加载分类失败");
+            }else{
+                ((ShopActivity)context).showNavListMode();
+                ((ShopActivity)context).shopCategoryListAdapter.addData(shopCategorys);
+                ((ShopActivity)context).shopCategoryListAdapter.refresh();
+            }
         } else {
             super.asyncUrlGet(ApiConstants.METHOD_MER_CATEGORY_FIND_ALL, null, new SuccessCallback() {
                 @Override
                 public void onSuccess(String result) {
                     List<ShopCategory> shopCategorys = new ArrayList<ShopCategory>();
-                    shopCategorys.add(new ShopCategory(0, "全部"));
                     try {
                         JSONObject jsonObj = new JSONObject(result);
                         JSONArray shopCateogyArr = jsonObj.getJSONArray(ApiConstants.KEY_MC_DATA);
@@ -69,8 +73,15 @@ public class ShopCategoryService extends AbsService {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    ((ShopActivity) context).shopCategoryListAdapter.addData(shopCategorys);
-                    ((ShopActivity) context).shopCategoryListAdapter.refresh();
+
+                    if(shopCategorys.size() == 0){
+                        ((ShopActivity)context).showTitleBarMode("加载分类失败");
+                        ((ShopActivity)context).hideLoadingTip();
+                    }else{
+                        ((ShopActivity)context).showNavListMode();
+                        ((ShopActivity)context).shopCategoryListAdapter.addData(shopCategorys);
+                        ((ShopActivity)context).shopCategoryListAdapter.refresh();
+                    }
                 }
             }, new FailureCallback() {
 

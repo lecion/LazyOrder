@@ -31,7 +31,6 @@ public class ApiConstants {
 
 
     /* 这里存放API接口里的方法名,以"METHOD_+模块名"打头 */
-    public static final String METHOD_MERCHANTS_FIND_ALL = "findAll";
     public static final String METHOD_MERCHANTS_FIND_BY_TYPE_ID = "findMerchantsOrCanteen";
     public static final String METHOD_MER_CATEGORY_FIND_ALL = "findAll";
 

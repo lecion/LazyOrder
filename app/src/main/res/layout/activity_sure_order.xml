@@ -9,8 +9,10 @@
 
 
     <RelativeLayout
+        android:id="@+id/rlShowGoodsCart"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:visibility="gone">
         <TextView
             android:id="@+id/tvShopName"
             android:layout_width="match_parent"
@@ -60,6 +62,28 @@
     <LinearLayout
         android:id="@+id/llShowNoValueTip"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="visible">
+        <ImageView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:src="@drawable/cart_empty"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:textColor="#909090"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:text="购物车是空的"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textColor="#909090"
+            android:textSize="12sp"
+            android:text="购物车还是空的,快去订餐吧"/>
     </LinearLayout>
 </LinearLayout>

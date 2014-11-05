@@ -1,30 +1,30 @@
 package com.cisoft.lazyorder.ui.sureorder;
 
-import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.SearchView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.cisoft.lazyorder.R;
 import com.cisoft.lazyorder.bean.goods.Goods;
 import com.cisoft.lazyorder.bean.goods.GoodsCart;
-import com.cisoft.lazyorder.ui.search.SearchActivity;
-import com.cisoft.lazyorder.ui.shop.ShopActivity;
-
-import org.kymjs.aframe.KJLoger;
 import org.kymjs.aframe.ui.BindView;
 import org.kymjs.aframe.ui.activity.BaseActivity;
 import java.util.List;
 
 public class SureOrderActivity extends BaseActivity {
 
-    @BindView(id = R.id.tvShopName)
-    private TextView tvShopName;
-
     @BindView(id = R.id.lvOrderList)
     private ListView lvOrderList;
+
+    @BindView(id = R.id.rlShowGoodsCart)
+    private RelativeLayout rlShowGoodsCart;
+
+    @BindView(id = R.id.llShowNoValueTip)
+    private LinearLayout llShowNoValueTip;
 
     private List<Goods> orderListData;
     private OrderListAdapter orderListAdapter;
@@ -80,5 +80,15 @@ public class SureOrderActivity extends BaseActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public void showNoValueTip(){
+        llShowNoValueTip.setVisibility(View.VISIBLE);
+        rlShowGoodsCart.setVisibility(View.GONE);
+    }
+
+    public void hideNoValueTip(){
+        llShowNoValueTip.setVisibility(View.GONE);
+        rlShowGoodsCart.setVisibility(View.VISIBLE);
     }
 }

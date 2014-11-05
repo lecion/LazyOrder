@@ -79,8 +79,15 @@ public class AdRotator extends FrameLayout {
     public AdRotator(Context context) {
         super(context);
         this.context = context;
+        this.adCount = 5;
         LayoutInflater.from(context).inflate(R.layout.ad_rotator_layout, this);
+    }
 
+    public AdRotator(Context context, int adCount) {
+        super(context);
+        this.context = context;
+        this.adCount = adCount;
+        LayoutInflater.from(context).inflate(R.layout.ad_rotator_layout, this);
     }
 
 

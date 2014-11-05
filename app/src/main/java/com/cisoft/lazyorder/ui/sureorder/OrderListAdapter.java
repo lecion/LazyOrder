@@ -46,6 +46,11 @@ public class OrderListAdapter extends BaseAdapter implements View.OnClickListene
 
     @Override
     public int getCount() {
+        if(data.size() == 0){
+            ((SureOrderActivity)(context)).showNoValueTip();
+        }else{
+            ((SureOrderActivity)(context)).hideNoValueTip();
+        }
         return data.size();
     }
 
@@ -113,7 +118,7 @@ public class OrderListAdapter extends BaseAdapter implements View.OnClickListene
         ViewHolder viewHolder = (ViewHolder) parentView.getTag();
         int goodId = viewHolder.goodId;
         GoodsCart goodsCart = GoodsCart.getInstance();
-        goodsCart.addGoods(goodsCart.getGoods(goodId), num);
+        goodsCart.setGoodsOrderNum(goodId, num);
         this.data = goodsCart.getAllGoods();
         this.refresh();
     }
