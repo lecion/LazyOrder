@@ -61,7 +61,7 @@ public class GoodsActivity extends BaseActivity implements GoodsFragment.OnFragm
     @BindView(id = R.id.tv_ordered_price)
     private TextView tvOrderedPrice;
 
-    @BindView(id = R.id.btn_go_settle, click = true)
+    @BindView(id = R.id.btn_go_settle)
     private Button btnGoSettle;
 
     private ListView lvSwitchCategory;
@@ -124,6 +124,7 @@ public class GoodsActivity extends BaseActivity implements GoodsFragment.OnFragm
         rbPop.setOnClickListener(this);
         rbPrice.setOnClickListener(this);
         btnType.setOnClickListener(this);
+        btnGoSettle.setOnClickListener(this);
     }
 
     private void initPopupWindow() {
@@ -168,6 +169,7 @@ public class GoodsActivity extends BaseActivity implements GoodsFragment.OnFragm
         lvSwitchCategory = (ListView) popView.findViewById(R.id.lv_switch_type);
         lvSwitchCategory.setAdapter(categoryAdapter);
         lvSwitchCategory.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            //TODO 完善类别切换
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ViewInject.toast(position+"");
@@ -197,9 +199,15 @@ public class GoodsActivity extends BaseActivity implements GoodsFragment.OnFragm
             case R.id.btn_type:
                 popupWindow.showAsDropDown(v, DensityUtils.dip2px(this, -60), DensityUtils.dip2px(this, -10));
                 break;
+
             case R.id.btn_go_settle:
-                showActivity(this, SureOrderActivity.class);
-                break;
+                AppContext app = (AppContext) getApplication();
+                GoodsCart goodsCart = app.getGoodsCart();
+                if (goodsCart.getTotalCount() > 0) {
+                    skipActivity(this, SureOrderActivity.class);
+                } else {
+                    ViewInject.toast("请先选择商品加入购物车~");
+                }
         }
 
     }
