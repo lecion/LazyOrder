@@ -75,6 +75,20 @@ public class GoodsCart {
     }
 
     /**
+     * 根据Id给商品指定数量
+     * @param id
+     * @param num
+     */
+    public void setGoodsOrderNum(int id, int num) {
+        if (!isContains(id) || num < 1) {
+            return;
+        }
+        Goods g = goodsList.get(id);
+        g.setOrderNum(num);
+        goodsList.put(id, g);
+    }
+
+    /**
      * 根据Id获取商品
      * @param id
      * @return
