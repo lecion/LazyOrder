@@ -19,7 +19,6 @@
 	        android:id="@+id/ivShopFaceImg"
 	        android:layout_width="100dp"
 	        android:layout_height="100dp"
-	        android:padding="2dp"
 	        android:scaleType="fitXY"
 	        android:background="@color/shop_face_border_color"
 	        android:src="@drawable/ic_launcher"/>
