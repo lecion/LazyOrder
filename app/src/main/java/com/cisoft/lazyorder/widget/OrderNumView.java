@@ -24,7 +24,6 @@ public class OrderNumView extends FrameLayout{
     private int num = 1;
     private OnClickListener btnClickListener;
     private OnOrderNumChangeListener changeListener;
-    private View thisView;
 
 
     public OrderNumView(Context context) {
@@ -56,7 +55,6 @@ public class OrderNumView extends FrameLayout{
 
 
     private void control() {
-        thisView = this;
         initWidget();
     }
 
@@ -98,7 +96,7 @@ public class OrderNumView extends FrameLayout{
             }
 
             if(changeListener != null) {
-                changeListener.onChange(thisView, num);
+                changeListener.onChange(OrderNumView.this, num);
             }
         }
     }

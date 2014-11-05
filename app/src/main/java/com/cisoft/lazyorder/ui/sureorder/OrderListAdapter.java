@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.cisoft.lazyorder.R;
 import com.cisoft.lazyorder.bean.goods.Goods;
 import com.cisoft.lazyorder.bean.goods.GoodsCart;
@@ -93,8 +95,9 @@ public class OrderListAdapter extends BaseAdapter implements View.OnClickListene
         View parentView = (View) view.getParent();
         ViewHolder viewHolder = (ViewHolder) parentView.getTag();
         int goodId = viewHolder.goodId;
-        GoodsCart.getInstance().delGoods(goodId);
-        this.data = GoodsCart.getInstance().getAllGoods();
+        GoodsCart goodsCart = GoodsCart.getInstance();
+        goodsCart.delGoods(goodId);
+        this.data = goodsCart.getAllGoods();
         this.refresh();
     }
 
@@ -111,7 +114,7 @@ public class OrderListAdapter extends BaseAdapter implements View.OnClickListene
         int goodId = viewHolder.goodId;
         GoodsCart goodsCart = GoodsCart.getInstance();
         goodsCart.addGoods(goodsCart.getGoods(goodId), num);
-        this.data = GoodsCart.getInstance().getAllGoods();
+        this.data = goodsCart.getAllGoods();
         this.refresh();
     }
 
