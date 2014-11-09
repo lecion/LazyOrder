@@ -10,14 +10,14 @@
     <style name="MyActionBar" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
         <item name="android:background">@color/actionbar_bg_color</item>
         <item name="android:textColorHint">@android:color/white</item>
-        <item name="android:dropDownListViewStyle">@style/MyDropDownNav</item>
+        <item name="android:dropDownListViewStyle">@android:style/Widget.Holo.ListView.DropDown</item>
     </style>
 
     <!--ActionBar列表式导航的样式 -->
-    <style name="MyDropDownNav" parent="@android:style/Widget.Holo.Light.Spinner">
-        <item name="android:background">@android:color/transparent</item>
-        <item name="android:popupBackground">@android:color/white</item>
-        <item name="android:dropDownSelector">@android:color/darker_gray</item>
+    <style name="MyDropDownNav" parent="@android:style/Widget.ListView.DropDown">
+        <item name="android:background">@android:color/holo_green_light</item>
+        <item name="android:popupBackground">@android:color/holo_blue_light</item>
+        <item name="android:dropDownSelector">@android:color/holo_orange_light</item>
     </style>
 
 

@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.cisoft.lazyorder.R;
 import com.cisoft.lazyorder.bean.shop.ShopCategory;
 
 public class ShopCategoryListAdapter extends BaseAdapter{
@@ -51,9 +52,9 @@ public class ShopCategoryListAdapter extends BaseAdapter{
 	@Override
 	public View getView(int position, View convertView, ViewGroup viewGroup) {
         if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(android.R.layout.simple_spinner_dropdown_item, null);
+            convertView = LayoutInflater.from(context).inflate(R.layout.fragment_shop_category_list_cell, null);
         }
-        ((TextView)convertView.findViewById(android.R.id.text1)).setText(data.get(position).getName());
+        ((TextView)convertView.findViewById(R.id.tvShopCategoryName)).setText(data.get(position).getName());
         
         return convertView;
 	}

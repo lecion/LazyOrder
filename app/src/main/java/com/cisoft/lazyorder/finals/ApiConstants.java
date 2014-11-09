@@ -28,6 +28,7 @@ public class ApiConstants {
     public static final String MODULE_COM_CATEGORY = "category";
     public static final String MODULE_COM_DISCUSS = "discuss";
 
+    public static final String MODULE_BUILD = "building";
 
 
     /* 这里存放API接口里的方法名,以"METHOD_+模块名"打头 */
@@ -39,7 +40,7 @@ public class ApiConstants {
     public static final String METHOD_CATEGORY_FIND_ALL_BY_MER_ID = "findCategoryByMerchantsId";
     public static final String METHOD_DISCUSS_FIND_ALL_BY_COM_ID = "findDiscussByCommodityId";
 
-
+    public static final String METHOD_BUILD_FIND_ALL = "findBuildings";
 
 
 
@@ -88,6 +89,12 @@ public class ApiConstants {
     public static final String KEY_DIS_USER_ID = "userId";
     public static final String KEY_DIS_CONTENT = "discussContent";
     public static final String KEY_DIS_CONTENT_TIME = "contentTime";
+
+
+    public static final String KEY_BUILD_DATA = "data";
+    public static final String KEY_BUILD_ID = "id";
+    public static final String KEY_BUILD_NAME = "building";
+    public static final String KEY_BUILD_SCHOOL_ID = "schoolId";
 
 
 

@@ -17,7 +17,6 @@
     <string name="net_too_poor">连接超时,请检查你的网络设置</string>
     <string name="have_not_shop_list">抱歉,目前还没有店家列表的数据</string>
     <string name="service_have_error_exception">抱歉！服务器出现异常，请稍候再试</string>
-
     <string name="loading_goods_list">正在加载商品列表中,请稍候...</string>
     <string name="fail_to_load_goods_list">加载商品列表失败,请稍候再试</string>
     <string name="success_to_load_goods_list">加载商品列表成功</string>
@@ -25,7 +24,12 @@
     <string name="success_to_load_goods_category_list">加载商品类别列表成功</string>
     <string name="have_not_goods_list">抱歉,目前还没有商品列表的数据</string>
     <string name="have_no_more_goods_list">已经加载完所有商品了~</string>
-
+    <string name="input_phone_num_hint">请输入手机号码</string>
+    <string name="input_contact_address_hint">请输入联系地址</string>
+    <string name="input_name_hint">请输入姓名</string>
+    <string name="loading_build_list">正在加载楼栋信息...</string>
+    <string name="fail_to_load_build_list">加载楼栋列表失败,请稍候再试</string>
+    <string name="success_to_load_build_list">加载楼栋列表成功</string>
 
     <!-- 自定义的上下拉刷新所用字符串 -->
     <string name="listview_header_hint_normal">下拉刷新</string>
@@ -35,5 +39,15 @@
     <string name="listview_footer_hint_normal">查看更多</string>
     <string name="listview_footer_hint_ready">松开载入更多</string>
     <string name="text_go_to_settle">去结算</string>
-    <string name="title_activity_sure_order">SureOrderActivity</string>
+    <string name="title_activity_sure_order">确认订单</string>
+    <string name="title_activity_sure_info">确认信息</string>
+    <string name="title_activity_main">首页</string>
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="action_example">Example action</string>
+    <string name="title_activity_test">TestActivity</string>
+
 </resources>

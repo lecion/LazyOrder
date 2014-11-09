@@ -29,7 +29,6 @@ import com.cisoft.lazyorder.core.goods.CategoryService;
 import com.cisoft.lazyorder.core.goods.GoodsService;
 import com.cisoft.lazyorder.finals.ApiConstants;
 import com.cisoft.lazyorder.ui.search.SearchActivity;
-import com.cisoft.lazyorder.ui.shop.ShopActivity;
 import com.cisoft.lazyorder.ui.sureorder.SureOrderActivity;
 
 import org.kymjs.aframe.KJLoger;
@@ -247,9 +246,10 @@ public class GoodsActivity extends BaseActivity implements GoodsFragment.OnFragm
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                Intent i = new Intent(this, ShopActivity.class);
+                /*Intent i = new Intent(this, ShopActivity.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(i);
+                startActivity(i);*/
+                finish();
                 return true;
             case R.id.action_search:
                 showActivity(this, SearchActivity.class);

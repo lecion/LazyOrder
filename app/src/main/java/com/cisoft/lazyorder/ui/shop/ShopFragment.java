@@ -1,16 +1,15 @@
 package com.cisoft.lazyorder.ui.shop;
 
-import java.util.ArrayList;
-import java.util.List;
-import org.kymjs.aframe.ui.BindView;
-import org.kymjs.aframe.ui.activity.BaseActivity;
-import org.kymjs.aframe.utils.DensityUtils;
 import android.app.ActionBar;
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
@@ -27,13 +26,9 @@ import com.cisoft.lazyorder.util.DialogFactory;
 import com.cisoft.lazyorder.widget.AdRotator;
 import com.cisoft.lazyorder.widget.MyListView;
 
-import org.kymjs.aframe.bitmap.KJBitmap;
-import org.kymjs.aframe.bitmap.KJBitmapConfig;
-import org.kymjs.aframe.bitmap.utils.BitmapCreate;
 import org.kymjs.aframe.ui.BindView;
-import org.kymjs.aframe.ui.activity.BaseActivity;
-import org.kymjs.aframe.ui.widget.KJListView;
-import org.kymjs.aframe.ui.widget.KJRefreshListener;
+import org.kymjs.aframe.ui.ViewInject;
+import org.kymjs.aframe.ui.fragment.BaseFragment;
 import org.kymjs.aframe.utils.DensityUtils;
 
 import java.util.ArrayList;
@@ -42,7 +37,8 @@ import java.util.List;
 /**
  * Created by comit on 10/16/14.
  */
-public class ShopActivity extends BaseActivity implements ActionBar.OnNavigationListener, AdapterView.OnItemClickListener{
+public class ShopFragment extends BaseFragment implements ActionBar.OnNavigationListener, AdapterView.OnItemClickListener{
+
 
     @BindView(id = R.id.lvShopList)
     public MyListView lvShopList;
@@ -64,32 +60,22 @@ public class ShopActivity extends BaseActivity implements ActionBar.OnNavigation
     private int pager = 10;
     private int shopTypeId = 0;
 
-    public enum ActionBarMode{
-        TITLE_BAR_MODE,NAV_LIST_MODE
-    };
-
-
-    public ShopActivity() {
-        setHiddenActionBar(false);
-    }
-
     @Override
-    public void setRootView() {
-        setContentView(R.layout.activity_shop);
+    protected View inflaterView(LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle bundle) {
+        View view = layoutInflater.inflate(R.layout.fragment_shop, null, true);
+        return view;
     }
-
 
     @Override
     protected void initData() {
         shopsData = new ArrayList<Shop>();
         shopCategoryData = new ArrayList<ShopCategory>();
-        shopService = new ShopService(this);
-        shopCategoryService = new ShopCategoryService(this);
+        shopService = new ShopService(getActivity());
+        shopCategoryService = new ShopCategoryService(getActivity());
     }
 
-
     @Override
-    protected void initWidget() {
+    protected void initWidget(View parentView) {
         showTitleBarMode("正在加载中...");
         showLoadingTip();
         initAdRotator();
@@ -97,13 +83,12 @@ public class ShopActivity extends BaseActivity implements ActionBar.OnNavigation
     }
 
 
-
     /**
      * 初始化广告轮播器
      */
     private void initAdRotator() {
-        arImageAdRotator = new AdRotator(this);
-        arImageAdRotator.setLayoutParams(new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, DensityUtils.dip2px(this, 150)));
+        arImageAdRotator = new AdRotator(getActivity());
+        arImageAdRotator.setLayoutParams(new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, DensityUtils.dip2px(getActivity(), 150)));
         arImageAdRotator.setImageUrl(new String[]{
                 "http://c.hiphotos.baidu.com/image/w%3D310/sign=9f7ddc689158d109c4e3afb3e158ccd0/fd039245d688d43fc5bd2ee47e1ed21b0ef43b8b.jpg",
                 "http://c.hiphotos.baidu.com/image/w%3D310/sign=0bd18105de54564ee565e23883df9cde/c2cec3fdfc039245940d5c198494a4c27d1e256f.jpg",
@@ -118,7 +103,7 @@ public class ShopActivity extends BaseActivity implements ActionBar.OnNavigation
      * 初始化店家列表展示控件
      */
     private void initShopList() {
-        shopListAdapter = new ShopListViewAdapter(this, shopsData);
+        shopListAdapter = new ShopListViewAdapter(getActivity(), shopsData);
         lvShopList.addHeaderView(arImageAdRotator);
         lvShopList.setAdapter(shopListAdapter);
         lvShopList.setOnItemClickListener(this);
@@ -127,12 +112,51 @@ public class ShopActivity extends BaseActivity implements ActionBar.OnNavigation
             @Override
             public void onRefresh() {
                 page = 1;
-                shopService.loadShopDataByTypeId(shopTypeId, page, pager);
+                shopService.loadShopDataByTypeId(shopTypeId, page, pager, new ShopService.OnShopLoadFinish() {
+                    @Override
+                    public void onSuccess(List<Shop> shops) {
+                        lvShopList.stopRefreshData();
+
+                        if (shops.size() == 0) {
+                            showNoValueTip();
+                        } else {
+                            shopListAdapter.clearAll();
+                            shopListAdapter.addData(shops);
+                            shopListAdapter.refresh();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int stateCode) {
+                        ViewInject.toast(shopService.getResponseStateInfo(stateCode));
+                        lvShopList.stopRefreshData();
+                        showNoValueTip();
+                    }
+                });
             }
 
             @Override
             public void onLoadMore() {
-                shopService.loadShopDataByTypeId(shopTypeId, ++page, pager);
+                shopService.loadShopDataByTypeId(shopTypeId, ++page, pager, new ShopService.OnShopLoadFinish() {
+                    @Override
+                    public void onSuccess(List<Shop> shops) {
+                        lvShopList.stopRefreshData();
+
+                        if (shops.size() == 0) {
+                            ViewInject.toast("没有更多店家数据了");
+                            lvShopList.setPullLoadEnable(false);
+                        } else {
+                            shopListAdapter.addData(shops);
+                            shopListAdapter.refresh();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int stateCode) {
+                        ViewInject.toast(shopService.getResponseStateInfo(stateCode));
+                        lvShopList.stopRefreshData();
+                    }
+                });
             }
         });
     }
@@ -143,8 +167,13 @@ public class ShopActivity extends BaseActivity implements ActionBar.OnNavigation
      * 显示正在加载的提示
      */
     public void showLoadingTip() {
-        loadingTipDialog = DialogFactory.createToastDialog(this, "正在加载,请稍等");
-        loadingTipDialog.show();
+        if(loadingTipDialog == null){
+            loadingTipDialog = DialogFactory.createToastDialog(getActivity(), "正在加载,请稍等");
+        }
+        if(!loadingTipDialog.isShowing()){
+            loadingTipDialog.show();
+        }
+
         llShowNoValueTip.setVisibility(View.GONE);
     }
 
@@ -167,9 +196,8 @@ public class ShopActivity extends BaseActivity implements ActionBar.OnNavigation
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.shop, menu);
-        return true;
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.shop, menu);
     }
 
 
@@ -180,7 +208,7 @@ public class ShopActivity extends BaseActivity implements ActionBar.OnNavigation
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_login:
-                showActivity(this, WelcomeActivity.class);
+                startActivity(new Intent(getActivity(), WelcomeActivity.class));
                 break;
         }
 
@@ -192,19 +220,37 @@ public class ShopActivity extends BaseActivity implements ActionBar.OnNavigation
      * 初始化标题栏式的ActionBar
      */
     public void showTitleBarMode(String title) {
-        ActionBar actionbar = getActionBar();
-        actionbar.setTitle(title);
-        shopCategoryService.loadAllShopCategoryData();
+        getActivity().getActionBar().setTitle(title);
+        shopCategoryService.loadAllShopCategoryData(new ShopCategoryService.OnCategoryLoadFinish() {
+            @Override
+            public void onSuccess(List<ShopCategory> categories) {
+                if(categories.size() == 0){
+                    getActivity().getActionBar().setTitle("加载分类失败");
+                    hideLoadingTip();
+                }else{
+                    showNavListMode();
+                    shopCategoryListAdapter.addData(categories);
+                    shopCategoryListAdapter.refresh();
+                }
+            }
+
+            @Override
+            public void onFailure(int stateCode) {
+                getActivity().getActionBar().setTitle("加载分类失败");
+                hideLoadingTip();
+                ViewInject.toast(shopCategoryService.getResponseStateInfo(stateCode));
+            }
+        });
     }
 
     /**
      * 初始化导航列表式的actionBar
      */
     public void showNavListMode(){
-        ActionBar actionbar = getActionBar();
+        ActionBar actionbar = getActivity().getActionBar();
         actionbar.setDisplayShowTitleEnabled(false);
         actionbar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-        shopCategoryListAdapter = new ShopCategoryListAdapter(this, shopCategoryData);
+        shopCategoryListAdapter = new ShopCategoryListAdapter(getActivity(), shopCategoryData);
         actionbar.setListNavigationCallbacks(shopCategoryListAdapter, this);
     }
 
@@ -216,10 +262,33 @@ public class ShopActivity extends BaseActivity implements ActionBar.OnNavigation
     public boolean onNavigationItemSelected(int position, long l) {
         page = 1;//初始化page
         shopTypeId = shopCategoryData.get(position).getId();
-        if(shopTypeId != 0)
-            shopService.loadShopDataByTypeId(shopTypeId, page, pager);
-        else
+        if(shopTypeId != 0) {
+            showLoadingTip();
+            shopService.loadShopDataByTypeId(shopTypeId, page, pager, new ShopService.OnShopLoadFinish() {
+                @Override
+                public void onSuccess(List<Shop> shops) {
+                    hideLoadingTip();
+
+                    if (shops.size() == 0) {
+                        showNoValueTip();
+                    } else {
+                        shopListAdapter.clearAll();
+                        shopListAdapter.addData(shops);
+                        shopListAdapter.refresh();
+                    }
+                }
+
+                @Override
+                public void onFailure(int stateCode) {
+                    hideLoadingTip();
+                    showNoValueTip();
+                    ViewInject.toast(shopCategoryService.getResponseStateInfo(stateCode));
+                }
+            });
+        } else {
             showNoValueTip();
+        }
+
         return true;
     }
 
@@ -234,13 +303,16 @@ public class ShopActivity extends BaseActivity implements ActionBar.OnNavigation
         bundle.putString(ApiConstants.KEY_MER_ADDRESS, shop.getAddress());
         bundle.putString(ApiConstants.KEY_MER_PROMOTION_INFO, shop.getPromotionInfo());
         bundle.putString(ApiConstants.KEY_MER_NAME, shop.getName());
-        showActivity(this, GoodsActivity.class, bundle);
+        Intent intent = new Intent();
+        intent.putExtras(bundle);
+        intent.setClass(getActivity(), GoodsActivity.class);
+        startActivity(intent);
     }
-
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    public void onDestroyView() {
+        super.onDestroyView();
         arImageAdRotator.stopAutoPlay();
     }
+
 }

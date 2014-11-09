@@ -66,7 +66,7 @@ public class ShopListViewAdapter extends BaseAdapter {
         ViewHolder holder = null;
 
         if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.activity_shop_list_cell, null);
+            convertView = LayoutInflater.from(context).inflate(R.layout.fragment_shop_list_cell, null);
             holder = new ViewHolder();
             holder.tvShopName = (TextView) convertView.findViewById(R.id.tvShopName);
             holder.tvOpenTime = (TextView) convertView.findViewById(R.id.tvOpenTime);

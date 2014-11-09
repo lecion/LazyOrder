@@ -4,6 +4,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -11,6 +12,8 @@ import android.widget.TextView;
 import com.cisoft.lazyorder.R;
 import com.cisoft.lazyorder.bean.goods.Goods;
 import com.cisoft.lazyorder.bean.goods.GoodsCart;
+import com.cisoft.lazyorder.ui.sureinfo.SureInfoActivity;
+
 import org.kymjs.aframe.ui.BindView;
 import org.kymjs.aframe.ui.activity.BaseActivity;
 import java.util.List;
@@ -25,6 +28,9 @@ public class SureOrderActivity extends BaseActivity {
 
     @BindView(id = R.id.llShowNoValueTip)
     private LinearLayout llShowNoValueTip;
+
+    @BindView(id = R.id.btnSureOrder, click = true)
+    private Button btnSureOrder;
 
     private List<Goods> orderListData;
     private OrderListAdapter orderListAdapter;
@@ -64,6 +70,17 @@ public class SureOrderActivity extends BaseActivity {
 
 
     @Override
+    public void widgetClick(View v) {
+        switch (v.getId()){
+            case R.id.btnSureOrder:
+                showActivity(this, SureInfoActivity.class);
+                overridePendingTransition(android.R.anim.slide_out_right,
+                        android.R.anim.slide_in_left);
+                break;
+        }
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.sure_order, menu);
@@ -76,6 +93,8 @@ public class SureOrderActivity extends BaseActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
+                overridePendingTransition(android.R.anim.slide_in_left,
+                        android.R.anim.slide_out_right);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

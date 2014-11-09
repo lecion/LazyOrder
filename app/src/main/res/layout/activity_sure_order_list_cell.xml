@@ -4,13 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
-    android:padding="10dp">
+    android:padding="5dp">
 
     <ImageButton
         android:id="@+id/ibDeleteOrder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:background="@drawable/delete_order_btn_bg"
         android:layout_centerVertical="true"
@@ -43,7 +42,6 @@
         android:id="@+id/onvGoodOrderNum"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_centerVertical="true"
         android:layout_toLeftOf="@+id/tvGoodsTotalPriceLabel"/>
@@ -52,14 +50,13 @@
         android:id="@+id/tvGoodName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="5dp"
         android:singleLine="true"
         android:layout_centerVertical="true"
         android:layout_toLeftOf="@id/onvGoodOrderNum"
         android:layout_alignParentLeft="true"
         android:gravity="left"
         android:textColor="#626262"
-        android:textSize="18sp"
+        android:textSize="16sp"
         android:text="香菇滑鸡"/>
 
 </RelativeLayout>

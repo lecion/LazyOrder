@@ -9,7 +9,6 @@ import com.cisoft.lazyorder.bean.shop.Shop;
 import com.cisoft.lazyorder.core.AbsService;
 import com.cisoft.lazyorder.finals.ApiConstants;
 import com.cisoft.lazyorder.ui.goods.GoodsFragment;
-import com.cisoft.lazyorder.ui.shop.ShopActivity;
 import com.cisoft.lazyorder.widget.MyListView;
 
 import org.json.JSONArray;
@@ -109,7 +108,7 @@ public class GoodsCommentService extends AbsService{
      * @param page
      * @param pager
      */
-    public void loadShopDataByTypeId(int typeId, final int page, int pager){
+    /*public void loadShopDataByTypeId(int typeId, final int page, int pager){
         KJStringParams params = new KJStringParams();
         params.put(ApiConstants.KEY_MER_PAGE, String.valueOf(page));
         params.put(ApiConstants.KEY_MER_PAGER, String.valueOf(pager));
@@ -146,7 +145,7 @@ public class GoodsCommentService extends AbsService{
 
                 ((ShopActivity)context).hideLoadingTip();
 
-                /* 将数据添加到适配器中并刷新  */
+                // 将数据添加到适配器中并刷新
                 if (page == 1) //下拉刷新，先清空集合，再添加
                     ((ShopActivity)context).shopListAdapter.clearAll();
                 ((ShopActivity)context).shopListAdapter.addData(shops);
@@ -167,7 +166,7 @@ public class GoodsCommentService extends AbsService{
         });
     }
 
-
+*/
 
     /**
      * 根据请求api响应的状态码来获取对应的信息

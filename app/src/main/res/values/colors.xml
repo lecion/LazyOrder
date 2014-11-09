@@ -17,4 +17,8 @@
     <color name="shop_list_text_color">#6C6C6C</color>
 
     <color name="sure_order_bg_color">#FAFAFA</color>
+    <color name="sure_info_bg_color">#FAFAFA</color>
+    <color name="sure_info_address_build_text_color">#666666</color>
+
+    <color name="navigation_drawer_bg_color">#282828</color>
 </resources>

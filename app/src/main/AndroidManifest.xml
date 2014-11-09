@@ -7,28 +7,25 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
+        android:name=".AppContext"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme"
-        android:name=".AppContext"
-        >
+        android:theme="@style/AppTheme" >
         <activity
             android:name=".WelcomeActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ui.shop.ShopActivity"
-            android:label="@string/title_activity_shop" />
+        <activity android:name=".ui.main.MainActivity"
+            android:label="@string/title_activity_main">
+        </activity>
         <activity
             android:name=".ui.goods.GoodsActivity"
-            android:label="@string/title_activity_goods"
-            android:parentActivityName=".ui.shop.ShopActivity" >
+            android:label="@string/title_activity_goods">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.cisoft.lazyorder.ui.shop.ShopActivity" />
@@ -39,6 +36,10 @@
         <activity
             android:name=".ui.sureorder.SureOrderActivity"
             android:label="@string/title_activity_sure_order" >
+        </activity>
+        <activity
+            android:name=".ui.sureinfo.SureInfoActivity"
+            android:label="@string/title_activity_sure_info" >
         </activity>
     </application>
 
