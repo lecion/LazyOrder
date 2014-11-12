@@ -97,22 +97,23 @@
         android:id="@+id/ll_expand"
         android:layout_width="350dp"
         android:layout_height="match_parent"
-        android:background="#fff2f2f2"
+        android:background="#fff"
         android:descendantFocusability="blocksDescendants"
         android:orientation="vertical"
+        android:layout_gravity="center"
         android:visibility="gone">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="用户评论" />
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="用户评论" />-->
 
-        <com.cisoft.lazyorder.widget.MyListView
-            android:id="@+id/lv_comment"
-            android:layout_width="match_parent"
-            android:layout_height="120dp">
+        <!--<com.cisoft.lazyorder.widget.MyListView-->
+            <!--android:id="@+id/lv_comment"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="120dp">-->
 
-        </com.cisoft.lazyorder.widget.MyListView>
+        <!--</com.cisoft.lazyorder.widget.MyListView>-->
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -130,6 +131,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/tv_select_count"
+                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true">
 
             </com.cisoft.lazyorder.widget.OrderNumView>

@@ -193,9 +193,8 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
             }
 
             @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
+            public View getView(final int position, View convertView, ViewGroup parent) {
 //                Log.d("getView", "mLastVisiblePosition => " + mLastVisiblePosition + "  position=> " + position);
-
                 final Goods item = (Goods) getItem(position);
                 ViewHolder holder;
                 if (convertView == null) {
@@ -215,67 +214,49 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
                 holder = (ViewHolder) convertView.getTag();
                 kjb.display(holder.ivGoodsThumb, item.getCmPicture(), holder.ivGoodsThumb.getWidth(), holder.ivGoodsThumb.getHeight());
                 holder.tvGoodsTitle.setText(item.getCmName());
-                holder.btnGoodsPrice.setText(String.valueOf(item.getCmPrice()));
-                holder.btnGoodsPrice.setOnClickListener(new View.OnClickListener() {
-                    //TODO 加入购物车动画
-                    @Override
-                    public void onClick(View v) {
-                        //View srcView = parent.getChildAt(0);
-                        startCartAnim(v, item);
-                    }
-                });
 
+                holder.btnGoodsPrice.setText(String.valueOf(item.getCmPrice()));
+
+                final View animView = holder.btnGoodsPrice;
+                holder.btnGoodsPrice.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(final View v) {
+                        startAnimation(v, position);
+                    }
+                    
+                });
                 holder.tvGoodsCount.setText(String.valueOf(item.getSalesNum()));
                 holder.tvGoodsType.setText(item.getCatName());
-
-
                 /*以下是展开view*/
                 holder.llExpand.setVisibility(View.GONE);
-                holder.btnAddToCart.setOnClickListener(new AddToCartListener(holder.orderNumView, item));
+                holder.btnAddToCart.setOnClickListener(new AddToCartListener(holder.orderNumView, item, animView));
                 if (mLastVisiblePosition == position + 1 && isExpand) {
                     holder.llExpand.setVisibility(View.VISIBLE);
                 }
                 return convertView;
             }
 
-            private void startCartAnim(final View v, final Goods item) {
-                ((Button)v).setText(item.getCmPrice() + "");
-                v.buildDrawingCache();
-                Bitmap animBitmap = v.getDrawingCache();
-                ImageView ivAnim = new ImageView(getActivity());
-                ivAnim.setImageBitmap(animBitmap);
-                final ViewGroup decorView = (ViewGroup) getActivity().getWindow().getDecorView();
-                final LinearLayout ll = new LinearLayout(getActivity());
-                ll.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-                ll.setBackgroundResource(android.R.color.transparent);
-                decorView.addView(ll);
-                ll.addView(ivAnim);
-
-                int[] locations = new int[2];
-                v.getLocationOnScreen(locations);
-                int x = locations[0];
-                int y = locations[1];
-                Log.d("getLocationOnScreen", x + " " + y);
-                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                lp.leftMargin = x;
-                lp.topMargin = y;
-                ivAnim.setLayoutParams(lp);
-                int[] cartLocation = mListener.getCartLocation();
-                int deltaX = cartLocation[0] - x;
-                int deltaY = cartLocation[1] - y;
-
-                AnimationSet as = new AnimationSet(false);
-                TranslateAnimation translateX = new TranslateAnimation(0, deltaX, 0, 0);
-                TranslateAnimation translateY = new TranslateAnimation(0, 0, 0, deltaY);
-                translateY.setInterpolator(new AccelerateInterpolator());
-                ScaleAnimation scaleAnimation = new ScaleAnimation(1, 0, 1, 0);
-                scaleAnimation.setInterpolator(new AccelerateInterpolator());
-                as.addAnimation(scaleAnimation);
-                as.addAnimation(translateX);
-                as.addAnimation(translateY);
-                as.setDuration(500);
-
-                as.setAnimationListener(new Animation.AnimationListener() {
+            /**
+             * 点击价格标签时的动画
+             *
+             * @param v
+             * @param position
+             * @return
+             */
+            private void startAnimation(final View v, int position) {
+                final Goods g = (Goods) getItem(position);
+                //重新设置价格，防止重用出现问题
+                ((Button)v).setText(g.getCmPrice() + "");
+                final View animView = createAnimView(v);
+                final ViewGroup animLayout = createAnimLayer();
+                animLayout.addView(animView);
+                int[] startLoc = getAnimStartLocation(v);
+                //Log.d("start ", startLoc[0] + " " +startLoc[1]);
+                setAnimViewLoc(startLoc, animView);
+                int[] endLoc = getAnimEndLocation();
+                int[] offset = getAnimOffset(startLoc, endLoc);
+                final Animation animation = buildAnimation(offset);
+                animation.setAnimationListener(new Animation.AnimationListener() {
                     @Override
                     public void onAnimationStart(Animation animation) {
                         v.setEnabled(false);
@@ -283,10 +264,10 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
 
                     @Override
                     public void onAnimationEnd(Animation animation) {
-                        if (mListener != null) {
-                            mListener.onAddToCart(item);
+                        if (mListener !=null) {
+                            mListener.onAddToCart(g);
                         }
-                        decorView.removeView(ll);
+                        ((ViewGroup)animLayout.getParent()).removeView(animLayout);
                         v.setEnabled(true);
                     }
 
@@ -295,24 +276,162 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
 
                     }
                 });
-
-                ivAnim.startAnimation(as);
+                //animView.setAnimation(animation);
+                animView.startAnimation(animation);
             }
 
+            /**
+             * 点击加入购物车按钮时的动画
+             *
+             * @param v
+             * @param g
+             */
+            private void startAnimation(final View v, final Goods g, final OrderNumView orderNumView, final View disableView) {
+                //重新设置价格，防止重用出现问题
+                ((Button)v).setText(g.getCmPrice() + "");
+                final View animView = createAnimView(v);
+                final ViewGroup animLayout = createAnimLayer();
+                animLayout.addView(animView);
+                int[] startLoc = getAnimStartLocation(v);
+                setAnimViewLoc(startLoc, animView);
+                int[] endLoc = getAnimEndLocation();
+                int[] offset = getAnimOffset(startLoc, endLoc);
+                Animation animation = buildAnimation(offset);
+                animation.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+                        disableView.setEnabled(false);
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        if (mListener !=null) {
+                            mListener.onAddToCart(g, orderNumView.getNum());
+                        }
+                        //Did 展开view的复用问题：商品数量选择控件被复用=>暂时先这样解决
+                        orderNumView.setNum(1);
+                        ((ViewGroup)animLayout.getParent()).removeView(animLayout);
+                        disableView.setEnabled(true);
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
+                });
+                animView.setAnimation(animation);
+            }
+
+            /**
+             * 创建动画层
+             * @return
+             */
+            private ViewGroup createAnimLayer() {
+                final ViewGroup decorView = (ViewGroup) getActivity().getWindow().getDecorView();
+                LinearLayout ll = new LinearLayout(getActivity());
+                ll.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+                ll.setBackgroundResource(android.R.color.transparent);
+                decorView.addView(ll);
+                return ll;
+            }
+
+            /**
+             * 创建动画对象
+             * @param v
+             * @return
+             */
+            private View createAnimView(View v) {
+                v.buildDrawingCache();
+                Bitmap animBitmap = v.getDrawingCache();
+                ImageView ivAnim = new ImageView(getActivity());
+                ivAnim.setImageBitmap(animBitmap);
+                return ivAnim;
+            }
+
+            /**
+             * 获得动画开始位置，即价格视图所在位置
+             * @param v
+             * @return
+             */
+            private int[] getAnimStartLocation(View v) {
+                int[] location = new int[2];
+                v.getLocationOnScreen(location);
+                int x = location[0];
+                int y = location[1];
+                return location;
+            }
+
+            /**
+             * 获得动画结束位置，即购物车所在位置
+             * @return
+             */
+            private int[] getAnimEndLocation() {
+                return mListener.getCartLocation();
+            }
+
+            /**
+             * 设置动画起始位置
+             * @param startLoc
+             * @param animView
+             */
+            private void setAnimViewLoc(int[] startLoc, View animView) {
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                lp.leftMargin = startLoc[0];
+                lp.topMargin = startLoc[1];
+                animView.setLayoutParams(lp);
+            }
+
+            /**
+             * 获得动画x，y坐标的偏移量
+             * @param startLoc
+             * @param endLoc
+             * @return
+             */
+            private int[] getAnimOffset(int[] startLoc, int[] endLoc) {
+                int[] offset = new int[2];
+                offset[0] = endLoc[0] - startLoc[0];
+                offset[1] = endLoc[1] - startLoc[1];
+                return offset;
+            }
+
+            /**
+             * 根据偏移量创建动画
+             * @param offset
+             * @return
+             */
+            private Animation buildAnimation(int[] offset) {
+                AnimationSet as = new AnimationSet(false);
+                TranslateAnimation translateX = new TranslateAnimation(0, offset[0], 0, 0);
+                TranslateAnimation translateY = new TranslateAnimation(0, 0, 0, offset[1]);
+                translateY.setInterpolator(new AccelerateInterpolator());
+                ScaleAnimation scaleAnimation = new ScaleAnimation(1, 0, 1, 0);
+                scaleAnimation.setInterpolator(new AccelerateInterpolator());
+                as.addAnimation(scaleAnimation);
+                as.addAnimation(translateX);
+                as.addAnimation(translateY);
+                as.setDuration(500);
+                return as;
+            }
+
+            /**
+             * 添加到购物车按钮被点击时的监听器
+             */
             class AddToCartListener implements View.OnClickListener {
                 OrderNumView orderNumView;
                 Goods goods;
-                public AddToCartListener(OrderNumView orderNumView, Goods item) {
+                View animView;
+                public AddToCartListener(OrderNumView orderNumView, Goods item, View animView) {
                     this.orderNumView = orderNumView;
                     this.goods = item;
+                    this.animView = animView;
                 }
 
                 @Override
                 public void onClick(View v) {
-                    mListener.onAddToCart(goods, orderNumView.getNum());
-                    //Did 展开view的复用问题：商品数量选择控件被复用=>暂时先这样解决
-                    orderNumView.setNum(1);
+                    startAnimation(animView, goods, orderNumView, v);
                 }
+
+
             }
         };
     }
@@ -400,10 +519,12 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
             }
             mLastVisiblePosition = position;
 
+            /** /
             MyListView lvComment = (MyListView) view.findViewById(R.id.lv_comment);
             lvComment.getParent().requestDisallowInterceptTouchEvent(true);
             Log.d("onItemClick", lvComment +"");
             loadComment(lvComment, position);
+            /**/
         }
     }
 
