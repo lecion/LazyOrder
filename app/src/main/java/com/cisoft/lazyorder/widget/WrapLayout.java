@@ -2,8 +2,12 @@ package com.cisoft.lazyorder.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Lecion on 11/12/14.
@@ -62,39 +66,130 @@ public class WrapLayout extends ViewGroup {
 
     }
 
+    private List<List<View>> mAllViews = new ArrayList<List<View>>();
+    /**
+     * 记录每一行的最大高度
+     */
+    private List<Integer> mLineHeight = new ArrayList<Integer>();
     @Override
-    protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        int childCount = getChildCount();
-        int parentWidth = getMeasuredWidth();
-        int maxWidth = 0;
+    protected void onLayout(boolean changed, int l, int t, int r, int b)
+    {
+        mAllViews.clear();
+        mLineHeight.clear();
 
-        int lastLeft = 0;
-        int lastTop = 0;
+        int width = getWidth();
 
-        for (int i = 0; i < childCount; i++) {
-
+        int lineWidth = 0;
+        int lineHeight = 0;
+        // 存储每一行所有的childView
+        List<View> lineViews = new ArrayList<View>();
+        int cCount = getChildCount();
+        // 遍历所有的孩子
+        for (int i = 0; i < cCount; i++)
+        {
             View child = getChildAt(i);
-            int childWidth = getChildWidth(child);
-            MarginLayoutParams lp = (MarginLayoutParams) child.getLayoutParams();
+            MarginLayoutParams lp = (MarginLayoutParams) child
+                    .getLayoutParams();
+            int childWidth = child.getMeasuredWidth();
+            int childHeight = child.getMeasuredHeight();
 
-            lastLeft += lp.leftMargin;
-            if (maxWidth == 0) {
-                lastTop += lp.topMargin;
+            // 如果已经需要换行
+            if (childWidth + lp.leftMargin + lp.rightMargin + lineWidth > width)
+            {
+                // 记录这一行所有的View以及最大高度
+                mLineHeight.add(lineHeight);
+                // 将当前行的childView保存，然后开启新的ArrayList保存下一行的childView
+                mAllViews.add(lineViews);
+                lineWidth = 0;// 重置行宽
+                lineViews = new ArrayList<View>();
             }
-
-            if (maxWidth + childWidth <= parentWidth) {
-                maxWidth += childWidth;
-            } else {
-                maxWidth = 0;
-            }
-            child.layout(lastLeft, lastTop, lastLeft + child.getMeasuredWidth(), lastTop + child.getMeasuredHeight());
-            lastLeft += child.getMeasuredWidth();
-            if (maxWidth == 0) {
-                lastLeft = 0;
-                lastTop += child.getMeasuredHeight();
-            }
-
+            /**
+             * 如果不需要换行，则累加
+             */
+            lineWidth += childWidth + lp.leftMargin + lp.rightMargin;
+            lineHeight = Math.max(lineHeight, childHeight + lp.topMargin
+                    + lp.bottomMargin);
+            lineViews.add(child);
         }
+        // 记录最后一行
+        mLineHeight.add(lineHeight);
+        mAllViews.add(lineViews);
+
+        int left = 0;
+        int top = 0;
+        // 得到总行数
+        int lineNums = mAllViews.size();
+        for (int i = 0; i < lineNums; i++)
+        {
+            // 每一行的所有的views
+            lineViews = mAllViews.get(i);
+            // 当前行的最大高度
+            lineHeight = mLineHeight.get(i);
+
+            Log.e("", "第" + i + "行 ：" + lineViews.size() + " , " + lineViews);
+            Log.e("", "第" + i + "行， ：" + lineHeight);
+
+            // 遍历当前行所有的View
+            for (int j = 0; j < lineViews.size(); j++)
+            {
+                View child = lineViews.get(j);
+                if (child.getVisibility() == View.GONE)
+                {
+                    continue;
+                }
+                MarginLayoutParams lp = (MarginLayoutParams) child
+                        .getLayoutParams();
+
+                //计算childView的left,top,right,bottom
+                int lc = left + lp.leftMargin;
+                int tc = top + lp.topMargin;
+                int rc =lc + child.getMeasuredWidth();
+                int bc = tc + child.getMeasuredHeight();
+
+                Log.e("", child + " , l = " + lc + " , t = " + t + " , r ="
+                        + rc + " , b = " + bc);
+
+                child.layout(lc, tc, rc, bc);
+
+                left += child.getMeasuredWidth() + lp.rightMargin
+                        + lp.leftMargin;
+            }
+            left = 0;
+            top += lineHeight;
+        }
+
+
+
+
+
+//        for (int i = 0; i < childCount; i++) {
+//
+//            View child = getChildAt(i);
+//            int childWidth = getChildWidth(child);
+//            int childHeight = getChildHeight(child);
+//            MarginLayoutParams lp = (MarginLayoutParams) child.getLayoutParams();
+//
+//            lastLeft += lp.leftMargin;
+//            if (maxWidth == 0) {
+//                lastTop += lp.topMargin;
+//            }
+//
+//            if (maxWidth + childWidth <= parentWidth) {
+//                maxWidth += childWidth;
+//                maxHeight = Math.max(child.getMeasuredHeight(), maxHeight);
+//            } else {
+//                maxWidth = 0;
+//                maxHeight += child.getMeasuredHeight();
+//            }
+//            Log.d("onLayout", "child" + i + " l " + lastLeft + " t " + lastTop + " r " + (lastLeft + child.getMeasuredWidth()) + " b " + (lastTop + child.getMeasuredHeight()) + " maxWidth " + maxWidth);
+//            child.layout(lastLeft, lastTop, lastLeft + child.getMeasuredWidth(), lastTop + child.getMeasuredHeight());
+//            lastLeft += child.getMeasuredWidth() + lp.rightMargin;
+//            if (maxWidth == 0) {
+//                lastLeft = 0;
+//                lastTop += maxHeight + lp.bottomMargin;
+//            }
+//
+//        }
     }
 
     /**
@@ -120,5 +215,45 @@ public class WrapLayout extends ViewGroup {
     @Override
     public LayoutParams generateLayoutParams(AttributeSet attrs) {
         return new MarginLayoutParams(getContext(), attrs);
+    }
+
+    class Line {
+        private int height;
+        private List<View> line;
+
+        Line(int height, List line) {
+            this.height = height;
+            this.line = line;
+        }
+
+        Line() {
+            height = 0;
+            line = new ArrayList<View>();
+        }
+
+        public void add(View v) {
+            line.add(v);
+        }
+
+        public void setHeight(int height) {
+            this.height = height;
+        }
+
+        public int getHeight() {
+            return height;
+        }
+
+        public int size() {
+            return line.size();
+        }
+
+        public View get(int i) {
+            return line.get(i);
+        }
+
+        public void clear() {
+            this.line.clear();
+            this.height = 0;
+        }
     }
 }
