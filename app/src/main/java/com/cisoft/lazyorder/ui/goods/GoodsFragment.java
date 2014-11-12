@@ -1,12 +1,18 @@
 package com.cisoft.lazyorder.ui.goods;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.ScaleAnimation;
+import android.view.animation.TranslateAnimation;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
@@ -207,19 +213,21 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
                     convertView.setTag(holder);
                 }
                 holder = (ViewHolder) convertView.getTag();
+                kjb.display(holder.ivGoodsThumb, item.getCmPicture(), holder.ivGoodsThumb.getWidth(), holder.ivGoodsThumb.getHeight());
                 holder.tvGoodsTitle.setText(item.getCmName());
                 holder.btnGoodsPrice.setText(String.valueOf(item.getCmPrice()));
                 holder.btnGoodsPrice.setOnClickListener(new View.OnClickListener() {
+                    //TODO 加入购物车动画
                     @Override
                     public void onClick(View v) {
-                        if (mListener != null) {
-                            mListener.onAddToCart(item);
-                        }
+                        //View srcView = parent.getChildAt(0);
+                        startCartAnim(v, item);
                     }
                 });
+
                 holder.tvGoodsCount.setText(String.valueOf(item.getSalesNum()));
                 holder.tvGoodsType.setText(item.getCatName());
-                kjb.display(holder.ivGoodsThumb, item.getCmPicture(), holder.ivGoodsThumb.getWidth(), holder.ivGoodsThumb.getHeight());
+
 
                 /*以下是展开view*/
                 holder.llExpand.setVisibility(View.GONE);
@@ -228,6 +236,67 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
                     holder.llExpand.setVisibility(View.VISIBLE);
                 }
                 return convertView;
+            }
+
+            private void startCartAnim(final View v, final Goods item) {
+                ((Button)v).setText(item.getCmPrice() + "");
+                v.buildDrawingCache();
+                Bitmap animBitmap = v.getDrawingCache();
+                ImageView ivAnim = new ImageView(getActivity());
+                ivAnim.setImageBitmap(animBitmap);
+                final ViewGroup decorView = (ViewGroup) getActivity().getWindow().getDecorView();
+                final LinearLayout ll = new LinearLayout(getActivity());
+                ll.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+                ll.setBackgroundResource(android.R.color.transparent);
+                decorView.addView(ll);
+                ll.addView(ivAnim);
+
+                int[] locations = new int[2];
+                v.getLocationOnScreen(locations);
+                int x = locations[0];
+                int y = locations[1];
+                Log.d("getLocationOnScreen", x + " " + y);
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                lp.leftMargin = x;
+                lp.topMargin = y;
+                ivAnim.setLayoutParams(lp);
+                int[] cartLocation = mListener.getCartLocation();
+                int deltaX = cartLocation[0] - x;
+                int deltaY = cartLocation[1] - y;
+
+                AnimationSet as = new AnimationSet(false);
+                TranslateAnimation translateX = new TranslateAnimation(0, deltaX, 0, 0);
+                TranslateAnimation translateY = new TranslateAnimation(0, 0, 0, deltaY);
+                translateY.setInterpolator(new AccelerateInterpolator());
+                ScaleAnimation scaleAnimation = new ScaleAnimation(1, 0, 1, 0);
+                scaleAnimation.setInterpolator(new AccelerateInterpolator());
+                as.addAnimation(scaleAnimation);
+                as.addAnimation(translateX);
+                as.addAnimation(translateY);
+                as.setDuration(500);
+
+                as.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+                        v.setEnabled(false);
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        if (mListener != null) {
+                            mListener.onAddToCart(item);
+                        }
+                        decorView.removeView(ll);
+                        v.setEnabled(true);
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
+                });
+
+                ivAnim.startAnimation(as);
             }
 
             class AddToCartListener implements View.OnClickListener {
@@ -331,7 +400,6 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
             }
             mLastVisiblePosition = position;
 
-            //搞定
             MyListView lvComment = (MyListView) view.findViewById(R.id.lv_comment);
             lvComment.getParent().requestDisallowInterceptTouchEvent(true);
             Log.d("onItemClick", lvComment +"");
@@ -391,6 +459,8 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
         public void onAddToCart(Goods goods);
 
         public void onAddToCart(Goods goods, int count);
+
+        public int[] getCartLocation();
 
     }
 

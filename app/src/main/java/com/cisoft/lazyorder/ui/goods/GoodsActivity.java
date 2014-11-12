@@ -2,7 +2,6 @@ package com.cisoft.lazyorder.ui.goods;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
-import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -14,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RadioButton;
@@ -62,6 +62,9 @@ public class GoodsActivity extends BaseActivity implements GoodsFragment.OnFragm
 
     @BindView(id = R.id.btn_go_settle)
     private Button btnGoSettle;
+
+    @BindView(id = R.id.iv_cart_logo)
+    private ImageView ivCartLogo;
 
     private ListView lvSwitchCategory;
 
@@ -285,6 +288,15 @@ public class GoodsActivity extends BaseActivity implements GoodsFragment.OnFragm
         goodsCart.addGoods(goods, count);
         tvOrderedCount.setText(goodsCart.getTotalCount() + "");
         tvOrderedPrice.setText("￥" + goodsCart.getTotalPrice());
+    }
+
+    @Override
+    public int[] getCartLocation() {
+        int[] location = new int[2];
+        ivCartLogo.getLocationOnScreen(location);
+        location[0] = location[0] + ivCartLogo.getWidth() / 2;
+        location[1] = location[1] + ivCartLogo.getHeight() / 2;
+        return location;
     }
 
     public int getShopId() {
