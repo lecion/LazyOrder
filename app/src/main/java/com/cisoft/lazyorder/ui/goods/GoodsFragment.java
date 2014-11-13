@@ -88,6 +88,8 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
 
     private int shopId;
 
+    private String shopAddress;
+
     private int page;
 
     public static int size = 5;
@@ -104,7 +106,11 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
     private MyListView lvGoods;
 
     private BaseAdapter mAdapter;
+
+    private boolean isLoadMore = false;
+
     private GoodsService goodsService;
+
 
     public GoodsFragment() {
         page = 1;
@@ -161,12 +167,13 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
      * 程序第一次页面进入时，加载第一页商品
      */
     public void loadGoodsDataAtFirstTime() {
+        page = 1;
         showLoadingTip();
         INetWorkFinished<Goods> netWorkFinishedListener = new INetWorkFinished<Goods>() {
             @Override
             public void onSuccess(List<Goods> l) {
                 hideLoadingTip();
-                if (l.size() == 0) {
+                if (l.size() == 0 || l.size() < size) {
                     showNoValueTip();
                 } else {
                     setGoodsData(l);
@@ -199,29 +206,36 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
             @Override
             public void onRefresh() {
                 lvGoods.stopRefreshData();
-                page = 1;
                 loadGoodsDataAtFirstTime();
                 //ViewInject.toast("刷新完成");
             }
 
             @Override
             public void onLoadMore() {
+                //TODO 解决分页最后一页的问题
                 lvGoods.stopRefreshData();
+                if (isLoadMore) {
+                    return;
+                }
+                isLoadMore = true;
                 INetWorkFinished netWorkFinishedListener = new INetWorkFinished<Goods>() {
                     @Override
                     public void onSuccess(List<Goods> l) {
-                        if (l.size() == 0) {
+                        if (l.size() == 0 || l.size() < size) {
                             ViewInject.toast("已经加载完了~");
                         } else {
                             setGoodsData(l);
                         }
+                        isLoadMore = false;
                     }
 
                     @Override
                     public void onFailure(String info) {
                         //TODO 临时处理=>加载更多商品出错
                         ViewInject.toast(info);
+                        isLoadMore = false;
                     }
+
                 };
 
                 if (type == 0) {
@@ -243,7 +257,8 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
      */
     public void setGoodsData(List<Goods> goodsData) {
         if (page == 1) {
-            this.goodsData = goodsData;
+            this.goodsData.clear();
+            this.goodsData.addAll(goodsData);
             mAdapter.notifyDataSetChanged();
             //滚动到顶部
             lvGoods.setSelection(0);
@@ -375,7 +390,9 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
 
             @Override
             public Object getItem(int position) {
-                return goodsData.get(position);
+                Goods g = goodsData.get(position);
+                g.setShopId(shopId);
+                return g;
             }
 
             @Override
@@ -405,7 +422,7 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
                 holder = (ViewHolder) convertView.getTag();
                 kjb.display(holder.ivGoodsThumb, item.getCmPicture(), holder.ivGoodsThumb.getWidth(), holder.ivGoodsThumb.getHeight());
                 holder.tvGoodsTitle.setText(item.getCmName());
-
+                holder.tvGoodsAddress.setText(shopAddress);
                 holder.btnGoodsPrice.setText(String.valueOf(item.getCmPrice()));
 
                 final View animView = holder.btnGoodsPrice;
@@ -600,7 +617,7 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
                 as.addAnimation(scaleAnimation);
                 as.addAnimation(translateX);
                 as.addAnimation(translateY);
-                as.setDuration(500);
+                as.setDuration(300);
                 return as;
             }
 
@@ -648,7 +665,8 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
         try {
             mListener = (OnFragmentInteractionListener) activity;
             shopId = ((GoodsActivity)activity).getShopId();
-            ((GoodsActivity) activity).addSwitchTypeObserver(this);
+            shopAddress = ((GoodsActivity) activity).getShopAddress();
+                    ((GoodsActivity) activity).addSwitchTypeObserver(this);
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnFragmentInteractionListener");

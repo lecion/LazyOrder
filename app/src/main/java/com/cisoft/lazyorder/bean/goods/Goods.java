@@ -21,6 +21,7 @@ public class Goods extends AbsBean implements Serializable{
     private int salesNum;
     private double cmPrice;
     private int orderNum;
+    private int shopId;
 
     public Goods(int salesNum, int id, String cmName, String cmPicture, int cateId, String catName, double cmPrice) {
         this.salesNum = salesNum;
@@ -103,6 +104,14 @@ public class Goods extends AbsBean implements Serializable{
         this.cmPrice = cmPrice;
     }
 
+    public int getShopId() {
+        return shopId;
+    }
+
+    public void setShopId(int shopId) {
+        this.shopId = shopId;
+    }
+
     @Override
     public void parse(JSONObject jsonObj) {
         try {
@@ -130,4 +139,6 @@ public class Goods extends AbsBean implements Serializable{
             e.printStackTrace();
         }
     }
+
+
 }

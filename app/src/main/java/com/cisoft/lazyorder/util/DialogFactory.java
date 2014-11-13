@@ -1,8 +1,9 @@
 package com.cisoft.lazyorder.util;
 
-import android.app.ActivityManager;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
@@ -31,5 +32,27 @@ public class DialogFactory {
             tvLoadLabel.setText(tip);
         }
         return dialog;
+    }
+
+    public static Dialog createConfirmDialog(Context context, String msg, final IConfirm onClick) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("友情提醒").setMessage(msg).setPositiveButton("残忍清空", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (onClick != null) {
+                    onClick.onYes();
+                }
+            }
+        }).setNegativeButton("再看看", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        return builder.create();
+    }
+
+    public interface IConfirm{
+        public void onYes();
     }
 }

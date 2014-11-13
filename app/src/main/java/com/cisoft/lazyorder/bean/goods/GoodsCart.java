@@ -12,7 +12,6 @@ public class GoodsCart {
 
     private static GoodsCart cart;
 
-
     /**
      * 商品对应的数量
      */
@@ -35,6 +34,28 @@ public class GoodsCart {
             }
         }
         return cart;
+    }
+
+    /**
+     * 判断是否是同一家商店
+     * @param shopId
+     * @return
+     */
+    public boolean isSameShop(int shopId) {
+        boolean flag = true;
+        if (getTotalCount() == 0) {
+            flag = true;
+        } else {
+            Iterator iterator = goodsList.entrySet().iterator();
+            if (iterator.hasNext()) {
+                Map.Entry entry = (Map.Entry) iterator.next();
+                Goods g = (Goods) entry.getValue();
+                flag = g.getShopId() == shopId ? true : false;
+                //Log.d("isSameShop", "getSHopId " + g.getShopId());
+            }
+        }
+//        Log.d("isSameShop", " shopId " + shopId + "  ");
+        return flag;
     }
 
     /**

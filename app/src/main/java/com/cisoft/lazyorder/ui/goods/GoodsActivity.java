@@ -1,7 +1,9 @@
 package com.cisoft.lazyorder.ui.goods;
 
+import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -25,13 +27,14 @@ import com.cisoft.lazyorder.R;
 import com.cisoft.lazyorder.bean.goods.Goods;
 import com.cisoft.lazyorder.bean.goods.GoodsCart;
 import com.cisoft.lazyorder.bean.goods.GoodsCategory;
+import com.cisoft.lazyorder.bean.shop.Shop;
 import com.cisoft.lazyorder.core.goods.CategoryService;
-import com.cisoft.lazyorder.core.goods.GoodsService;
 import com.cisoft.lazyorder.core.goods.INetWorkFinished;
 import com.cisoft.lazyorder.core.goods.ISwitchType;
 import com.cisoft.lazyorder.finals.ApiConstants;
 import com.cisoft.lazyorder.ui.search.SearchActivity;
 import com.cisoft.lazyorder.ui.sureorder.SureOrderActivity;
+import com.cisoft.lazyorder.util.DialogFactory;
 
 import org.kymjs.aframe.KJLoger;
 import org.kymjs.aframe.ui.BindView;
@@ -76,13 +79,16 @@ public class GoodsActivity extends BaseActivity implements GoodsFragment.OnFragm
 
     private PopupWindow popupWindow;
 
-    public static final String KEY_SHOP_ID = "shop_id";
+    public static final String KEY_SHOP_ID = ApiConstants.KEY_MER_ID;
 
-    private int shopId = 1;
+    //private int shopId = 1;
 
     private CategoryService categoryService;
 
-    private GoodsService goodsService;
+    private Shop shop;
+
+    private Dialog clearCartDialog;
+
     /**
      * 切换商品观察者
      */
@@ -96,7 +102,13 @@ public class GoodsActivity extends BaseActivity implements GoodsFragment.OnFragm
     @Override
     public void setRootView() {
         setContentView(R.layout.activity_goods);
-        shopId = getIntent().getExtras().getInt(KEY_SHOP_ID, 1);
+        shop = new Shop();
+        Bundle bundle = getIntent().getExtras();
+        shop.setAddress(bundle.getString(ApiConstants.KEY_MER_ADDRESS));
+        shop.setId(bundle.getInt(KEY_SHOP_ID, 1));
+        shop.setPromotionInfo(ApiConstants.KEY_MER_PROMOTION_INFO);
+        shop.setName(ApiConstants.KEY_MER_NAME);
+        //shopId = getIntent().getExtras().getInt(KEY_SHOP_ID, 1);
     }
 
     private void initActionBar() {
@@ -113,10 +125,9 @@ public class GoodsActivity extends BaseActivity implements GoodsFragment.OnFragm
     @Override
     protected void initData() {
         categoryService = new CategoryService(this, ApiConstants.MODULE_COM_CATEGORY);
-        goodsService = new GoodsService(this, ApiConstants.MODULE_COMMODITY);
         categoryList = new ArrayList<GoodsCategory>();
         //初始化商品类别
-        categoryService.loadCateogryByShopId(shopId, new INetWorkFinished<GoodsCategory>() {
+        categoryService.loadCateogryByShopId(shop.getId(), new INetWorkFinished<GoodsCategory>() {
             @Override
             public void onSuccess(List<GoodsCategory> l) {
                 setCateogryData(l);
@@ -127,6 +138,7 @@ public class GoodsActivity extends BaseActivity implements GoodsFragment.OnFragm
                 ViewInject.toast(info);
             }
         });
+        setCartView();
     }
 
     @Override
@@ -300,17 +312,38 @@ public class GoodsActivity extends BaseActivity implements GoodsFragment.OnFragm
         switchTypeObservers.add(observer);
     }
 
+    private void setCartView() {
+        AppContext app = (AppContext) getApplication();
+        GoodsCart goodsCart = app.getGoodsCart();
+        tvOrderedCount.setText(goodsCart.getTotalCount() + "");
+        tvOrderedPrice.setText("￥" + goodsCart.getTotalPrice());
+    }
+
     /**
      * 加入购物车的回调
      * @param goods
      */
     @Override
-    public void onAddToCart(Goods goods) {
+    public void onAddToCart(final Goods goods) {
         AppContext app = (AppContext) getApplication();
-        GoodsCart goodsCart = app.getGoodsCart();
-        goodsCart.addGoods(goods);
-        tvOrderedCount.setText(goodsCart.getTotalCount() + "");
-        tvOrderedPrice.setText("￥" + goodsCart.getTotalPrice());
+        final GoodsCart goodsCart = app.getGoodsCart();
+        if (!goodsCart.isSameShop(shop.getId())) {
+            if (clearCartDialog == null) {
+                clearCartDialog = DialogFactory.createConfirmDialog(this, "发现不属于我家的宝贝，是否清空它们？", new DialogFactory.IConfirm() {
+                    @Override
+                    public void onYes() {
+                        goodsCart.clear();
+                        goodsCart.addGoods(goods);
+                        setCartView();
+                    }
+                });
+            }
+            clearCartDialog.show();
+        } else {
+            goodsCart.addGoods(goods);
+            tvOrderedCount.setText(goodsCart.getTotalCount() + "");
+            tvOrderedPrice.setText("￥" + goodsCart.getTotalPrice());
+        }
     }
 
     /**
@@ -319,12 +352,28 @@ public class GoodsActivity extends BaseActivity implements GoodsFragment.OnFragm
      * @param count
      */
     @Override
-    public void onAddToCart(Goods goods, int count) {
+    public void onAddToCart(final Goods goods, int count) {
         AppContext app = (AppContext) getApplication();
-        GoodsCart goodsCart = app.getGoodsCart();
-        goodsCart.addGoods(goods, count);
-        tvOrderedCount.setText(goodsCart.getTotalCount() + "");
-        tvOrderedPrice.setText("￥" + goodsCart.getTotalPrice());
+        final GoodsCart goodsCart = app.getGoodsCart();
+        if (!goodsCart.isSameShop(shop.getId())) {
+            if (clearCartDialog == null) {
+                clearCartDialog = DialogFactory.createConfirmDialog(this, "发现不属于我家的宝贝，是否清空它们？", new DialogFactory.IConfirm() {
+                    @Override
+                    public void onYes() {
+                        goodsCart.clear();
+                        goodsCart.addGoods(goods);
+                        setCartView();
+                    }
+                });
+            }
+            clearCartDialog.show();
+        } else {
+            goodsCart.addGoods(goods, count);
+            tvOrderedCount.setText(goodsCart.getTotalCount() + "");
+            tvOrderedPrice.setText("￥" + goodsCart.getTotalPrice());
+        }
+
+
     }
 
     @Override
@@ -337,14 +386,16 @@ public class GoodsActivity extends BaseActivity implements GoodsFragment.OnFragm
     }
 
     public int getShopId() {
-        return shopId;
+        return shop.getId();
+    }
+
+    public String getShopAddress() {
+        return shop.getAddress();
     }
 
     public void setCateogryData(List<GoodsCategory> goodsCategoryList) {
         this.categoryList = goodsCategoryList;
         categoryAdapter.notifyDataSetChanged();
     }
-
-
 
 }

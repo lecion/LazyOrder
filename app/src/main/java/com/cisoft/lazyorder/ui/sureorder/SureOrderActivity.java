@@ -8,7 +8,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
+
 import com.cisoft.lazyorder.R;
 import com.cisoft.lazyorder.bean.goods.Goods;
 import com.cisoft.lazyorder.bean.goods.GoodsCart;
