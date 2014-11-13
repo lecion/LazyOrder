@@ -28,7 +28,7 @@
             android:label="@string/title_activity_goods">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.cisoft.lazyorder.ui.shop.ShopActivity" />
+                android:value="com.cisoft.lazyorder.ui.main.MainActivity" />
         </activity>
         <activity
             android:name=".ui.search.SearchActivity"

@@ -82,11 +82,6 @@ public class GoodsActivity extends BaseActivity implements GoodsFragment.OnFragm
 
     private GoodsService goodsService;
 
-
-
-
-
-
     public GoodsActivity() {
         super();
         setHiddenActionBar(false);
@@ -114,6 +109,7 @@ public class GoodsActivity extends BaseActivity implements GoodsFragment.OnFragm
         categoryService = new CategoryService(this, ApiConstants.MODULE_COM_CATEGORY);
         goodsService = new GoodsService(this, ApiConstants.MODULE_COMMODITY);
         categoryList = new ArrayList<GoodsCategory>();
+        //初始化商品类别
         categoryService.loadCateogryByShopIdFromNet(shopId);
     }
 
@@ -179,7 +175,7 @@ public class GoodsActivity extends BaseActivity implements GoodsFragment.OnFragm
                 ((GoodsFragment)getFragmentManager().findFragmentByTag("price")).init(1);
                 //showFragment("pop");
                 rbPop.toggle();
-                goodsService.loadGoodsDataByTypeFromNet(shopId, getCategoryIdByPosition(position), 1, GoodsFragment.size, GoodsFragment.ORDER_POP);
+                goodsService.loadGoodsListByType(shopId, getCategoryIdByPosition(position), 1, GoodsFragment.size, GoodsFragment.ORDER_POP);
                 popupWindow.dismiss();
             }
 
