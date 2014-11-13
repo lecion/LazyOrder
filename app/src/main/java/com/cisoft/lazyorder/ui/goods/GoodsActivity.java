@@ -198,7 +198,6 @@ public class GoodsActivity extends BaseActivity implements GoodsFragment.OnFragm
         lvSwitchCategory = (ListView) popView.findViewById(R.id.lv_switch_type);
         lvSwitchCategory.setAdapter(categoryAdapter);
         lvSwitchCategory.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            //TODO 完善类别切换
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 popupWindow.dismiss();
