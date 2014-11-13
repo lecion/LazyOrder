@@ -47,7 +47,7 @@
         android:layout_toLeftOf="@+id/tvGoodsTotalPriceLabel"/>
 
     <TextView
-        android:id="@+id/tvGoodName"
+        android:id="@+id/tvONSVGoodName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:singleLine="true"
