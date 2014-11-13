@@ -212,7 +212,6 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
 
             @Override
             public void onLoadMore() {
-                //TODO 解决分页最后一页的问题
                 lvGoods.stopRefreshData();
                 if (isLoadMore) {
                     return;
