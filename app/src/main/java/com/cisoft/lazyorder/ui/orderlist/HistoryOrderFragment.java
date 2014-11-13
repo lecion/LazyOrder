@@ -6,13 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 
 import com.cisoft.lazyorder.R;
 import com.cisoft.lazyorder.bean.orderlist.HistoryOrder;
-import com.cisoft.lazyorder.bean.shop.Shop;
 import com.cisoft.lazyorder.core.orderlist.HistoryOrderService;
-import com.cisoft.lazyorder.core.shop.ShopService;
 import com.cisoft.lazyorder.util.DialogFactory;
 import com.cisoft.lazyorder.widget.MyListView;
 

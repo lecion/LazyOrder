@@ -88,27 +88,47 @@ public class WrapLayout extends ViewGroup {
         for (int i = 0; i < cCount; i++)
         {
             View child = getChildAt(i);
-            MarginLayoutParams lp = (MarginLayoutParams) child
-                    .getLayoutParams();
             int childWidth = child.getMeasuredWidth();
             int childHeight = child.getMeasuredHeight();
-
-            // 如果已经需要换行
-            if (childWidth + lp.leftMargin + lp.rightMargin + lineWidth > width)
-            {
-                // 记录这一行所有的View以及最大高度
-                mLineHeight.add(lineHeight);
-                // 将当前行的childView保存，然后开启新的ArrayList保存下一行的childView
-                mAllViews.add(lineViews);
-                lineWidth = 0;// 重置行宽
-                lineViews = new ArrayList<View>();
+            LayoutParams params = child.getLayoutParams();
+            if (params instanceof MarginLayoutParams) {
+                MarginLayoutParams lp = (MarginLayoutParams) child.getLayoutParams();
+                // 如果已经需要换行
+                if (childWidth + lp.leftMargin + lp.rightMargin + lineWidth > width)
+                {
+                    // 记录这一行所有的View以及最大高度
+                    mLineHeight.add(lineHeight);
+                    // 将当前行的childView保存，然后开启新的ArrayList保存下一行的childView
+                    mAllViews.add(lineViews);
+                    lineWidth = 0;// 重置行宽
+                    lineViews = new ArrayList<View>();
+                }
+                /**
+                 * 如果不需要换行，则累加
+                 */
+                lineWidth += childWidth + lp.leftMargin + lp.rightMargin;
+                lineHeight = Math.max(lineHeight, childHeight + lp.topMargin
+                        + lp.bottomMargin);
+            } else {
+                if (childWidth + lineWidth > width)
+                {
+                    // 记录这一行所有的View以及最大高度
+                    mLineHeight.add(lineHeight);
+                    // 将当前行的childView保存，然后开启新的ArrayList保存下一行的childView
+                    mAllViews.add(lineViews);
+                    lineWidth = 0;// 重置行宽
+                    lineViews = new ArrayList<View>();
+                }
+                /**
+                 * 如果不需要换行，则累加
+                 */
+                lineWidth += childWidth;
+                lineHeight = Math.max(lineHeight, childHeight);
             }
-            /**
-             * 如果不需要换行，则累加
-             */
-            lineWidth += childWidth + lp.leftMargin + lp.rightMargin;
-            lineHeight = Math.max(lineHeight, childHeight + lp.topMargin
-                    + lp.bottomMargin);
+
+
+
+
             lineViews.add(child);
         }
         // 记录最后一行
@@ -137,12 +157,19 @@ public class WrapLayout extends ViewGroup {
                 {
                     continue;
                 }
-                MarginLayoutParams lp = (MarginLayoutParams) child
-                        .getLayoutParams();
+                LayoutParams params = child.getLayoutParams();
 
-                //计算childView的left,top,right,bottom
-                int lc = left + lp.leftMargin;
-                int tc = top + lp.topMargin;
+                int lc = left;
+                int tc = top;
+
+                if (params instanceof MarginLayoutParams) {
+                    MarginLayoutParams lp = (MarginLayoutParams) child
+                            .getLayoutParams();
+                    //计算childView的left,top,right,bottom
+                    lc = left + lp.leftMargin;
+                    tc = top + lp.topMargin;
+                }
+
                 int rc =lc + child.getMeasuredWidth();
                 int bc = tc + child.getMeasuredHeight();
 
@@ -151,8 +178,9 @@ public class WrapLayout extends ViewGroup {
 
                 child.layout(lc, tc, rc, bc);
 
-                left += child.getMeasuredWidth() + lp.rightMargin
-                        + lp.leftMargin;
+                //left += child.getMeasuredWidth() + lp.rightMargin
+                //        + lp.leftMargin;
+                left += getChildWidth(child);
             }
             left = 0;
             top += lineHeight;
@@ -198,8 +226,13 @@ public class WrapLayout extends ViewGroup {
      * @return
      */
     private int getChildWidth(View v) {
-        MarginLayoutParams lp = (MarginLayoutParams) v.getLayoutParams();
-        return lp.leftMargin + lp.rightMargin + v.getMeasuredWidth();
+        LayoutParams params = v.getLayoutParams();
+        if (params instanceof MarginLayoutParams) {
+            MarginLayoutParams lp = (MarginLayoutParams) v.getLayoutParams();
+            return lp.leftMargin + lp.rightMargin + v.getMeasuredWidth();
+        } else {
+            return v.getMeasuredWidth();
+        }
     }
 
     /**
@@ -208,8 +241,13 @@ public class WrapLayout extends ViewGroup {
      * @return
      */
     private int getChildHeight(View v) {
-        MarginLayoutParams lp = (MarginLayoutParams) v.getLayoutParams();
-        return lp.topMargin + lp.bottomMargin + v.getMeasuredHeight();
+        LayoutParams params = v.getLayoutParams();
+        if (params instanceof MarginLayoutParams) {
+            MarginLayoutParams lp = (MarginLayoutParams) v.getLayoutParams();
+            return lp.topMargin + lp.bottomMargin + v.getMeasuredHeight();
+        } else {
+            return v.getMeasuredHeight();
+        }
     }
 
     @Override
