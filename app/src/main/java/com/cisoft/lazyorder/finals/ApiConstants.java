@@ -30,6 +30,8 @@ public class ApiConstants {
 
     public static final String MODULE_BUILD = "building";
 
+    public static final String MODULE_HISTORY_ORDER = "order";
+
 
     /* 这里存放API接口里的方法名,以"METHOD_+模块名"打头 */
     public static final String METHOD_MERCHANTS_FIND_BY_TYPE_ID = "findMerchantsOrCanteen";
@@ -42,6 +44,7 @@ public class ApiConstants {
 
     public static final String METHOD_BUILD_FIND_ALL = "findBuildings";
 
+    public static final String METHOD_HIS_ORDER_FIND_ALL = "findOrderByUserPhone";
 
 
     /* 这里存放返回json的key,以"KEY_ + 模块名简写"打头,以模块扎堆↖(^ω^)↗ */
@@ -97,5 +100,17 @@ public class ApiConstants {
     public static final String KEY_BUILD_SCHOOL_ID = "schoolId";
 
 
-
+    public static final String KEY_HIS_ORDER_DATA = "data";
+    public static final String KEY_HIS_ORDER_PAGE = "page";
+    public static final String KEY_HIS_ORDER_PAGER = "size";
+    public static final String KEY_HIS_ORDER_USER_PHONE = "userPhone";
+    public static final String KEY_HIS_ORDER_ID = "id";
+    public static final String KEY_HIS_ORDER_MER_ID = "merId";
+    public static final String KEY_HIS_ORDER_MER_NAME = "merName";
+    public static final String KEY_HIS_ORDER_TIME = "orderDate";
+    public static final String KEY_HIS_ORDER_ADDRESS = "address";
+    public static final String KEY_HIS_ORDER_GOOD_LIST = "orderComVOlist";
+    public static final String KEY_HIS_ORDER_TOTAL_PRICE = "moneyAll";
+    public static final String KEY_HIS_ORDER_GOOD_NAME = "comName";
+    public static final String KEY_HIS_ORDER_GOOD_COUNT = "comNum";
 }

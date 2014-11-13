@@ -16,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import com.cisoft.lazyorder.R;
+import com.cisoft.lazyorder.ui.orderlist.HistoryOrderFragment;
 import com.cisoft.lazyorder.ui.shop.ShopFragment;
 import org.kymjs.aframe.ui.BindView;
 import org.kymjs.aframe.ui.fragment.BaseFragment;
@@ -243,6 +244,7 @@ public class NavDrawerFragment extends BaseFragment {
 
         switch (menuItemId) {
             case MENU_HISTORY_ORDER:
+                fragment = new HistoryOrderFragment();
                 break;
             case MENU_USER_CENTER:
                 break;

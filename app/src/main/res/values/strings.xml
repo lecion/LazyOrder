@@ -16,6 +16,7 @@
     <string name="no_net_service">抱歉,当前没有网络</string>
     <string name="net_too_poor">连接超时,请检查你的网络设置</string>
     <string name="have_not_shop_list">抱歉,目前还没有店家列表的数据</string>
+    <string name="have_not_history_order_list">抱歉,您目前还没有订单，先去下单吧</string>
     <string name="service_have_error_exception">抱歉！服务器出现异常，请稍候再试</string>
     <string name="loading_goods_list">正在加载商品列表中,请稍候...</string>
     <string name="fail_to_load_goods_list">加载商品列表失败,请稍候再试</string>
@@ -49,5 +50,6 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_example">Example action</string>
     <string name="title_activity_test">TestActivity</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

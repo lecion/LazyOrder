@@ -1,6 +1,9 @@
 package com.cisoft.lazyorder.ui.main;
 
 import android.support.v4.widget.DrawerLayout;
+import android.view.Menu;
+import android.view.MenuItem;
+
 import com.cisoft.lazyorder.R;
 import org.kymjs.aframe.ui.activity.BaseActivity;
 
@@ -38,4 +41,13 @@ public class MainActivity extends BaseActivity{
                 (DrawerLayout) findViewById(R.id.dlNavDrawerLayout));
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return super.onOptionsItemSelected(item);
+    }
 }

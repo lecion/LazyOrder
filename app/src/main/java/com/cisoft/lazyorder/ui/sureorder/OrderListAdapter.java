@@ -7,14 +7,11 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.cisoft.lazyorder.R;
 import com.cisoft.lazyorder.bean.goods.Goods;
 import com.cisoft.lazyorder.bean.goods.GoodsCart;
 import com.cisoft.lazyorder.widget.OrderNumView;
-
-import org.kymjs.aframe.ui.ViewInject;
 
 import java.util.List;
 
@@ -70,7 +67,7 @@ public class OrderListAdapter extends BaseAdapter implements View.OnClickListene
         if (convertView == null) {
             convertView = LayoutInflater.from(context).inflate(R.layout.activity_sure_order_list_cell, null);
             viewHolder = new ViewHolder();
-            viewHolder.tvGoodName = (TextView) convertView.findViewById(R.id.tvGoodName);
+            viewHolder.tvGoodName = (TextView) convertView.findViewById(R.id.tvONSVGoodName);
             viewHolder.tvGoodsTotalPrice = (TextView) convertView.findViewById(R.id.tvGoodsTotalPrice);
             viewHolder.onvGoodOrderNum = (OrderNumView) convertView.findViewById(R.id.onvGoodOrderNum);
             viewHolder.onvGoodOrderNum.setOnOrderNumChangeListener(this);

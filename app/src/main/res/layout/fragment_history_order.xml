@@ -1,0 +1,34 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/history_order_bg_color"
+    tools:context="com.cisoft.lazyorder.ui.orderlist.HistoryOrderFragment">
+
+    <com.cisoft.lazyorder.widget.MyListView
+        android:id="@+id/lvHistoryOrderList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:divider="@null"
+        android:dividerHeight="15dp"
+        android:listSelector="@android:color/transparent"
+        android:fadingEdge="none"
+        android:overScrollMode="never"
+        android:scrollbars="none"/>
+
+    <LinearLayout
+        android:id="@+id/llShowNoValueTip"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:visibility="gone">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@color/loading_shop_list_text_color"
+            android:text="@string/have_not_history_order_list"/>
+    </LinearLayout>
+</FrameLayout>
