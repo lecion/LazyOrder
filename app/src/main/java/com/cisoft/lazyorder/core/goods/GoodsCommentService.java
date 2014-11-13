@@ -5,7 +5,6 @@ import android.content.Context;
 
 import com.cisoft.lazyorder.R;
 import com.cisoft.lazyorder.bean.goods.Comment;
-import com.cisoft.lazyorder.bean.shop.Shop;
 import com.cisoft.lazyorder.core.AbsService;
 import com.cisoft.lazyorder.finals.ApiConstants;
 import com.cisoft.lazyorder.ui.goods.GoodsFragment;
@@ -50,8 +49,6 @@ public class GoodsCommentService extends AbsService{
                 try {
                     JSONObject jsonObj = new JSONObject(result);
                     JSONArray commentArr = jsonObj.getJSONArray(ApiConstants.KEY_MER_DATA);
-
-
                     if (commentArr.length() == 0) {
                         if (page == 1) {	//第一页就空数据的话就显示提示
                             f.showNoValueTip();
@@ -199,9 +196,9 @@ public class GoodsCommentService extends AbsService{
      */
     public GoodsFragment getFragmentBySortType(String sortType) {
         GoodsFragment f = null;
-        if (sortType.equals(GoodsFragment.ORDER_POP)) {
+        if (sortType.equals(GoodsFragment.ORDER_SALES_NUM)) {
             //销量排序
-            f = ((GoodsFragment)((Activity)context).getFragmentManager().findFragmentByTag(GoodsFragment.ORDER_POP));
+            f = ((GoodsFragment)((Activity)context).getFragmentManager().findFragmentByTag(GoodsFragment.ORDER_SALES_NUM));
         } else {
             f = ((GoodsFragment)((Activity)context).getFragmentManager().findFragmentByTag(GoodsFragment.ORDER_PRICE));
         }

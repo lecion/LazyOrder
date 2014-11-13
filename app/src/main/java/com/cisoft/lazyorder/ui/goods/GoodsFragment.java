@@ -26,8 +26,9 @@ import android.widget.TextView;
 import com.cisoft.lazyorder.R;
 import com.cisoft.lazyorder.bean.goods.Comment;
 import com.cisoft.lazyorder.bean.goods.Goods;
-import com.cisoft.lazyorder.core.goods.GoodsCommentService;
 import com.cisoft.lazyorder.core.goods.GoodsService;
+import com.cisoft.lazyorder.core.goods.INetWorkFinished;
+import com.cisoft.lazyorder.core.goods.ISwitchType;
 import com.cisoft.lazyorder.finals.ApiConstants;
 import com.cisoft.lazyorder.util.DialogFactory;
 import com.cisoft.lazyorder.widget.MyListView;
@@ -42,10 +43,21 @@ import org.kymjs.aframe.ui.fragment.BaseFragment;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GoodsFragment extends BaseFragment implements AbsListView.OnItemClickListener {
+public class GoodsFragment extends BaseFragment implements AbsListView.OnItemClickListener, ISwitchType{
 
     public static final String ARG_GOODS_ORDER = "goods_order";
+
+    public static final String ARG_GOODS_TYPE = "goods_type";
+
+    /**
+     * 商品排序
+     */
     private String goodsOrder;
+
+    /**
+     * fragment所属的商品类别
+     */
+    private int type;
 
     /**
      * 商品数据
@@ -68,9 +80,9 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
      */
     private Dialog loadingTipDialog;
 
-    public static final String ORDER_POP = "pop";
+    public static final String ORDER_SALES_NUM = "salesNum";
 
-    public static final String ORDER_PRICE = "price";
+    public static final String ORDER_PRICE = "cmPrice";
 
     private OnFragmentInteractionListener mListener;
 
@@ -93,15 +105,6 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
 
     private BaseAdapter mAdapter;
     private GoodsService goodsService;
-    private GoodsCommentService commentService;
-
-    public static GoodsFragment newInstance(String goodsOrder) {
-        GoodsFragment fragment = new GoodsFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_GOODS_ORDER, goodsOrder);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     public GoodsFragment() {
         page = 1;
@@ -111,12 +114,21 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
         initAdapter();
     }
 
+    public static GoodsFragment newInstance(String goodsOrder, int goodsType) {
+        GoodsFragment fragment = new GoodsFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_GOODS_ORDER, goodsOrder);
+        args.putInt(ARG_GOODS_TYPE, goodsType);
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             goodsOrder = getArguments().getString(ARG_GOODS_ORDER);
+            type = getArguments().getInt(ARG_GOODS_TYPE);
         }
         goodsService = new GoodsService(getActivity(), ApiConstants.MODULE_COMMODITY);
         //commentService = new GoodsCommentService(getActivity());
@@ -130,7 +142,6 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
 
     @Override
     protected void initData() {
-        showLoadingTip();
         loadGoodsDataAtFirstTime();
     }
 
@@ -150,7 +161,8 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
      * 程序第一次页面进入时，加载第一页商品
      */
     public void loadGoodsDataAtFirstTime() {
-        goodsService.loadGoodsList(shopId, 1, size, goodsOrder, new GoodsService.onNetwordFinished<Goods>() {
+        showLoadingTip();
+        INetWorkFinished<Goods> netWorkFinishedListener = new INetWorkFinished<Goods>() {
             @Override
             public void onSuccess(List<Goods> l) {
                 hideLoadingTip();
@@ -166,7 +178,14 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
                 ViewInject.toast(info);
                 showNoValueTip();
             }
-        });
+        };
+        if (type == 0) {
+            //加载全部商品
+            goodsService.loadGoodsList(shopId, 1, size, goodsOrder, netWorkFinishedListener);
+        } else {
+            //根据类别加载商品
+            goodsService.loadGoodsListByType(shopId, type, 1, size, goodsOrder, netWorkFinishedListener);
+        }
     }
 
     /**
@@ -188,7 +207,7 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
             @Override
             public void onLoadMore() {
                 lvGoods.stopRefreshData();
-                goodsService.loadGoodsList(shopId, ++page, size, goodsOrder, new GoodsService.onNetwordFinished<Goods>() {
+                INetWorkFinished netWorkFinishedListener = new INetWorkFinished<Goods>() {
                     @Override
                     public void onSuccess(List<Goods> l) {
                         if (l.size() == 0) {
@@ -203,18 +222,19 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
                         //TODO 临时处理=>加载更多商品出错
                         ViewInject.toast(info);
                     }
-                });
+                };
+
+                if (type == 0) {
+                    goodsService.loadGoodsList(shopId, ++page, size, goodsOrder, netWorkFinishedListener);
+                } else {
+                    goodsService.loadGoodsListByType(shopId, type, ++page, size, goodsOrder, netWorkFinishedListener);
+                }
             }
         });
     }
 
     public void setPullLoadEnable(boolean enable) {
         lvGoods.setPullLoadEnable(enable);
-    }
-
-    public void init(int page) {
-        this.page = page;
-        this.goodsOrder = ORDER_POP;
     }
 
     /**
@@ -224,11 +244,15 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
     public void setGoodsData(List<Goods> goodsData) {
         if (page == 1) {
             this.goodsData = goodsData;
+            mAdapter.notifyDataSetChanged();
+            //滚动到顶部
+            lvGoods.setSelection(0);
             Log.d("setGoodsData", goodsData + " this :" + this);
         } else {
             this.goodsData.addAll(goodsData);
+            mAdapter.notifyDataSetChanged();
         }
-        mAdapter.notifyDataSetChanged();
+
     }
 
     /**
@@ -261,14 +285,6 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
         llShowNoValueTip.setVisibility(View.VISIBLE);
         if(loadingTipDialog !=null && loadingTipDialog.isShowing())
             loadingTipDialog.dismiss();
-    }
-
-    /**
-     * 网络请求结束后回复状态
-     */
-    public void restoreState() {
-        ///llLoadingGoodsListTip.setVisibility(View.GONE);
-        lvGoods.stopRefreshData();
     }
 
     /**
@@ -322,24 +338,14 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
         }
     }
 
-
     /**
-     * 显示评论
-     * @param lvComment
-     * @param position
+     * 类型被选择时调用
+     * @param type
      */
-    private void loadComment(final MyListView lvComment, int position) {
-
-        int goodsId = goodsData.get(position - 1).getId();
-        commentService.loadAllCommentByGoodsId(lvComment, goodsId, 1, 2, goodsOrder, new CommentHandler() {
-            @Override
-            public void handleComment(List<Comment> data) {
-                List<Comment> comments = data;
-                CommentAdapter adapter = new CommentAdapter(getActivity(), comments);
-                lvComment.setAdapter(adapter);
-                //Utility.setListViewHeightBasedOnChildren(lvComment);
-            }
-        });
+    @Override
+    public void onSwitch(int type) {
+        this.type = type;
+        loadGoodsDataAtFirstTime();
     }
 
     public interface CommentHandler {
@@ -641,7 +647,8 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
         super.onAttach(activity);
         try {
             mListener = (OnFragmentInteractionListener) activity;
-            shopId = ((GoodsActivity)activity).getShopId() == 0 ? 1: ((GoodsActivity)activity).getShopId();
+            shopId = ((GoodsActivity)activity).getShopId();
+            ((GoodsActivity) activity).addSwitchTypeObserver(this);
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -653,7 +660,4 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
         super.onDetach();
         mListener = null;
     }
-
-
-
 }

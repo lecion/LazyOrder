@@ -27,6 +27,8 @@ import com.cisoft.lazyorder.bean.goods.GoodsCart;
 import com.cisoft.lazyorder.bean.goods.GoodsCategory;
 import com.cisoft.lazyorder.core.goods.CategoryService;
 import com.cisoft.lazyorder.core.goods.GoodsService;
+import com.cisoft.lazyorder.core.goods.INetWorkFinished;
+import com.cisoft.lazyorder.core.goods.ISwitchType;
 import com.cisoft.lazyorder.finals.ApiConstants;
 import com.cisoft.lazyorder.ui.search.SearchActivity;
 import com.cisoft.lazyorder.ui.sureorder.SureOrderActivity;
@@ -81,6 +83,10 @@ public class GoodsActivity extends BaseActivity implements GoodsFragment.OnFragm
     private CategoryService categoryService;
 
     private GoodsService goodsService;
+    /**
+     * 切换商品观察者
+     */
+    private List<ISwitchType> switchTypeObservers;
 
     public GoodsActivity() {
         super();
@@ -90,7 +96,7 @@ public class GoodsActivity extends BaseActivity implements GoodsFragment.OnFragm
     @Override
     public void setRootView() {
         setContentView(R.layout.activity_goods);
-        //shopId = getIntent().getExtras().getInt(KEY_SHOP_ID);
+        shopId = getIntent().getExtras().getInt(KEY_SHOP_ID, 1);
     }
 
     private void initActionBar() {
@@ -110,7 +116,17 @@ public class GoodsActivity extends BaseActivity implements GoodsFragment.OnFragm
         goodsService = new GoodsService(this, ApiConstants.MODULE_COMMODITY);
         categoryList = new ArrayList<GoodsCategory>();
         //初始化商品类别
-        categoryService.loadCateogryByShopIdFromNet(shopId);
+        categoryService.loadCateogryByShopId(shopId, new INetWorkFinished<GoodsCategory>() {
+            @Override
+            public void onSuccess(List<GoodsCategory> l) {
+                setCateogryData(l);
+            }
+
+            @Override
+            public void onFailure(String info) {
+                ViewInject.toast(info);
+            }
+        });
     }
 
     @Override
@@ -118,7 +134,7 @@ public class GoodsActivity extends BaseActivity implements GoodsFragment.OnFragm
         super.initWidget();
         initActionBar();
         initPopupWindow();
-        showFragment(GoodsFragment.ORDER_POP);
+        showFragment(GoodsFragment.ORDER_SALES_NUM);
         rbPop.setOnClickListener(this);
         rbPrice.setOnClickListener(this);
         btnType.setOnClickListener(this);
@@ -134,9 +150,12 @@ public class GoodsActivity extends BaseActivity implements GoodsFragment.OnFragm
         popupWindow.setOutsideTouchable(true);
     }
 
+    /**
+     * 初始化分类列表
+     * @param popView
+     */
     private void initCategoryList(View popView) {
         categoryAdapter = new BaseAdapter(){
-
             @Override
             public int getCount() {
                 return categoryList.size();
@@ -170,13 +189,20 @@ public class GoodsActivity extends BaseActivity implements GoodsFragment.OnFragm
             //TODO 完善类别切换
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ViewInject.toast(position+"");
-                ((GoodsFragment)getFragmentManager().findFragmentByTag("pop")).init(1);
-                ((GoodsFragment)getFragmentManager().findFragmentByTag("price")).init(1);
-                //showFragment("pop");
-                rbPop.toggle();
-                goodsService.loadGoodsListByType(shopId, getCategoryIdByPosition(position), 1, GoodsFragment.size, GoodsFragment.ORDER_POP);
                 popupWindow.dismiss();
+                rbPop.toggle();
+                showFragment(GoodsFragment.ORDER_SALES_NUM);
+                int type = getCategoryIdByPosition(position);
+
+                if (switchTypeObservers != null) {
+                    for (ISwitchType observer : switchTypeObservers) {
+                        observer.onSwitch(type);
+                    }
+                }
+
+//                ViewInject.toast(position + "");
+//                ((GoodsFragment) getFragmentManager().findFragmentByTag(GoodsFragment.ORDER_SALES_NUM)).init(1);
+//                ((GoodsFragment) getFragmentManager().findFragmentByTag(GoodsFragment.ORDER_PRICE)).init(1);
             }
 
             private int getCategoryIdByPosition(int position) {
@@ -189,7 +215,7 @@ public class GoodsActivity extends BaseActivity implements GoodsFragment.OnFragm
     public void widgetClick(View v) {
         switch (v.getId()) {
             case R.id.rb_pop:
-                showFragment(GoodsFragment.ORDER_POP);
+                showFragment(GoodsFragment.ORDER_SALES_NUM);
                 break;
             case R.id.rb_price:
                 showFragment(GoodsFragment.ORDER_PRICE);
@@ -210,25 +236,30 @@ public class GoodsActivity extends BaseActivity implements GoodsFragment.OnFragm
 
     }
 
-
-    private void showFragment(String type) {
+    private void showFragment(String order) {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
-        Fragment show = getFragmentManager().findFragmentByTag(type);
-        Fragment hide = getFragmentManager().findFragmentByTag(hideType(type));
-        Log.d("showFragment", type + " show=>" + show + " hide=>"+hide);
+        Fragment show = getFragmentManager().findFragmentByTag(order);
+        Fragment hide = getFragmentManager().findFragmentByTag(hideOrder(order));
+        Log.d("showFragment", order + " show=>" + show + " hide=>"+hide);
         if (show == null) {
-            show = GoodsFragment.newInstance(type);
-            ft.add(R.id.fl_container, show, type);
+            //0表示全部商品
+            show = GoodsFragment.newInstance(order, 0);
+            ft.add(R.id.fl_container, show, order);
         }
         if (hide == null) {
-            hide = GoodsFragment.newInstance(hideType(type));
-            ft.add(R.id.fl_container, hide, hideType(type));
+            hide = GoodsFragment.newInstance(hideOrder(order), 0);
+            ft.add(R.id.fl_container, hide, hideOrder(order));
         }
         ft.hide(hide).show(show).commit();
     }
 
-    public String hideType(String type) {
-        return GoodsFragment.ORDER_POP.equals(type) ? GoodsFragment.ORDER_PRICE : GoodsFragment.ORDER_POP;
+    /**
+     * 根据排序方式获得要隐藏的fragment
+     * @param order
+     * @return
+     */
+    public String hideOrder(String order) {
+        return GoodsFragment.ORDER_SALES_NUM.equals(order) ? GoodsFragment.ORDER_PRICE : GoodsFragment.ORDER_SALES_NUM;
     }
 
     @Override
@@ -258,6 +289,16 @@ public class GoodsActivity extends BaseActivity implements GoodsFragment.OnFragm
         }
     }
 
+    /**
+     * 添加观察者
+     * @param observer
+     */
+    public void addSwitchTypeObserver(ISwitchType observer) {
+        if (this.switchTypeObservers == null) {
+            switchTypeObservers = new ArrayList<ISwitchType>();
+        }
+        switchTypeObservers.add(observer);
+    }
 
     /**
      * 加入购物车的回调
@@ -303,5 +344,7 @@ public class GoodsActivity extends BaseActivity implements GoodsFragment.OnFragm
         this.categoryList = goodsCategoryList;
         categoryAdapter.notifyDataSetChanged();
     }
+
+
 
 }

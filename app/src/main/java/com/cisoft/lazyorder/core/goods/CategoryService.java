@@ -13,7 +13,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.kymjs.aframe.KJLoger;
 import org.kymjs.aframe.http.KJStringParams;
-import org.kymjs.aframe.ui.ViewInject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,13 +25,12 @@ public class CategoryService extends AbsService {
         super(context, moduleName);
     }
 
-    public void loadCateogryByShopIdFromNet(int shopId) {
+    public void loadCateogryByShopId(int shopId, final INetWorkFinished<GoodsCategory> iNetWorkFinished) {
         KJStringParams params = new KJStringParams();
         params.put(ApiConstants.KEY_CAT_MER_ID, String.valueOf(shopId));
         super.asyncUrlGet(ApiConstants.METHOD_CATEGORY_FIND_ALL_BY_MER_ID, params, new SuccessCallback() {
             @Override
             public void onSuccess(String result) throws JSONException {
-
                 List<GoodsCategory> goodsCategoryList = new ArrayList<GoodsCategory>();
                 goodsCategoryList.add(new GoodsCategory(0, "全部"));
                 try {
@@ -41,16 +39,23 @@ public class CategoryService extends AbsService {
                     for (int i = 0; i < goodsCategoryArr.length(); i++) {
                         goodsCategoryList.add(new GoodsCategory(goodsCategoryArr.getJSONObject(i)));
                     }
+                    if (iNetWorkFinished != null) {
+                        iNetWorkFinished.onSuccess(goodsCategoryList);
+                    }
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                    if (iNetWorkFinished != null) {
+                        iNetWorkFinished.onFailure(getResponseStateInfo(ApiConstants.RESPONSE_STATE_SERVICE_EXCEPTION));
+                    }
                 }
-                KJLoger.debug("loadCateogryByShopIdFromNet " + goodsCategoryList);
+                KJLoger.debug("loadCateogryByShopId " + goodsCategoryList);
                 ((GoodsActivity)context).setCateogryData(goodsCategoryList);
             }
         }, new FailureCallback() {
             @Override
             public void onFailure(int stateCode) {
-                ViewInject.toast(getResponseStateInfo(stateCode));
+                if (iNetWorkFinished != null) {
+                    iNetWorkFinished.onFailure(getResponseStateInfo(stateCode));
+                }
             }
         });
     }
@@ -69,8 +74,10 @@ public class CategoryService extends AbsService {
             case ApiConstants.RESPONSE_STATE_NOT_NET:
                 stateInfo = context.getResources().getString(R.string.no_net_service);
                 break;
+            case ApiConstants.RESPONSE_STATE_SERVICE_EXCEPTION:
+                stateInfo = context.getResources().getString(R.string.service_have_error_exception);
+                break;
         }
-
         return stateInfo;
     }
 }

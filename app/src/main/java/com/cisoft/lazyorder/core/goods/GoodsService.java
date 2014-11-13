@@ -12,9 +12,7 @@ import com.cisoft.lazyorder.ui.goods.GoodsFragment;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.kymjs.aframe.KJLoger;
 import org.kymjs.aframe.http.KJStringParams;
-import org.kymjs.aframe.ui.ViewInject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +32,7 @@ public class GoodsService extends AbsService {
      * @param size 每页显示的数量
      * @param sortType 排序方式，默认为人气
      */
-    public void loadGoodsList(int shopId, final int page, int size, final String sortType, final onNetwordFinished<Goods> onNetwordFinished) {
+    public void loadGoodsList(int shopId, final int page, int size, final String sortType, final INetWorkFinished<Goods> onNetwordFinished) {
         KJStringParams params = new KJStringParams();
         params.put(ApiConstants.KEY_COM_MER_ID, String.valueOf(shopId));
         params.put(ApiConstants.KEY_COM_PAGE, String.valueOf(page));
@@ -73,15 +71,23 @@ public class GoodsService extends AbsService {
         });
     }
 
-
-    public void loadGoodsListByType(int shopId, int typeId, final int page, int size, final String sortType) {
+    /**
+     * 根据店铺ID，商品类别获得所有商品
+     * @param shopId
+     * @param typeId
+     * @param page
+     * @param size
+     * @param sortType
+     * @param iNetWorkFinished
+     */
+    public void loadGoodsListByType(int shopId, int typeId, final int page, int size, final String sortType, final INetWorkFinished<Goods> iNetWorkFinished) {
         KJStringParams params = new KJStringParams();
         params.put(ApiConstants.KEY_COM_MER_ID, String.valueOf(shopId));
         params.put(ApiConstants.KEY_COM_TYPE_ID, String.valueOf(typeId));
         params.put(ApiConstants.KEY_COM_PAGE, String.valueOf(page));
         params.put(ApiConstants.KEY_COM_SIZE, String.valueOf(size));
         params.put(ApiConstants.KEY_COM_SORT, sortType);
-        final GoodsFragment f = getFragmentBySortType(sortType);
+        //final GoodsFragment f = getFragmentBySortType(sortType);
         super.asyncUrlGet(ApiConstants.METHOD_COMMODITY_FIND_BY_MER_AND_TYPE_ID, params, new SuccessCallback() {
             @Override
             public void onSuccess(String result) throws JSONException {
@@ -89,35 +95,29 @@ public class GoodsService extends AbsService {
                 JSONObject jsonObj = null;
                 try {
                     jsonObj = new JSONObject(result);
-                    JSONArray jsonGoodsDataArr = jsonObj.getJSONArray(ApiConstants.KEY_DATA);
-                    //判断数据是否为空
-                    if (jsonGoodsDataArr.length() == 0) {
-                        if (page == 1) {
-                            ViewInject.toast(context.getResources().getString(R.string.have_not_goods_list));
-                            f.showNoValueTip();
-                        } else {
-                            ViewInject.toast(context.getResources().getString(R.string.have_no_more_goods_list));
-                            f.setPullLoadEnable(false);
-                        }
-                        return;
+                    JSONArray jsonArr = jsonObj.getJSONArray(ApiConstants.KEY_DATA);
+                    for (int i = 0; i < jsonArr.length(); i++) {
+                        goodsList.add(new Goods(jsonArr.getJSONObject(i)));
                     }
-                    for (int i = 0; i < jsonGoodsDataArr.length(); i++) {
-                        goodsList.add(new Goods(jsonGoodsDataArr.getJSONObject(i)));
+                    if (iNetWorkFinished != null) {
+                        iNetWorkFinished.onSuccess(goodsList);
                     }
+
                 } catch (JSONException e) {
-                    e.printStackTrace();
-                    ViewInject.toast("解析数据异常，请稍后再试");
+                   if (iNetWorkFinished != null) {
+                        iNetWorkFinished.onFailure(getResponseStateInfo(ApiConstants.RESPONSE_STATE_SERVICE_EXCEPTION));
+                   }
                 }
-                f.setGoodsData(goodsList);
-                f.restoreState();
-                KJLoger.debug("loadGoodsListByType " + result);
+//                f.setGoodsData(goodsList);
+//                f.restoreState();
+//                KJLoger.debug("loadGoodsListByType " + result);
             }
         }, new FailureCallback() {
             @Override
             public void onFailure(int stateCode) {
-                KJLoger.debug("loadGoodsListByType " + stateCode);
-                ViewInject.toast(getResponseStateInfo(stateCode));
-                f.showNoValueTip();
+                if (iNetWorkFinished != null) {
+                    iNetWorkFinished.onFailure(getResponseStateInfo(stateCode));
+                }
             }
         });
 
@@ -151,21 +151,13 @@ public class GoodsService extends AbsService {
      */
     public GoodsFragment getFragmentBySortType(String sortType) {
         GoodsFragment f = null;
-        if (sortType.equals(GoodsFragment.ORDER_POP)) {
+        if (sortType.equals(GoodsFragment.ORDER_SALES_NUM)) {
             //销量排序
-            f = ((GoodsFragment)((Activity)context).getFragmentManager().findFragmentByTag(GoodsFragment.ORDER_POP));
+            f = ((GoodsFragment)((Activity)context).getFragmentManager().findFragmentByTag(GoodsFragment.ORDER_SALES_NUM));
         } else {
             f = ((GoodsFragment)((Activity)context).getFragmentManager().findFragmentByTag(GoodsFragment.ORDER_PRICE));
         }
         return f;
     }
 
-    /**
-     * 网络请求完毕后回调
-     */
-    public interface onNetwordFinished<T> {
-        public void onSuccess(List<T> l);
-
-        public void onFailure(String info);
-    }
 }
