@@ -11,6 +11,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.CycleInterpolator;
+import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
@@ -241,7 +244,10 @@ public class GoodsActivity extends BaseActivity implements GoodsFragment.OnFragm
                 if (goodsCart.getTotalCount() > 0) {
                     skipActivity(this, SureOrderActivity.class);
                 } else {
-                    ViewInject.toast("请先选择商品加入购物车~");
+                    Animation shakeAnimation = new TranslateAnimation(0, -20, 0, 0);
+                    shakeAnimation.setDuration(350);
+                    shakeAnimation.setInterpolator(new CycleInterpolator(9));
+                    ivCartLogo.startAnimation(shakeAnimation);
                 }
         }
 
@@ -323,13 +329,14 @@ public class GoodsActivity extends BaseActivity implements GoodsFragment.OnFragm
             tvOrderedPrice.setText("￥" + goodsCart.getTotalPrice());
             tvOrderedCount.setVisibility(View.INVISIBLE);
             tvOrderedPrice.setVisibility(View.INVISIBLE);
-
+            btnGoSettle.setText("未选择");
         } else {
             ivCartLogo.setImageResource(R.drawable.cart_logo_selected);
             tvOrderedCount.setText(goodsCart.getTotalCount() + "份");
             tvOrderedPrice.setText("￥" + goodsCart.getTotalPrice());
             tvOrderedCount.setVisibility(View.VISIBLE);
             tvOrderedPrice.setVisibility(View.VISIBLE);
+            btnGoSettle.setText("去结算");
         }
     }
 
