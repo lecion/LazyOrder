@@ -138,7 +138,7 @@ public class GoodsActivity extends BaseActivity implements GoodsFragment.OnFragm
                 ViewInject.toast(info);
             }
         });
-        setCartView();
+        updateCartView();
     }
 
     @Override
@@ -311,11 +311,26 @@ public class GoodsActivity extends BaseActivity implements GoodsFragment.OnFragm
         switchTypeObservers.add(observer);
     }
 
-    private void setCartView() {
+    /**
+     * 更新购物车
+     */
+    private void updateCartView() {
         AppContext app = (AppContext) getApplication();
         GoodsCart goodsCart = app.getGoodsCart();
-        tvOrderedCount.setText(goodsCart.getTotalCount() + "");
-        tvOrderedPrice.setText("￥" + goodsCart.getTotalPrice());
+        if (goodsCart.getTotalCount() == 0) {
+            ivCartLogo.setImageResource(R.drawable.cart_logo_normal);
+            tvOrderedCount.setText(goodsCart.getTotalCount() + "份");
+            tvOrderedPrice.setText("￥" + goodsCart.getTotalPrice());
+            tvOrderedCount.setVisibility(View.INVISIBLE);
+            tvOrderedPrice.setVisibility(View.INVISIBLE);
+
+        } else {
+            ivCartLogo.setImageResource(R.drawable.cart_logo_selected);
+            tvOrderedCount.setText(goodsCart.getTotalCount() + "份");
+            tvOrderedPrice.setText("￥" + goodsCart.getTotalPrice());
+            tvOrderedCount.setVisibility(View.VISIBLE);
+            tvOrderedPrice.setVisibility(View.VISIBLE);
+        }
     }
 
     /**
@@ -333,15 +348,14 @@ public class GoodsActivity extends BaseActivity implements GoodsFragment.OnFragm
                     public void onYes() {
                         goodsCart.clear();
                         goodsCart.addGoods(goods);
-                        setCartView();
+                        updateCartView();
                     }
                 });
             }
             clearCartDialog.show();
         } else {
             goodsCart.addGoods(goods);
-            tvOrderedCount.setText(goodsCart.getTotalCount() + "");
-            tvOrderedPrice.setText("￥" + goodsCart.getTotalPrice());
+            updateCartView();
         }
     }
 
@@ -361,7 +375,7 @@ public class GoodsActivity extends BaseActivity implements GoodsFragment.OnFragm
                     public void onYes() {
                         goodsCart.clear();
                         goodsCart.addGoods(goods);
-                        setCartView();
+                        updateCartView();
                     }
                 });
             }
