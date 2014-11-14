@@ -40,6 +40,7 @@ import com.cisoft.lazyorder.ui.sureorder.SureOrderActivity;
 import com.cisoft.lazyorder.util.DialogFactory;
 
 import org.kymjs.aframe.KJLoger;
+import org.kymjs.aframe.bitmap.KJBitmap;
 import org.kymjs.aframe.ui.BindView;
 import org.kymjs.aframe.ui.ViewInject;
 import org.kymjs.aframe.ui.activity.BaseActivity;
@@ -49,6 +50,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GoodsActivity extends BaseActivity implements GoodsFragment.OnFragmentInteractionListener{
+
+    @BindView(id = R.id.iv_shop_logo)
+    private ImageView ivShopLogo;
 
     @BindView(id = R.id.fl_container)
     private FrameLayout flContainer;
@@ -111,6 +115,7 @@ public class GoodsActivity extends BaseActivity implements GoodsFragment.OnFragm
         shop.setId(bundle.getInt(KEY_SHOP_ID, 1));
         shop.setPromotionInfo(ApiConstants.KEY_MER_PROMOTION_INFO);
         shop.setName(ApiConstants.KEY_MER_NAME);
+        shop.setFaceImgUrl(ApiConstants.KEY_MER_FACE_PIC);
         //shopId = getIntent().getExtras().getInt(KEY_SHOP_ID, 1);
     }
 
@@ -141,6 +146,7 @@ public class GoodsActivity extends BaseActivity implements GoodsFragment.OnFragm
                 ViewInject.toast(info);
             }
         });
+        KJBitmap.create().display(ivShopLogo, shop.getFaceImgUrl(), true);
         updateCartView();
     }
 

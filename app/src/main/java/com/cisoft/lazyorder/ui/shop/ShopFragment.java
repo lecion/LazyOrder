@@ -303,6 +303,7 @@ public class ShopFragment extends BaseFragment implements ActionBar.OnNavigation
         bundle.putString(ApiConstants.KEY_MER_ADDRESS, shop.getAddress());
         bundle.putString(ApiConstants.KEY_MER_PROMOTION_INFO, shop.getPromotionInfo());
         bundle.putString(ApiConstants.KEY_MER_NAME, shop.getName());
+        bundle.putString(ApiConstants.KEY_MER_FACE_PIC, shop.getFaceImgUrl());
         Intent intent = new Intent();
         intent.putExtras(bundle);
         intent.setClass(getActivity(), GoodsActivity.class);

@@ -12,6 +12,46 @@
         android:layout_width="match_parent"
         android:layout_height="84dp"
         android:background="@drawable/goods_top_image">
+            <ImageView
+                android:id="@+id/iv_shop_logo"
+                android:layout_width="53dp"
+                android:layout_height="53dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="22dp"
+                />
+
+            <TextView
+                android:id="@+id/tv_shop_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textColor="@android:color/white"
+                android:layout_alignTop="@id/iv_shop_logo"
+                android:text="大学生食堂"
+                android:layout_toRightOf="@id/iv_shop_logo"
+                android:layout_marginLeft="36dp"
+                />
+            <TextView
+                android:id="@+id/tv_shop_promotion_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="特惠信息"
+                android:layout_toRightOf="@id/iv_shop_logo"
+                android:layout_alignBottom="@id/iv_shop_logo"
+                android:layout_marginLeft="36dp"
+                android:textColor="@android:color/white"
+                />
+            <TextView
+                android:id="@+id/tv_shop_promotion_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/tv_shop_promotion_title"
+                android:text="今日特惠！"
+                android:layout_alignTop="@id/tv_shop_promotion_title"
+                android:layout_marginLeft="8dp"
+                android:textColor="@android:color/white"
+                />
+
 
         </RelativeLayout>
 
