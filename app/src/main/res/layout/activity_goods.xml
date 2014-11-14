@@ -18,6 +18,7 @@
                 android:layout_height="53dp"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="22dp"
+                android:scaleType="centerCrop"
                 />
 
             <TextView

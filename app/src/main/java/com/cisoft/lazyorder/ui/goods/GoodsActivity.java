@@ -3,6 +3,7 @@ package com.cisoft.lazyorder.ui.goods;
 import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -53,6 +54,12 @@ public class GoodsActivity extends BaseActivity implements GoodsFragment.OnFragm
 
     @BindView(id = R.id.iv_shop_logo)
     private ImageView ivShopLogo;
+
+    @BindView(id = R.id.tv_shop_name)
+    private TextView tvShopName;
+
+    @BindView(id = R.id.tv_shop_promotion_info)
+    private TextView tvShopPromotionInfo;
 
     @BindView(id = R.id.fl_container)
     private FrameLayout flContainer;
@@ -113,9 +120,9 @@ public class GoodsActivity extends BaseActivity implements GoodsFragment.OnFragm
         Bundle bundle = getIntent().getExtras();
         shop.setAddress(bundle.getString(ApiConstants.KEY_MER_ADDRESS));
         shop.setId(bundle.getInt(KEY_SHOP_ID, 1));
-        shop.setPromotionInfo(ApiConstants.KEY_MER_PROMOTION_INFO);
-        shop.setName(ApiConstants.KEY_MER_NAME);
-        shop.setFaceImgUrl(ApiConstants.KEY_MER_FACE_PIC);
+        shop.setPromotionInfo(bundle.getString(ApiConstants.KEY_MER_PROMOTION_INFO));
+        shop.setName(bundle.getString(ApiConstants.KEY_MER_NAME));
+        shop.setFaceImgUrl(bundle.getString(ApiConstants.KEY_MER_FACE_PIC));
         //shopId = getIntent().getExtras().getInt(KEY_SHOP_ID, 1);
     }
 
@@ -146,7 +153,10 @@ public class GoodsActivity extends BaseActivity implements GoodsFragment.OnFragm
                 ViewInject.toast(info);
             }
         });
-        KJBitmap.create().display(ivShopLogo, shop.getFaceImgUrl(), true);
+        Log.d("shoplogo", shop.getFaceImgUrl());
+        KJBitmap.create().display(ivShopLogo, shop.getFaceImgUrl(), BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher));
+        tvShopName.setText(shop.getName());
+        tvShopPromotionInfo.setText(shop.getPromotionInfo());
         updateCartView();
     }
 
