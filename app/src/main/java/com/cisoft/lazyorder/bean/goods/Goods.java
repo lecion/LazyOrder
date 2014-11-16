@@ -23,6 +23,8 @@ public class Goods extends AbsBean implements Serializable{
     private int orderNum;
     private int shopId;
 
+    public Goods() {}
+
     public Goods(int salesNum, int id, String cmName, String cmPicture, int cateId, String catName, double cmPrice) {
         this.salesNum = salesNum;
         this.id = id;
