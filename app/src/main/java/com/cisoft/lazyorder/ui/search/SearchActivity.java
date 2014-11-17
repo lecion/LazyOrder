@@ -31,7 +31,6 @@ public class SearchActivity extends BaseActivity{
     public SearchActivity() {
         setHiddenActionBar(false);
     }
-
     @Override
     public void setRootView() {
         setContentView(R.layout.activity_search);
@@ -51,30 +50,49 @@ public class SearchActivity extends BaseActivity{
 
     @Override
     protected void initWidget() {
-        searchView.onActionViewExpanded();
-        searchView.setSubmitButtonEnabled(true);
-        int searchPlateId = searchView.getContext().getResources().getIdentifier("android:id/submit_area", null, null);
-        LinearLayout searchPlate = (LinearLayout) searchView.findViewById(searchPlateId);
-        ((ImageView)searchPlate.getChildAt(0)).setImageResource(R.drawable.ic_search);
-
-        int id = searchView.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
-        TextView textView = (TextView) searchView.findViewById(id);
-        textView.setTextColor(Color.WHITE);
-        textView.setHintTextColor(Color.WHITE);
-
-        int closeBtnId = searchView.getContext().getResources().getIdentifier("android:id/search_close_btn", null, null);
-        ImageView closeBtn = (ImageView)searchView.findViewById(closeBtnId);
-        closeBtn.setImageResource(R.drawable.ic_search);
-
-        int searchButtonId = searchView.getContext().getResources().getIdentifier("android:id/search_button", null, null);
-        ImageView searchButton = (ImageView) searchView.findViewById(searchButtonId);
-        searchButton.setBackgroundResource(R.drawable.ic_launcher);
-        searchButton.setImageResource(R.drawable.ic_search);
-
-        setSearchViewBackground(searchView);
+        initSearchView();
 
     }
 
+    /**
+     * 初始化SearchView
+     */
+    private void initSearchView() {
+        //设置自动展开
+        searchView.onActionViewExpanded();
+        searchView.setSubmitButtonEnabled(true);
+        //设置提交图标
+        int searchPlateId = getResources().getIdentifier("android:id/submit_area", null, null);
+        LinearLayout searchPlate = (LinearLayout) searchView.findViewById(searchPlateId);
+        ((ImageView)searchPlate.getChildAt(0)).setImageResource(R.drawable.ic_search);
+        //设置输入框的颜色和提示字体的颜色
+        int id = getResources().getIdentifier("android:id/search_src_text", null, null);
+        TextView textView = (TextView) searchView.findViewById(id);
+        textView.setTextColor(Color.WHITE);
+        textView.setHintTextColor(Color.WHITE);
+        //设置关闭按钮的图标
+        int closeBtnId = getResources().getIdentifier("android:id/search_close_btn", null, null);
+        ImageView closeBtn = (ImageView)searchView.findViewById(closeBtnId);
+        closeBtn.setImageResource(android.R.drawable.ic_menu_close_clear_cancel);
+
+//
+//        int searchButtonId = getResources().getIdentifier("android:id/search_button", null, null);
+//        ImageView searchButton = (ImageView) searchView.findViewById(searchButtonId);
+//        searchButton.setBackgroundResource(R.drawable.ic_launcher);
+//        searchButton.setImageResource(R.drawable.ic_search);
+        //下面四行清除放大镜
+        int magIconId = getResources().getIdentifier("android:id/search_mag_icon", null, null);
+        ImageView magImage = (ImageView) searchView.findViewById(magIconId);
+        magImage.setLayoutParams(new LinearLayout.LayoutParams(0, 0));
+        searchView.setIconifiedByDefault(false);
+
+        setSearchViewBackground(searchView);
+    }
+
+    /**
+     * 设置SearchView背景
+     * @param searchView
+     */
     public void setSearchViewBackground(SearchView searchView) {
         try {
             Class<?> argClass = searchView.getClass();
@@ -87,7 +105,6 @@ public class SearchActivity extends BaseActivity{
             submitAredField.setAccessible(true);
             View submitView = (View)submitAredField.get(searchView);
             submitView.setBackgroundColor(Color.parseColor("#e60012"));
-
 
         } catch (Exception e) {
             e.printStackTrace();
