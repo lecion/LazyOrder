@@ -88,6 +88,8 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
 
     private int shopId;
 
+    private String shopName;
+
     private String shopAddress;
 
     private int page;
@@ -391,6 +393,7 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
             public Object getItem(int position) {
                 Goods g = goodsData.get(position);
                 g.setShopId(shopId);
+                g.setShopName(shopName);
                 return g;
             }
 
@@ -664,6 +667,7 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
         try {
             mListener = (OnFragmentInteractionListener) activity;
             shopId = ((GoodsActivity)activity).getShopId();
+            shopName = ((GoodsActivity) activity).getShopName();
             shopAddress = ((GoodsActivity) activity).getShopAddress();
                     ((GoodsActivity) activity).addSwitchTypeObserver(this);
         } catch (ClassCastException e) {

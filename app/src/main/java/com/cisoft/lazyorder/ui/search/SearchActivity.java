@@ -15,7 +15,6 @@ import android.widget.TextView;
 import com.cisoft.lazyorder.R;
 import com.cisoft.lazyorder.bean.goods.Goods;
 import com.cisoft.lazyorder.bean.shop.Shop;
-import com.cisoft.lazyorder.core.goods.INetWorkFinished;
 import com.cisoft.lazyorder.core.search.SearchService;
 import com.cisoft.lazyorder.finals.ApiConstants;
 
@@ -73,7 +72,7 @@ public class SearchActivity extends BaseActivity implements SearchView.OnQueryTe
         } else {
             goodsList = new ArrayList<Goods>();
         }
-        searchService = new SearchService();
+        //searchService = new SearchService();
     }
 
     @Override

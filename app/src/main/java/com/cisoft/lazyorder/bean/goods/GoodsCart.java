@@ -69,6 +69,24 @@ public class GoodsCart {
     }
 
     /**
+     * 取商家名
+     */
+    public String getShopName() {
+        String shopName = null;
+        if (getTotalCount() == 0) {
+            shopName = null;
+        } else {
+            Iterator iterator = goodsList.entrySet().iterator();
+            if (iterator.hasNext()) {
+                Map.Entry entry = (Map.Entry) iterator.next();
+                Goods g = (Goods) entry.getValue();
+                shopName = g.getShopName();
+            }
+        }
+        return shopName;
+    }
+
+    /**
      * 添加商品
      * @param g
      */

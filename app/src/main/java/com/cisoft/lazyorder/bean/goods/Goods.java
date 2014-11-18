@@ -22,6 +22,7 @@ public class Goods extends AbsBean implements Serializable{
     private double cmPrice;
     private int orderNum;
     private int shopId;
+    private String shopName;
 
     public Goods() {}
 
@@ -143,4 +144,11 @@ public class Goods extends AbsBean implements Serializable{
     }
 
 
+    public String getShopName() {
+        return shopName;
+    }
+
+    public void setShopName(String shopName) {
+        this.shopName = shopName;
+    }
 }

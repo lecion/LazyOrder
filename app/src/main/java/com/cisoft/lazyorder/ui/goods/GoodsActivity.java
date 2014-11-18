@@ -407,8 +407,7 @@ public class GoodsActivity extends BaseActivity implements GoodsFragment.OnFragm
             clearCartDialog.show();
         } else {
             goodsCart.addGoods(goods, count);
-            tvOrderedCount.setText(goodsCart.getTotalCount() + "");
-            tvOrderedPrice.setText("￥" + goodsCart.getTotalPrice());
+            updateCartView();
         }
 
 
@@ -425,6 +424,10 @@ public class GoodsActivity extends BaseActivity implements GoodsFragment.OnFragm
 
     public int getShopId() {
         return shop.getId();
+    }
+
+    public String getShopName() {
+        return shop.getName();
     }
 
     public String getShopAddress() {
