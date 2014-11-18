@@ -315,7 +315,9 @@ public class GoodsActivity extends BaseActivity implements GoodsFragment.OnFragm
                 finish();
                 return true;
             case R.id.action_search:
-                showActivity(this, SearchActivity.class);
+                Bundle data = new Bundle();
+                data.putInt(ApiConstants.KEY_MER_ID, shop.getId());
+                showActivity(this, SearchActivity.class, data);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

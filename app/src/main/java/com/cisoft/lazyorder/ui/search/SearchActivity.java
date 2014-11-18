@@ -2,6 +2,7 @@ package com.cisoft.lazyorder.ui.search;
 
 import android.app.ActionBar;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,21 +13,47 @@ import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.cisoft.lazyorder.R;
+import com.cisoft.lazyorder.bean.goods.Goods;
+import com.cisoft.lazyorder.bean.shop.Shop;
+import com.cisoft.lazyorder.core.goods.INetWorkFinished;
+import com.cisoft.lazyorder.core.search.SearchService;
+import com.cisoft.lazyorder.finals.ApiConstants;
 
 import org.kymjs.aframe.ui.BindView;
 import org.kymjs.aframe.ui.activity.BaseActivity;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Lecion on 10/17/14.
  */
-public class SearchActivity extends BaseActivity{
+public class SearchActivity extends BaseActivity implements SearchView.OnQueryTextListener {
     @BindView(id = R.id.lv_search_results)
     private ListView lvSearchResult;
 
     @BindView(id = R.id.search_view)
     private SearchView searchView;
+
+    private int shopId;
+
+    /**
+     * 是否是搜索商店的，否则是商品搜索页面
+     */
+    private boolean isShop;
+
+    /**
+     * 存放商品搜索结果
+     */
+    private List<Goods> goodsList;
+
+    /**
+     * 存放商店搜索结果
+     */
+    private List<Shop> shopList;
+
+    private SearchService searchService;
 
     public SearchActivity() {
         setHiddenActionBar(false);
@@ -34,9 +61,29 @@ public class SearchActivity extends BaseActivity{
     @Override
     public void setRootView() {
         setContentView(R.layout.activity_search);
+    }
+
+    @Override
+    protected void initData() {
+        Bundle data = getIntent().getExtras();
+        shopId = data.getInt(ApiConstants.KEY_MER_ID, 0);
+        isShop = shopId == 0;
+        if (isShop) {
+            shopList = new ArrayList<Shop>();
+        } else {
+            goodsList = new ArrayList<Goods>();
+        }
+        searchService = new SearchService();
+    }
+
+    @Override
+    protected void initWidget() {
         initActionBar();
     }
 
+    /**
+     * 初始化ActionBar
+     */
     private void initActionBar() {
         getActionBar().setDisplayShowHomeEnabled(true);
         //使应用程序能够在当前应用程序向上导航
@@ -46,12 +93,7 @@ public class SearchActivity extends BaseActivity{
         getActionBar().setIcon(R.drawable.nav_back_arrow);
         getActionBar().setDisplayShowCustomEnabled(true);
         getActionBar().setCustomView(LayoutInflater.from(this).inflate(R.layout.searchview_actionbar, null), new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT));
-    }
-
-    @Override
-    protected void initWidget() {
         initSearchView();
-
     }
 
     /**
@@ -87,6 +129,8 @@ public class SearchActivity extends BaseActivity{
         searchView.setIconifiedByDefault(false);
 
         setSearchViewBackground(searchView);
+
+        searchView.setOnQueryTextListener(this);
     }
 
     /**
@@ -120,6 +164,16 @@ public class SearchActivity extends BaseActivity{
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
 
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        return false;
     }
 }

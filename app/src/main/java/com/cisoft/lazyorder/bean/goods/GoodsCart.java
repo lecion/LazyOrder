@@ -42,20 +42,30 @@ public class GoodsCart {
      * @return
      */
     public boolean isSameShop(int shopId) {
-        boolean flag = true;
+        int id = getShopId();
+        if (id == 0) {
+            return true;
+        } else {
+            return shopId == id;
+        }
+    }
+
+    /**
+     * 取商家Id
+     */
+    public int getShopId() {
+        int shopId = 0;
         if (getTotalCount() == 0) {
-            flag = true;
+            shopId =  0;
         } else {
             Iterator iterator = goodsList.entrySet().iterator();
             if (iterator.hasNext()) {
                 Map.Entry entry = (Map.Entry) iterator.next();
                 Goods g = (Goods) entry.getValue();
-                flag = g.getShopId() == shopId ? true : false;
-                //Log.d("isSameShop", "getSHopId " + g.getShopId());
+                shopId = g.getShopId();
             }
         }
-//        Log.d("isSameShop", " shopId " + shopId + "  ");
-        return flag;
+        return shopId;
     }
 
     /**
