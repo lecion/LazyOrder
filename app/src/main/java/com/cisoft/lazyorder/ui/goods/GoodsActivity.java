@@ -317,6 +317,8 @@ public class GoodsActivity extends BaseActivity implements GoodsFragment.OnFragm
             case R.id.action_search:
                 Bundle data = new Bundle();
                 data.putInt(ApiConstants.KEY_MER_ID, shop.getId());
+                data.putString(ApiConstants.KEY_MER_NAME, shop.getName());
+                data.putString(ApiConstants.KEY_MER_ADDRESS, shop.getAddress());
                 showActivity(this, SearchActivity.class, data);
                 return true;
             default:

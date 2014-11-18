@@ -32,8 +32,6 @@ public class ApiConstants {
 
     public static final String MODULE_HISTORY_ORDER = "order";
 
-    public static final String MODULE_SEARCH = "search";
-
 
     /* 这里存放API接口里的方法名,以"METHOD_+模块名"打头 */
     public static final String METHOD_MERCHANTS_FIND_BY_TYPE_ID = "findMerchantsOrCanteen";
@@ -41,6 +39,7 @@ public class ApiConstants {
 
     public static final String METHOD_COMMODITY_FIND_ALL_BY_MER_ID = "findCommodityByMerchantsId";
     public static final String METHOD_COMMODITY_FIND_BY_MER_AND_TYPE_ID = "findCommodityByMerchantsIdAndTypeId";
+    public static final String METHOD_COMMODITY_FIND_COMMODITY_BY_KEY = "findCommodityByKey";
     public static final String METHOD_CATEGORY_FIND_ALL_BY_MER_ID = "findCategoryByMerchantsId";
     public static final String METHOD_DISCUSS_FIND_ALL_BY_COM_ID = "findDiscussByCommodityId";
 
@@ -80,6 +79,7 @@ public class ApiConstants {
     public static final String KEY_COM_SALES_NUM = "salesNum";
     public static final String KEY_COM_PRICE = "cmPrice";
     public static final String KEY_COM_TYPE_ID = "typeId";
+    public static final String KEY_COM_KEY_NAME = "keyName";
 
     public static final String KEY_CAT_MER_ID = "merId";
     public static final String KEY_CAT_ID = "id";

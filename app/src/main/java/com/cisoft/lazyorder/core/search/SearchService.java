@@ -2,6 +2,7 @@ package com.cisoft.lazyorder.core.search;
 
 import android.content.Context;
 
+import com.cisoft.lazyorder.R;
 import com.cisoft.lazyorder.bean.goods.Goods;
 import com.cisoft.lazyorder.core.AbsService;
 import com.cisoft.lazyorder.core.goods.INetWorkFinished;
@@ -20,7 +21,11 @@ import java.util.List;
  */
 public class SearchService extends AbsService {
     public SearchService(Context context, String moduleName) {
-        super(context, ApiConstants.MODULE_SEARCH);
+        super(context, ApiConstants.MODULE_COMMODITY);
+    }
+
+    public SearchService(Context context) {
+        this(context, ApiConstants.MODULE_COMMODITY);
     }
 
     /**
@@ -30,9 +35,9 @@ public class SearchService extends AbsService {
      */
     public void queryGoodsList(int shopId, String query, final INetWorkFinished<Goods> onNetwordFinished) {
         KJStringParams params = new KJStringParams();
-        //TODO 搜索参数设置，待接口
         params.put(ApiConstants.KEY_COM_MER_ID, String.valueOf(shopId));
-        super.asyncUrlGet(ApiConstants.METHOD_COMMODITY_FIND_ALL_BY_MER_ID, params, false, new SuccessCallback() {
+        params.put(ApiConstants.KEY_COM_KEY_NAME, query);
+        super.asyncUrlGet(ApiConstants.METHOD_COMMODITY_FIND_COMMODITY_BY_KEY, params, false, new SuccessCallback() {
             @Override
             public void onSuccess(String result) {
                 List<Goods> goodsList = new ArrayList<Goods>();
@@ -63,6 +68,26 @@ public class SearchService extends AbsService {
                 }
             }
         });
+    }
+
+    @Override
+    public String getResponseStateInfo(int stateCode) {
+        String stateInfo = "";
+        switch (stateCode) {
+            case ApiConstants.RESPONSE_STATE_FAILURE:
+                stateInfo = context.getResources().getString(R.string.fail_to_query_goods_list);
+                break;
+            case ApiConstants.RESPONSE_STATE_SUCCESS:
+                stateInfo = context.getResources().getString(R.string.success_to_load_goods_list);
+                break;
+            case ApiConstants.RESPONSE_STATE_NOT_NET:
+                stateInfo = context.getResources().getString(R.string.no_net_service);
+                break;
+            case ApiConstants.RESPONSE_STATE_SERVICE_EXCEPTION:
+                stateInfo = context.getResources().getString(R.string.service_have_error_exception);
+                break;
+        }
+        return stateInfo;
     }
 
 }
