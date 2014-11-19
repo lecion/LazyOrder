@@ -76,6 +76,17 @@ public class SearchActivity extends BaseActivity implements SearchView.OnQueryTe
 
     private SearchResultAdapter mAdapter;
 
+    private List<Goods> goodsList;
+
+    private int mLastVisiblePosition = -1;
+
+    private LinearLayout mLastVisibleView;
+
+    private boolean isExpand = false;
+
+    private KJBitmap kjb;
+
+
     /**
      * 没有数据的提示
      */
@@ -105,6 +116,7 @@ public class SearchActivity extends BaseActivity implements SearchView.OnQueryTe
         shopId = data.getInt(ApiConstants.KEY_MER_ID, 0);
         shopName = data.getString(ApiConstants.KEY_MER_NAME);
         shopAddress = data.getString(ApiConstants.KEY_MER_ADDRESS);
+        goodsList = new ArrayList<Goods>();
         searchService = new SearchService(this);
     }
 
@@ -371,7 +383,38 @@ public class SearchActivity extends BaseActivity implements SearchView.OnQueryTe
     //TODO 商品点击展开
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+        Log.d("onItemClick", "position  " + position);
+        if (position > goodsList.size()) {
+            return;
+        }
+        //mListener.onGoodsItemClick(goodsData.get(position));
+        LinearLayout currentLL = (LinearLayout) view.findViewById(R.id.ll_expand);
+        //第一次点击
+        if (mLastVisibleView == null) {
+            mLastVisibleView = currentLL;
+            currentLL.setVisibility(View.VISIBLE);
+            isExpand = true;
+        } else {
+            //不是第一次点击
+            //上次点击与本次不一样，则隐藏上次视图，显示本次视图
+            if (mLastVisiblePosition != position) {
+                currentLL.setVisibility(View.VISIBLE);
+                mLastVisibleView.setVisibility(View.GONE);
+                mLastVisibleView = currentLL;
+                isExpand = true;
+//                    Log.d("mLastVisiblePosition", mLastVisiblePosition+"");
+            } else {
+                //展开则隐藏
+                if (isExpand) {
+                    currentLL.setVisibility(View.GONE);
+                } else {
+                    currentLL.setVisibility(View.VISIBLE);
+                }
+                isExpand = !isExpand;
+                //Log.d("mLastVisiblePosition", mLastVisiblePosition+"");
+            }
+        }
+        mLastVisiblePosition = position;
     }
 
     /**
@@ -379,17 +422,7 @@ public class SearchActivity extends BaseActivity implements SearchView.OnQueryTe
      */
     class SearchResultAdapter extends BaseAdapter {
         //TODO 完成搜索页面，继续完成适配器，解决商品展开bug
-        private int mLastVisiblePosition = -1;
-
-        private boolean isExpand = false;
-
-        private List<Goods> goodsList;
-
-        private KJBitmap kjb;
-
-
         public SearchResultAdapter() {
-            this.goodsList = new ArrayList<Goods>();
             kjb = KJBitmap.create();
 
         }
@@ -414,7 +447,7 @@ public class SearchActivity extends BaseActivity implements SearchView.OnQueryTe
 
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
-//                Log.d("getView", "mLastVisiblePosition => " + mLastVisiblePosition + "  position=> " + position);
+//          Log.d("getView", "mLastVisiblePosition => " + mLastVisiblePosition + "  position=> " + position);
             final Goods item = (Goods) getItem(position);
             ViewHolder holder;
             if (convertView == null) {

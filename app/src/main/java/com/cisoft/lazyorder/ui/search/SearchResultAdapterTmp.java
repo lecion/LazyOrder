@@ -29,8 +29,7 @@ import java.util.List;
 /**
  * Created by Lecion on 14/11/19.
  */
-public class SearchResultAdapter extends BaseAdapter{
-    //TODO 完成搜索页面，继续完成适配器，解决商品展开bug
+public class SearchResultAdapterTmp extends BaseAdapter{
     private SearchActivity context;
 
     private int shopId;
@@ -48,7 +47,7 @@ public class SearchResultAdapter extends BaseAdapter{
     private KJBitmap kjb;
 
 
-    public SearchResultAdapter(Context context, int shopId, String shopName, String shopAddress) {
+    public SearchResultAdapterTmp(Context context, int shopId, String shopName, String shopAddress) {
         this.shopAddress = shopAddress;
         this.goodsList = new ArrayList<Goods>();
         this.context = (SearchActivity) context;

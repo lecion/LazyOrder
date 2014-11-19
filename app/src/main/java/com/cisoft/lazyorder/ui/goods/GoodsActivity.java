@@ -153,7 +153,6 @@ public class GoodsActivity extends BaseActivity implements GoodsFragment.OnFragm
                 ViewInject.toast(info);
             }
         });
-        Log.d("shoplogo", shop.getFaceImgUrl());
         KJBitmap.create().display(ivShopLogo, shop.getFaceImgUrl(), BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher));
         tvShopName.setText(shop.getName());
         tvShopPromotionInfo.setText(shop.getPromotionInfo());
