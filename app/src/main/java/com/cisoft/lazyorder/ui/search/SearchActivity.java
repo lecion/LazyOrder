@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -316,6 +317,7 @@ public class SearchActivity extends BaseActivity implements SearchView.OnQueryTe
             }
             clearCartDialog.show();
         } else {
+            Log.d("onAddToCart", goodsCart.isSameShop(shopId) + "");
             goodsCart.addGoods(goods);
             updateCartView();
         }

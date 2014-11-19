@@ -1,5 +1,7 @@
 package com.cisoft.lazyorder.bean.goods;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -92,12 +94,13 @@ public class GoodsCart {
      */
     public void addGoods(Goods g) {
         //不存在商品则添加，存在则数目自增
+        Log.d("addGoods", isContains(g) + " " +"");
         if (!isContains(g)) {
             g.setOrderNum(1);
             goodsList.put(g.getId(), g);
 //            goodsCount.put(g.getId(), 1);
         } else {
-            g.setOrderNum(g.getOrderNum() + 1);
+            g.setOrderNum(getGoodsCount(g) + 1);
             goodsList.put(g.getId(), g);
 //            int count = goodsCount.get(g.getId());
 //            goodsCount.put(g.getId(), ++count);
@@ -118,7 +121,7 @@ public class GoodsCart {
         } else {
 //            int count = goodsCount.get(g.getId());
 //            goodsCount.put(g.getId(), count + num);
-            g.setOrderNum(g.getOrderNum() + num);
+            g.setOrderNum(getGoodsCount(g) + num);
             goodsList.put(g.getId(), g);
         }
     }
@@ -163,7 +166,7 @@ public class GoodsCart {
     public void decGoods(Integer id) {
         if (isContains(id)) {
             Goods g = goodsList.get(id);
-            int count = g.getOrderNum();
+            int count = getGoodsCount(g);
             if (count > 1) {
                 g.setOrderNum(count - 1);
                 goodsList.put(id, g);
@@ -225,7 +228,7 @@ public class GoodsCart {
         while (iterator.hasNext()) {
             Map.Entry entry = (Map.Entry) iterator.next();
             Goods g = (Goods) entry.getValue();
-            total += g.getOrderNum();
+            total += getGoodsCount(g);
         }
         return total;
     }
@@ -250,7 +253,7 @@ public class GoodsCart {
             Map.Entry entry = (Map.Entry) iterator.next();
 //            int count = getGoodsCount((Integer) entry.getKey());
             Goods g = (Goods) entry.getValue();
-            price += g.getOrderNum() * g.getCmPrice();
+            price += getGoodsCount(g) * g.getCmPrice();
         }
         return price;
     }
@@ -283,7 +286,7 @@ public class GoodsCart {
      * @return
      */
     public boolean isContains(Goods goods) {
-        return goodsList.containsValue(goods);
+        return isContains(goods.getId());
     }
 
     /**
