@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 
@@ -65,6 +66,9 @@ public class SearchActivity extends BaseActivity implements SearchView.OnQueryTe
 
     @BindView(id = R.id.iv_cart_logo)
     private ImageView ivCartLogo;
+
+    @BindView(id = R.id.rl_goods_cart)
+    private RelativeLayout rlGoodsCart;
 
     private Dialog clearCartDialog;
 
@@ -304,18 +308,22 @@ public class SearchActivity extends BaseActivity implements SearchView.OnQueryTe
         AppContext app = (AppContext) getApplication();
         GoodsCart goodsCart = app.getGoodsCart();
         if (goodsCart.getTotalCount() == 0) {
+            rlGoodsCart.setVisibility(View.GONE);
+            /** /
             ivCartLogo.setImageResource(R.drawable.cart_logo_normal);
             tvOrderedCount.setText(goodsCart.getTotalCount() + "份");
             tvOrderedPrice.setText("￥" + goodsCart.getTotalPrice());
             tvOrderedCount.setVisibility(View.INVISIBLE);
             tvOrderedPrice.setVisibility(View.INVISIBLE);
             btnGoSettle.setText("未选择");
+            /**/
         } else {
+            rlGoodsCart.setVisibility(View.VISIBLE);
             ivCartLogo.setImageResource(R.drawable.cart_logo_selected);
             tvOrderedCount.setText(goodsCart.getTotalCount() + "份");
             tvOrderedPrice.setText("￥" + goodsCart.getTotalPrice());
-            tvOrderedCount.setVisibility(View.VISIBLE);
-            tvOrderedPrice.setVisibility(View.VISIBLE);
+            //tvOrderedCount.setVisibility(View.VISIBLE);
+            //tvOrderedPrice.setVisibility(View.VISIBLE);
             btnGoSettle.setText("去结算");
         }
     }
@@ -380,7 +388,6 @@ public class SearchActivity extends BaseActivity implements SearchView.OnQueryTe
         return location;
     }
 
-    //TODO 商品点击展开
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Log.d("onItemClick", "position  " + position);
@@ -421,10 +428,8 @@ public class SearchActivity extends BaseActivity implements SearchView.OnQueryTe
      * 搜索结果适配器
      */
     class SearchResultAdapter extends BaseAdapter {
-        //TODO 完成搜索页面，继续完成适配器，解决商品展开bug
         public SearchResultAdapter() {
             kjb = KJBitmap.create();
-
         }
 
         @Override
