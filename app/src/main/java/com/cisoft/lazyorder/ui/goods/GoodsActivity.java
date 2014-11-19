@@ -157,7 +157,7 @@ public class GoodsActivity extends BaseActivity implements GoodsFragment.OnFragm
         KJBitmap.create().display(ivShopLogo, shop.getFaceImgUrl(), BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher));
         tvShopName.setText(shop.getName());
         tvShopPromotionInfo.setText(shop.getPromotionInfo());
-        updateCartView();
+        //updateCartView();
     }
 
     @Override
@@ -441,4 +441,9 @@ public class GoodsActivity extends BaseActivity implements GoodsFragment.OnFragm
         categoryAdapter.notifyDataSetChanged();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateCartView();
+    }
 }

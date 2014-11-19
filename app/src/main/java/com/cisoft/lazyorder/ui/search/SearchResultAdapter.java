@@ -30,7 +30,7 @@ import java.util.List;
  * Created by Lecion on 14/11/19.
  */
 public class SearchResultAdapter extends BaseAdapter{
-    //TODO 完成搜索页面，继续完成适配器，解决商品添加bug，解决商品展开bug
+    //TODO 完成搜索页面，继续完成适配器，解决商品展开bug
     private SearchActivity context;
 
     private int shopId;
@@ -55,6 +55,7 @@ public class SearchResultAdapter extends BaseAdapter{
         this.shopId = shopId;
         this.shopName = shopName;
         kjb = KJBitmap.create();
+
     }
 
     @Override
