@@ -101,7 +101,7 @@
         android:descendantFocusability="blocksDescendants"
         android:orientation="vertical"
         android:layout_gravity="center"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <!--<TextView-->
             <!--android:layout_width="wrap_content"-->
@@ -124,14 +124,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="100dp"
                 android:text="请选择订单数量" />
 
             <com.cisoft.lazyorder.widget.OrderNumView
                 android:id="@+id/order_num_view"
-                android:layout_width="wrap_content"
+                android:layout_width="10dp"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/tv_select_count"
                 android:layout_alignParentRight="true"
+                android:padding="0dp"
+                android:layout_margin="0dp"
                 android:layout_centerVertical="true">
 
             </com.cisoft.lazyorder.widget.OrderNumView>
