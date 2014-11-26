@@ -74,8 +74,6 @@ public class SureOrderActivity extends BaseActivity {
         switch (v.getId()){
             case R.id.btnSureOrder:
                 showActivity(this, SureInfoActivity.class);
-                overridePendingTransition(android.R.anim.slide_out_right,
-                        android.R.anim.slide_in_left);
                 break;
         }
     }
@@ -93,8 +91,6 @@ public class SureOrderActivity extends BaseActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
-                overridePendingTransition(android.R.anim.slide_in_left,
-                        android.R.anim.slide_out_right);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

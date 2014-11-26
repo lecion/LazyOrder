@@ -1,22 +1,21 @@
-<!-- A DrawerLayout is intended to be used as the top-level content view using match_parent for both width and height to consume the full space available. -->
 <android.support.v4.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/dlNavDrawerLayout"
+    android:id="@+id/drawe_menu_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.cisoft.lazyorder.ui.main.MainActivity">
 
     <FrameLayout
-        android:id="@+id/flContainer"
+        android:id="@+id/drawer_menu_item_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <fragment android:id="@+id/fmNavDrawerFragment"
+    <fragment android:id="@+id/drawer_menu_fragment"
         android:layout_width="@dimen/navigation_drawer_width"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:name="com.cisoft.lazyorder.ui.main.NavDrawerFragment"
-        tools:layout="@layout/fragment_navigation_drawer" />
+        android:name="com.cisoft.lazyorder.ui.main.DrawMenuFragment"
+        tools:layout="@layout/fragment_drawer_menu" />
 
 </android.support.v4.widget.DrawerLayout>

@@ -22,7 +22,7 @@ import java.util.List;
 public class BuildService extends AbsService{
 
     public BuildService(Context context) {
-        super(context, ApiConstants.MODULE_BUILD);
+        super(context, ApiConstants.MODULE_BUILDING);
     }
 
     /**
@@ -32,16 +32,16 @@ public class BuildService extends AbsService{
      */
     public void loadBuildListFromNet(int schoolId, final ChoiceAddressDialog.BuildDataLoadFinish loadFinish){
         KJStringParams params = new KJStringParams();
-        params.put(ApiConstants.KEY_BUILD_SCHOOL_ID, String.valueOf(schoolId));
+        params.put(ApiConstants.KEY_BUILDING_SCHOOL_ID, String.valueOf(schoolId));
 
-        String url = packageApiUrlByMethodNameAndParams(ApiConstants.METHOD_BUILD_FIND_ALL, params);
+        String url = packageApiUrlByMethodNameAndParams(ApiConstants.METHOD_BUILDING_FIND_ALL, params);
         String result = null;
         result = httpCacher.get(url);
         if (result != null && !AppConfig.IS_DEBUG) {
             List<Build> builds = new ArrayList<Build>();
             try {
                 JSONObject jsonObj = new JSONObject(result);
-                JSONArray buildArr = jsonObj.getJSONArray(ApiConstants.KEY_BUILD_DATA);
+                JSONArray buildArr = jsonObj.getJSONArray(ApiConstants.KEY_BUILDING_DATA);
                 JSONObject buildObj = null;
                 Build build = null;
                 for (int i = 0; i < buildArr.length(); i++) {
@@ -57,13 +57,13 @@ public class BuildService extends AbsService{
                 loadFinish.onLoadFinish(builds);
             }
         } else {
-            super.asyncUrlGet(ApiConstants.METHOD_BUILD_FIND_ALL, params, false, new SuccessCallback() {
+            super.asyncUrlGet(ApiConstants.METHOD_BUILDING_FIND_ALL, params, false, new SuccessCallback() {
                 @Override
                 public void onSuccess(String result) {
                     List<Build> builds = new ArrayList<Build>();
                     try {
                         JSONObject jsonObj = new JSONObject(result);
-                        JSONArray buildArr = jsonObj.getJSONArray(ApiConstants.KEY_BUILD_DATA);
+                        JSONArray buildArr = jsonObj.getJSONArray(ApiConstants.KEY_BUILDING_DATA);
                         JSONObject buildObj = null;
                         Build build = null;
                         for (int i = 0; i < buildArr.length(); i++) {

@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,48 +14,50 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
-
 import com.cisoft.lazyorder.R;
-import com.cisoft.lazyorder.WelcomeActivity;
 import com.cisoft.lazyorder.bean.shop.Shop;
 import com.cisoft.lazyorder.bean.shop.ShopCategory;
 import com.cisoft.lazyorder.core.shop.ShopCategoryService;
 import com.cisoft.lazyorder.core.shop.ShopService;
 import com.cisoft.lazyorder.finals.ApiConstants;
 import com.cisoft.lazyorder.ui.goods.GoodsActivity;
+import com.cisoft.lazyorder.ui.login.LoginActivity;
+import com.cisoft.lazyorder.ui.main.menu.MenuItemContent;
 import com.cisoft.lazyorder.util.DialogFactory;
+import com.cisoft.lazyorder.util.EmptyViewManager;
 import com.cisoft.lazyorder.widget.AdRotator;
 import com.cisoft.lazyorder.widget.MyListView;
-
 import org.kymjs.aframe.ui.BindView;
 import org.kymjs.aframe.ui.ViewInject;
-import org.kymjs.aframe.ui.fragment.BaseFragment;
 import org.kymjs.aframe.utils.DensityUtils;
-
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by comit on 10/16/14.
  */
-public class ShopFragment extends BaseFragment implements ActionBar.OnNavigationListener, AdapterView.OnItemClickListener{
+public class ShopFragment extends MenuItemContent implements ActionBar.OnNavigationListener, AdapterView.OnItemClickListener{
 
+    @BindView(id = R.id.ll_empty_view_container)
+    private LinearLayout llEmptyViewContainer;
 
     @BindView(id = R.id.lvShopList)
-    public MyListView lvShopList;
+    private MyListView lvShopList;
 
     @BindView(id = R.id.llShowNoValueTip)
     private LinearLayout llShowNoValueTip;
 
-    public ShopListViewAdapter shopListAdapter;
-    public ShopCategoryListAdapter shopCategoryListAdapter;
-    public AdRotator arImageAdRotator;
+    private ShopListViewAdapter shopListAdapter;
+    private ShopCategoryListAdapter shopCategoryListAdapter;
+    private AdRotator arImageAdRotator;
     private ShopService shopService;
     private ShopCategoryService shopCategoryService;
     private List<Shop> shopsData;
     private List<ShopCategory> shopCategoryData;
 
-    public Dialog loadingTipDialog;
+    private Dialog loadingTipDialog;
+    private boolean isCategoryLoadFinish = false;
+    private boolean flag = false;
 
     private int page = 1;
     private int pager = 10;
@@ -80,6 +83,60 @@ public class ShopFragment extends BaseFragment implements ActionBar.OnNavigation
         showLoadingTip();
         initAdRotator();
         initShopList();
+        Log.e("wanghong", "initWidget start");
+    }
+
+
+    /**
+     * 初始化标题栏式的ActionBar
+     */
+    public void showTitleBarMode(String title) {
+        getActivity().getActionBar().setTitle(title);
+        shopCategoryService.loadAllShopCategoryData(new ShopCategoryService.OnCategoryLoadFinish() {
+            @Override
+            public void onSuccess(List<ShopCategory> categories) {
+                if(categories.size() == 0){
+                    getActivity().getActionBar().setTitle("加载分类失败");
+                    isCategoryLoadFinish = false;
+                    closeLoadingTip();
+                }else{
+                    isCategoryLoadFinish = true;
+                    showNavListMode();
+                    shopCategoryListAdapter.clearAll();
+                    shopCategoryListAdapter.addData(categories);
+                    shopCategoryListAdapter.refresh();
+                }
+            }
+
+            @Override
+            public void onFailure(int stateCode) {
+                getActivity().getActionBar().setTitle("加载分类失败");
+                closeLoadingTip();
+                ViewInject.toast(shopCategoryService.getResponseStateInfo(stateCode));
+            }
+        });
+    }
+
+    /**
+     * 初始化导航列表式的actionBar
+     */
+    public void showNavListMode(){
+        Log.e("wanghong", "showNavListMode start");
+        ActionBar actionbar = getActivity().getActionBar();
+        actionbar.setDisplayShowTitleEnabled(false);
+        actionbar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+        shopCategoryListAdapter = new ShopCategoryListAdapter(getActivity(), shopCategoryData);
+        flag = true;
+        actionbar.setListNavigationCallbacks(shopCategoryListAdapter, this);
+        flag = false;
+        Log.e("wanghong", "showNavListMode end");
+    }
+
+
+    private void egfeg(){
+        ActionBar actionbar = getActivity().getActionBar();
+        actionbar.setDisplayShowTitleEnabled(false);
+        actionbar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
     }
 
 
@@ -111,6 +168,10 @@ public class ShopFragment extends BaseFragment implements ActionBar.OnNavigation
         lvShopList.setOnRefreshListener(new MyListView.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                if(!isCategoryLoadFinish){
+                    showTitleBarMode("正在加载中...");
+                }
+
                 page = 1;
                 shopService.loadShopDataByTypeId(shopTypeId, page, pager, new ShopService.OnShopLoadFinish() {
                     @Override
@@ -118,7 +179,7 @@ public class ShopFragment extends BaseFragment implements ActionBar.OnNavigation
                         lvShopList.stopRefreshData();
 
                         if (shops.size() == 0) {
-                            showNoValueTip();
+                            showNoShopTip();
                         } else {
                             shopListAdapter.clearAll();
                             shopListAdapter.addData(shops);
@@ -128,9 +189,8 @@ public class ShopFragment extends BaseFragment implements ActionBar.OnNavigation
 
                     @Override
                     public void onFailure(int stateCode) {
-                        ViewInject.toast(shopService.getResponseStateInfo(stateCode));
                         lvShopList.stopRefreshData();
-                        showNoValueTip();
+                        ViewInject.toast(shopService.getResponseStateInfo(stateCode));
                     }
                 });
             }
@@ -164,11 +224,12 @@ public class ShopFragment extends BaseFragment implements ActionBar.OnNavigation
 
 
     /**
-     * 显示正在加载的提示
+     * 显示正在加载的提示框
      */
     public void showLoadingTip() {
         if(loadingTipDialog == null){
             loadingTipDialog = DialogFactory.createToastDialog(getActivity(), "正在加载,请稍等");
+            loadingTipDialog.setCanceledOnTouchOutside(false);
         }
         if(!loadingTipDialog.isShowing()){
             loadingTipDialog.show();
@@ -178,80 +239,39 @@ public class ShopFragment extends BaseFragment implements ActionBar.OnNavigation
     }
 
     /**
-     * 隐藏正在加载的提示
+     * 关闭正在加载的提示框
      */
-    public void hideLoadingTip() {
+    public void closeLoadingTip() {
         llShowNoValueTip.setVisibility(View.GONE);
         if(loadingTipDialog != null && loadingTipDialog.isShowing())
             loadingTipDialog.dismiss();
     }
 
-    /**
-     * 显示出没有数据的提示
-     */
-    public void showNoValueTip() {
-        llShowNoValueTip.setVisibility(View.VISIBLE);
-        if(loadingTipDialog !=null && loadingTipDialog.isShowing())
-            loadingTipDialog.dismiss();
-    }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.shop, menu);
+    /**
+     * 显示出没有数据的提示视图
+     */
+    public void showNoShopTip() {
+        View noShopView = getActivity().getLayoutInflater().inflate(R.layout.error_no_shop, null);
+        EmptyViewManager.showEmptyView(llEmptyViewContainer, noShopView);
     }
 
 
     /**
-     * ActionBar Item的点击回调
+     * 显示出网络状态差的提示视图
      */
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_login:
-                startActivity(new Intent(getActivity(), WelcomeActivity.class));
-                break;
-        }
-
-        return true;
+    public void showNetPoorTip() {
+        View netPoorView = getActivity().getLayoutInflater().inflate(R.layout.error_net_poor, null);
+        EmptyViewManager.showEmptyView(llEmptyViewContainer, netPoorView);
     }
 
 
     /**
-     * 初始化标题栏式的ActionBar
+     * 显示出没有网络的提示视图
      */
-    public void showTitleBarMode(String title) {
-        getActivity().getActionBar().setTitle(title);
-        shopCategoryService.loadAllShopCategoryData(new ShopCategoryService.OnCategoryLoadFinish() {
-            @Override
-            public void onSuccess(List<ShopCategory> categories) {
-                if(categories.size() == 0){
-                    getActivity().getActionBar().setTitle("加载分类失败");
-                    hideLoadingTip();
-                }else{
-                    showNavListMode();
-                    shopCategoryListAdapter.addData(categories);
-                    shopCategoryListAdapter.refresh();
-                }
-            }
-
-            @Override
-            public void onFailure(int stateCode) {
-                getActivity().getActionBar().setTitle("加载分类失败");
-                hideLoadingTip();
-                ViewInject.toast(shopCategoryService.getResponseStateInfo(stateCode));
-            }
-        });
-    }
-
-    /**
-     * 初始化导航列表式的actionBar
-     */
-    public void showNavListMode(){
-        ActionBar actionbar = getActivity().getActionBar();
-        actionbar.setDisplayShowTitleEnabled(false);
-        actionbar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-        shopCategoryListAdapter = new ShopCategoryListAdapter(getActivity(), shopCategoryData);
-        actionbar.setListNavigationCallbacks(shopCategoryListAdapter, this);
+    public void showNoNetTip() {
+        View noNetView = getActivity().getLayoutInflater().inflate(R.layout.error_no_net, null);
+        EmptyViewManager.showEmptyView(llEmptyViewContainer, noNetView);
     }
 
 
@@ -260,17 +280,23 @@ public class ShopFragment extends BaseFragment implements ActionBar.OnNavigation
      */
     @Override
     public boolean onNavigationItemSelected(int position, long l) {
+//        if (flag) return true;
+
+        Log.e("wanghong", "onNavigationItemSelected start");
+
         page = 1;//初始化page
         shopTypeId = shopCategoryData.get(position).getId();
+
+        showLoadingTip();
+
         if(shopTypeId != 0) {
-            showLoadingTip();
             shopService.loadShopDataByTypeId(shopTypeId, page, pager, new ShopService.OnShopLoadFinish() {
                 @Override
                 public void onSuccess(List<Shop> shops) {
-                    hideLoadingTip();
+                    closeLoadingTip();
 
                     if (shops.size() == 0) {
-                        showNoValueTip();
+                        showNoShopTip();
                     } else {
                         shopListAdapter.clearAll();
                         shopListAdapter.addData(shops);
@@ -280,17 +306,30 @@ public class ShopFragment extends BaseFragment implements ActionBar.OnNavigation
 
                 @Override
                 public void onFailure(int stateCode) {
-                    hideLoadingTip();
-                    showNoValueTip();
-                    ViewInject.toast(shopCategoryService.getResponseStateInfo(stateCode));
+                    closeLoadingTip();
+
+                    switch (stateCode) {
+                        case ApiConstants.RESPONSE_STATE_NOT_NET:
+                            showNoNetTip();
+                            break;
+                        case ApiConstants.RESPONSE_STATE_NET_POOR:
+                            showNetPoorTip();
+                            break;
+                        case ApiConstants.RESPONSE_STATE_SERVICE_EXCEPTION:
+                            showNoShopTip();
+                            break;
+                    }
                 }
             });
         } else {
-            showNoValueTip();
+            showNoShopTip();
         }
+
+        Log.e("wanghong", "onNavigationItemSelected end");
 
         return true;
     }
+
 
     /**
      * 店家列表Item项的点击回调
@@ -310,10 +349,38 @@ public class ShopFragment extends BaseFragment implements ActionBar.OnNavigation
         startActivity(intent);
     }
 
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         arImageAdRotator.stopAutoPlay();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        if (!getMenuOpenState()) {
+            inflater.inflate(R.menu.shop, menu);
+            egfeg();
+        }
+
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_login:
+                startActivity(new Intent(getActivity(), LoginActivity.class));
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 }

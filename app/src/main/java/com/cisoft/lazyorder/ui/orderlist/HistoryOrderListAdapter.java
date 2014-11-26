@@ -1,35 +1,33 @@
 package com.cisoft.lazyorder.ui.orderlist;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.cisoft.lazyorder.R;
-import com.cisoft.lazyorder.bean.orderlist.HistoryOrder;
+import com.cisoft.lazyorder.bean.goods.Goods;
+import com.cisoft.lazyorder.bean.order.DishOrder;
 import com.cisoft.lazyorder.widget.OrderNumShowView;
 import com.cisoft.lazyorder.widget.WrapLayout;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by comet on 2014/11/12.
  */
 public class HistoryOrderListAdapter extends BaseAdapter {
     private Context context;
-    private List<HistoryOrder> data;
+    private List<DishOrder> data;
 
-    public HistoryOrderListAdapter(Context context, List<HistoryOrder> data){
+    public HistoryOrderListAdapter(Context context, List<DishOrder> data){
         this.context = context;
         this.data = data;
     }
 
 
-    public void addData(List<HistoryOrder> addData){
+    public void addData(List<DishOrder> addData){
         data.addAll(addData);
     }
 
@@ -47,7 +45,7 @@ public class HistoryOrderListAdapter extends BaseAdapter {
     }
 
     @Override
-    public HistoryOrder getItem(int position) {
+    public DishOrder getItem(int position) {
         return data.get(position);
     }
 
@@ -65,7 +63,7 @@ public class HistoryOrderListAdapter extends BaseAdapter {
             holder = new ViewHolder();
 
             holder.tvShopName = (TextView) convertView.findViewById(R.id.tvShopName);
-            holder.onsvGoodListContainer = (WrapLayout) convertView.findViewById(R.id.onsvGoodListContainer);
+            holder.onsvGoodsListContainer = (WrapLayout) convertView.findViewById(R.id.onsvGoodListContainer);
             holder.tvAddress = (TextView) convertView.findViewById(R.id.tvAddress);
             holder.tvTotalPrice = (TextView) convertView.findViewById(R.id.tvTotalPrice);
 
@@ -74,18 +72,18 @@ public class HistoryOrderListAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        HistoryOrder historyOrder = data.get(position);
-        holder.tvShopName.setText(historyOrder.getShopName());
-
-        List<Map<String, String>> goodListMap =  historyOrder.getGoodList();
+        DishOrder dishOrder = data.get(position);
+        holder.tvShopName.setText(dishOrder.getShopName());
+        holder.onsvGoodsListContainer.removeAllViews();
+        List<Goods> goodsList = dishOrder.getGoodsList();
         OrderNumShowView orderNumShowView = null;
-        for (int i = 0; i < goodListMap.size(); i++) {
-            orderNumShowView = new OrderNumShowView(context, goodListMap.get(i));
-            holder.onsvGoodListContainer.addView(orderNumShowView);
+        for (int i = 0; i < goodsList.size(); i++) {
+            orderNumShowView = new OrderNumShowView(context, goodsList.get(i).getCmName(), goodsList.get(i).getOrderNum());
+            holder.onsvGoodsListContainer.addView(orderNumShowView);
         }
 
-        holder.tvAddress.setText(historyOrder.getAddress());
-        holder.tvTotalPrice.setText(String.valueOf(historyOrder.getTotalPrice()));
+        holder.tvAddress.setText(dishOrder.getAddress());
+        holder.tvTotalPrice.setText(String.valueOf(dishOrder.getMoneyAll()));
 
         return convertView;
 
@@ -93,7 +91,7 @@ public class HistoryOrderListAdapter extends BaseAdapter {
 
     public static class ViewHolder{
         public TextView tvShopName;
-        public WrapLayout onsvGoodListContainer;
+        public WrapLayout onsvGoodsListContainer;
         public TextView tvAddress;
         public TextView tvTotalPrice;
     }

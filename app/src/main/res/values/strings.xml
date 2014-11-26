@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">LazyOrder</string>
+    <string name="app_name">懒人订餐</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_shop">ShopActivity</string>
+    <string name="title_activity_shop">店家列表</string>
     <string name="title_activity_goods">商品</string>
+    <string name="title_activity_order_detail">商品详情</string>
     <string name="action_search">搜索</string>
     <string name="title_activity_search">搜索</string>
     <string name="loading_shop_list">正在加载商家列表中,请稍候...</string>
@@ -23,6 +24,7 @@
     <string name="success_to_load_goods_list">加载商品列表成功</string>
     <string name="fail_to_load_goods_category_list">加载商品类别列表失败,请稍候再试</string>
     <string name="success_to_load_goods_category_list">加载商品类别列表成功</string>
+    <string name="have_not_express_order_list">抱歉,您目前还没有快递订单，先去下单吧</string>
     <string name="have_not_goods_list">抱歉,目前还没有商品列表的数据</string>
     <string name="have_no_more_goods_list">已经加载完所有商品了~</string>
     <string name="input_phone_num_hint">请输入手机号码</string>
@@ -33,8 +35,6 @@
     <string name="success_to_load_build_list">加载楼栋列表成功</string>
     <string name="fail_to_query_goods_list">暂未搜索到您要找的商品</string>
     <string name="success_to_query_goods_list">以找到您搜索的商品</string>
-
-
 
     <!-- 自定义的上下拉刷新所用字符串 -->
     <string name="listview_header_hint_normal">下拉刷新</string>
@@ -55,5 +55,8 @@
     <string name="action_example">Example action</string>
     <string name="title_activity_test">TestActivity</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_post_express">提交快递</string>
+    <string name="title_activity_login">登录</string>
+    <string name="title_activity_user_center">个人中心</string>
 
 </resources>

@@ -59,10 +59,10 @@ public class Build extends AbsBean {
             String key = null;
             while (iterator.hasNext()) {
                 key = iterator.next();
-                if (key.equals(ApiConstants.KEY_BUILD_ID)) {
-                    this.id = jsonObj.getInt(ApiConstants.KEY_BUILD_ID);
-                } else if (key.equals(ApiConstants.KEY_BUILD_NAME)) {
-                    this.name = jsonObj.getString(ApiConstants.KEY_BUILD_NAME);
+                if (key.equals(ApiConstants.KEY_BUILDING_ID)) {
+                    this.id = jsonObj.getInt(ApiConstants.KEY_BUILDING_ID);
+                } else if (key.equals(ApiConstants.KEY_BUILDING_NAME)) {
+                    this.name = jsonObj.getString(ApiConstants.KEY_BUILDING_NAME);
                 }
             }
         } catch (JSONException e) {

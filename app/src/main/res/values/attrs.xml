@@ -9,4 +9,12 @@
         <attr name="count" />
     </declare-styleable>
 
+    <attr name="menu_name" format="string" />
+    <attr name="menu_icon" format="reference|integer" />
+    <attr name="content_class" format="string" />
+    <declare-styleable name="drawMenuItemAttrs">
+        <attr name="menu_name" />
+        <attr name="menu_icon" />
+        <attr name="content_class" />
+    </declare-styleable>
 </resources>

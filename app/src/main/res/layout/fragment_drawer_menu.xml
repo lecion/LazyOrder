@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="true"
+    android:orientation="vertical">
+
+    <com.cisoft.lazyorder.ui.main.menu.DrawerMenuHeaderView
+        android:id="@+id/drawer_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:content_class="com.cisoft.lazyorder.ui.usercenter.UserCenterFragment"/>
+    <LinearLayout
+        android:id="@+id/menu_container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:background="#ff2f3036">
+        <com.cisoft.lazyorder.ui.main.menu.DrawerMenuItemView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:content_class="com.cisoft.lazyorder.ui.shop.ShopFragment"
+            app:menu_icon="@drawable/selector_drawer_icon_order_goods"
+            app:menu_name="我要订餐" />
+
+        <com.cisoft.lazyorder.ui.main.menu.DrawerMenuItemView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:content_class="com.cisoft.lazyorder.ui.orderlist.HistoryOrderFragment"
+            app:menu_icon="@drawable/selector_drawer_icon_order_list"
+            app:menu_name="订单中心" />
+
+        <com.cisoft.lazyorder.ui.main.menu.DrawerMenuItemView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:content_class="com.cisoft.lazyorder.ui.express.ExpressOrderListFragment"
+            app:menu_icon="@drawable/selector_drawer_icon_order_list"
+            app:menu_name="代领快递" />
+
+        <com.cisoft.lazyorder.ui.main.menu.DrawerMenuItemView
+            android:id="@+id/drawer_about_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:menu_icon="@drawable/selector_drawer_icon_about"
+            app:menu_name="关于我们" />
+    </LinearLayout>
+</LinearLayout>
