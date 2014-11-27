@@ -17,4 +17,11 @@
         <attr name="menu_icon" />
         <attr name="content_class" />
     </declare-styleable>
+
+    <attr name="item_title" format="string" />
+    <attr name="item_icon" format="reference|integer" />
+    <declare-styleable name="userCenterItemAttrs">
+        <attr name="item_title" />
+        <attr name="item_icon" />
+    </declare-styleable>
 </resources>

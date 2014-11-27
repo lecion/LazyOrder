@@ -7,6 +7,7 @@
     <color name="text_title_color">#ff282828</color>
     <color name="text_light_gray_color">#ff8b8b8b</color>
     <color name="text_gray_color">#ff555555</color>
+    <color name="text_ligth_black">#494949</color>
 
     <color name="list_divider_color">#ffdedede</color>
     
@@ -30,7 +31,7 @@
     <color name="order_detail_text_color">#737373</color>
     <color name="order_detail_money_all_text_color">#FF802C</color>
 
-    <color name="gray_bg">#ffeeeeec</color>
+    <color name="gray_bg">#F2F2F2</color>
     <color name="white">#ffffffff</color>
     <color name="blue">#ff3993cf</color>
     <color name="blue_dark">#ff0c72a9</color>

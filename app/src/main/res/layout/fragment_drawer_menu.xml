@@ -11,39 +11,44 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:content_class="com.cisoft.lazyorder.ui.usercenter.UserCenterFragment"/>
-    <LinearLayout
-        android:id="@+id/menu_container"
+
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:orientation="vertical"
         android:background="#ff2f3036">
-        <com.cisoft.lazyorder.ui.main.menu.DrawerMenuItemView
+        <LinearLayout
+            android:id="@+id/menu_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:content_class="com.cisoft.lazyorder.ui.shop.ShopFragment"
-            app:menu_icon="@drawable/selector_drawer_icon_order_goods"
-            app:menu_name="我要订餐" />
+            android:orientation="vertical">
+            <com.cisoft.lazyorder.ui.main.menu.DrawerMenuItemView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:content_class="com.cisoft.lazyorder.ui.shop.ShopFragment"
+                app:menu_icon="@drawable/selector_drawer_icon_order_goods"
+                app:menu_name="我要订餐" />
 
-        <com.cisoft.lazyorder.ui.main.menu.DrawerMenuItemView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:content_class="com.cisoft.lazyorder.ui.orderlist.HistoryOrderFragment"
-            app:menu_icon="@drawable/selector_drawer_icon_order_list"
-            app:menu_name="订单中心" />
+            <com.cisoft.lazyorder.ui.main.menu.DrawerMenuItemView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:content_class="com.cisoft.lazyorder.ui.orderlist.HistoryOrderFragment"
+                app:menu_icon="@drawable/selector_drawer_icon_order_list"
+                app:menu_name="订单中心" />
 
-        <com.cisoft.lazyorder.ui.main.menu.DrawerMenuItemView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:content_class="com.cisoft.lazyorder.ui.express.ExpressOrderListFragment"
-            app:menu_icon="@drawable/selector_drawer_icon_order_list"
-            app:menu_name="代领快递" />
+            <com.cisoft.lazyorder.ui.main.menu.DrawerMenuItemView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:content_class="com.cisoft.lazyorder.ui.express.ExpressOrderListFragment"
+                app:menu_icon="@drawable/selector_drawer_icon_order_list"
+                app:menu_name="代领快递" />
 
-        <com.cisoft.lazyorder.ui.main.menu.DrawerMenuItemView
-            android:id="@+id/drawer_about_content"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:menu_icon="@drawable/selector_drawer_icon_about"
-            app:menu_name="关于我们" />
-    </LinearLayout>
+            <com.cisoft.lazyorder.ui.main.menu.DrawerMenuItemView
+                android:id="@+id/drawer_about_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:menu_icon="@drawable/selector_drawer_icon_about"
+                app:menu_name="关于我们" />
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>
