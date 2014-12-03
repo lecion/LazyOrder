@@ -24,4 +24,6 @@ dependencies {
     compile files('../libs/KJFrameForAndroid_V2.0.jar')
     compile files('/Users/Lecion/dev/android/LazyOrder/libs/GetuiExt-2.0.3.jar')
     compile files('/Users/Lecion/dev/android/LazyOrder/libs/GetuiSdk2.3.0.0.jar')
+    compile 'com.android.support:support-v4:21.0.0'
+    compile 'com.android.support:appcompat-v7:21.0.0'
 }

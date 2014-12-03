@@ -4,5 +4,13 @@
     <string name="app_name">Shop</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <!-- 自定义的上下拉刷新所用字符串 -->
+    <string name="listview_header_hint_normal">下拉刷新</string>
+    <string name="listview_header_hint_ready">松开刷新数据</string>
+    <string name="listview_header_hint_loading">正在加载...</string>
+    <string name="listview_header_last_time">上次更新时间：</string>
+    <string name="listview_footer_hint_normal">查看更多</string>
+    <string name="listview_footer_hint_ready">松开载入更多</string>
 </resources>
