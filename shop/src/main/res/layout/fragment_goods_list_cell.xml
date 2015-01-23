@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="8dp"
+    android:paddingRight="48dp"
+    android:paddingLeft="48dp"
+    >
+    <ImageView
+        android:id="@+id/iv_goods_img"
+        android:src="@drawable/ic_launcher"
+        android:layout_width="71dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="4dp"
+        android:paddingBottom="4dp"
+        android:layout_marginLeft="8dp"
+        />
+
+    <TextView
+        android:id="@+id/tv_goods_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="商品名称"
+        android:layout_toRightOf="@id/iv_goods_img"
+        android:layout_alignTop="@id/iv_goods_img"
+        android:layout_marginLeft="12dp"
+        android:textSize="16sp"
+        />
+
+    <TextView
+        android:id="@+id/tv_goods_sales"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="月销量："
+        android:layout_toRightOf="@id/iv_goods_img"
+        android:layout_alignBottom="@id/iv_goods_img"
+        android:layout_alignLeft="@id/tv_goods_name"
+        android:textSize="12sp"
+        />
+
+    <TextView
+        android:id="@+id/tv_goods_sales_show"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="8787"
+        android:layout_toRightOf="@id/tv_goods_sales"
+        android:layout_alignTop="@id/tv_goods_sales"
+        android:textSize="12sp"
+        android:numeric="integer"
+        />
+
+    <TextView
+        android:id="@+id/tv_goods_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="￥99"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@id/tv_goods_name"
+        android:layout_marginRight="8dp"
+        />
+
+    <Button
+        android:id="@+id/btn_goods_status"
+        android:layout_width="60dp"
+        android:layout_height="20dp"
+        android:text="正在销售"
+        android:layout_alignBottom="@id/iv_goods_img"
+        android:layout_marginRight="4dp"
+        android:background="#ff0000"
+        android:textSize="12sp"
+        android:layout_alignRight="@id/tv_goods_price"
+        android:textColor="@android:color/white"
+        />
+
+</RelativeLayout>

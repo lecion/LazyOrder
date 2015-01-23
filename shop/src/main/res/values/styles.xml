@@ -3,6 +3,33 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
         <!-- Customize your theme here. -->
+        <item name="android:actionBarStyle">@style/MyActionBar</item>
+    </style>
+
+    <!-- ActionBar的样式 -->
+    <style name="MyActionBar" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@color/actionbar_bg_color</item>
+        <item name="android:textColorHint">@android:color/white</item>
+        <item name="android:dropDownListViewStyle">@android:style/Widget.Holo.ListView.DropDown</item>
+    </style>
+
+    <!--ActionBar列表式导航的样式 -->
+    <style name="MyDropDownNav" parent="@android:style/Widget.ListView.DropDown">
+        <item name="android:background">@android:color/holo_green_light</item>
+        <item name="android:popupBackground">@android:color/holo_blue_light</item>
+        <item name="android:dropDownSelector">@android:color/holo_orange_light</item>
+    </style>
+
+
+
+
+    <!-- 吐司类对话框样式 -->
+    <style name="dialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowIsFloating">true</item><!-- 设置为浮动窗口 -->
+        <item name="android:windowFrame">@null</item><!-- 设置无边框 -->
+        <item name="android:windowNoTitle">true</item><!-- 设置无标题 -->
+        <item name="android:windowBackground">@android:color/transparent</item><!-- 设置完全透明 -->
+        <item name="android:backgroundDimEnabled">true</item><!-- 设置屏幕变暗 -->
     </style>
 
 </resources>
