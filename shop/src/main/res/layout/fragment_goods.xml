@@ -1,83 +1,108 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" tools:context="com.cisoft.shop.goods.view.GoodsFragment">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.cisoft.shop.goods.view.GoodsFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="109dp">
+
         <ImageView
             android:id="@+id/iv_shop_logo"
-            android:src="@drawable/ic_launcher"
             android:layout_width="71dp"
             android:layout_height="50dp"
-            android:layout_marginTop="4dp"
-            />
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="8dp"
+            android:src="@drawable/ic_launcher" />
 
         <TextView
             android:id="@+id/tv_shop_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="叮当超市"
-            android:layout_toRightOf="@id/iv_shop_logo"
             android:layout_alignTop="@id/iv_shop_logo"
+            android:layout_marginLeft="12dp"
+            android:layout_toRightOf="@id/iv_shop_logo"
+            android:text="叮当超市"
             android:textSize="16sp"
+            android:textStyle="bold"
             />
+
         <TextView
             android:id="@+id/tv_shop_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="营业时间："
-            android:layout_toRightOf="@id/iv_shop_logo"
+            android:layout_alignLeft="@id/tv_shop_name"
             android:layout_below="@id/tv_shop_name"
-            android:textSize="10sp"
-            />
+            android:layout_toRightOf="@id/iv_shop_logo"
+            android:text="营业时间："
+            android:textSize="10sp" />
+
         <TextView
             android:id="@+id/tv_shop_time_show"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="07:00-23:30"
-            android:layout_toRightOf="@id/tv_shop_time"
             android:layout_alignTop="@id/tv_shop_time"
-            android:textSize="10sp"
-            />
+            android:layout_toRightOf="@id/tv_shop_time"
+            android:text="07:00-23:30"
+            android:textSize="10sp" />
+
         <TextView
             android:id="@+id/tv_shop_privilege"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="当前优惠："
-            android:layout_toRightOf="@id/iv_shop_logo"
             android:layout_alignBottom="@id/iv_shop_logo"
-            android:textSize="12sp"
-            />
+            android:layout_alignLeft="@id/tv_shop_name"
+            android:layout_toRightOf="@id/iv_shop_logo"
+            android:text="当前优惠："
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/tv_shop_privilege_show"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="bilibilibili"
-            android:layout_toRightOf="@id/tv_shop_privilege"
             android:layout_alignTop="@id/tv_shop_privilege"
-            android:textSize="12sp"
-            />
-
+            android:layout_toRightOf="@id/tv_shop_privilege"
+            android:text="bilibilibili"
+            android:textSize="12sp" />
 
 
         <Spinner
             android:id="@+id/sp_shop_state"
-            android:layout_width="70dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:layout_marginRight="12dp"
             ></Spinner>
-        <!--<Spinner-->
-            <!--android:id="@+id/sp_goods_category"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"></Spinner>-->
-        </RelativeLayout>
 
-    <!--<com.cisoft.shop.widget.MyListView-->
-        <!--android:id="@+id/lv_goods"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content">-->
-        <!--</com.cisoft.shop.widget.MyListView>-->
+        <Spinner
+            android:id="@+id/sp_goods_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/sp_shop_state"
+            android:layout_below="@id/iv_shop_logo"
+            android:layout_marginRight="12dp"></Spinner>
+    </RelativeLayout>
 
-</FrameLayout>
+    <LinearLayout
+        android:id="@+id/llShowNoValueTip"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:visibility="visible">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/have_not_goods_list"
+            android:textColor="#E70012"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <com.cisoft.shop.widget.MyListView
+        android:id="@+id/lv_goods"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:dividerHeight="12dp"></com.cisoft.shop.widget.MyListView>
+</LinearLayout>

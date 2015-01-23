@@ -1,6 +1,7 @@
 package com.cisoft.shop.bean;
 
-import com.cisoft.lazyorder.finals.ApiConstants;
+
+import com.cisoft.shop.ApiConstants;
 
 import org.json.JSONException;
 import org.json.JSONObject;

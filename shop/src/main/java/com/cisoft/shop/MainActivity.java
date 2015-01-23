@@ -124,11 +124,11 @@ public class MainActivity extends BaseActivity implements GoodsFragment.OnFragme
         switch (position) {
             case 0:
                 ViewInject.toast("商品列表");
-                getFragmentManager().beginTransaction().replace(R.id.fl_container, GoodsFragment.newInstance("商品", "商品"), "goods").commit();
+                getFragmentManager().beginTransaction().replace(R.id.fl_container, GoodsFragment.newInstance("商品"), "goods").commit();
                 break;
             case 1:
                 ViewInject.toast("订单列表");
-                getFragmentManager().beginTransaction().replace(R.id.fl_container, OrderFragment.newInstance("订单", "订单"), "order").commit();
+                getFragmentManager().beginTransaction().replace(R.id.fl_container, OrderFragment.newInstance("订单"), "order").commit();
                 break;
             case 2:
                 ViewInject.toast("检查更新");

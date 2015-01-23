@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp"
+    android:paddingLeft="48dp"
+    android:paddingRight="48dp">
+
+    <TextView
+        android:id="@+id/tv_order_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No.404" />
+
+    <TextView
+        android:id="@+id/tv_order_money_all"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="￥299.9" />
+
+    <TextView
+        android:id="@+id/tv_order_time_go"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:text="已下单20分钟" />
+
+    <Button
+        android:id="@+id/btn_order_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="未准备"
+        android:layout_below="@id/tv_order_number"
+        />
+
+    <Spinner
+        android:id="@+id/sp_order_goods_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        >
+        </Spinner>
+
+
+</RelativeLayout>
