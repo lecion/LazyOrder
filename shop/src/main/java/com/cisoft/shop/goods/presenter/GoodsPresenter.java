@@ -120,9 +120,8 @@ public class GoodsPresenter{
 
             @Override
             public void onFailure(String msg) {
+                //TODO 临时处理
                 ViewInject.toast(msg);
-                //TODO 测试状态改变，记得删
-                //view.setGoodsStatus(position, result);
             }
         });
     }
