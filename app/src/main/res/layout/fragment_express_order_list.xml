@@ -1,0 +1,31 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_bg"
+    tools:context="com.cisoft.lazyorder.ui.express.ExpressOrderListFragment">
+
+    <com.cisoft.lazyorder.widget.MyListView
+        android:id="@+id/lv_express_order_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="@null"
+        android:dividerHeight="15dp"
+        android:fadingEdge="none"
+        android:overScrollMode="never"
+        android:scrollbars="none"/>
+
+    <LinearLayout
+        android:id="@+id/ll_show_no_value_tip"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:visibility="gone">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@color/loading_shop_list_text_color"
+            android:text="@string/have_not_express_order_list"/>
+    </LinearLayout>
+</FrameLayout>

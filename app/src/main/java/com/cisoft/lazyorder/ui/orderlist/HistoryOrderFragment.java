@@ -1,26 +1,32 @@
 package com.cisoft.lazyorder.ui.orderlist;
 
+import android.app.ActionBar;
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
-
 import com.cisoft.lazyorder.R;
-import com.cisoft.lazyorder.bean.orderlist.HistoryOrder;
-import com.cisoft.lazyorder.core.orderlist.HistoryOrderService;
+import com.cisoft.lazyorder.bean.order.DishOrder;
+import com.cisoft.lazyorder.core.order.OrderService;
+import com.cisoft.lazyorder.ui.main.menu.MenuItemContent;
+import com.cisoft.lazyorder.ui.orderdetail.OrderDetailActivity;
 import com.cisoft.lazyorder.util.DialogFactory;
 import com.cisoft.lazyorder.widget.MyListView;
-
 import org.kymjs.aframe.ui.BindView;
 import org.kymjs.aframe.ui.ViewInject;
 import org.kymjs.aframe.ui.fragment.BaseFragment;
-
 import java.util.ArrayList;
 import java.util.List;
 
-public class HistoryOrderFragment extends BaseFragment {
+public class HistoryOrderFragment extends MenuItemContent implements AdapterView.OnItemClickListener{
 
 
     @BindView(id = R.id.lvHistoryOrderList)
@@ -29,8 +35,8 @@ public class HistoryOrderFragment extends BaseFragment {
     @BindView(id = R.id.llShowNoValueTip)
     private LinearLayout llShowNoValueTip;
 
-    private HistoryOrderService hisOrderService;
-    private List<HistoryOrder> hisOrderList = new ArrayList<HistoryOrder>();
+    private OrderService orderService;
+    private List<DishOrder> hisOrderList = new ArrayList<DishOrder>();
     private HistoryOrderListAdapter hisOrderListAdapter;
 
     public Dialog loadingTipDialog;
@@ -46,45 +52,56 @@ public class HistoryOrderFragment extends BaseFragment {
         return view;
     }
 
-
     @Override
     protected void initData() {
-        hisOrderService = new HistoryOrderService(getActivity());
+        orderService = new OrderService(getActivity());
     }
 
 
     @Override
     protected void initWidget(View parentView) {
+        initActionBar();
         showLoadingTip();
         initHisOrderList();
     }
 
 
+    /**
+     * 初始化标题栏
+     */
+    private void initActionBar() {
+        ActionBar actionBar = getActivity().getActionBar();
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+        actionBar.setDisplayShowTitleEnabled(true);
+        actionBar.setTitle(" 历史订单");
+    }
+
     private void initHisOrderList(){
         hisOrderListAdapter = new HistoryOrderListAdapter(getActivity(), hisOrderList);
         lvHistoryOrderList.setAdapter(hisOrderListAdapter);
         lvHistoryOrderList.setPullLoadEnable(true);
+        lvHistoryOrderList.setOnItemClickListener(this);
         lvHistoryOrderList.setOnRefreshListener(new MyListView.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 page = 1;
-                hisOrderService.loadHistoryOrderData(userPhone, page, pager, new HistoryOrderService.OnHistoryOrderLoadFinish() {
+                orderService.loadDishHisOrderData(userPhone, page, pager, new OrderService.OnDishHisOrderLoadFinish() {
                     @Override
-                    public void onSuccess(List<HistoryOrder> historyOrders) {
+                    public void onSuccess(List<DishOrder> dishOrders) {
                         lvHistoryOrderList.stopRefreshData();
 
-                        if (historyOrders.size() == 0) {
+                        if (dishOrders.size() == 0) {
                             showNoValueTip();
                         } else {
                             hisOrderListAdapter.clearAll();
-                            hisOrderListAdapter.addData(historyOrders);
+                            hisOrderListAdapter.addData(dishOrders);
                             hisOrderListAdapter.refresh();
                         }
                     }
 
                     @Override
                     public void onFailure(int stateCode) {
-                        ViewInject.toast(hisOrderService.getResponseStateInfo(stateCode));
+                        ViewInject.toast(orderService.getResponseStateInfo(stateCode));
                         lvHistoryOrderList.stopRefreshData();
                         showNoValueTip();
                     }
@@ -93,46 +110,46 @@ public class HistoryOrderFragment extends BaseFragment {
 
             @Override
             public void onLoadMore() {
-                hisOrderService.loadHistoryOrderData(userPhone, page, pager, new HistoryOrderService.OnHistoryOrderLoadFinish() {
+                orderService.loadDishHisOrderData(userPhone, page, pager, new OrderService.OnDishHisOrderLoadFinish() {
                     @Override
-                    public void onSuccess(List<HistoryOrder> historyOrders) {
+                    public void onSuccess(List<DishOrder> dishOrders) {
                         lvHistoryOrderList.stopRefreshData();
 
-                        if (historyOrders.size() == 0) {
+                        if (dishOrders.size() == 0) {
                             ViewInject.toast("没有更多店家数据了");
                             lvHistoryOrderList.setPullLoadEnable(false);
                         } else {
-                            hisOrderListAdapter.addData(historyOrders);
+                            hisOrderListAdapter.addData(dishOrders);
                             hisOrderListAdapter.refresh();
                         }
                     }
 
                     @Override
                     public void onFailure(int stateCode) {
-                        ViewInject.toast(hisOrderService.getResponseStateInfo(stateCode));
+                        ViewInject.toast(orderService.getResponseStateInfo(stateCode));
                         lvHistoryOrderList.stopRefreshData();
                     }
                 });
             }
         });
 
-        hisOrderService.loadHistoryOrderData(userPhone, page, pager, new HistoryOrderService.OnHistoryOrderLoadFinish() {
+        orderService.loadDishHisOrderData(userPhone, page, pager, new OrderService.OnDishHisOrderLoadFinish() {
             @Override
-            public void onSuccess(List<HistoryOrder> historyOrders) {
+            public void onSuccess(List<DishOrder> dishOrders) {
                 hideLoadingTip();
 
-                if (historyOrders.size() == 0) {
+                if (dishOrders.size() == 0) {
                     showNoValueTip();
                 } else {
                     hisOrderListAdapter.clearAll();
-                    hisOrderListAdapter.addData(historyOrders);
+                    hisOrderListAdapter.addData(dishOrders);
                     hisOrderListAdapter.refresh();
                 }
             }
 
             @Override
             public void onFailure(int stateCode) {
-                ViewInject.toast(hisOrderService.getResponseStateInfo(stateCode));
+                ViewInject.toast(orderService.getResponseStateInfo(stateCode));
                 hideLoadingTip();
                 showNoValueTip();
             }
@@ -146,6 +163,8 @@ public class HistoryOrderFragment extends BaseFragment {
     public void showLoadingTip() {
         if(loadingTipDialog == null){
             loadingTipDialog = DialogFactory.createToastDialog(getActivity(), "正在加载,请稍等");
+            loadingTipDialog.setCancelable(false);
+            loadingTipDialog.setCanceledOnTouchOutside(false);
         }
         if(!loadingTipDialog.isShowing()){
             loadingTipDialog.show();
@@ -170,5 +189,35 @@ public class HistoryOrderFragment extends BaseFragment {
         llShowNoValueTip.setVisibility(View.VISIBLE);
         if(loadingTipDialog !=null && loadingTipDialog.isShowing())
             loadingTipDialog.dismiss();
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+        DishOrder dishOrder = (DishOrder) adapterView.getItemAtPosition(position);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(OrderDetailActivity.DISH_ORDER, dishOrder);
+        Intent intent = new Intent(getActivity(), OrderDetailActivity.class);
+        intent.putExtras(bundle);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        if(!getMenuOpenState()) {
+            initActionBar();
+        }
+
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -4,6 +4,7 @@
     <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="android:actionBarStyle">@style/MyActionBar</item>
+        <item name="android:windowAnimationStyle">@style/AnimationActivity</item>
     </style>
 
     <!-- ActionBar的样式 -->
@@ -19,8 +20,13 @@
         <item name="android:popupBackground">@android:color/holo_blue_light</item>
         <item name="android:dropDownSelector">@android:color/holo_orange_light</item>
     </style>
-
-
+    <!-- 自定义activity退出和进入时的动画 -->
+    <style name="AnimationActivity" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/push_left_in</item>
+        <item name="android:activityOpenExitAnimation">@anim/push_left_out</item>
+        <item name="android:activityCloseEnterAnimation">@anim/zoom_enter</item>
+        <item name="android:activityCloseExitAnimation">@anim/zoom_exit</item>
+    </style>
 
 
     <!-- 吐司类对话框样式 -->
@@ -47,7 +53,7 @@
         <item name="android:background">@drawable/goods_btn_bg</item>
         <item name="android:button">@null</item>
     </style>
-    
+
     <style name="goods_drop_down_btn_style" parent="goods_btn_style">
         <item name="android:layout_alignParentRight">true</item>
         <item name="android:layout_marginBottom">1px</item>
@@ -56,4 +62,29 @@
         <item name="android:layout_marginRight">16dp</item>
     </style>
 
+
+
+    <style name="order_detail_content_item_style">
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:paddingLeft">15dp</item>
+        <item name="android:paddingRight">15dp</item>
+        <item name="android:background">@drawable/order_detail_content_item_bg</item>
+    </style>
+    <style name="order_detail_content_item_text_style">
+        <item name="android:text">测试文本</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/order_detail_text_color</item>
+    </style>
+    <style name="order_detail_content_item_title_text_style" parent="order_detail_content_item_text_style">
+        <item name="android:paddingTop">15dp</item>
+        <item name="android:paddingLeft">0dp</item>
+        <item name="android:paddingRight">15dp</item>
+        <item name="android:paddingBottom">15dp</item>
+    </style>
+    <style name="order_detail_content_item_content_text_style" parent="order_detail_content_item_text_style">
+        <item name="android:paddingTop">15dp</item>
+        <item name="android:paddingLeft">15dp</item>
+        <item name="android:paddingRight">0dp</item>
+        <item name="android:paddingBottom">15dp</item>
+    </style>
 </resources>

@@ -19,14 +19,14 @@ import java.util.List;
 /**
  * Created by comet on 2014/10/16.
  */
-public class ShopListViewAdapter extends BaseAdapter {
+public class ShopListAdapter extends BaseAdapter {
 
     private Context context;
     private KJBitmap kjb;
     private List<Shop> data;
     private Bitmap loadingBitmap;
 
-    public ShopListViewAdapter(Context context, List<Shop> data){
+    public ShopListAdapter(Context context, List<Shop> data){
         this.context = context;
         this.data = data;
         this.kjb = KJBitmap.create();

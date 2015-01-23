@@ -1,0 +1,42 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_bg">
+
+    <EditText
+        android:id="@+id/et_sms_content"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_alignParentTop="true"
+        android:padding="15dp"
+        android:gravity="left"
+        android:hint="请在此处粘贴您收到的短信"
+        android:textSize="14sp"
+        android:textColor="#ff555555"
+        android:textColorHint="#ff888888"
+        android:background="@drawable/post_express_edit_border_bg"/>
+
+    <EditText
+        android:id="@+id/et_extra_message"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_below="@id/et_sms_content"
+        android:layout_marginTop="20dp"
+        android:padding="15dp"
+        android:gravity="left"
+        android:hint="如果有留言,请在此处填写"
+        android:textSize="14sp"
+        android:textColor="#ff555555"
+        android:textColorHint="#ff888888"
+        android:background="@drawable/post_express_edit_border_bg"/>
+
+    <Button
+        android:id="@+id/btn_post_express"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="提交"
+        android:textSize="16sp"
+        android:textColor="@color/white"
+        android:background="@drawable/selector_red_corners_button"/>
+</RelativeLayout>

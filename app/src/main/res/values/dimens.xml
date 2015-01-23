@@ -8,4 +8,8 @@
     <dimen name="text_content_size">12sp</dimen>
     <dimen name="navigation_drawer_width">240dp</dimen>
 
+
+    <dimen name="content_margin">8.0dip</dimen>
+    <dimen name="content_padding">13.0dip</dimen>
+    <dimen name="cell_height">48.0dip</dimen>
 </resources>

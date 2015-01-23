@@ -1,7 +1,6 @@
 package com.cisoft.lazyorder.widget;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -74,12 +73,12 @@ public class OrderNumShowView extends FrameLayout{
 
     public void setGoodCount(int goodCount) {
         this.goodCount = goodCount;
-        tvGoodCount.setText(this.goodCount);
+        tvGoodCount.setText(String.valueOf(this.goodCount));
     }
 
     public void setNameAndCountWithMap(Map<String, String> value){
-        goodName = value.get(ApiConstants.KEY_HIS_ORDER_GOOD_NAME);
-        goodCount = Integer.parseInt(value.get(ApiConstants.KEY_HIS_ORDER_GOOD_COUNT));
+        goodName = value.get(ApiConstants.KEY_ORDER_GOODS_NAME);
+        goodCount = Integer.parseInt(value.get(ApiConstants.KEY_ORDER_GOODS_COUNT));
 
         tvGoodName.setText(goodName);
         tvGoodCount.setText(String.valueOf(goodCount));
