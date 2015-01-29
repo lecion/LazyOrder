@@ -9,6 +9,11 @@ import java.util.List;
  * Created by Lecion on 12/4/14.
  */
 public interface IGoodsView {
+
+    public static final String SORT_PRICE = "cmPrice";
+
+    public static final String SORT_SALES = "salesNum";
+
     /**
      * 营业状态被选择
      *
@@ -38,4 +43,8 @@ public interface IGoodsView {
     void setGoodsCategory(int type);
 
     void setGoodsStatus(int position, int code);
+
+    void setSortType(String sortType);
+
+    void setDefaultSort();
 }

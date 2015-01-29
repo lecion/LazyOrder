@@ -16,6 +16,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -51,6 +52,14 @@ public class GoodsFragment extends BaseFragment implements IGoodsView{
 
     @BindView(id = R.id.lv_goods)
     private MyListView lvGoods;
+
+    @BindView(id = R.id.rb_pop)
+    private RadioButton rbPop;
+
+    @BindView(id = R.id.rb_price)
+    private RadioButton rbPrice;
+
+    private String sortType = SORT_SALES;
 
     private GoodsCategoryAdapter goodsCategoryAdapter;
 
@@ -132,7 +141,7 @@ public class GoodsFragment extends BaseFragment implements IGoodsView{
         goodsCategoryAdapter = new GoodsCategoryAdapter();
         goodsList = new ArrayList<Goods>();
         goodsListAdapter = new GoodsListAdapter();
-        presenter.onLoad(type);
+        presenter.onLoad(type, sortType);
         shopOldState = 0;
     }
 
@@ -140,9 +149,16 @@ public class GoodsFragment extends BaseFragment implements IGoodsView{
     protected void initWidget(View parentView) {
         initShopStatus();
 
+        initSortButton();
+
         initCategory();
 
         initGoodsList();
+    }
+
+    private void initSortButton() {
+        rbPop.setOnClickListener(this);
+        rbPrice.setOnClickListener(this);
     }
 
     /**
@@ -156,7 +172,7 @@ public class GoodsFragment extends BaseFragment implements IGoodsView{
             @Override
             public void onRefresh() {
                 lvGoods.stopRefreshData();
-                presenter.onLoad(type);
+                presenter.onLoad(type, sortType);
             }
 
             @Override
@@ -166,7 +182,7 @@ public class GoodsFragment extends BaseFragment implements IGoodsView{
                     return;
                 }
                 isLoadMore = true;
-                presenter.loadMore(++page, size, type);
+                presenter.loadMore(++page, size, type, sortType);
             }
         });
         lvGoods.setAdapter(goodsListAdapter);
@@ -273,6 +289,17 @@ public class GoodsFragment extends BaseFragment implements IGoodsView{
     }
 
     @Override
+    public void setSortType(String sortType) {
+        this.sortType = sortType;
+    }
+
+    @Override
+    public void setDefaultSort() {
+        rbPop.toggle();
+        setSortType(SORT_SALES);
+    }
+
+    @Override
     public void showProgress() {
         if (loadingTipDialog == null) {
             loadingTipDialog = DialogFactory.createToastDialog(getActivity(), "正在加载，请稍等");
@@ -309,6 +336,17 @@ public class GoodsFragment extends BaseFragment implements IGoodsView{
     }
 
 
+    @Override
+    protected void widgetClick(View v) {
+        switch (v.getId()) {
+            case R.id.rb_pop:
+                presenter.switchSortType(type, SORT_SALES);
+                break;
+            case R.id.rb_price:
+                presenter.switchSortType(type, SORT_PRICE);
+                break;
+        }
+    }
 
     /**
      * This interface must be implemented by activities that contain this

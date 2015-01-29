@@ -137,6 +137,8 @@ public class Goods extends AbsBean implements Serializable{
                     this.salesNum = jsonObj.getInt(ApiConstants.KEY_COM_SALES_NUM);
                 } else if(key.equals(ApiConstants.KEY_COM_PRICE)) {
                     this.cmPrice = jsonObj.getInt(ApiConstants.KEY_COM_PRICE);
+                } else if (key.equals(ApiConstants.KEY_COM_COM_STATE)) {
+                    this.state = jsonObj.getInt(ApiConstants.KEY_COM_COM_STATE);
                 }
             }
         } catch (JSONException e) {

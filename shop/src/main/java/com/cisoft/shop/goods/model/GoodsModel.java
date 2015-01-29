@@ -32,13 +32,14 @@ public class GoodsModel extends AbsService implements IGoodsModel {
     }
 
     @Override
-    public void loadGoodsList(int page, int size, int type, final INetWorkFinished<Goods> finishedListener) {
+    public void loadGoodsList(int page, int size, int type, String sortType, final INetWorkFinished<Goods> finishedListener) {
         KJStringParams params = new KJStringParams();
         //TODO 更改shop获取
         Shop shop = ((MyApplication) ((MainActivity) context).getApplication()).getShop();
         params.put(ApiConstants.KEY_COM_MER_ID, String.valueOf(shop.getId()));
         params.put(ApiConstants.KEY_COM_PAGE, String.valueOf(page));
         params.put(ApiConstants.KEY_COM_SIZE, String.valueOf(size));
+        params.put(ApiConstants.KEY_COM_SORT, sortType);
         asyncUrlGet(ApiConstants.METHOD_COMMODITY_FIND_ALL_BY_MER_ID, params, new SuccessCallback() {
             @Override
             public void onSuccess(String result) throws JSONException {
@@ -71,13 +72,14 @@ public class GoodsModel extends AbsService implements IGoodsModel {
     }
 
     @Override
-    public void loadGoodsListByType(int page, int size, int type, final INetWorkFinished<Goods> finishedListener) {
+    public void loadGoodsListByType(int page, int size, int type, String sortType, final INetWorkFinished<Goods> finishedListener) {
         KJStringParams params = new KJStringParams();
         //TODO 更改shop获取
         Shop shop = ((MyApplication) ((MainActivity) context).getApplication()).getShop();
         params.put(ApiConstants.KEY_COM_MER_ID, String.valueOf(shop.getId()));
         params.put(ApiConstants.KEY_COM_PAGE, String.valueOf(page));
         params.put(ApiConstants.KEY_COM_SIZE, String.valueOf(size));
+        params.put(ApiConstants.KEY_COM_SORT, sortType);
         String methodName = "";
         if (type == 0) {
             methodName = ApiConstants.METHOD_COMMODITY_FIND_ALL_BY_MER_ID;

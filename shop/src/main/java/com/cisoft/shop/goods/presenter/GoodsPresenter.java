@@ -31,7 +31,7 @@ public class GoodsPresenter{
         shopModel = new ShopModel(context);
     }
 
-    public void onLoad(int type) {
+    public void onLoad(int type, String sortType) {
         view.setPage(1);
         view.showProgress();
         categoryModel.loadCateogryByShopId(new INetWorkFinished<GoodsCategory>() {
@@ -46,7 +46,7 @@ public class GoodsPresenter{
             }
         });
 
-        model.loadGoodsListByType(1, 5, type, new INetWorkFinished<Goods>() {
+        model.loadGoodsListByType(1, 5, type, sortType, new INetWorkFinished<Goods>() {
             @Override
             public void onSuccess(List<Goods> l) {
                 view.hideProgress();
@@ -61,8 +61,8 @@ public class GoodsPresenter{
         });
     }
 
-    public void loadMore(int page, final int size, int type) {
-        model.loadGoodsListByType(page, size, type, new INetWorkFinished<Goods>() {
+    public void loadMore(int page, final int size, int type, String sortType) {
+        model.loadGoodsListByType(page, size, type, sortType, new INetWorkFinished<Goods>() {
             @Override
             public void onSuccess(List<Goods> l) {
                 if (l.size() == 0 || l.size() < size) {
@@ -106,7 +106,8 @@ public class GoodsPresenter{
 
     public void switchGoodsType(int type) {
         view.setGoodsCategory(type);
-        this.onLoad(type);
+        view.setDefaultSort();
+        this.onLoad(type, IGoodsView.SORT_SALES);
     }
 
     public void switchGoodsStatus(final int position, final int state) {
@@ -124,5 +125,10 @@ public class GoodsPresenter{
                 ViewInject.toast(msg);
             }
         });
+    }
+
+    public void switchSortType(int type, String sortType) {
+        view.setSortType(sortType);
+        this.onLoad(type, sortType);
     }
 }
