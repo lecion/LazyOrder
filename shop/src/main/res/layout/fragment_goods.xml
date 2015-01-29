@@ -7,7 +7,9 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="109dp">
+        android:layout_height="109dp"
+        android:background="@color/white"
+        >
 
         <ImageView
             android:id="@+id/iv_shop_logo"
@@ -36,6 +38,7 @@
             android:layout_alignLeft="@id/tv_shop_name"
             android:layout_below="@id/tv_shop_name"
             android:layout_toRightOf="@id/iv_shop_logo"
+            android:layout_marginTop="4dp"
             android:text="营业时间："
             android:textSize="10sp" />
 
@@ -76,13 +79,57 @@
             android:layout_marginRight="12dp"
             ></Spinner>
 
-        <Spinner
-            android:id="@+id/sp_goods_category"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@id/sp_shop_state"
-            android:layout_below="@id/iv_shop_logo"
-            android:layout_marginRight="12dp"></Spinner>
+        <!--<Spinner-->
+            <!--android:id="@+id/sp_goods_category"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignLeft="@id/sp_shop_state"-->
+            <!--android:layout_below="@id/sp_shop_state"-->
+            <!--android:layout_marginRight="12dp"-->
+
+            <!--></Spinner>-->
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="41dp"
+            android:background="@drawable/bg_select_bar"
+            android:orientation="horizontal"
+            android:layout_alignParentBottom="true"
+            >
+
+            <RadioGroup
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="16dp"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/rb_pop"
+                    style="@style/goods_switch_btn_style"
+                    android:checked="true"
+                    android:text="人气" />
+
+                <RadioButton
+                    android:id="@+id/rb_price"
+                    style="@style/goods_switch_btn_style"
+                    android:layout_toRightOf="@id/rb_pop"
+                    android:text="价格" />
+            </RadioGroup>
+
+            <!--<Button-->
+                <!--android:id="@+id/btn_type"-->
+                <!--style="@style/goods_drop_down_btn_style"-->
+                <!--android:text="类别" />-->
+            <Spinner
+                android:id="@+id/sp_goods_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginRight="12dp"
+                android:layout_alignParentRight="true"
+                ></Spinner>
+        </RelativeLayout>
     </RelativeLayout>
 
     <LinearLayout
@@ -99,6 +146,7 @@
             android:textColor="#E70012"
             android:textSize="16sp" />
     </LinearLayout>
+
 
     <com.cisoft.shop.widget.MyListView
         android:id="@+id/lv_goods"

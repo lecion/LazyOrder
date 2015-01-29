@@ -80,15 +80,27 @@ public class MainActivity extends BaseActivity implements GoodsFragment.OnFragme
         drawerTitle = new ArrayList<Map<String, ?>>();
         HashMap<String, Object> item = new HashMap<String, Object>();
         item.put(KEY_ICON, R.drawable.ic_launcher);
-        item.put(KEY_TITLE, "所有商品");
+        item.put(KEY_TITLE, "查看订单");
         drawerTitle.add(item);
+
         item = new HashMap<String, Object>();
         item.put(KEY_ICON, R.drawable.ic_launcher);
-        item.put(KEY_TITLE, "订单列表");
+        item.put(KEY_TITLE, "查看商品");
         drawerTitle.add(item);
+
         item = new HashMap<String, Object>();
         item.put(KEY_ICON, R.drawable.ic_launcher);
-        item.put(KEY_TITLE, "检查更新");
+        item.put(KEY_TITLE, "已完成订单");
+        drawerTitle.add(item);
+
+        item = new HashMap<String, Object>();
+        item.put(KEY_ICON, R.drawable.ic_launcher);
+        item.put(KEY_TITLE, "统计");
+        drawerTitle.add(item);
+
+        item = new HashMap<String, Object>();
+        item.put(KEY_ICON, R.drawable.ic_launcher);
+        item.put(KEY_TITLE, "注销");
         drawerTitle.add(item);
     }
 
@@ -123,15 +135,21 @@ public class MainActivity extends BaseActivity implements GoodsFragment.OnFragme
     private void selectItem(int position) {
         switch (position) {
             case 0:
-                ViewInject.toast("商品列表");
-                getFragmentManager().beginTransaction().replace(R.id.fl_container, GoodsFragment.newInstance("商品"), "goods").commit();
-                break;
-            case 1:
-                ViewInject.toast("订单列表");
+                ViewInject.toast("查看订单");
                 getFragmentManager().beginTransaction().replace(R.id.fl_container, OrderFragment.newInstance("订单"), "order").commit();
                 break;
+            case 1:
+                ViewInject.toast("查看商品");
+                getFragmentManager().beginTransaction().replace(R.id.fl_container, GoodsFragment.newInstance("商品"), "goods").commit();
+                break;
             case 2:
-                ViewInject.toast("检查更新");
+                ViewInject.toast("已完成订单");
+                break;
+            case 3:
+                ViewInject.toast("统计");
+                break;
+            case 4:
+                ViewInject.toast("注销");
                 break;
         }
         actionBarTitle = (String) drawerTitle.get(position).get(KEY_TITLE);

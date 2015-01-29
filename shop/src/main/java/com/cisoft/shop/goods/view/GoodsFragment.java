@@ -78,8 +78,6 @@ public class GoodsFragment extends BaseFragment implements IGoodsView{
         SOLDOUT, SALES;
     }
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "tag";
 
     private String FRAGMENT_TAG;
@@ -101,7 +99,6 @@ public class GoodsFragment extends BaseFragment implements IGoodsView{
      * @param param1 Parameter 1.
      * @return A new instance of fragment GoodsFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static GoodsFragment newInstance(String param1) {
         GoodsFragment fragment = new GoodsFragment();
         Bundle args = new Bundle();
