@@ -32,7 +32,7 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     protected void initWidget() {
-        ObjectAnimator animator = ObjectAnimator.ofFloat(ivAppLogo, "translationY", DeviceUtil.getScreenHeight(LoginActivity.this), 0, DeviceUtil.getScreenHeight(LoginActivity.this) / 10, 0);
+        ObjectAnimator animator = ObjectAnimator.ofFloat(ivAppLogo, "translationY", DeviceUtil.getScreenHeight(LoginActivity.this), DeviceUtil.getScreenHeight(LoginActivity.this) / 5, DeviceUtil.getScreenHeight(LoginActivity.this) / 3, DeviceUtil.getScreenHeight(LoginActivity.this) / 5);
 //        animator.setStartDelay(200);
         animator.setDuration(2500);
         animator.setInterpolator(new AccelerateDecelerateInterpolator());
