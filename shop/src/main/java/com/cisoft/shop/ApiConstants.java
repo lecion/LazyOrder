@@ -26,6 +26,7 @@ public class ApiConstants {
     public static final String MODULE_ORDER = "order";
 
 
+
     public static final String MODULE_COMMODITY = "commodity";
     public static final String MODULE_COM_CATEGORY = "category";
 
@@ -33,6 +34,7 @@ public class ApiConstants {
 
     public static final String MODULE_HISTORY_ORDER = "order";
 
+    public static final String MODULE_EXPMER = "expmer";
 
     /* 这里存放API接口里的方法名,以"METHOD_+模块名"打头 */
     public static final String METHOD_MERCHANTS_FIND_BY_TYPE_ID = "findMerchantsOrCanteen";
@@ -53,6 +55,8 @@ public class ApiConstants {
     public static final String METHOD_BUILD_FIND_ALL = "findBuildings";
 
     public static final String METHOD_HIS_ORDER_FIND_ALL = "findOrderByUserPhone";
+
+    public static final String METHOD_EXPMER_EXPMER_LOGIN = "expmerLogin";
 
 
 
@@ -80,6 +84,8 @@ public class ApiConstants {
     public static final String KEY_MER_OPERATE_STATE = "operState";
     public static final String KEY_MER_MER_PHONE = "merPhone";
     public static final String KEY_MER_MER_PWD = "merPwd";
+    public static final String KEY_MER_CID = "cID";
+    public static final String KEY_MER_NODISTRIBUTION_PRICE = "nodistributionPrice";
 
 
     //订单KEY
@@ -103,6 +109,7 @@ public class ApiConstants {
     public static final String KEY_MC_DATA = "data";
     public static final String KEY_MC_CATEGORY_ID = "id";
     public static final String KEY_MC_CATEGORY_NAME = "merCategoryName";
+
 
     //商品KEY
     public static final String KEY_COM_MER_ID = "merId";
@@ -146,4 +153,14 @@ public class ApiConstants {
     public static final String KEY_HIS_ORDER_TOTAL_PRICE = "moneyAll";
     public static final String KEY_HIS_ORDER_GOOD_NAME = "comName";
     public static final String KEY_HIS_ORDER_GOOD_COUNT = "comNum";
+
+
+    public static final String KEY_EXPMER_EXPMER_PHONE = "expmerPhone";
+    public static final String KEY_EXPMER_EXPMER_PWD = "expmerPwd";
+    public static final String KEY_EXPMER_CID = "cID";
+
+
+
+
+
 }
