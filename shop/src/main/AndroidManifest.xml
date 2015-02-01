@@ -37,16 +37,16 @@
 
         <!-- 个推SDK配置开始 -->
         <!-- 配置的第三方参数属性 -->
-        <meta-mData
+        <meta-mata
             android:name="PUSH_APPID"
             android:value="MLqtCyWjpiA3S1tcanJb72" />
-        <meta-mData
+        <meta-mata
             android:name="PUSH_APPSECRET"
             android:value="b5e8q8Z80f9zMyoTK4gdX3" />
-        <meta-mData
+        <meta-mata
             android:name="PUSH_APPKEY"
             android:value="OzlUNu2kvDA5QFJLUjWBj2" />
-        <meta-mData
+        <meta-mata
             android:name="PUSH_GROUPID"
             android:value="" />
 
@@ -139,6 +139,10 @@
 
         <activity
             android:name="com.cisoft.shop.login.view.LoginActivity"
+            android:label="@string/title_activity_login" >
+        </activity>
+        <activity
+            android:name="com.cisoft.shop.MainActivity"
             android:label="@string/title_activity_login" >
         </activity>
     </application>
