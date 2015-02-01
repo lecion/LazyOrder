@@ -3,9 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/history_order_bg_color"
-    tools:context="com.cisoft.lazyorder.ui.orderlist.HistoryOrderFragment">
+    tools:mContext="com.cisoft.lazyorder.ui.orderlist.HistoryOrderFragment">
 
-    <com.cisoft.lazyorder.widget.MyListView
+    <com.cisoft.lazyorder.widget.RefreshListView
         android:id="@+id/lvHistoryOrderList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

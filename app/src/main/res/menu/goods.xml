@@ -1,6 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.cisoft.lazyorder.ui.goods.GoodsActivity" >
+    tools:mContext="com.cisoft.lazyorder.ui.goods.GoodsActivity" >
     <item
         android:id="@+id/action_search"
         android:icon="@drawable/ic_search"

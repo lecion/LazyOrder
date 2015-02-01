@@ -30,7 +30,7 @@
 
 
     <!-- 吐司类对话框样式 -->
-    <style name="dialog" parent="@android:style/Theme.Dialog">
+    <style name="toastDialog" parent="@android:style/Theme.Dialog">
         <item name="android:windowIsFloating">true</item><!-- 设置为浮动窗口 -->
         <item name="android:windowFrame">@null</item><!-- 设置无边框 -->
         <item name="android:windowNoTitle">true</item><!-- 设置无标题 -->

@@ -12,11 +12,11 @@
         android:layout_height="wrap_content"
         android:text="用户评论"
         />
-    <com.cisoft.lazyorder.widget.MyListView
+    <com.cisoft.lazyorder.widget.RefreshListView
         android:id="@+id/lv_comment"
         android:layout_width="match_parent"
         android:layout_height="240dp">
-    </com.cisoft.lazyorder.widget.MyListView>
+    </com.cisoft.lazyorder.widget.RefreshListView>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="50dp">

@@ -7,7 +7,7 @@ import android.view.MotionEvent;
 /**
  * Created by Lecion on 11/4/14.
  */
-public class ParentListView extends MyListView {
+public class ParentListView extends RefreshListView {
     public ParentListView(Context context) {
         super(context);
     }

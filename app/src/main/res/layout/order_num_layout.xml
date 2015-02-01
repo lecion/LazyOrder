@@ -13,7 +13,7 @@
             android:id="@+id/ibSubNum"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:background="@drawable/sub_button_bg"/>
+            android:background="@drawable/selector_sub_num_button"/>
         <TextView
             android:id="@+id/tvInputNum"
             android:layout_width="30dp"
@@ -26,6 +26,6 @@
             android:id="@+id/ibAddNum"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:background="@drawable/add_button"/>
+            android:background="@drawable/selector_add_num_button"/>
     </LinearLayout>
 </LinearLayout>

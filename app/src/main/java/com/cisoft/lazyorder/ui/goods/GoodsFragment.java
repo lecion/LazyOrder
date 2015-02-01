@@ -31,7 +31,7 @@ import com.cisoft.lazyorder.core.goods.INetWorkFinished;
 import com.cisoft.lazyorder.core.goods.ISwitchType;
 import com.cisoft.lazyorder.finals.ApiConstants;
 import com.cisoft.lazyorder.util.DialogFactory;
-import com.cisoft.lazyorder.widget.MyListView;
+import com.cisoft.lazyorder.widget.RefreshListView;
 import com.cisoft.lazyorder.widget.OrderNumView;
 
 import org.kymjs.aframe.bitmap.KJBitmap;
@@ -105,7 +105,7 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
     private boolean isExpand = false;
 
     @BindView(id = R.id.lv_goods)
-    private MyListView lvGoods;
+    private RefreshListView lvGoods;
 
     private BaseAdapter mAdapter;
 
@@ -204,7 +204,7 @@ public class GoodsFragment extends BaseFragment implements AbsListView.OnItemCli
         lvGoods.setAdapter(mAdapter);
         lvGoods.setOnItemClickListener(this);
         lvGoods.setPullLoadEnable(true);
-        lvGoods.setOnRefreshListener(new MyListView.OnRefreshListener() {
+        lvGoods.setOnRefreshListener(new RefreshListView.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 lvGoods.stopRefreshData();

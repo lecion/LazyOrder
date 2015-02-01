@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
+
 import com.cisoft.lazyorder.R;
 
 /**
@@ -12,7 +13,7 @@ import com.cisoft.lazyorder.R;
 
 public abstract class MenuItemView extends LinearLayout{
 
-    private String contentClass;
+    private String mContentClass;
 
     public MenuItemView(Context context) {
         this(context, null, 0);
@@ -28,15 +29,15 @@ public abstract class MenuItemView extends LinearLayout{
         setOrientation(LinearLayout.VERTICAL);
         setBackgroundResource(R.drawable.drawer_menu_item_bg);
         TypedArray localTypedArray = context.obtainStyledAttributes(attrs, R.styleable.drawMenuItemAttrs);
-        this.contentClass = localTypedArray.getString(R.styleable.drawMenuItemAttrs_content_class);
+        mContentClass = localTypedArray.getString(R.styleable.drawMenuItemAttrs_content_class);
         localTypedArray.recycle();
     }
 
     public String getContentClass() {
-        return contentClass;
+        return mContentClass;
     }
 
     public void setContentClass(String contentClass) {
-        this.contentClass = contentClass;
+        mContentClass = contentClass;
     }
 }

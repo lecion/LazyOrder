@@ -36,8 +36,8 @@ import com.cisoft.lazyorder.core.goods.CategoryService;
 import com.cisoft.lazyorder.core.goods.INetWorkFinished;
 import com.cisoft.lazyorder.core.goods.ISwitchType;
 import com.cisoft.lazyorder.finals.ApiConstants;
+import com.cisoft.lazyorder.ui.cart.CartActivity;
 import com.cisoft.lazyorder.ui.search.SearchActivity;
-import com.cisoft.lazyorder.ui.sureorder.SureOrderActivity;
 import com.cisoft.lazyorder.util.DialogFactory;
 
 import org.kymjs.aframe.KJLoger;
@@ -257,7 +257,7 @@ public class GoodsActivity extends BaseActivity implements GoodsFragment.OnFragm
                 AppContext app = (AppContext) getApplication();
                 GoodsCart goodsCart = app.getGoodsCart();
                 if (goodsCart.getTotalCount() > 0) {
-                    skipActivity(this, SureOrderActivity.class);
+                    skipActivity(this, CartActivity.class);
                 } else {
                     Animation shakeAnimation = new TranslateAnimation(0, -20, 0, 0);
                     shakeAnimation.setDuration(350);

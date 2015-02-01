@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.cisoft.lazyorder.ui.goods.GoodsFragment">
+    tools:mContext="com.cisoft.lazyorder.ui.goods.GoodsFragment">
 
 
     <!--<LinearLayout-->
@@ -40,7 +40,7 @@
             android:text="@string/have_not_goods_list"/>
     </LinearLayout>
 
-    <com.cisoft.lazyorder.widget.MyListView
+    <com.cisoft.lazyorder.widget.RefreshListView
         android:id="@+id/lv_goods"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -52,6 +52,6 @@
         android:clickable="true"
         android:focusableInTouchMode="true"
         >
-        </com.cisoft.lazyorder.widget.MyListView>
+        </com.cisoft.lazyorder.widget.RefreshListView>
 
 </LinearLayout>

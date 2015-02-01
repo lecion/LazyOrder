@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckedTextView;
+
 import com.cisoft.lazyorder.R;
 import com.cisoft.lazyorder.bean.sureinfo.Build;
 import com.cisoft.lazyorder.bean.sureinfo.BuildChoiceCounter;

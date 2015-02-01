@@ -17,11 +17,11 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:textSize="18sp"
-            android:textColor="@color/text_ligth_black"
+            android:textColor="@color/text_ligth_black_color"
             android:text="管理地址"/>
     </LinearLayout>
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="1px"
-        android:src="#D5D5D5" />
+        android:src="@color/stroke" />
 </merge>

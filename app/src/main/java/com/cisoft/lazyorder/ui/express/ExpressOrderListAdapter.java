@@ -4,11 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cisoft.lazyorder.R;
@@ -60,7 +56,7 @@ public class ExpressOrderListAdapter extends BaseAdapter {
         ViewHolder holder = null;
 
         if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.fragment_express_order_list_cell, null);
+            convertView = LayoutInflater.from(context).inflate(R.layout.fragment_express_list_cell, null);
             holder = new ViewHolder();
 
             holder.tvSubmitTime = (TextView) convertView.findViewById(R.id.tv_submit_time);
