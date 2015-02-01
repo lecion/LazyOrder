@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_reload"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/iv_reload"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/app_name"
+        android:scaleType="centerCrop"
+        android:src="@drawable/no_network" />
+
+    <TextView
+        android:id="@+id/tv_reload1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10.0dp"
+        android:text="@string/no_network"
+        android:textColor="@color/color_88"
+        android:textSize="13.0sp" />
+
+    <TextView
+        android:id="@+id/tv_reload2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10.0dp"
+        android:text="@string/no_record"
+        android:textColor="@color/color_88"
+        android:textSize="15.0sp" />
+</LinearLayout>

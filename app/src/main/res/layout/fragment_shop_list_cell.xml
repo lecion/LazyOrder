@@ -16,7 +16,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp">
         <ImageView
-	        android:id="@+id/ivShopFaceImg"
+	        android:id="@+id/iv_shop_face_img"
 	        android:layout_width="100dp"
 	        android:layout_height="100dp"
 	        android:scaleType="fitXY"
@@ -37,7 +37,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginBottom="5dp">
             <TextView
-		        android:id="@+id/tvShopName"
+		        android:id="@+id/tv_shop_name"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
 		        android:singleLine="true"
@@ -53,14 +53,14 @@
             android:layout_marginTop="10dp"
             android:layout_marginBottom="5dp">
             <TextView
-		        android:id="@+id/tvOpenTimeLabel"
+		        android:id="@+id/tv_open_time_label"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
 		        android:textSize="14sp"
 		        android:textColor="@color/shop_list_text_color"
 		        android:text="订餐时间：" />
 		    <TextView
-		        android:id="@+id/tvOpenTime"
+		        android:id="@+id/tv_open_time"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
 		        android:textSize="14sp"
@@ -76,14 +76,14 @@
             android:layout_marginTop="5dp"
             android:layout_marginBottom="10dp">
             <TextView
-		        android:id="@+id/tvMonthSalesLabel"
+		        android:id="@+id/tv_month_sales_label"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
 		        android:textSize="14sp"
 		        android:textColor="@color/shop_list_text_color"
 		        android:text="月销量：" />
 		    <TextView
-		        android:id="@+id/tvMonthSales"
+		        android:id="@+id/tv_month_sales"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
 		        android:textSize="14sp"

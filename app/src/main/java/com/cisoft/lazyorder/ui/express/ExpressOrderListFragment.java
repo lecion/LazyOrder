@@ -10,52 +10,45 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.cisoft.lazyorder.R;
-import com.cisoft.lazyorder.bean.order.DishOrder;
 import com.cisoft.lazyorder.bean.order.ExpressOrder;
-import com.cisoft.lazyorder.core.order.OrderService;
+import com.cisoft.lazyorder.core.order.OrderNetwork;
+import com.cisoft.lazyorder.finals.ApiConstants;
 import com.cisoft.lazyorder.ui.main.menu.MenuItemContent;
-import com.cisoft.lazyorder.ui.orderdetail.OrderDetailActivity;
-import com.cisoft.lazyorder.ui.orderlist.HistoryOrderListAdapter;
 import com.cisoft.lazyorder.util.DialogFactory;
-import com.cisoft.lazyorder.widget.MyListView;
+import com.cisoft.lazyorder.widget.EmptyView;
+import com.cisoft.lazyorder.widget.RefreshListView;
 
-import org.kymjs.aframe.ui.BindView;
-import org.kymjs.aframe.ui.ViewInject;
-import org.kymjs.aframe.ui.fragment.BaseFragment;
+import org.kymjs.kjframe.ui.BindView;
+import org.kymjs.kjframe.ui.ViewInject;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExpressOrderListFragment extends MenuItemContent implements AdapterView.OnItemClickListener{
+public class ExpressOrderListFragment extends MenuItemContent {
 
+    @BindView(id = R.id.rl_root_view)
+    private RelativeLayout mRootView;
     @BindView(id = R.id.lv_express_order_list)
-    private MyListView lvExpressOrderList;
+    private RefreshListView mLvExpressListView;
+    private EmptyView mEmptyView;
+    private Dialog mWaitTipDialog;
 
-    @BindView(id = R.id.ll_show_no_value_tip)
-    private LinearLayout llShowNoValueTip;
-
-    private OrderService orderService;
-    private List<ExpressOrder> expressOrderList = new ArrayList<ExpressOrder>();
+    private OrderNetwork mOrderNetwork;
+    private List<ExpressOrder> mExpressListData;
     private ExpressOrderListAdapter expressOrderListAdapter;
 
-    public Dialog loadingTipDialog;
-
-    private int page = 1;
-    private int pager = 10;
+    private int mPage = 1;
+    private int mPager = 10;
     private String userPhone = "18883284880";
 
-    public static final String EXPRESS_ORDER = "expressOrder";
-    public static final int REQUEST_CODE_POST_EXPRESS = 200;
-    public static final int RESULT_CODE_POST_EXPRESS_SUCCESS = 300;
-    public static final int RESULT_CODE_POST_EXPRESS_FAILED = 400;
+    public static final int REQ_CODE_POST_EXPRESS = 200;
 
     @Override
     protected View inflaterView(LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle bundle) {
-        View view = layoutInflater.inflate(R.layout.fragment_express_order_list, null);
+        View view = layoutInflater.inflate(R.layout.fragment_express_list, null);
 
         return view;
     }
@@ -63,22 +56,23 @@ public class ExpressOrderListFragment extends MenuItemContent implements Adapter
 
     @Override
     protected void initData() {
-        orderService = new OrderService(getActivity());
+        mOrderNetwork = new OrderNetwork(getActivity());
+        mExpressListData = new ArrayList<ExpressOrder>();
     }
 
 
     @Override
     protected void initWidget(View parentView) {
-        initActionBar();
-        showLoadingTip();
-        initExpressOrderList();
+        initialTitleBar();
+        initialExpressListView();
+        loadExpressListData(false);
     }
 
 
     /**
      * 初始化标题栏
      */
-    private void initActionBar() {
+    private void initialTitleBar() {
         ActionBar actionBar = getActivity().getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.setDisplayShowTitleEnabled(true);
@@ -86,49 +80,36 @@ public class ExpressOrderListFragment extends MenuItemContent implements Adapter
     }
 
 
-    private void initExpressOrderList(){
-        expressOrderListAdapter = new ExpressOrderListAdapter(getActivity(), expressOrderList);
-        lvExpressOrderList.setAdapter(expressOrderListAdapter);
-        lvExpressOrderList.setPullLoadEnable(true);
-        lvExpressOrderList.setOnItemClickListener(this);
-        lvExpressOrderList.setOnRefreshListener(new MyListView.OnRefreshListener() {
+    private void initialExpressListView() {
+        mLvExpressListView.setPullLoadEnable(false);   //刚开始时不显示"加载更多"的字样
+        mLvExpressListView.setOnRefreshListener(new RefreshListView.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                page = 1;
-                orderService.loadExpressHisOrderData(userPhone, page, pager, new OrderService.OnExpressHisOrderLoadFinish() {
-                    @Override
-                    public void onSuccess(List<ExpressOrder> expressOrders) {
-                        lvExpressOrderList.stopRefreshData();
-
-                        if (expressOrders.size() == 0) {
-                            showNoValueTip();
-                        } else {
-                            expressOrderListAdapter.clearAll();
-                            expressOrderListAdapter.addData(expressOrders);
-                            expressOrderListAdapter.refresh();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(int stateCode) {
-                        ViewInject.toast(orderService.getResponseStateInfo(stateCode));
-                        lvExpressOrderList.stopRefreshData();
-                        showNoValueTip();
-                    }
-                });
+                mPage = 1; //下拉刷新时,页码重置为1
+                loadExpressListData(true);
             }
 
             @Override
             public void onLoadMore() {
-                orderService.loadExpressHisOrderData(userPhone, page, pager, new OrderService.OnExpressHisOrderLoadFinish() {
+                ++mPage; //页码自增加1
+                mOrderNetwork.loadExpressHisOrderData(userPhone, mPage, mPager, new OrderNetwork.OnExpressHisOrderLoadFinish() {
+                    @Override
+                    public void onPreStart() {
+                    }
+
                     @Override
                     public void onSuccess(List<ExpressOrder> expressOrders) {
-                        lvExpressOrderList.stopRefreshData();
+                        mLvExpressListView.stopRefreshData();
 
                         if (expressOrders.size() == 0) {
-                            ViewInject.toast("没有更多快递数据了");
-                            lvExpressOrderList.setPullLoadEnable(false);
+                            ViewInject.toast(getText(R.string.express_data_no_more_title).toString());
+                            mLvExpressListView.setPullLoadEnable(false);
                         } else {
+                            if (expressOrders.size() < mPager) {
+                                mLvExpressListView.setPullLoadEnable(false);
+                            } else {
+                                mLvExpressListView.setPullLoadEnable(true);//有数据才使上拉加载更多可用
+                            }
                             expressOrderListAdapter.addData(expressOrders);
                             expressOrderListAdapter.refresh();
                         }
@@ -136,21 +117,55 @@ public class ExpressOrderListFragment extends MenuItemContent implements Adapter
 
                     @Override
                     public void onFailure(int stateCode) {
-                        ViewInject.toast(orderService.getResponseStateInfo(stateCode));
-                        lvExpressOrderList.stopRefreshData();
+                        mLvExpressListView.stopRefreshData();
+
+                        //之前有数据显示就不显示EmptyView了,只吐司提示
+                        ViewInject.toast(mOrderNetwork.getResponseStateInfo(stateCode));
                     }
                 });
             }
         });
 
-        orderService.loadExpressHisOrderData(userPhone, page, pager, new OrderService.OnExpressHisOrderLoadFinish() {
+        expressOrderListAdapter = new ExpressOrderListAdapter(getActivity(), mExpressListData);
+        mLvExpressListView.setAdapter(expressOrderListAdapter);
+        mEmptyView = new EmptyView(getActivity(), mRootView);
+        mEmptyView.setOnClickReloadListener(new EmptyView.OnClickReloadListener() {
+            @Override
+            public void onReload() {
+                loadExpressListData(false);
+            }
+        });
+    }
+
+    /**
+     * 异步加载快递的List数据
+     */
+    private void loadExpressListData(final boolean isRefresh) {
+        mOrderNetwork.loadExpressHisOrderData(userPhone, mPage, mPager, new OrderNetwork.OnExpressHisOrderLoadFinish() {
+            @Override
+            public void onPreStart() {
+                if (!isRefresh) {
+                    showWaitTip();
+                }
+            }
+
             @Override
             public void onSuccess(List<ExpressOrder> expressOrders) {
-                hideLoadingTip();
+                if (isRefresh)
+                    mLvExpressListView.stopRefreshData();
+                else
+                    closeWaitTip();
 
                 if (expressOrders.size() == 0) {
-                    showNoValueTip();
+                    mLvExpressListView.setPullLoadEnable(false);
+                    mEmptyView.showEmptyView(EmptyView.NO_DATA);
                 } else {
+                    if (expressOrders.size() < mPager) {
+                        mLvExpressListView.setPullLoadEnable(false);
+                    } else {
+                        mLvExpressListView.setPullLoadEnable(true);//有数据才使上拉加载更多可用
+                    }
+
                     expressOrderListAdapter.clearAll();
                     expressOrderListAdapter.addData(expressOrders);
                     expressOrderListAdapter.refresh();
@@ -159,56 +174,21 @@ public class ExpressOrderListFragment extends MenuItemContent implements Adapter
 
             @Override
             public void onFailure(int stateCode) {
-                ViewInject.toast(orderService.getResponseStateInfo(stateCode));
-                hideLoadingTip();
-                showNoValueTip();
+                if (isRefresh)
+                    mLvExpressListView.stopRefreshData();
+                else
+                    closeWaitTip();
+
+                mLvExpressListView.setPullLoadEnable(false);
+                ViewInject.toast(mOrderNetwork
+                        .getResponseStateInfo(stateCode));
+                if (stateCode == ApiConstants.RESPONSE_STATE_NOT_NET || stateCode == ApiConstants.RESPONSE_STATE_NET_POOR) {
+                    mEmptyView.showEmptyView(EmptyView.NO_NETWORK);
+                } else {
+                    mEmptyView.showEmptyView(EmptyView.NO_DATA);
+                }
             }
         });
-    }
-
-
-    /**
-     * 显示正在加载的提示
-     */
-    public void showLoadingTip() {
-        if(loadingTipDialog == null){
-            loadingTipDialog = DialogFactory.createToastDialog(getActivity(), "正在加载,请稍等");
-            loadingTipDialog.setCancelable(false);
-            loadingTipDialog.setCanceledOnTouchOutside(false);
-        }
-        if(!loadingTipDialog.isShowing()){
-            loadingTipDialog.show();
-        }
-
-        llShowNoValueTip.setVisibility(View.GONE);
-    }
-
-    /**
-     * 隐藏正在加载的提示
-     */
-    public void hideLoadingTip() {
-        llShowNoValueTip.setVisibility(View.GONE);
-        if(loadingTipDialog != null && loadingTipDialog.isShowing())
-            loadingTipDialog.dismiss();
-    }
-
-    /**
-     * 显示出没有数据的提示
-     */
-    public void showNoValueTip() {
-        llShowNoValueTip.setVisibility(View.VISIBLE);
-        if(loadingTipDialog !=null && loadingTipDialog.isShowing())
-            loadingTipDialog.dismiss();
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-        ExpressOrder expressOrder = (ExpressOrder) adapterView.getItemAtPosition(position);
-        Bundle bundle = new Bundle();
-//        bundle.putSerializable(OrderDetailActivity.DISH_ORDER, expressOrder);
-        Intent intent = new Intent(getActivity(), OrderDetailActivity.class);
-        intent.putExtras(bundle);
-        startActivity(intent);
     }
 
 
@@ -220,9 +200,9 @@ public class ExpressOrderListFragment extends MenuItemContent implements Adapter
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        if(!getMenuOpenState()) {
-            initActionBar();
-            inflater.inflate(R.menu.express_order_list, menu);
+        if (!getMenuOpenState()) {
+            initialTitleBar();
+            inflater.inflate(R.menu.express_list, menu);
         }
 
         super.onCreateOptionsMenu(menu, inflater);
@@ -232,7 +212,7 @@ public class ExpressOrderListFragment extends MenuItemContent implements Adapter
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.post_express:
-                startActivityForResult(new Intent(getActivity(), PostExpressActivity.class), REQUEST_CODE_POST_EXPRESS);
+                startActivityForResult(new Intent(getActivity(), PostExpressActivity.class), REQ_CODE_POST_EXPRESS);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -242,16 +222,35 @@ public class ExpressOrderListFragment extends MenuItemContent implements Adapter
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
-            case REQUEST_CODE_POST_EXPRESS:
-                if (resultCode == RESULT_CODE_POST_EXPRESS_SUCCESS) {
-                    ExpressOrder expressOrder = (ExpressOrder) data.getSerializableExtra(EXPRESS_ORDER);
-                    expressOrderList.add(0, expressOrder);
+            case REQ_CODE_POST_EXPRESS:
+                if (resultCode == 1) {
+                    ExpressOrder expressOrder = (ExpressOrder) data.getSerializableExtra(PostExpressActivity.POSTED_EXPRESS);
+                    mExpressListData.add(0, expressOrder);
                     expressOrderListAdapter.refresh();
                 }
                 break;
             default:
                 super.onActivityResult(requestCode, resultCode, data);
                 break;
+        }
+    }
+
+    /**
+     * 显示正在加载的等待提示对话框
+     */
+    private void showWaitTip() {
+        if (mWaitTipDialog == null)
+            mWaitTipDialog = DialogFactory.createWaitToastDialog(getActivity(),
+                    getActivity().getString(R.string.wait));
+        mWaitTipDialog.show();
+    }
+
+    /**
+     * 关闭正在加载的等待提示对话框
+     */
+    private void closeWaitTip() {
+        if (mWaitTipDialog != null && mWaitTipDialog.isShowing()) {
+            mWaitTipDialog.dismiss();
         }
     }
 }

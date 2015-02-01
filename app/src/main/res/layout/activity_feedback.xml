@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/gray_bg">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/content_margin">
+
+        <EditText
+            android:id="@+id/et_input_feedback_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5.0dip"
+            android:background="@drawable/text_field"
+            android:gravity="top"
+            android:hint="@string/input_feedback_content_hint"
+            android:minLines="6"
+            android:padding="@dimen/content_padding" />
+
+        <EditText
+            android:id="@+id/et_input_contact_method"
+            android:layout_width="match_parent"
+            android:layout_height="48.0dip"
+            android:layout_marginTop="@dimen/content_margin"
+            android:background="@drawable/text_field"
+            android:gravity="center_vertical"
+            android:hint="@string/input_feedback_contact_method_hint"
+            android:padding="@dimen/content_padding" />
+
+        <Button
+            android:id="@+id/btn_submit_feedback"
+            android:layout_width="match_parent"
+            android:layout_height="48.0dip"
+            android:layout_marginTop="15.0dip"
+            android:background="@drawable/selector_red_corners_button"
+            android:gravity="center"
+            android:text="提交"
+            android:textColor="@color/white"
+            android:textSize="18.0sp" />
+    </LinearLayout>
+</ScrollView>

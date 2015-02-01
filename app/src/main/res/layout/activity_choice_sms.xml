@@ -1,0 +1,15 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/content_padding"
+    android:orientation="vertical"
+    android:background="@color/gray_bg">
+
+    <ListView
+        android:id="@+id/lv_sms_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fadingEdge="none"
+        android:divider="@null"
+        android:dividerHeight="10dp"/>
+</LinearLayout>

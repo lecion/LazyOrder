@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="shop_category_loading_title">正在加载...</string>
+    <string name="shop_type_loading_error_title">加载失败</string>
+    <string name="shop_data_no_more_title">没有更多店家数据了</string>
+    <string name="express_data_no_more_title">没有更多快递数据了</string>
+</resources>

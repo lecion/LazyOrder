@@ -10,35 +10,53 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import com.cisoft.lazyorder.R;
-import com.cisoft.lazyorder.bean.order.ExpressOrder;
-import com.cisoft.lazyorder.core.order.OrderService;
-import com.cisoft.lazyorder.finals.SPConstants;
-import com.cisoft.lazyorder.util.DialogFactory;
-import org.kymjs.aframe.ui.BindView;
-import org.kymjs.aframe.ui.ViewInject;
-import org.kymjs.aframe.ui.activity.BaseActivity;
-import org.kymjs.aframe.utils.PreferenceHelper;
-import org.kymjs.aframe.utils.StringUtils;
-import org.kymjs.aframe.utils.SystemTool;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
-public class PostExpressActivity extends BaseActivity {
+import com.cisoft.lazyorder.AppContext;
+import com.cisoft.lazyorder.R;
+import com.cisoft.lazyorder.bean.address.Address;
+import com.cisoft.lazyorder.bean.express.SmsInfo;
+import com.cisoft.lazyorder.bean.order.ExpressOrder;
+import com.cisoft.lazyorder.core.order.OrderNetwork;
+import com.cisoft.lazyorder.ui.address.ManageAddressActivity;
+import com.cisoft.lazyorder.util.DialogFactory;
+
+import org.kymjs.kjframe.KJActivity;
+import org.kymjs.kjframe.ui.BindView;
+import org.kymjs.kjframe.ui.ViewInject;
+import org.kymjs.kjframe.utils.StringUtils;
+import org.kymjs.kjframe.utils.SystemTool;
+
+public class PostExpressActivity extends KJActivity {
 
     @BindView(id = R.id.et_sms_content)
-    private EditText etSMSContent;
-
+    private EditText mEtSMSContent;
     @BindView(id = R.id.et_extra_message)
-    private EditText etExtraMsg;
+    private EditText mEtExtraMsg;
+    @BindView(id = R.id.rl_choice_address, click = true)
+    private RelativeLayout mRlChoiceAddress;
+    @BindView(id = R.id.tv_name)
+    private TextView mTvName;
+    @BindView(id = R.id.tv_phone)
+    private TextView mTvPhone;
+    @BindView(id = R.id.tv_address)
+    private TextView mTvAddress;
 
     @BindView(id = R.id.btn_post_express, click = true)
-    private Button btnPostExpress;
+    private Button mBtnPostExpress;
+    private Dialog mWaitTipDialog;
+    private Dialog mSuccessTipDialog;
 
-    private OrderService orderService;
+    private AppContext mAppContext;
+    private OrderNetwork mOrderNetwork;
 
+    public static final int REQ_CODE_IMPORT_SMS = 100;
+    public static final int REQ_CODE_CHOOSE_ADDRESS = 200;
+    public static final String POSTED_EXPRESS = "submitedExpress";
 
-    public PostExpressActivity(){
-        setHiddenActionBar(false);
-    }
+    private int schoolId;
+    private Address mChoiceAddress;
 
     @Override
     public void setRootView() {
@@ -46,19 +64,23 @@ public class PostExpressActivity extends BaseActivity {
     }
 
     @Override
-    protected void initData() {
-        orderService = new OrderService(this);
+    public void initData() {
+        mAppContext = (AppContext) getApplication();
+        mOrderNetwork = new OrderNetwork(this);
+        schoolId = mAppContext.getSchoolId();
     }
 
     @Override
-    protected void initWidget() {
-        initActionBar();
+    public void initWidget() {
+        initialTitleBar();
+        initDefaultData();
     }
+
 
     /**
      * 初始化标题栏
      */
-    private void initActionBar() {
+    private void initialTitleBar() {
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setDisplayShowTitleEnabled(true);
@@ -67,88 +89,72 @@ public class PostExpressActivity extends BaseActivity {
         actionBar.setTitle("  提交快递");
     }
 
+
+    /**
+     * 从SP里读取默认的信息数据
+     */
+    private void initDefaultData(){
+
+    }
+
     /**
      * 执行提交快递
      */
     private void doPostExpress() {
-        String smsContent = etSMSContent.getText().toString();
+        String smsContent = mEtSMSContent.getText().toString();
+        String extraMsg = mEtExtraMsg.getText().toString();
+
         if (StringUtils.isEmpty(smsContent)) {
             ViewInject.toast("请粘贴上你收到的快递短信");
             return;
         }
-
-        String extraMsg = etExtraMsg.getText().toString();
-
-        /* 获取登录的用户信息 */
-        String recentName = PreferenceHelper.readString(this, SPConstants.SP_FILE_NAME,
-                SPConstants.KEY_RECENT_NAME, null);
-        String recentPhoneNum = PreferenceHelper.readString(this, SPConstants.SP_FILE_NAME,
-                SPConstants.KEY_RECENT_PHONE_NUM, null);
-        String recentBuildName = PreferenceHelper.readString(this, SPConstants.SP_FILE_NAME,
-                SPConstants.KEY_RECENT_BUILDING_NAME, null);
-        int recentBuildingId = PreferenceHelper.readInt(this, SPConstants.SP_FILE_NAME,
-                SPConstants.KEY_RECENT_BUILDING_ID, 0);
-        String recentRoomNum = PreferenceHelper.readString(this, SPConstants.SP_FILE_NAME,
-                SPConstants.KEY_RECENT_ROOM_NUM, null);
-
-
-        /* 创建一个正在提交的提示对话框 */
-        final Dialog submitingTipDialog = DialogFactory.createToastDialog(this, "正在提交快递订单,请稍等...");
-        submitingTipDialog.setCancelable(false);
-        submitingTipDialog.setCanceledOnTouchOutside(false);
-        submitingTipDialog.show();
+        if (mChoiceAddress == null) {
+            ViewInject.toast("请选择地址");
+            return;
+        }
 
         /* 组装Express类的订单对象 */
         final ExpressOrder expressOrder = new ExpressOrder();
-        expressOrder.setUserName(recentName);
-        expressOrder.setUserPhone(recentPhoneNum);
-        expressOrder.setBuildingId(recentBuildingId);
-        expressOrder.setDormitory(recentRoomNum);
-        expressOrder.setAddress(recentBuildName + recentRoomNum);
+        expressOrder.setUserName(mChoiceAddress.getName());
+        expressOrder.setUserPhone(mChoiceAddress.getPhone());
+        expressOrder.setAddress(mChoiceAddress.getAddress());
         expressOrder.setExtraMsg(extraMsg);
         expressOrder.setSmsCotent(smsContent);
         expressOrder.setDeliveryMoney(1);
 
-        /* 执行提交订单的网络请求 */
-        orderService.submitExpressOrderForServer(expressOrder, new OrderService.OnExpressOrderSubmitFinish() {
+        mOrderNetwork.submitExpressOrderForServer(expressOrder, new OrderNetwork.OnExpressOrderSubmitFinish() {
+            @Override
+            public void onPreStart() {
+                showWaitTip();
+            }
+
             @Override
             public void onSuccess() {
-                submitingTipDialog.dismiss();
-
+                closeWaitTip();
+                showSuccessTip();
                 expressOrder.setSubmitTime(SystemTool.getDataTime("yyyy-MM-dd HH:mm:ss"));
-                orderSubmitSuccessDialog(expressOrder);
+                new Handler().postDelayed(new Runnable() {
+                    public void run() {
+                        closeSuccessTip();
+                        Intent data = new Intent();
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable(POSTED_EXPRESS, expressOrder);
+                        data.putExtras(bundle);
+                        setResult(1, data);
+                        PostExpressActivity.this.finish();
+                    }
+                }, 2000);
             }
+
             @Override
             public void onFailure(int stateCode) {
-                submitingTipDialog.dismiss();
-                ViewInject.toast(orderService.getResponseStateInfo(stateCode));
+                closeWaitTip();
+                ViewInject.toast(mOrderNetwork.getResponseStateInfo(stateCode));
             }
         });
     }
 
 
-    /**
-     * 订单提交成功时的对话框
-     */
-    private void orderSubmitSuccessDialog(final ExpressOrder expressOrder){
-        final Dialog dialog = DialogFactory.createSuccessToastDialog(this, "快递订单提交成功");
-        dialog.show();
-
-        //2秒后跳转到历史快递订单页
-        new Handler().postDelayed(new Runnable() {
-            public void run() {
-                dialog.dismiss();
-
-                Intent data = new Intent();
-                Bundle bundle = new Bundle();
-                bundle.putSerializable(ExpressOrderListFragment.EXPRESS_ORDER, expressOrder);
-                data.putExtras(bundle);
-                setResult(ExpressOrderListFragment.RESULT_CODE_POST_EXPRESS_SUCCESS, data);
-                PostExpressActivity.this.finish();
-            }
-        }, 2000);
-
-    }
 
 
     @Override
@@ -157,11 +163,24 @@ public class PostExpressActivity extends BaseActivity {
             case R.id.btn_post_express:
                 doPostExpress();
                 break;
+            case R.id.rl_choice_address:
+                skipChooseAddressActivity();
+                break;
         }
     }
 
+
+    private void skipChooseAddressActivity() {
+        Intent i = new Intent(this, ManageAddressActivity.class);
+        i.putExtra(ManageAddressActivity.ENTER_MODE, ManageAddressActivity.CHOOSE_ADDRESS_MODE);
+        startActivityForResult(i, REQ_CODE_CHOOSE_ADDRESS);
+    }
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.post_express, menu);
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -171,8 +190,74 @@ public class PostExpressActivity extends BaseActivity {
             case android.R.id.home:
                 finish();
                 return true;
+            case R.id.menu_sms_import:
+                startActivityForResult(new Intent(this, ChoiceSmsActivity.class), REQ_CODE_IMPORT_SMS);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case REQ_CODE_IMPORT_SMS:
+                if (resultCode == 1) {
+                    SmsInfo smsInfo = (SmsInfo) data.getSerializableExtra(ChoiceSmsActivity.IMPORT_SMS);
+                    mEtSMSContent.setText(smsInfo.getSmsbody());
+                }
+                break;
+            case REQ_CODE_CHOOSE_ADDRESS:
+                if (resultCode == 1) {
+                    mChoiceAddress = (Address) data.getSerializableExtra(ManageAddressActivity.CHOSE_ADDRESS);
+                    mTvName.setText(mChoiceAddress.getName());
+                    mTvPhone.setText(mChoiceAddress.getPhone());
+                    mTvAddress.setText(mChoiceAddress.getAddress());
+                }
+                break;
+            default:
+                super.onActivityResult(requestCode, resultCode, data);
+                break;
+        }
+    }
+
+    /**
+     * 显示等待的提示对话框
+     */
+    private void showWaitTip() {
+        if (mWaitTipDialog == null)
+            mWaitTipDialog = DialogFactory.createWaitToastDialog(this,
+                    getString(R.string.wait));
+        mWaitTipDialog.show();
+    }
+
+    /**
+     * 关闭等待的提示对话框
+     */
+    private void closeWaitTip() {
+        if (mWaitTipDialog != null && mWaitTipDialog.isShowing()) {
+            mWaitTipDialog.dismiss();
+        }
+    }
+
+    /**
+     * 显示提交成功的对话框提示
+     */
+    private void showSuccessTip() {
+        if (mSuccessTipDialog == null)
+            mSuccessTipDialog = DialogFactory.createSuccessToastDialog(
+                    this,
+                    getString(R.string.success_to_submit_feedback));
+        mSuccessTipDialog.show();
+    }
+
+    /**
+     * 关闭提交成功的对话框提示
+     */
+    private void closeSuccessTip() {
+        if (mSuccessTipDialog != null
+                && mSuccessTipDialog.isShowing()) {
+            mSuccessTipDialog.dismiss();
         }
     }
 }

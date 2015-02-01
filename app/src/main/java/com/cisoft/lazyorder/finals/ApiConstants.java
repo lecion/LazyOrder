@@ -12,6 +12,9 @@ public class ApiConstants {
     //public static final String SERVER_URL = "http://lazyorder.yliec.com";
     public static final String URL_SEPERATOR = "/";
 
+    //功能说明的url
+    public static final String FUNCTION_DESC_URL = "";
+
     /* 这里存放响应的状态码 */
     public static final int RESPONSE_STATE_SUCCESS = 200;
     public static final int RESPONSE_STATE_FAILURE = 400;
@@ -36,8 +39,9 @@ public class ApiConstants {
     public static final String MODULE_ORDER = "order";
 
     public static final String MODULE_COMMON = "common";
-
-
+    public static final String MODULE_ABOUT = "about";
+    public static final String MODULE_ADVERTISE = "advertise";
+    public static final String MODULE_ADDRESS = "address";
 
 
 
@@ -60,12 +64,17 @@ public class ApiConstants {
     public static final String METHOD_ORDER_SAVE_ORDER = "saveOrder";
     public static final String METHOD_ORDER_EXPRESS_ORDER_LIST = "expressOrderList";
 
-
     public static final String METHOD_COMMON_GET_SMS_AUTH_CODE = "getNum";
     public static final String METHOD_COMMON_VERIFY_PHONE = "phoneVerify";
 
+    public static final String METHOD_ABOUT_CHECK_UPDATE = "checkUpdate";
+    public static final String METHOD_ABOUT_SUBMIT_FEEDBACK = "submitFeedback";
 
-
+    public static final String METHOD_ADDRESS_FIND_ALL = "addressList";
+    public static final String METHOD_ADDRESS_INSERT = "addAddress";
+    public static final String METHOD_ADDRESS_UPDATE = "modifyAddress";
+    public static final String METHOD_ADDRESS_DELETE = "deleteAddress";
+    public static final String METHOD_ADDRESS_SET_DEFAULT = "setDefaultAddress";
 
 
 
@@ -74,7 +83,6 @@ public class ApiConstants {
     /* 这里存放返回json的key,以"KEY_ + 模块名简写"打头,以模块扎堆↖(^ω^)↗ */
     public static final String KEY_MER_PAGE = "page";
     public static final String KEY_MER_PAGER = "size";
-    public static final String KEY_MER_DATA = "data";
     public static final String KEY_MER_ID = "id";
     public static final String KEY_MER_MONTH_SALES = "monthSaleNum";
     public static final String KEY_MER_OPEN_TIME = "merOpenTime";
@@ -183,11 +191,37 @@ public class ApiConstants {
     public static final String KEY_ORDER_GOODS_NAME = "comName";
     public static final String KEY_ORDER_GOODS_COUNT = "comNum";
 
-
+    //ABOUT模块下的KEY:
+    public static final String KEY_ABOUT_VERSION_CODE = "versionCode";
+    public static final String KEY_ABOUT_VERSION_NAME = "versionName";
+    public static final String KEY_ABOUT_DOWNLOAD_URL = "downloadUrl";
+    public static final String KEY_ABOUT_UPDATE_CONTENT = "updateContent";
+    public static final String KEY_ABOUT_FEEDBACK_CONTENT = "content";
+    public static final String KEY_ABOUT_CONTACT_METHOD = "contactMethod";
 
 
     //COMMON模块下所需要的KEY
 
     public static final String KEY_COMMON_USER_PHONE = "phone";
     public static final String KEY_COMMON_SMS_AUTH_CODE = "num";
+
+
+    //ADVERTISE模块下的KEY:
+    public static final String KEY_ADVERTISE_TYPE = "type";
+    public static final String KEY_ADVERTISE_IMAGE_URL = "imageUrl";
+    public static final String KEY_ADVERTISE_CONTENT_URL = "contentUrl";
+    public static final String KEY_ADVERTISE_CONTENT_TITLE = "contentTitle";
+    public static final String KEY_ADVERTISE_SHOP_ID = "shopId";
+    public static final String KEY_ADVERTISE_SHOP_NAME = "shopName";
+    public static final String KEY_ADVERTISE_SHOP_FACE_URL = "faceUrl";
+    public static final String KEY_ADVERTISE_SHOP_ADDRESS = "shopAddress";
+    public static final String KEY_ADVERTISE_SHOP_PROMOTION_INFO = "promotionInfo";
+
+    // ADDRESS模块下的KEY:
+    public static final String KEY_ADDRESS_UID = "userId";
+    public static final String KEY_ADDRESS_ID = "addrId";
+    public static final String KEY_ADDRESS_NAME = "name";
+    public static final String KEY_ADDRESS_PHONE = "phone";
+    public static final String KEY_ADDRESS_ADDRESS = "address";
+    public static final String KEY_ADDRESS_IS_DEFAULT = "isDefault";
 }

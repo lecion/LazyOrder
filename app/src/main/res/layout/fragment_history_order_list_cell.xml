@@ -10,7 +10,7 @@
         android:padding="2dp"
         android:background="@drawable/history_order_list_cell_rounded_bg">
         <TextView
-            android:id="@+id/tvShopName"
+            android:id="@+id/tv_shop_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#F35E02"

@@ -32,7 +32,7 @@
             <com.cisoft.lazyorder.ui.main.menu.DrawerMenuItemView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:content_class="com.cisoft.lazyorder.ui.orderlist.HistoryOrderFragment"
+                app:content_class="com.cisoft.lazyorder.ui.order.HistoryOrderFragment"
                 app:menu_icon="@drawable/selector_drawer_icon_order_list"
                 app:menu_name="订单中心" />
 
@@ -44,9 +44,9 @@
                 app:menu_name="代领快递" />
 
             <com.cisoft.lazyorder.ui.main.menu.DrawerMenuItemView
-                android:id="@+id/drawer_about_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:content_class="com.cisoft.lazyorder.ui.about.AboutUsFragment"
                 app:menu_icon="@drawable/selector_drawer_icon_about"
                 app:menu_name="关于我们" />
         </LinearLayout>

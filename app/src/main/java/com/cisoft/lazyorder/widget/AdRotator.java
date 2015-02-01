@@ -1,16 +1,17 @@
 package com.cisoft.lazyorder.widget;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,21 +19,21 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import com.cisoft.lazyorder.R;
-
-import org.kymjs.aframe.KJLoger;
-import org.kymjs.aframe.bitmap.KJBitmap;
-import org.kymjs.aframe.ui.ViewInject;
-import org.kymjs.aframe.utils.DensityUtils;
+import com.cisoft.lazyorder.bean.shop.Advertise;
+import com.cisoft.lazyorder.finals.ApiConstants;
+import com.cisoft.lazyorder.ui.common.WebViewActivity;
+import com.cisoft.lazyorder.ui.goods.GoodsActivity;
+import org.kymjs.kjframe.utils.KJLoger;
+import org.kymjs.kjframe.KJBitmap;
+import org.kymjs.kjframe.utils.DensityUtils;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * Created by comet on 2014/10/21.
  * 依赖KJFrame的广告轮播器
  */
-public class AdRotator extends FrameLayout {
+public class AdRotator extends FrameLayout implements View.OnClickListener{
 
     private Context context;
 
@@ -40,8 +41,9 @@ public class AdRotator extends FrameLayout {
     private Handler mHandler = new Handler();
 
     //存放广告图url的数组
-    private String[] imageUrlArr;
+//    private String[] imageUrlArr;
 
+    private List<Advertise> advertises;
 
     private List<ImageView> adImageList = new ArrayList<ImageView>();
 
@@ -70,7 +72,7 @@ public class AdRotator extends FrameLayout {
     private boolean isAutoPlay = true;
 
     //是否能够设置url地址
-    private boolean enableSetUrl = false;
+    private boolean enableSetData = false;
 
     //解决多次初始化的标记位
     private boolean initFlag = false;
@@ -121,7 +123,6 @@ public class AdRotator extends FrameLayout {
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
         if (changed && !initFlag) {
-//            Log.d("wanghong", "onLayout");
             initAdImageList();
             initDots();
             initViewPagerAdapter();
@@ -137,7 +138,6 @@ public class AdRotator extends FrameLayout {
      * 初始化广告图的集合
      */
     private void initAdImageList() {
-//        Log.d("wanghong", "initAdImageList");
         adWidth = getWidth();
         adHeight = getHeight();
         ImageView mImageView;
@@ -146,9 +146,10 @@ public class AdRotator extends FrameLayout {
             mImageView = new ImageView(context);
             mImageView.setScaleType(ImageView.ScaleType.FIT_XY);
             mImageView.setImageBitmap(loadingBitmap);
+            mImageView.setOnClickListener(this);
             adImageList.add(mImageView);
         }
-        enableSetUrl = true;
+        enableSetData = true;
     }
 
 
@@ -156,7 +157,6 @@ public class AdRotator extends FrameLayout {
      * 初始化标签点
      */
     private void initDots() {
-//        Log.d("wanghong", "initDots");
         llDotsContainer = (LinearLayout) findViewById(R.id.llPointGroup);
         LayoutParams params;
         for(int i = 0; i < adCount; i++) {
@@ -173,26 +173,22 @@ public class AdRotator extends FrameLayout {
      * 初始化展现广告图的ViewPager
      */
     private void initViewPagerAdapter() {
-//        Log.d("wanghong", "initViewPagerAdapter");
         vpAdImageShow = (ViewPager) findViewById(R.id.vpAdImageShow);
         vpAdImageShow.setAdapter(new ViewPagerAdapter());
         vpAdImageShow.setOnPageChangeListener(new ViewPagerChangeListener());
         vpAdImageShow.setCurrentItem(0);
     }
 
-
     /**
-     *
-     * 设置广告图片的url地址
-     * @param imageUrlArr
+     * 设置数据
+     * @param advertises
      */
-    public void setImageUrl(String[] imageUrlArr) {
-//        Log.d("wanghong", "setImageUrl");
-        if (imageUrlArr.length == adCount) {
-            this.imageUrlArr = imageUrlArr;
+    public void setAdvertiseData(List<Advertise> advertises) {
+        if (advertises.size() == adCount) {
+            this.advertises = advertises;
             new AsycLoadAdImage().execute();
         } else {
-            KJLoger.debug("image array length should be" + adCount);
+            KJLoger.debug("advertise array length should be" + adCount);
         }
     }
 
@@ -201,7 +197,6 @@ public class AdRotator extends FrameLayout {
      * 开启自动播放功能
      */
     public void startAutoPlay() {
-//        Log.d("wanghong", "startAutoPlay");
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -227,6 +222,34 @@ public class AdRotator extends FrameLayout {
      */
     public void  stopAutoPlay() { isAutoPlay = false; }
 
+    @Override
+    public void onClick(View view) {
+        if(advertises != null && advertises.size() != 0) {
+            Advertise advertise = advertises.get(prevPointIndex);
+            if(advertise != null) {
+                int advertiseType = advertise.getType();
+                if (advertiseType == 1) {   //如果是WebView式广告
+                    String contentUrl = advertise.getContentUrl();
+                    String contentTitle = advertise.getContentTitle();
+                    Intent webViewIntent = new Intent(context, WebViewActivity.class);
+                    webViewIntent.putExtra(WebViewActivity.CONENT_URL, contentUrl);
+                    webViewIntent.putExtra(WebViewActivity.CONENT_TITLE, contentTitle);
+                    context.startActivity(webViewIntent);
+
+                } else if(advertiseType == 2) {
+                    Bundle bundle = new Bundle();
+                    bundle.putInt(ApiConstants.KEY_MER_ID, advertise.getShopId());
+                    bundle.putString(ApiConstants.KEY_MER_ADDRESS, advertise.getAddress());
+                    bundle.putString(ApiConstants.KEY_MER_PROMOTION_INFO, advertise.getPromotionInfo());
+                    bundle.putString(ApiConstants.KEY_MER_NAME, advertise.getShopName());
+                    bundle.putString(ApiConstants.KEY_MER_FACE_PIC, advertise.getFaceUrl());
+                    Intent goodsIntent = new Intent(context, GoodsActivity.class);
+                    goodsIntent.putExtras(bundle);
+                    context.startActivity(goodsIntent);
+                }
+            }
+        }
+    }
 
 
     /**
@@ -237,7 +260,7 @@ public class AdRotator extends FrameLayout {
         @Override
         protected Void doInBackground(Void... voids) {
             while(true) {
-                if (enableSetUrl) {
+                if (enableSetData) {
                     break;
                 }
                 try {
@@ -254,7 +277,7 @@ public class AdRotator extends FrameLayout {
         protected void onPostExecute(Void result) {
             KJBitmap kjBitmap = KJBitmap.create();
             for (int i = 0; i< adCount; i++) {
-                kjBitmap.display(adImageList.get(i), imageUrlArr[i], loadingBitmap, adWidth, adHeight);
+                kjBitmap.display(adImageList.get(i), advertises.get(i).getImageUrl(), loadingBitmap, adWidth, adHeight);
             }
         }
     }
@@ -289,6 +312,7 @@ public class AdRotator extends FrameLayout {
         public int getCount() {
             return adImageList.size();
         }
+
 
         /**
          * 复用Object返回true，复用view返回false 复用的是Object

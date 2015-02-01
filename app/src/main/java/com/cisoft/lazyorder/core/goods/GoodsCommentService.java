@@ -8,7 +8,7 @@ import com.cisoft.lazyorder.bean.goods.Comment;
 import com.cisoft.lazyorder.core.AbsService;
 import com.cisoft.lazyorder.finals.ApiConstants;
 import com.cisoft.lazyorder.ui.goods.GoodsFragment;
-import com.cisoft.lazyorder.widget.MyListView;
+import com.cisoft.lazyorder.widget.RefreshListView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,7 +36,7 @@ public class GoodsCommentService extends AbsService{
      * @param pager
      * @param commentHandler
      */
-    public void loadAllCommentByGoodsId(MyListView lvComment, int id, final int page, int pager, String sortType, final GoodsFragment.CommentHandler commentHandler){
+    public void loadAllCommentByGoodsId(RefreshListView lvComment, int id, final int page, int pager, String sortType, final GoodsFragment.CommentHandler commentHandler){
         KJStringParams params = new KJStringParams();
         params.put(ApiConstants.KEY_DIS_COM_ID, String.valueOf(id));
         params.put(ApiConstants.KEY_MER_PAGE, String.valueOf(page));
@@ -48,7 +48,7 @@ public class GoodsCommentService extends AbsService{
                 List<Comment> comments = new ArrayList<Comment>();
                 try {
                     JSONObject jsonObj = new JSONObject(result);
-                    JSONArray commentArr = jsonObj.getJSONArray(ApiConstants.KEY_MER_DATA);
+                    JSONArray commentArr = jsonObj.getJSONArray(ApiConstants.KEY_DATA);
                     if (commentArr.length() == 0) {
                         if (page == 1) {	//第一页就空数据的话就显示提示
                             f.showNoValueTip();

@@ -9,11 +9,13 @@ import android.widget.TextView;
 
 import com.cisoft.lazyorder.AppContext;
 import com.cisoft.lazyorder.R;
+import com.cisoft.lazyorder.core.account.I_LoginStateObserver;
+import com.cisoft.lazyorder.core.account.LoginStateObserver;
 
 /**
  * Created by comet on 2014/11/22.
  */
-public class DrawerMenuHeaderView extends MenuItemView {
+public class DrawerMenuHeaderView extends MenuItemView implements I_LoginStateObserver {
 
     private ImageView userAvatar;
     private TextView balance;
@@ -40,9 +42,10 @@ public class DrawerMenuHeaderView extends MenuItemView {
         balance = (TextView) findViewById(R.id.menu_header_balance);
         userPoint = (TextView) findViewById(R.id.menu_header_user_point);
 
+        LoginStateObserver.getInstance().attach(this);
+
         control();
     }
-
 
     private void control() {
         AppContext app = (AppContext) context.getApplicationContext();
@@ -54,10 +57,14 @@ public class DrawerMenuHeaderView extends MenuItemView {
         }
     }
 
+
+
+
     private void notLoginShow() {
         userAvatar.setImageResource(R.drawable.drawe_menu_header_anonymous_avatar_bg);
         userName.setText("个人中心");
-        balance.setText("登录可享更多特权");
+        balance.setVisibility(View.GONE);
+//        balance.setText("登录可享更多特权");
         userPoint.setVisibility(View.GONE);
     }
 
@@ -70,4 +77,9 @@ public class DrawerMenuHeaderView extends MenuItemView {
         userPoint.setVisibility(View.GONE);
     }
 
+
+    @Override
+    public void onLoginSateChange() {
+        control();
+    }
 }

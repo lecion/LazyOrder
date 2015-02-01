@@ -5,12 +5,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import org.kymjs.aframe.ui.fragment.BaseFragment;
+import org.kymjs.kjframe.ui.FrameFragment;
 
 /**
  * Created by comet on 2014/11/25.
  */
-public abstract class MenuItemContent extends BaseFragment {
+public abstract class MenuItemContent extends FrameFragment {
 
     private boolean isMenuOpen = false;
 

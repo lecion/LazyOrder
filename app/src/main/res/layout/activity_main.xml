@@ -4,7 +4,7 @@
     android:id="@+id/drawe_menu_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.cisoft.lazyorder.ui.main.MainActivity">
+    tools:mContext="com.cisoft.lazyorder.ui.main.MainActivity">
 
     <FrameLayout
         android:id="@+id/drawer_menu_item_content"

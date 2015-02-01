@@ -40,15 +40,21 @@
             android:name=".ui.search.SearchActivity"
             android:label="@string/title_activity_search" />
         <activity
-            android:name=".ui.sureorder.SureOrderActivity"
+            android:name=".ui.cart.CartActivity"
             android:label="@string/title_activity_sure_order" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.cisoft.lazyorder.ui.goods.GoodsActivity" />
         </activity>
         <activity
             android:name=".ui.sureinfo.SureInfoActivity"
             android:label="@string/title_activity_sure_info" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.cisoft.lazyorder.ui.cart.CartActivity" />
         </activity>
         <activity
-            android:name=".ui.orderdetail.OrderDetailActivity"
+            android:name=".ui.order.OrderDetailActivity"
             android:label="@string/title_activity_order_detail" >
         </activity>
         <activity
@@ -56,12 +62,35 @@
             android:label="@string/title_activity_post_express" >
         </activity>
         <activity
-            android:name=".ui.login.LoginActivity"
+            android:name=".ui.account.LoginActivity"
             android:label="@string/title_activity_login" >
         </activity>
         <activity
-            android:name=".core.user.UserCenterActivity"
-            android:label="@string/title_activity_user_center" >
+            android:name=".ui.about.FeedbackActivity"
+            android:label="@string/title_activity_feedback" >
+        </activity>
+
+        <service android:name=".core.about.UpdateService" />
+
+        <activity
+            android:name=".ui.express.ChoiceSmsActivity"
+            android:label="@string/title_activity_choice_sms" >
+        </activity>
+        <activity
+            android:name=".ui.common.WebViewActivity"
+            android:label="@string/title_activity_web_view" >
+        </activity>
+        <activity
+            android:name="com.cisoft.lazyorder.ui.address.ManageAddressActivity"
+            android:label="@string/title_activity_manage_address" >
+        </activity>
+        <activity
+            android:name="com.cisoft.lazyorder.ui.address.UpdateAddressActivity"
+            android:label="@string/title_activity_update_address" >
+        </activity>
+        <activity
+            android:name="com.cisoft.lazyorder.ui.address.InsertAddressActivity"
+            android:label="@string/title_activity_insert_address" >
         </activity>
     </application>
 

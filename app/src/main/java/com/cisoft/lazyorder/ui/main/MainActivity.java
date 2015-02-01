@@ -2,18 +2,20 @@ package com.cisoft.lazyorder.ui.main;
 
 import android.app.ActionBar;
 import android.support.v4.widget.DrawerLayout;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
-import com.cisoft.lazyorder.R;
-import org.kymjs.aframe.ui.activity.BaseActivity;
 
-public class MainActivity extends BaseActivity{
+import com.cisoft.lazyorder.R;
+
+import org.kymjs.kjframe.KJActivity;
+import org.kymjs.kjframe.ui.ViewInject;
+
+public class MainActivity extends KJActivity{
 
     private DrawMenuFragment navDrawerFragment;
+    private long lastKeyTime;
 
-    public MainActivity(){
-        setHiddenActionBar(false);
-    }
 
     @Override
     public void setRootView() {
@@ -21,11 +23,11 @@ public class MainActivity extends BaseActivity{
     }
 
     @Override
-    protected void initData() {
+    public void initData() {
     }
 
     @Override
-    protected void initWidget() {
+    public void initWidget() {
         initNavDrawer();
     }
 
@@ -53,6 +55,7 @@ public class MainActivity extends BaseActivity{
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        menu.clear();
 
         if(navDrawerFragment.isNavDrawerOpen()) {
             restoreActionBar();
@@ -65,5 +68,21 @@ public class MainActivity extends BaseActivity{
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK){
+            if((System.currentTimeMillis() - lastKeyTime) > 2000){
+                lastKeyTime = System.currentTimeMillis();
+                ViewInject.toast("再按一次退出程序");
+            }else{
+                finish();
+            }
+
+            return true;
+        }
+
+        return super.onKeyDown(keyCode, event);
     }
 }

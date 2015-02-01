@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@drawable/selector_list_cell">
+    <RelativeLayout
+        android:id="@+id/ll_item_front_content"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:gravity="center_vertical"
+	    android:padding="@dimen/content_padding">
+	    <ImageView
+	        android:id="@+id/iv_is_default"
+	        android:layout_width="30.0dp"
+	        android:layout_height="30.0dp"
+	        android:layout_alignParentRight="true"
+	        android:layout_centerVertical="true"
+	        android:padding="5.0dp"
+	        android:src="@drawable/icon_addr_select"
+	        android:visibility="visible"/>
+	    <TextView
+	        android:id="@+id/tv_name"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:singleLine="true"
+	        android:text="王宏"
+	        android:textColor="@color/text_dark_gray_color"
+	        android:textSize="16.0sp" />
+	    <TextView
+	        android:id="@+id/tv_phone"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginLeft="10.0dp"
+	        android:layout_toLeftOf="@id/iv_is_default"
+	        android:layout_toRightOf="@id/tv_name"
+	        android:singleLine="true"
+	        android:text="18996480894"
+	        android:textColor="@color/text_dark_gray_color"
+	        android:textSize="16.0sp" />
+	    <TextView
+	        android:id="@+id/tv_address"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignLeft="@id/tv_name"
+	        android:layout_below="@id/tv_name"
+	        android:layout_marginTop="2.0dp"
+	        android:layout_toLeftOf="@id/iv_is_default"
+	        android:singleLine="true"
+	        android:text="南岸区内环以内重庆邮电大学26栋101室"
+	        android:textColor="@color/text_light_gray_color"
+	        android:textSize="14.0sp" />
+	</RelativeLayout>
+    <LinearLayout
+        android:id="@+id/ll_item_back_content"
+        android:layout_width="160dp"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_gravity="right">
+        <ImageButton
+            android:id="@+id/btn_update_address"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/addr_edit"
+            android:background="#C8C9CE"/>
+        <ImageButton
+            android:id="@+id/btn_delete_address"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/addr_delete"
+            android:background="#F93F25"/>
+    </LinearLayout>
+</LinearLayout>
+

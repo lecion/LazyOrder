@@ -13,13 +13,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+
 import com.cisoft.lazyorder.R;
 import com.cisoft.lazyorder.ui.main.menu.DrawerMenuHeaderView;
 import com.cisoft.lazyorder.ui.main.menu.MenuItemContent;
 import com.cisoft.lazyorder.ui.main.menu.MenuItemView;
 
-import org.kymjs.aframe.ui.BindView;
-import org.kymjs.aframe.ui.fragment.BaseFragment;
+import org.kymjs.kjframe.ui.BindView;
+import org.kymjs.kjframe.ui.FrameFragment;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -27,7 +29,7 @@ import java.util.Map;
 /**
  * Created by comet on 2014/11/23.
  */
-public class DrawMenuFragment extends BaseFragment {
+public class DrawMenuFragment extends FrameFragment {
 
     @BindView(id = R.id.drawer_header, click = true)
     private DrawerMenuHeaderView drawerMenuHeader;
@@ -35,12 +37,14 @@ public class DrawMenuFragment extends BaseFragment {
     @BindView(id = R.id.menu_container)
     private LinearLayout menuContainer;
 
-    private ActionBarDrawerToggle drawerToggle;
-    private DrawerLayout navDrawLayout;
-    private View drawerMenuView;
+    private ActionBarDrawerToggle mDrawerToggle;
+    private DrawerLayout mNavDrawerLayout;
+    private View mDrawerMenuView;
 
-    //用来存放已经创建了的菜单项对应的内容(fragment),解决重复初始化
-    private Map<String, MenuItemContent> menuItemContents = new HashMap<String, MenuItemContent>();
+    /* 用来存放已经创建了的菜单项对应的内
+    * 容(fragment),解决重复初始化
+    */
+    private Map<String, MenuItemContent> mMenuItems = new HashMap<String, MenuItemContent>();
 
     @Override
     protected View inflaterView(LayoutInflater inflater, ViewGroup container, Bundle bundle) {
@@ -66,13 +70,14 @@ public class DrawMenuFragment extends BaseFragment {
 
     @Override
     protected void widgetClick(View v) {
-        navDrawLayout.closeDrawer(drawerMenuView);
+        mNavDrawerLayout.closeDrawer(mDrawerMenuView);
 
         showMenuItemContent((MenuItemView) v);
     }
 
     /**
      * 切换显示菜单项对应的内容(fragment)
+     *
      * @param menuItemView
      */
     private void showMenuItemContent(MenuItemView menuItemView) {
@@ -81,7 +86,7 @@ public class DrawMenuFragment extends BaseFragment {
 
         /* 先隐藏已经创建了的fragment */
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        Iterator iterator = menuItemContents.entrySet().iterator();
+        Iterator iterator = mMenuItems.entrySet().iterator();
         MenuItemContent tempContent = null;
         while (iterator.hasNext()) {
             Map.Entry entry = (Map.Entry) iterator.next();
@@ -96,14 +101,15 @@ public class DrawMenuFragment extends BaseFragment {
 
     /**
      * 获取菜单项对应的内容(fragment)
+     *
      * @param contentClass
      */
     private MenuItemContent obtainMenuItemContent(String contentClass) {
         MenuItemContent menuItemContent = null;
 
         /* 若该菜单对应的内容在集合中已存在,则直接取出 */
-        if(menuItemContents.containsKey(contentClass)){
-            menuItemContent = menuItemContents.get(contentClass);
+        if (mMenuItems.containsKey(contentClass)) {
+            menuItemContent = mMenuItems.get(contentClass);
 
         /* 不存在则新建并添加进集合里 */
         } else {
@@ -125,29 +131,31 @@ public class DrawMenuFragment extends BaseFragment {
 
     /**
      * 添加新的菜单项对应的内容(fragment)
+     *
      * @param contentClass
      * @param menuItemContent
      */
-    private void addMenuItemContent(String contentClass, MenuItemContent menuItemContent){
-        menuItemContents.put(contentClass, menuItemContent);
+    private void addMenuItemContent(String contentClass, MenuItemContent menuItemContent) {
+        mMenuItems.put(contentClass, menuItemContent);
         getFragmentManager().beginTransaction().add(R.id.drawer_menu_item_content, menuItemContent).commit();
     }
 
 
     /**
      * 绑定上抽屉式导航菜单
+     *
      * @param fragmentId
      * @param drawerMenuLayout
      */
-    public void setUp(int fragmentId, DrawerLayout drawerMenuLayout){
-        drawerMenuView = getActivity().findViewById(fragmentId);
-        navDrawLayout = drawerMenuLayout;
+    public void setUp(int fragmentId, DrawerLayout drawerMenuLayout) {
+        mDrawerMenuView = getActivity().findViewById(fragmentId);
+        mNavDrawerLayout = drawerMenuLayout;
 
-        navDrawLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
+        mNavDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
 
-        drawerToggle = new ActionBarDrawerToggle(
+        mDrawerToggle = new ActionBarDrawerToggle(
                 getActivity(),
-                navDrawLayout,
+                mNavDrawerLayout,
                 R.drawable.ic_drawer,
                 R.string.navigation_drawer_open,
                 R.string.navigation_drawer_close
@@ -172,13 +180,13 @@ public class DrawMenuFragment extends BaseFragment {
                 invalidateOptionsMenu();
             }
         };
-        navDrawLayout.post(new Runnable() {
+        mNavDrawerLayout.post(new Runnable() {
             @Override
             public void run() {
-                drawerToggle.syncState();
+                mDrawerToggle.syncState();
             }
         });
-        navDrawLayout.setDrawerListener(drawerToggle);
+        mNavDrawerLayout.setDrawerListener(mDrawerToggle);
 
         getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
         getActivity().getActionBar().setHomeButtonEnabled(true);
@@ -186,21 +194,22 @@ public class DrawMenuFragment extends BaseFragment {
 
     /**
      * 导航抽屉是否打开
+     *
      * @return
      */
     public boolean isNavDrawerOpen() {
-        return navDrawLayout != null && navDrawLayout.isDrawerOpen(drawerMenuView);
+        return mNavDrawerLayout != null && mNavDrawerLayout.isDrawerOpen(mDrawerMenuView);
     }
 
     /**
      * 重置actionbar上的菜单项
      */
     private void invalidateOptionsMenu() {
-        Iterator iterator = menuItemContents.entrySet().iterator();
+        Iterator iterator = mMenuItems.entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry entry = (Map.Entry) iterator.next();
             MenuItemContent tempFragment = (MenuItemContent) entry.getValue();
-                tempFragment.setMenuOpenState(isNavDrawerOpen());
+            tempFragment.setMenuOpenState(isNavDrawerOpen());
         }
 
         getActivity().invalidateOptionsMenu();
@@ -225,7 +234,7 @@ public class DrawMenuFragment extends BaseFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 
-        if(isNavDrawerOpen()) {
+        if (isNavDrawerOpen()) {
             inflater.inflate(R.menu.drawer_menu, menu);
             restoreActionBar();
         }
@@ -234,7 +243,7 @@ public class DrawMenuFragment extends BaseFragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         //使icon图标能够切换抽屉菜单的显示
-        if(drawerToggle.onOptionsItemSelected(item)){
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
 

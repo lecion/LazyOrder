@@ -33,7 +33,7 @@ import com.cisoft.lazyorder.bean.goods.GoodsCart;
 import com.cisoft.lazyorder.core.goods.INetWorkFinished;
 import com.cisoft.lazyorder.core.search.SearchService;
 import com.cisoft.lazyorder.finals.ApiConstants;
-import com.cisoft.lazyorder.ui.sureorder.SureOrderActivity;
+import com.cisoft.lazyorder.ui.cart.CartActivity;
 import com.cisoft.lazyorder.util.DialogFactory;
 import com.cisoft.lazyorder.widget.OrderNumView;
 
@@ -139,7 +139,7 @@ public class SearchActivity extends BaseActivity implements SearchView.OnQueryTe
                 AppContext app = (AppContext) getApplication();
                 GoodsCart goodsCart = app.getGoodsCart();
                 if (goodsCart.getTotalCount() > 0) {
-                    skipActivity(this, SureOrderActivity.class);
+                    skipActivity(this, CartActivity.class);
                 } else {
                     Animation shakeAnimation = new TranslateAnimation(0, -20, 0, 0);
                     shakeAnimation.setDuration(350);

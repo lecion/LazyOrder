@@ -2,21 +2,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/sure_info_bg_color"
-    tools:context="com.cisoft.lazyorder.ui.sureinfo.SureInfoActivity">
+    android:background="@color/gray_bg"
+    android:padding="@dimen/content_margin"
+    tools:mContext="com.cisoft.lazyorder.ui.sureinfo.SureInfoActivity">
 
     <Button
         android:id="@+id/btnSureInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:background="@drawable/selector_red_corners_button"
         android:gravity="center"
-        android:background="#E70012"
-        android:textColor="@android:color/white"
         android:text="确认信息"
-        android:textSize="18sp"/>
+        android:textColor="@android:color/white"
+        android:textSize="16sp"/>
 
-    <org.kymjs.aframe.ui.widget.KJScrollView
+    <org.kymjs.kjframe.widget.KJScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/btnSureInfo"
@@ -31,180 +32,80 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_margin="15dp">
+                android:layout_marginTop="@dimen/content_margin">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginBottom="@dimen/content_margin"
                     android:text="送餐信息"
-                    android:textStyle="bold"
                     android:textSize="16sp"
-                    android:textColor="#545454"/>
+                    android:textColor="@color/text_light_gray_color"/>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/sure_info_rounded_bg"
                     android:orientation="vertical">
                     <RelativeLayout
+                        android:id="@+id/rl_choice_address"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="5dp"
-                        android:gravity="center_vertical">
+                        android:clickable="true"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/content_padding"
+                        android:background="@drawable/selector_list_cell">
                         <TextView
-                            android:id="@+id/tvNameLabel"
+                            android:id="@+id/tv_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:padding="10dp"
-                            android:textSize="14sp"
-                            android:textColor="#707070"
-                            android:text="姓名："
                             android:layout_alignParentLeft="true"
-                            android:layout_centerVertical="true"/>
-                        <Button
-                            android:id="@+id/btnChangeName"
-                            android:layout_width="50dp"
-                            android:layout_height="30dp"
-                            android:layout_marginRight="5dp"
-                            android:textSize="14sp"
-                            android:textColor="#707070"
-                            android:text="更改"
-                            android:background="@drawable/sure_info_rounded_button_bg"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"/>
+                            android:singleLine="true"
+                            android:text="王宏"
+                            android:textColor="@color/text_dark_gray_color"
+                            android:textSize="16.0sp" />
                         <TextView
-                            android:id="@+id/tvName"
+                            android:id="@+id/tv_phone"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginRight="5dp"
-                            android:gravity="right"
-                            android:textSize="14sp"
-                            android:textColor="#707070"
-                            android:text="@string/input_name_hint"
-                            android:layout_toRightOf="@id/tvNameLabel"
-                            android:layout_toLeftOf="@id/btnChangeName"
-                            android:layout_centerVertical="true"
-                            android:visibility="visible"/>
-                        <EditText
-                            android:id="@+id/etInputName"
+                            android:layout_marginLeft="10.0dp"
+                            android:layout_toLeftOf="@id/iv_is_default"
+                            android:layout_toRightOf="@id/tv_name"
+                            android:singleLine="true"
+                            android:text="18996480894"
+                            android:textColor="@color/text_dark_gray_color"
+                            android:textSize="16.0sp" />
+                        <TextView
+                            android:id="@+id/tv_address"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:padding="10dp"
-                            android:gravity="center"
-                            android:textSize="14sp"
-                            android:textColor="#707070"
-                            android:hint="@string/input_name_hint"
-                            android:layout_toRightOf="@id/tvNameLabel"
-                            android:layout_toLeftOf="@id/btnChangeName"
-                            android:layout_centerVertical="true"
-                            android:visibility="gone"/>
+                            android:layout_alignLeft="@id/tv_name"
+                            android:layout_below="@id/tv_name"
+                            android:layout_marginTop="2.0dp"
+                            android:layout_toLeftOf="@id/iv_is_default"
+                            android:singleLine="true"
+                            android:text="南岸区内环以内重庆邮电大学26栋101室"
+                            android:textColor="@color/text_light_gray_color"
+                            android:textSize="14.0sp" />
                     </RelativeLayout>
 
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/list_separator_line"/>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="5dp"
-                        android:gravity="center_vertical">
-                        <TextView
-                            android:id="@+id/tvPhoneNumLabel"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="10dp"
-                            android:textSize="14sp"
-                            android:textColor="#707070"
-                            android:text="手机号码："
-                            android:layout_alignParentLeft="true"
-                            android:layout_centerVertical="true"/>
-                        <Button
-                            android:id="@+id/btnSelectPhoneNum"
-                            android:layout_width="50dp"
-                            android:layout_height="30dp"
-                            android:layout_marginRight="5dp"
-                            android:textSize="14sp"
-                            android:textColor="#707070"
-                            android:text="更改"
-                            android:background="@drawable/sure_info_rounded_button_bg"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"/>
-                        <TextView
-                            android:id="@+id/tvPhoneNum"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="5dp"
-                            android:gravity="right"
-                            android:textSize="14sp"
-                            android:textColor="#707070"
-                            android:text="@string/input_phone_num_hint"
-                            android:layout_toRightOf="@id/tvPhoneNumLabel"
-                            android:layout_toLeftOf="@id/btnSelectPhoneNum"
-                            android:layout_centerVertical="true"
-                            android:visibility="visible"/>
-                        <EditText
-                            android:id="@+id/etInputPhoneNum"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="10dp"
-                            android:inputType="phone"
-                            android:gravity="center"
-                            android:textSize="14sp"
-                            android:textColor="#707070"
-                            android:hint="@string/input_phone_num_hint"
-                            android:layout_toRightOf="@id/tvPhoneNumLabel"
-                            android:layout_toLeftOf="@id/btnSelectPhoneNum"
-                            android:layout_centerVertical="true"
-                            android:visibility="gone"/>
-                    </RelativeLayout>
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/list_separator_line"/>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="5dp"
-                        android:gravity="center_vertical">
-                        <TextView
-                            android:id="@+id/tvAddressLabel"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="10dp"
-                            android:textSize="14sp"
-                            android:textColor="#707070"
-                            android:text="地址："
-                            android:layout_alignParentLeft="true"
-                            android:layout_centerVertical="true"/>
-                        <Button
-                            android:id="@+id/btnSelectAddress"
-                            android:layout_width="50dp"
-                            android:layout_height="30dp"
-                            android:layout_marginRight="5dp"
-                            android:textSize="14sp"
-                            android:textColor="#707070"
-                            android:text="更改"
-                            android:background="@drawable/sure_info_rounded_button_bg"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"/>
-                        <TextView
-                            android:id="@+id/tvAddress"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="5dp"
-                            android:gravity="right"
-                            android:textSize="14sp"
-                            android:textColor="#707070"
-                            android:text="@string/input_contact_address_hint"
-                            android:layout_toRightOf="@id/tvAddressLabel"
-                            android:layout_toLeftOf="@id/btnSelectAddress"
-                            android:layout_centerVertical="true"/>
-                    </RelativeLayout>
                 </LinearLayout>
             </LinearLayout>
+
+            <EditText
+                android:id="@+id/et_extra_message"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_marginTop="@dimen/content_margin"
+                android:padding="@dimen/content_padding"
+                android:gravity="left"
+                android:hint="如果有留言,请在此处填写"
+                android:textColor="@color/text_edit_color"
+                android:textColorHint="@color/text_edit_hint_color"
+                android:textSize="14sp"
+                android:background="@drawable/text_field_grey"/>
 
 
             <!-- 付费方式  -->
@@ -212,15 +113,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_margin="15dp">
+                android:layout_marginTop="@dimen/content_margin">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="@dimen/content_margin"
+                    android:layout_marginBottom="@dimen/content_margin"
                     android:text="付费方式"
-                    android:textStyle="bold"
                     android:textSize="16sp"
-                    android:textColor="#545454"/>
+                    android:textColor="@color/text_light_gray_color"/>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -229,15 +130,13 @@
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="5dp"
+                        android:padding="@dimen/content_padding"
                         android:gravity="center_vertical">
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:padding="10dp"
-                            android:textStyle="bold"
                             android:textSize="14sp"
-                            android:textColor="#707070"
+                            android:textColor="@color/text_light_gray_color"
                             android:text="货到付款"
                             android:layout_alignParentLeft="true"
                             android:layout_centerVertical="true"/>
@@ -246,7 +145,7 @@
                             android:layout_height="30dp"
                             android:layout_marginRight="5dp"
                             android:textSize="14sp"
-                            android:textColor="#707070"
+                            android:textColor="@color/text_light_gray_color"
                             android:text="已选择"
                             android:background="@drawable/sure_info_rounded_button_bg"
                             android:layout_alignParentRight="true"
@@ -261,15 +160,13 @@
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="5dp"
+                        android:padding="@dimen/content_padding"
                         android:gravity="center_vertical">
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:padding="10dp"
-                            android:textStyle="bold"
                             android:textSize="14sp"
-                            android:textColor="#707070"
+                            android:textColor="@color/text_light_gray_color"
                             android:text="网上支付"
                             android:layout_alignParentLeft="true"
                             android:layout_centerVertical="true"/>
@@ -278,7 +175,7 @@
                             android:layout_height="30dp"
                             android:layout_marginRight="5dp"
                             android:textSize="14sp"
-                            android:textColor="#707070"
+                            android:textColor="@color/text_light_gray_color"
                             android:text="未选择"
                             android:background="@drawable/sure_info_rounded_button_bg"
                             android:layout_alignParentRight="true"
@@ -288,6 +185,6 @@
             </LinearLayout>
 
         </LinearLayout>
-    </org.kymjs.aframe.ui.widget.KJScrollView>
+    </org.kymjs.kjframe.widget.KJScrollView>
 
 </RelativeLayout>
