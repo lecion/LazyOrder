@@ -101,7 +101,25 @@ public class ShopModel extends AbsService {
         });
     }
 
+    public void merLogin(String merPhone, String merPwd) {
+        KJStringParams params = new KJStringParams();
+        params.put(ApiConstants.KEY_MER_MER_PHONE, merPhone);
+        params.put(ApiConstants.KEY_MER_MER_PWD, merPwd);
+        asyncUrlGet(ApiConstants.METHOD_MER_MER_LOGIN, params, false, new SuccessCallback() {
+            @Override
+            public void onSuccess(String result) throws JSONException {
+                JSONObject jsonObj = new JSONObject(result);
+                int state = jsonObj.getInt(ApiConstants.KEY_STATE);
+                jsonObj.getJSONObject(ApiConstants.KEY_DATA);
 
+            }
+        }, new FailureCallback() {
+            @Override
+            public void onFailure(int stateCode) {
+
+            }
+        });
+    }
 
     public interface IUpdateOperateState{
         public void onSuccess(int code);
