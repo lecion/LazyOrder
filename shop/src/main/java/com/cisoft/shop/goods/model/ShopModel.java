@@ -101,7 +101,12 @@ public class ShopModel extends AbsService {
         });
     }
 
-    public void merLogin(String merPhone, String merPwd) {
+    /**
+     * 普通商家登陆
+     * @param merPhone
+     * @param merPwd
+     */
+    public void merLogin(String merPhone, String merPwd, final ILoginListener loginListener) {
         KJStringParams params = new KJStringParams();
         params.put(ApiConstants.KEY_MER_MER_PHONE, merPhone);
         params.put(ApiConstants.KEY_MER_MER_PWD, merPwd);
@@ -110,7 +115,14 @@ public class ShopModel extends AbsService {
             public void onSuccess(String result) throws JSONException {
                 JSONObject jsonObj = new JSONObject(result);
                 int state = jsonObj.getInt(ApiConstants.KEY_STATE);
-                jsonObj.getJSONObject(ApiConstants.KEY_DATA);
+                if (state == 200) {
+                    //登陆成功
+                    loginListener.onSuccess(jsonObj.getJSONObject("data"));
+                } else {
+                    //登陆失败
+                    String msg = jsonObj.getString("message");
+                    loginListener.onFailure(msg);
+                }
 
             }
         }, new FailureCallback() {
@@ -123,6 +135,12 @@ public class ShopModel extends AbsService {
 
     public interface IUpdateOperateState{
         public void onSuccess(int code);
+
+        public void onFailure(String msg);
+    }
+
+    public interface ILoginListener {
+        public void onSuccess(JSONObject data);
 
         public void onFailure(String msg);
     }
