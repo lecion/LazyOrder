@@ -10,7 +10,7 @@ import com.cisoft.shop.bean.Shop;
 public class MyApplication extends Application {
 
     public Shop getShop() {
-        return new Shop(1, "叮当超市", "11：00", "14:00", 777, "http://lecion.qiniudn.com/qjrs.jpeg", "第二份半价", "堕落街A区");
+        return new Shop(1, "叮当超市", "11：00", "14:00", 777, 0, "http://lecion.qiniudn.com/qjrs.jpeg", "第二份半价", "堕落街A区", 20, "JOFS123JK1");
     }
 
     @Override

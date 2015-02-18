@@ -6,7 +6,11 @@ package com.cisoft.shop.login.view;
 public interface ILoginView {
     void showLoginProgress();
 
-    void showLoginFailed();
+    void hideLoginProgress();
+
+    void showLoginFailed(String msg);
 
     void showWrongInput();
+
+    void skipToMainActivity();
 }

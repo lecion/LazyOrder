@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.app.Dialog;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.Button;
@@ -14,9 +15,12 @@ import android.widget.RadioGroup;
 
 import com.cisoft.myapplication.R;
 import com.cisoft.shop.MainActivity;
+import com.cisoft.shop.login.presenter.LoginPresenter;
 import com.cisoft.shop.util.DeviceUtil;
+import com.cisoft.shop.widget.DialogFactory;
 
 import org.kymjs.aframe.ui.BindView;
+import org.kymjs.aframe.ui.ViewInject;
 import org.kymjs.aframe.ui.activity.BaseActivity;
 
 public class LoginActivity extends BaseActivity implements ILoginView{
@@ -42,9 +46,18 @@ public class LoginActivity extends BaseActivity implements ILoginView{
     @BindView(id = R.id.rb_express)
     private RadioButton rbExpress;
 
+    Dialog loadingDialog;
+
+    LoginPresenter loginPresenter;
+
     @Override
     public void setRootView() {
         setContentView(R.layout.activity_login);
+    }
+
+    @Override
+    protected void initData() {
+        loginPresenter = new LoginPresenter(this, this);
     }
 
     @Override
@@ -86,23 +99,47 @@ public class LoginActivity extends BaseActivity implements ILoginView{
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_login:
-                skipActivity(this, MainActivity.class);
+                if (isMerLogin()) {
+                    loginPresenter.normalLogin(etPhone.getText().toString(), etPwd.getText().toString());
+                }
                 break;
         }
     }
 
+
     @Override
     public void showLoginProgress() {
-
+        if (loadingDialog == null) {
+            loadingDialog = DialogFactory.createToastDialog(this, "登陆中...");
+        }
+        if (!loadingDialog.isShowing()) {
+            loadingDialog.show();
+        }
     }
 
     @Override
-    public void showLoginFailed() {
+    public void hideLoginProgress() {
+        if (loadingDialog != null) {
+            loadingDialog.dismiss();
+        }
+    }
 
+    @Override
+    public void showLoginFailed(String msg) {
+        ViewInject.toast(msg);
     }
 
     @Override
     public void showWrongInput() {
+        ViewInject.toast("请输入正确的手机号和密码");
+    }
 
+    @Override
+    public void skipToMainActivity() {
+        skipActivity(this, MainActivity.class);
+    }
+
+    private boolean isMerLogin() {
+        return rbNormal.isChecked();
     }
 }

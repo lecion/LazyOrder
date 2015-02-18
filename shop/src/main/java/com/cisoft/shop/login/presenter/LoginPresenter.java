@@ -1,11 +1,13 @@
 package com.cisoft.shop.login.presenter;
 
+import android.content.Context;
+import android.text.TextUtils;
+
 import com.cisoft.shop.bean.Shop;
 import com.cisoft.shop.goods.model.ShopModel;
 import com.cisoft.shop.login.view.ILoginView;
 
 import org.json.JSONObject;
-import org.kymjs.aframe.ui.ViewInject;
 
 /**
  * Created by Lecion on 2/16/15.
@@ -15,24 +17,31 @@ public class LoginPresenter {
 
     private ShopModel shopModel;
 
-    public LoginPresenter(ILoginView view) {
+    public LoginPresenter(Context context, ILoginView view) {
         this.view = view;
+        shopModel = new ShopModel(context);
     }
 
     /**
      * 普通商家登陆
      */
     public void normalLogin(String phone, String pwd) {
+        if (TextUtils.isEmpty(phone) || TextUtils.isEmpty(pwd)) {
+            view.showWrongInput();
+            return;
+        }
+        view.showLoginProgress();
         shopModel.merLogin(phone, pwd, new ShopModel.ILoginListener() {
             @Override
             public void onSuccess(JSONObject data) {
                 //登陆成功，保存商店信息
                 Shop shop = new Shop(data);
+                view.skipToMainActivity();
             }
 
             @Override
             public void onFailure(String msg) {
-                ViewInject.toast(msg);
+                view.showLoginFailed(msg);
             }
         });
     }
