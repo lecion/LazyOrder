@@ -5,12 +5,13 @@ import com.cisoft.shop.ApiConstants;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.Iterator;
 
 /**
  * Created by Lecion on 2014/2/16.
  */
-public class Shop extends AbsBean{
+public class Shop extends AbsBean implements Serializable{
     public int id;
     public String name;
     public String openTime;

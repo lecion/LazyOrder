@@ -119,16 +119,14 @@ public class ShopModel extends AbsService {
                     //登陆成功
                     loginListener.onSuccess(jsonObj.getJSONObject("data"));
                 } else {
-                    //登陆失败
-                    String msg = jsonObj.getString("message");
-                    loginListener.onFailure(msg);
+                    loginListener.onFailure(getResponseStateInfo(state));
                 }
 
             }
         }, new FailureCallback() {
             @Override
             public void onFailure(int stateCode) {
-
+                loginListener.onFailure(getResponseStateInfo(stateCode));
             }
         });
     }
@@ -149,8 +147,8 @@ public class ShopModel extends AbsService {
     public String getResponseStateInfo(int stateCode) {
         String stateInfo = "";
         switch (stateCode) {
-            case ApiConstants.RESPONSE_STATE_FAILURE:
-                stateInfo = "无法找到商家";
+            case ApiConstants.RESPONSE_STATE_ERROR_LOGIN:
+                stateInfo = "账号或密码错误";
                 break;
             case ApiConstants.RESPONSE_STATE_SUCCESS:
                 stateInfo = "加载商品成功";

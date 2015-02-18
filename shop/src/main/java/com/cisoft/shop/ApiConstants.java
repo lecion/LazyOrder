@@ -15,6 +15,7 @@ public class ApiConstants {
     public static final int RESPONSE_STATE_SERVICE_EXCEPTION = 103;
     public static final int RESPONSE_STATE_NOT_NET = 102;
     public static final int RESPONSE_STATE_NET_POOR = 101;
+    public static final int RESPONSE_STATE_ERROR_LOGIN = 400;
 
     /* 这里存放全局使用的key */
     public static final String KEY_STATE = "state";
