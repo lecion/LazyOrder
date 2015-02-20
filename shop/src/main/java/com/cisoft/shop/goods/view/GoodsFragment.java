@@ -2,7 +2,6 @@ package com.cisoft.shop.goods.view;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.app.Fragment;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -23,7 +22,9 @@ import android.widget.TextView;
 import com.cisoft.myapplication.R;
 import com.cisoft.shop.bean.Goods;
 import com.cisoft.shop.bean.GoodsCategory;
+import com.cisoft.shop.bean.Shop;
 import com.cisoft.shop.goods.presenter.GoodsPresenter;
+import com.cisoft.shop.util.L;
 import com.cisoft.shop.widget.DialogFactory;
 import com.cisoft.shop.widget.MyListView;
 
@@ -34,15 +35,19 @@ import org.kymjs.aframe.ui.fragment.BaseFragment;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link GoodsFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link GoodsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class GoodsFragment extends BaseFragment implements IGoodsView{
+
+    @BindView(id = R.id.iv_shop_logo)
+    private ImageView ivShopLogo;
+
+    @BindView(id = R.id.tv_shop_name)
+    private TextView tvShopName;
+
+    @BindView(id = R.id.tv_shop_time_show)
+    private TextView tvShopTime;
+
+    @BindView(id = R.id.tv_shop_privilege_show)
+    private TextView tvShopPrivilege;
 
     @BindView(id = R.id.sp_shop_state)
     private Spinner spShopState;
@@ -100,14 +105,6 @@ public class GoodsFragment extends BaseFragment implements IGoodsView{
     private int page = 1;
     private int size = 5;
 
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @return A new instance of fragment GoodsFragment.
-     */
     public static GoodsFragment newInstance(String param1) {
         GoodsFragment fragment = new GoodsFragment();
         Bundle args = new Bundle();
@@ -192,6 +189,11 @@ public class GoodsFragment extends BaseFragment implements IGoodsView{
      * 初始化商店状态
      */
     private void initShopStatus() {
+        Shop shop = L.app(this).getShop();
+        tvShopName.setText(shop.getName());
+        tvShopTime.setText(shop.getOpenTime() + "-" + shop.getCloseTime());
+        tvShopPrivilege.setText(shop.getPromotionInfo());
+
         spShopState.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.fragment_goods_shop_state_cell, shopOperatingStates));
         spShopState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -205,6 +207,7 @@ public class GoodsFragment extends BaseFragment implements IGoodsView{
 
             }
         });
+        spShopState.setSelection(shop.getOperatingState());
     }
 
     /**

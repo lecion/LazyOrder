@@ -42,7 +42,7 @@ public class LoginPresenter {
             public void onSuccess(JSONObject data) {
                 //登陆成功，保存商店信息
                 Shop shop = new Shop(data);
-                saveLoginInfo(1, phone, pwd, shop);
+                saveLoginInfo(0, phone, pwd, shop);
                 view.skipToMainActivity();
             }
 

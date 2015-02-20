@@ -32,7 +32,6 @@ public class CategoryModel extends AbsService {
     }
 
     public void loadCateogryByShopId(final INetWorkFinished<GoodsCategory> iNetWorkFinished) {
-        //TODO 更改shop获取
         Shop shop = ((MyApplication)((MainActivity)context).getApplication()).getShop();
         KJStringParams params = new KJStringParams();
         params.put(ApiConstants.KEY_CAT_MER_ID, String.valueOf(shop.getId()));

@@ -76,7 +76,6 @@ public class ShopModel extends AbsService {
      * @param state
      */
     public void updateOperateState(int state, final IUpdateOperateState finishedListener) {
-        //TODO 更改shop获取
         Shop shop = ((MyApplication)((MainActivity)context).getApplication()).getShop();
         KJStringParams params = new KJStringParams();
         params.put(ApiConstants.KEY_MER_OPERATE_STATE, String.valueOf(state));

@@ -1,5 +1,7 @@
 package com.cisoft.shop.util;
 
+import android.text.TextUtils;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -31,6 +33,9 @@ public class IOUtil {
     }
 
     public static <T> T decode(String str) {
+        if (TextUtils.isEmpty(str)) {
+            return null;
+        }
         T t = null;
         try {
             String res = URLDecoder.decode(str, "utf-8");

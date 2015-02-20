@@ -5,7 +5,6 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.app.Dialog;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.Button;
@@ -16,17 +15,13 @@ import android.widget.RadioGroup;
 
 import com.cisoft.myapplication.R;
 import com.cisoft.shop.MainActivity;
-import com.cisoft.shop.SpConstants;
-import com.cisoft.shop.bean.Shop;
 import com.cisoft.shop.login.presenter.LoginPresenter;
 import com.cisoft.shop.util.DeviceUtil;
-import com.cisoft.shop.util.IOUtil;
 import com.cisoft.shop.widget.DialogFactory;
 
 import org.kymjs.aframe.ui.BindView;
 import org.kymjs.aframe.ui.ViewInject;
 import org.kymjs.aframe.ui.activity.BaseActivity;
-import org.kymjs.aframe.utils.PreferenceHelper;
 
 public class LoginActivity extends BaseActivity implements ILoginView{
 
@@ -63,9 +58,6 @@ public class LoginActivity extends BaseActivity implements ILoginView{
     @Override
     protected void initData() {
         loginPresenter = new LoginPresenter(this, this);
-        String str = PreferenceHelper.readString(this, SpConstants.SP_FILE_NAME, SpConstants.KEY_LOGIN_OBJ);
-        Shop shop = IOUtil.decode(str);
-        Log.d("WelcomeActivity", shop.toString());
     }
 
     @Override
