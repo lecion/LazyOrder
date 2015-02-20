@@ -12,4 +12,6 @@ public class SpConstants {
 
     public static final String KEY_LOGIN_PWD = "login_pwd";
 
+    public static final String KEY_LOGIN_OBJ = "login_obj";
+
 }

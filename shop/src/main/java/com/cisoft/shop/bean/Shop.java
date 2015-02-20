@@ -12,17 +12,17 @@ import java.util.Iterator;
  * Created by Lecion on 2014/2/16.
  */
 public class Shop extends AbsBean implements Serializable{
-    public int id;
-    public String name;
-    public String openTime;
-    public String closeTime;
-    public int monthSales;
-    public int operatingState;
-    public String faceImgUrl;
-    public String promotionInfo;
-    public String address;
-    public int nodistributionPrice;
-    public String cID;
+    private int id;
+    private String name;
+    private String openTime;
+    private String closeTime;
+    private int monthSales;
+    private int operatingState;
+    private String faceImgUrl;
+    private String promotionInfo;
+    private String address;
+    private int nodistributionPrice;
+    private String cID;
 
     public Shop(){};
 

@@ -7,6 +7,7 @@ import com.cisoft.shop.SpConstants;
 import com.cisoft.shop.bean.Shop;
 import com.cisoft.shop.goods.model.ShopModel;
 import com.cisoft.shop.login.view.ILoginView;
+import com.cisoft.shop.util.IOUtil;
 
 import org.json.JSONObject;
 import org.kymjs.aframe.utils.PreferenceHelper;
@@ -70,8 +71,10 @@ public class LoginPresenter {
         PreferenceHelper.write(context, SpConstants.SP_FILE_NAME, SpConstants.KEY_LOGIN_TYPE, type);
         PreferenceHelper.write(context, SpConstants.SP_FILE_NAME, SpConstants.KEY_LOGIN_PHONE, phone);
         PreferenceHelper.write(context, SpConstants.SP_FILE_NAME, SpConstants.KEY_LOGIN_PWD, pwd);
-
+        PreferenceHelper.write(context, SpConstants.SP_FILE_NAME, SpConstants.KEY_LOGIN_OBJ, IOUtil.encode(shop));
     }
+
+
 
 
 
