@@ -101,6 +101,8 @@ public class LoginActivity extends BaseActivity implements ILoginView{
             case R.id.btn_login:
                 if (isMerLogin()) {
                     loginPresenter.normalLogin(etPhone.getText().toString(), etPwd.getText().toString());
+                } else {
+                    loginPresenter.expressLogin(etPhone.getText().toString(), etPwd.getText().toString());
                 }
                 break;
         }

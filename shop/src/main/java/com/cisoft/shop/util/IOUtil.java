@@ -1,6 +1,11 @@
 package com.cisoft.shop.util;
 
+import android.content.Context;
 import android.text.TextUtils;
+
+import com.cisoft.shop.SpConstants;
+
+import org.kymjs.aframe.utils.PreferenceHelper;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -52,5 +57,18 @@ public class IOUtil {
             e.printStackTrace();
         }
         return t;
+    }
+
+    /**
+     * 保存登陆信息
+     * @param phone
+     * @param pwd
+     * @param t 保存的对象
+     */
+    public static <T> void saveLoginInfo(Context ctx, int type, String phone, String pwd, T t) {
+        PreferenceHelper.write(ctx, SpConstants.SP_FILE_NAME, SpConstants.KEY_LOGIN_TYPE, type);
+        PreferenceHelper.write(ctx, SpConstants.SP_FILE_NAME, SpConstants.KEY_LOGIN_PHONE, phone);
+        PreferenceHelper.write(ctx, SpConstants.SP_FILE_NAME, SpConstants.KEY_LOGIN_PWD, pwd);
+        PreferenceHelper.write(ctx, SpConstants.SP_FILE_NAME, SpConstants.KEY_LOGIN_OBJ, IOUtil.encode(t));
     }
 }

@@ -3,7 +3,10 @@ package com.cisoft.shop.welcome.presenter;
 import android.content.Context;
 
 import com.cisoft.shop.SpConstants;
+import com.cisoft.shop.bean.Expmer;
+import com.cisoft.shop.bean.Shop;
 import com.cisoft.shop.goods.model.ShopModel;
+import com.cisoft.shop.util.IOUtil;
 import com.cisoft.shop.welcome.model.ExpmerModel;
 import com.cisoft.shop.welcome.view.IWelcomeView;
 
@@ -27,18 +30,19 @@ public class WelcomePresenter {
         expmerModel = new ExpmerModel(ctx);
     }
 
-
     public void checkAccount() {
 
         int type = PreferenceHelper.readInt(ctx, SpConstants.SP_FILE_NAME, SpConstants.KEY_LOGIN_TYPE, -1);
         if (type != -1) {
 
-            String phone = PreferenceHelper.readString(ctx, SpConstants.SP_FILE_NAME, SpConstants.KEY_LOGIN_PHONE);
-            String pwd = PreferenceHelper.readString(ctx, SpConstants.SP_FILE_NAME, SpConstants.KEY_LOGIN_PWD);
+            final String phone = PreferenceHelper.readString(ctx, SpConstants.SP_FILE_NAME, SpConstants.KEY_LOGIN_PHONE);
+            final String pwd = PreferenceHelper.readString(ctx, SpConstants.SP_FILE_NAME, SpConstants.KEY_LOGIN_PWD);
             if (type == 0) {
                 shopModel.merLogin(phone, pwd, new ShopModel.ILoginListener() {
                     @Override
                     public void onSuccess(JSONObject data) {
+                        //更新账户信息
+                        IOUtil.saveLoginInfo(ctx, 0, phone, pwd, new Shop(data));
                         view.skipToMain();
                     }
 
@@ -48,7 +52,19 @@ public class WelcomePresenter {
                     }
                 });
             } else if (type == 1) {
+                expmerModel.expmerLogin(phone, pwd, new ExpmerModel.ILoginListener() {
+                    @Override
+                    public void onSuccess(JSONObject data) {
+                        //更新账户信息
+                        IOUtil.saveLoginInfo(ctx, 1, phone, pwd, new Expmer(data));
+                        view.skipToMain();
+                    }
 
+                    @Override
+                    public void onFailure(String msg) {
+                        view.skipToLogin();
+                    }
+                });
             }
         } else {
             view.skipToLogin();
