@@ -5,12 +5,13 @@ import com.cisoft.shop.ApiConstants;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.Iterator;
 
 /**
  * Created by Lecion on 2/21/15.
  */
-public class Expmer extends AbsBean{
+public class Expmer extends AbsBean implements Serializable{
     private int id;
     private String cID;
     private String address;

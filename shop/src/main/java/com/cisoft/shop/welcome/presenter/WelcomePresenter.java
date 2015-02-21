@@ -31,7 +31,6 @@ public class WelcomePresenter {
     }
 
     public void checkAccount() {
-
         int type = PreferenceHelper.readInt(ctx, SpConstants.SP_FILE_NAME, SpConstants.KEY_LOGIN_TYPE, -1);
         if (type != -1) {
 
