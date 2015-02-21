@@ -1,10 +1,10 @@
 package com.cisoft.shop.welcome.presenter;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.cisoft.shop.SpConstants;
 import com.cisoft.shop.goods.model.ShopModel;
+import com.cisoft.shop.welcome.model.ExpmerModel;
 import com.cisoft.shop.welcome.view.IWelcomeView;
 
 import org.json.JSONObject;
@@ -17,12 +17,14 @@ public class WelcomePresenter {
 
     Context ctx;
     ShopModel shopModel;
+    ExpmerModel expmerModel;
     IWelcomeView view;
 
     public WelcomePresenter(Context ctx, IWelcomeView view) {
         this.ctx = ctx;
         this.view = view;
         shopModel = new ShopModel(ctx);
+        expmerModel = new ExpmerModel(ctx);
     }
 
 
