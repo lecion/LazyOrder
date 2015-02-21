@@ -50,7 +50,6 @@ public class WelcomePresenter {
             }
         } else {
             view.skipToLogin();
-            Log.d("WelcomeActivity", "222222222");
         }
     }
 

@@ -27,7 +27,6 @@ public class ApiConstants {
     public static final String MODULE_ORDER = "order";
 
 
-
     public static final String MODULE_COMMODITY = "commodity";
     public static final String MODULE_COM_CATEGORY = "category";
 
@@ -155,10 +154,16 @@ public class ApiConstants {
     public static final String KEY_HIS_ORDER_GOOD_NAME = "comName";
     public static final String KEY_HIS_ORDER_GOOD_COUNT = "comNum";
 
-
+    public static final String KEY_EXPMER_ID = "id";
     public static final String KEY_EXPMER_EXPMER_PHONE = "expmerPhone";
     public static final String KEY_EXPMER_EXPMER_PWD = "expmerPwd";
     public static final String KEY_EXPMER_CID = "cID";
+    public static final String KEY_EXPMER_ADDRESS = "expmerAddress";
+    public static final String KEY_EXPMER_OPENTIME = "expmerOpenTime";
+    public static final String KEY_EXPMER_CLOSETIME = "expmerCloseTime";
+    public static final String KEY_EXPMER_PIC = "expmerPic";
+    public static final String KEY_EXPMER_OPERATING_STATE = "operatingState";
+    public static final String KEY_EXPMER_SALES = "sales";
 
 
 
