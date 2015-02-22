@@ -44,8 +44,11 @@ public class RefreshSwipeDeleteListView extends ListView implements AbsListView.
 
     private void initView(Context context) {
         header = LayoutInflater.from(context).inflate(R.layout.header_layout, this, false);
-        this.addHeaderView(header);
         measureView(header);
+        headerHeight = header.getMeasuredHeight();
+        hideHeader(headerHeight);
+        Log.d("height", headerHeight+"");
+        this.addHeaderView(header);
     }
 
     private void measureView(View view) {
@@ -53,8 +56,17 @@ public class RefreshSwipeDeleteListView extends ListView implements AbsListView.
         if (lp == null) {
             lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         }
-        Log.d("measureView", "不是空的" + lp.height + " " + lp.width);
+        int widthMeasureSpec = getChildMeasureSpec(0, 0, lp.width);
+        int heightMeasureSpec;
+        int tempHeight = lp.height;
+        if (tempHeight > 0) {
+            heightMeasureSpec = MeasureSpec.makeMeasureSpec(tempHeight, MeasureSpec.EXACTLY);
+        } else {
+            heightMeasureSpec = MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED);
+        }
+        view.measure(widthMeasureSpec, heightMeasureSpec);
     }
+
 
     private void hideHeader(int top) {
         header.setPadding(header.getPaddingLeft(), -top, header.getPaddingRight(), header.getPaddingBottom());
