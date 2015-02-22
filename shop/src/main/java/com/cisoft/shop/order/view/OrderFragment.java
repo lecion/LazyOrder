@@ -21,7 +21,7 @@ import com.cisoft.myapplication.R;
 import com.cisoft.shop.bean.Order;
 import com.cisoft.shop.order.presenter.OrderPresenter;
 import com.cisoft.shop.widget.DialogFactory;
-import com.cisoft.shop.widget.MyListView;
+import com.cisoft.shop.widget.RefreshSwipeDeleteListView;
 
 import org.kymjs.aframe.ui.BindView;
 import org.kymjs.aframe.ui.fragment.BaseFragment;
@@ -43,7 +43,7 @@ public class OrderFragment extends BaseFragment implements IOrderView{
     private Spinner spShopState;
 
     @BindView(id = R.id.lv_order)
-    private MyListView lvOrder;
+    private RefreshSwipeDeleteListView lvOrder;
 
     private OrderListAdapter orderListAdapter;
 
@@ -81,14 +81,6 @@ public class OrderFragment extends BaseFragment implements IOrderView{
     private int size = 5;
 
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @return A new instance of fragment GoodsFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static OrderFragment newInstance(String param1) {
         OrderFragment fragment = new OrderFragment();
         Bundle args = new Bundle();
@@ -127,34 +119,34 @@ public class OrderFragment extends BaseFragment implements IOrderView{
     protected void initWidget(View parentView) {
         initShopStatus();
 
-        initGoodsList();
+//        initGoodsList();
     }
 
     /**
      * 初始化商品列表
      */
-    private void initGoodsList() {
-        lvOrder.setPullRefreshEnable(true);
-        lvOrder.setPullLoadEnable(true);
-        lvOrder.setOnRefreshListener(new MyListView.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                lvOrder.stopRefreshData();
-                presenter.onLoad(type);
-            }
-
-            @Override
-            public void onLoadMore() {
-                lvOrder.stopRefreshData();
-                if (isLoadMore) {
-                    return;
-                }
-                isLoadMore = true;
-                presenter.loadMore(++page, size);
-            }
-        });
-        lvOrder.setAdapter(orderListAdapter);
-    }
+//    private void initGoodsList() {
+//        lvOrder.setPullRefreshEnable(true);
+//        lvOrder.setPullLoadEnable(true);
+//        lvOrder.setOnRefreshListener(new MyListView.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//                lvOrder.stopRefreshData();
+//                presenter.onLoad(type);
+//            }
+//
+//            @Override
+//            public void onLoadMore() {
+//                lvOrder.stopRefreshData();
+//                if (isLoadMore) {
+//                    return;
+//                }
+//                isLoadMore = true;
+//                presenter.loadMore(++page, size);
+//            }
+//        });
+//        lvOrder.setAdapter(orderListAdapter);
+//    }
 
     /**
      * 初始化商店状态
@@ -319,7 +311,6 @@ public class OrderFragment extends BaseFragment implements IOrderView{
             return convertView;
         }
     }
-
 
     private static class ViewHolder {
         TextView tvOrderNumber;
