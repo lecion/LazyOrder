@@ -21,7 +21,7 @@ import com.cisoft.myapplication.R;
 import com.cisoft.shop.bean.Order;
 import com.cisoft.shop.order.presenter.OrderPresenter;
 import com.cisoft.shop.widget.DialogFactory;
-import com.cisoft.shop.widget.RefreshSwipeDeleteListView;
+import com.cisoft.shop.widget.RefreshDeleteListVIew;
 
 import org.kymjs.aframe.ui.BindView;
 import org.kymjs.aframe.ui.fragment.BaseFragment;
@@ -43,7 +43,7 @@ public class OrderFragment extends BaseFragment implements IOrderView{
     private Spinner spShopState;
 
     @BindView(id = R.id.lv_order)
-    private RefreshSwipeDeleteListView lvOrder;
+    private RefreshDeleteListVIew lvOrder;
 
     private OrderListAdapter orderListAdapter;
 

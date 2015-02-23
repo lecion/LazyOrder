@@ -38,7 +38,7 @@
         <activity android:name="com.cisoft.shop.MainActivity"
             android:label="@string/app_name">
             </activity>
-        <activity android:name="com.cisoft.shop.TestActivity"
+        <activity android:name="com.cisoft.shop.SimpleActivity"
             android:label="Test"></activity>
 
         <!-- 个推SDK配置开始 -->
