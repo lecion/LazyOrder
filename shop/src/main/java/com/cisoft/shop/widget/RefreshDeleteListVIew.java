@@ -19,8 +19,8 @@ import com.cisoft.myapplication.R;
 
 
 /**
- * 模仿KJListView写的可上下拉刷新的ListView
- * Created by comit on 10/23/14.
+ * 结合KJFrameListView，增加滑动删除功能
+ * Created by Lecion on 2015-02-23
  */
 public class RefreshDeleteListVIew extends ListView implements AbsListView.OnScrollListener {
     //用来保存Y坐标

@@ -162,7 +162,6 @@ public class GoodsFragment extends BaseFragment implements IGoodsView{
      * 初始化商品列表
      */
     private void initGoodsList() {
-        lvGoods.setPullRefreshEnable(true);
         lvGoods.setPullLoadEnable(true);
         //lvGoods.setEmptyView(llShowNoValueTip);
         lvGoods.setOnRefreshListener(new MyListView.OnRefreshListener() {
