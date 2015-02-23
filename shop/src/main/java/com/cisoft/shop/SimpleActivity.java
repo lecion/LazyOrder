@@ -6,6 +6,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,9 @@ import com.cisoft.shop.widget.RefreshDeleteListVIew;
 import com.cisoft.shop.widget.SwipeMenu;
 import com.cisoft.shop.widget.SwipeMenuCreator;
 import com.cisoft.shop.widget.SwipeMenuItem;
+import com.nineoldandroids.animation.Animator;
+import com.nineoldandroids.animation.AnimatorListenerAdapter;
+import com.nineoldandroids.animation.ValueAnimator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,10 +60,12 @@ public class SimpleActivity extends Activity implements RefreshDeleteListVIew.On
 //				menu.addMenuItem(openItem);
                 SwipeMenuItem deleteItem = new SwipeMenuItem(
                         getApplicationContext());
-                deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,
-                        0x3F, 0x25)));
+                deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9, 0x3F, 0x25)));
                 deleteItem.setWidth(dp2px(90));
-                deleteItem.setIcon(R.drawable.ic_delete);
+//                deleteItem.setIcon(R.drawable.ic_delete);
+                deleteItem.setTitle("取消订单");
+                deleteItem.setTitleSize(18);
+                deleteItem.setTitleColor(Color.WHITE);
                 menu.addMenuItem(deleteItem);
             }
         };
@@ -68,16 +74,31 @@ public class SimpleActivity extends Activity implements RefreshDeleteListVIew.On
         mListView.setOnRefreshListener(this);
         mListView.setOnMenuItemClickListener(new RefreshDeleteListVIew.OnMenuItemClickListener() {
             @Override
-            public void onMenuItemClick(int position, SwipeMenu menu, int index) {
+            public void onMenuItemClick(final int position, SwipeMenu menu, int index) {
 
                 switch (index) {
                     case 0:
-                        mAppList.remove(position);
-                        mAdapter.notifyDataSetChanged();
-                        break;
-                    case 1:
-                        mAppList.remove(position);
-                        mAdapter.notifyDataSetChanged();
+                        final View dismissView = mListView.getTouchView();
+                        final ViewGroup.LayoutParams lp = dismissView.getLayoutParams();
+                        int originHeight = dismissView.getHeight();
+                        Log.d("Animation", "dismissView => " + dismissView + " originHeight => " + originHeight);
+                        ValueAnimator animator = ValueAnimator.ofInt(originHeight, 0).setDuration(1000);
+                        animator.start();
+                        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                            @Override
+                            public void onAnimationUpdate(ValueAnimator animation) {
+                                lp.height = (int) animation.getAnimatedValue();
+                                dismissView.setLayoutParams(lp);
+                            }
+                        });
+                        animator.addListener(new AnimatorListenerAdapter() {
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                mAppList.remove(position);
+                                mAdapter.notifyDataSetChanged();
+                            }
+                        });
+
                         break;
                 }
             }

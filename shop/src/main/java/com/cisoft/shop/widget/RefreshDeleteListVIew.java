@@ -550,4 +550,13 @@ public class RefreshDeleteListVIew extends ListView implements AbsListView.OnScr
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
                 getContext().getResources().getDisplayMetrics());
     }
+
+    /**
+     * 获得当前触摸的View
+     * @return
+     */
+    public View getTouchView() {
+        return mTouchView;
+    }
+
 }
