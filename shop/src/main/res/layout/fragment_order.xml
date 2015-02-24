@@ -92,9 +92,9 @@
             android:textSize="16sp" />
     </LinearLayout>
 
-    <com.cisoft.shop.widget.RefreshSwipeDeleteListView
+    <com.cisoft.shop.widget.RefreshDeleteListView
         android:id="@+id/lv_order"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:dividerHeight="12dp"></com.cisoft.shop.widget.RefreshSwipeDeleteListView>
+        android:dividerHeight="12dp"></com.cisoft.shop.widget.RefreshDeleteListView>
 </LinearLayout>

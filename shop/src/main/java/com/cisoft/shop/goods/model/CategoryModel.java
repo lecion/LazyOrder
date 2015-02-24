@@ -32,7 +32,7 @@ public class CategoryModel extends AbsService {
     }
 
     public void loadCateogryByShopId(final INetWorkFinished<GoodsCategory> iNetWorkFinished) {
-        Shop shop = ((MyApplication)((MainActivity)context).getApplication()).getShop();
+        Shop shop = ((MyApplication) ((MainActivity) context).getApplication()).getShop();
         KJStringParams params = new KJStringParams();
         params.put(ApiConstants.KEY_CAT_MER_ID, String.valueOf(shop.getId()));
         super.asyncUrlGet(ApiConstants.METHOD_CATEGORY_FIND_ALL_BY_MER_ID, params, new SuccessCallback() {

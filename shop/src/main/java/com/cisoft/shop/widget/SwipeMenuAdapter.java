@@ -22,7 +22,7 @@ public class SwipeMenuAdapter implements WrapperListAdapter,
 
 	private ListAdapter mAdapter;
 	private Context mContext;
-	private RefreshDeleteListVIew.OnMenuItemClickListener onMenuItemClickListener;
+	private RefreshDeleteListView.OnMenuItemClickListener onMenuItemClickListener;
 
 	public SwipeMenuAdapter(Context context, ListAdapter adapter) {
 		mAdapter = adapter;
@@ -53,9 +53,9 @@ public class SwipeMenuAdapter implements WrapperListAdapter,
 			menu.setViewType(mAdapter.getItemViewType(position));
 			createMenu(menu);
 			SwipeMenuView menuView = new SwipeMenuView(menu,
-					(RefreshDeleteListVIew) parent);
+					(RefreshDeleteListView) parent);
 			menuView.setOnSwipeItemClickListener(this);
-            RefreshDeleteListVIew listView = (RefreshDeleteListVIew) parent;
+            RefreshDeleteListView listView = (RefreshDeleteListView) parent;
 			layout = new SwipeMenuLayout(contentView, menuView,
 					listView.getCloseInterpolator(),
 					listView.getOpenInterpolator());
@@ -94,7 +94,7 @@ public class SwipeMenuAdapter implements WrapperListAdapter,
 	}
 
 	public void setOnMenuItemClickListener(
-			RefreshDeleteListVIew.OnMenuItemClickListener onMenuItemClickListener) {
+			RefreshDeleteListView.OnMenuItemClickListener onMenuItemClickListener) {
 		this.onMenuItemClickListener = onMenuItemClickListener;
 	}
 

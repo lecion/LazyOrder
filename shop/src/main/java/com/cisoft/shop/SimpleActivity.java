@@ -19,7 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cisoft.myapplication.R;
-import com.cisoft.shop.widget.RefreshDeleteListVIew;
+import com.cisoft.shop.widget.RefreshDeleteListView;
 import com.cisoft.shop.widget.SwipeMenu;
 import com.cisoft.shop.widget.SwipeMenuCreator;
 import com.cisoft.shop.widget.SwipeMenuItem;
@@ -30,11 +30,11 @@ import com.nineoldandroids.animation.ValueAnimator;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SimpleActivity extends Activity implements RefreshDeleteListVIew.OnRefreshListener {
+public class SimpleActivity extends Activity implements RefreshDeleteListView.OnRefreshListener {
 
     private List<String> mAppList = new ArrayList<String>();
     private AppAdapter mAdapter;
-    private RefreshDeleteListVIew mListView;
+    private RefreshDeleteListView mListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +42,7 @@ public class SimpleActivity extends Activity implements RefreshDeleteListVIew.On
         setContentView(R.layout.activity_list);
 
         mAppList = getData();
-        mListView = (RefreshDeleteListVIew) findViewById(R.id.listView);
+        mListView = (RefreshDeleteListView) findViewById(R.id.listView);
         mAdapter = new AppAdapter();
         mListView.setAdapter(mAdapter);
         SwipeMenuCreator creator = new SwipeMenuCreator() {
@@ -72,7 +72,7 @@ public class SimpleActivity extends Activity implements RefreshDeleteListVIew.On
         mListView.setPullLoadEnable(true);
         mListView.setMenuCreator(creator);
         mListView.setOnRefreshListener(this);
-        mListView.setOnMenuItemClickListener(new RefreshDeleteListVIew.OnMenuItemClickListener() {
+        mListView.setOnMenuItemClickListener(new RefreshDeleteListView.OnMenuItemClickListener() {
             @Override
             public void onMenuItemClick(final int position, SwipeMenu menu, int index) {
 
@@ -104,7 +104,7 @@ public class SimpleActivity extends Activity implements RefreshDeleteListVIew.On
             }
         });
 
-        mListView.setOnSwipeListener(new RefreshDeleteListVIew.OnSwipeListener() {
+        mListView.setOnSwipeListener(new RefreshDeleteListView.OnSwipeListener() {
 
             @Override
             public void onSwipeStart(int position) {

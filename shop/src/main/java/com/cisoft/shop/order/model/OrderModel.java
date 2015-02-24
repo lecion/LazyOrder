@@ -10,6 +10,7 @@ import com.cisoft.shop.bean.Order;
 import com.cisoft.shop.bean.Shop;
 import com.cisoft.shop.goods.model.INetWorkFinished;
 import com.cisoft.shop.http.AbsService;
+import com.cisoft.shop.util.L;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,8 +31,8 @@ public class OrderModel extends AbsService implements IOrderModel {
 
     @Override
     public void loadOrderList(int page, int size, final INetWorkFinished<Order> finishedListener) {
+        Shop shop = L.getShop(context);
         KJStringParams params = new KJStringParams();
-        Shop shop = ((MyApplication) ((MainActivity) context).getApplication()).getShop();
         params.put(ApiConstants.KEY_ORDER_MER_ID, String.valueOf(shop.getId()));
         params.put(ApiConstants.KEY_ORDER_PAGE, String.valueOf(page));
         params.put(ApiConstants.KEY_ORDER_SIZE, String.valueOf(size));
@@ -65,6 +66,16 @@ public class OrderModel extends AbsService implements IOrderModel {
             }
         });
     }
+
+    @Override
+    public void findOrdersByOrderState(String orderState, int page, int size, INetWorkFinished<Order> finishedListener) {
+        KJStringParams params = new KJStringParams();
+        Shop shop = ((MyApplication) ((MainActivity) context).getApplication()).getShop();
+        params.put(ApiConstants.KEY_ORDER_MER_ID, String.valueOf(shop.getId()));
+        params.put(ApiConstants.KEY_ORDER_PAGE, String.valueOf(page));
+        params.put(ApiConstants.KEY_ORDER_SIZE, String.valueOf(size));
+    }
+
 
     @Override
     public String getResponseStateInfo(int stateCode) {

@@ -11,7 +11,7 @@ import org.json.JSONObject;
 import org.kymjs.aframe.http.KJStringParams;
 
 /**
- * Created by comet on 2014/10/20.
+ * Created by Lecion on 2015/2/20.
  */
 public class ExpmerModel extends AbsService {
 

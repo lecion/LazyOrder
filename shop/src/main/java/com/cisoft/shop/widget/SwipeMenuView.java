@@ -18,7 +18,7 @@ import java.util.List;
  */
 public class SwipeMenuView extends LinearLayout implements OnClickListener {
 
-	private RefreshDeleteListVIew mListView;
+	private RefreshDeleteListView mListView;
 	private SwipeMenuLayout mLayout;
 	private SwipeMenu mMenu;
 	private OnSwipeItemClickListener onItemClickListener;
@@ -32,7 +32,7 @@ public class SwipeMenuView extends LinearLayout implements OnClickListener {
 		this.position = position;
 	}
 
-	public SwipeMenuView(SwipeMenu menu, RefreshDeleteListVIew listView) {
+	public SwipeMenuView(SwipeMenu menu, RefreshDeleteListView listView) {
 		super(menu.getContext());
 		mListView = listView;
 		mMenu = menu;

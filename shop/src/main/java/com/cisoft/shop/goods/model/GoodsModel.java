@@ -9,6 +9,7 @@ import com.cisoft.shop.MyApplication;
 import com.cisoft.shop.bean.Goods;
 import com.cisoft.shop.bean.Shop;
 import com.cisoft.shop.http.AbsService;
+import com.cisoft.shop.util.L;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,8 +34,8 @@ public class GoodsModel extends AbsService implements IGoodsModel {
 
     @Override
     public void loadGoodsList(int page, int size, int type, String sortType, final INetWorkFinished<Goods> finishedListener) {
+        Shop shop = L.getShop(context);
         KJStringParams params = new KJStringParams();
-        Shop shop = ((MyApplication) ((MainActivity) context).getApplication()).getShop();
         params.put(ApiConstants.KEY_COM_MER_ID, String.valueOf(shop.getId()));
         params.put(ApiConstants.KEY_COM_PAGE, String.valueOf(page));
         params.put(ApiConstants.KEY_COM_SIZE, String.valueOf(size));
@@ -72,8 +73,8 @@ public class GoodsModel extends AbsService implements IGoodsModel {
 
     @Override
     public void loadGoodsListByType(int page, int size, int type, String sortType, final INetWorkFinished<Goods> finishedListener) {
+        Shop shop = L.getShop(context);
         KJStringParams params = new KJStringParams();
-        Shop shop = ((MyApplication) ((MainActivity) context).getApplication()).getShop();
         params.put(ApiConstants.KEY_COM_MER_ID, String.valueOf(shop.getId()));
         params.put(ApiConstants.KEY_COM_PAGE, String.valueOf(page));
         params.put(ApiConstants.KEY_COM_SIZE, String.valueOf(size));
