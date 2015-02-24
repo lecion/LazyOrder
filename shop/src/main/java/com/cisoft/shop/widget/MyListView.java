@@ -11,7 +11,6 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Scroller;
-import android.widget.TextView;
 
 import com.cisoft.myapplication.R;
 
@@ -37,7 +36,7 @@ public class MyListView extends ListView implements AbsListView.OnScrollListener
 	private RelativeLayout headerViewContent;
 
     //HeadView上次更新的时间
-    private TextView headerTimeView;
+//    private TextView headerTimeView;
 
     //HeadView的高度
 	private int headerViewHeight;
@@ -97,8 +96,8 @@ public class MyListView extends ListView implements AbsListView.OnScrollListener
 		headerView = new MyListViewHeader(context);
 		headerViewContent = (RelativeLayout) headerView
 				.findViewById(R.id.listview_header_content);
-		headerTimeView = (TextView) headerView
-				.findViewById(R.id.listview_header_time);
+//		headerTimeView = (TextView) headerView
+//				.findViewById(R.id.listview_header_time);
 		addHeaderView(headerView);
 
 		footerView = new MyListViewFooter(context);
@@ -195,7 +194,7 @@ public class MyListView extends ListView implements AbsListView.OnScrollListener
 	 * @param time
 	 */
 	public void setRefreshTime(String time) {
-		headerTimeView.setText(time);
+//		headerTimeView.setText(time);
 	}
 
 	private void invokeOnScrolling() {

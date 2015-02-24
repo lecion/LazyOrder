@@ -80,9 +80,9 @@ public class SimpleActivity extends Activity implements RefreshDeleteListVIew.On
                     case 0:
                         final View dismissView = mListView.getTouchView();
                         final ViewGroup.LayoutParams lp = dismissView.getLayoutParams();
-                        int originHeight = dismissView.getHeight();
+                        final int originHeight = dismissView.getHeight();
                         Log.d("Animation", "dismissView => " + dismissView + " originHeight => " + originHeight);
-                        ValueAnimator animator = ValueAnimator.ofInt(originHeight, 0).setDuration(1000);
+                        ValueAnimator animator = ValueAnimator.ofInt(originHeight, 0).setDuration(300);
                         animator.start();
                         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                             @Override

@@ -125,8 +125,8 @@ public class RefreshDeleteListVIew extends ListView implements AbsListView.OnScr
 		headerView = new MyListViewHeader(context);
 		headerViewContent = (RelativeLayout) headerView
 				.findViewById(R.id.listview_header_content);
-		headerTimeView = (TextView) headerView
-				.findViewById(R.id.listview_header_time);
+//		headerTimeView = (TextView) headerView
+//				.findViewById(R.id.listview_header_time);
 		addHeaderView(headerView);
 
 		footerView = new MyListViewFooter(context);
