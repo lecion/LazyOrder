@@ -192,7 +192,7 @@ public class OrderFragment extends BaseFragment implements IOrderView{
 
     @Override
     public void setOrderList(List<Order> orderList) {
-        Log.d("setGoodsList", orderList.toString());
+//        Log.d("setGoodsList", orderList.toString());
         if (page == 1) {
             this.orderList.clear();
             this.orderList.addAll(orderList);
@@ -290,15 +290,15 @@ public class OrderFragment extends BaseFragment implements IOrderView{
                 convertView = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_goods_list_cell, parent, false);
 
                 holder.tvOrderNumber = (TextView) convertView.findViewById(R.id.tv_order_number);
-                holder.tvOrderMoneyAll = (TextView) convertView.findViewById(R.id.tv_order_money_all);
+//                holder.tvOrderMoneyAll = (TextView) convertView.findViewById(R.id.tv_order_money_all);
                 holder.tvOrderTimeGo = (TextView) convertView.findViewById(R.id.tv_order_time_go);
                 holder.btnOrderStatus = (Button) convertView.findViewById(R.id.btn_order_status);
-                holder.spOrderGoodsList = (Spinner) convertView.findViewById(R.id.sp_order_goods_list);
+//                holder.spOrderGoodsList = (Spinner) convertView.findViewById(R.id.sp_order_goods_list);
                 convertView.setTag(holder);
             }
             holder = (ViewHolder) convertView.getTag();
             holder.tvOrderNumber.setText(order.getOrderNumber());
-            holder.tvOrderMoneyAll.setText("￥" + String.valueOf(order.getMoneyAll()));
+//            holder.tvOrderMoneyAll.setText("￥" + String.valueOf(order.getMoneyAll()));
             holder.tvOrderTimeGo.setText(String.valueOf(order.getTimeGo()));
             holder.btnOrderStatus.setText(order.getOrderState());
 //            holder.btnOrderStatus.setBackgroundColor(goodsStateColors[order.getState()]);
@@ -314,10 +314,8 @@ public class OrderFragment extends BaseFragment implements IOrderView{
 
     private static class ViewHolder {
         TextView tvOrderNumber;
-        TextView tvOrderMoneyAll;
         TextView tvOrderTimeGo;
         Button btnOrderStatus;
-        Spinner spOrderGoodsList;
     }
 
 }

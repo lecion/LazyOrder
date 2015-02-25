@@ -13,23 +13,49 @@ import java.util.Iterator;
  */
 public class OrderGoods extends AbsBean implements Serializable{
     private int id;
-    private String cmName;
-    private int orderNum;
+    private int comId;
+    private String comName;
+    private int comNum;
+    private double price;
+
+    public int getComId() {
+        return comId;
+    }
+
+    public void setComId(int comId) {
+        this.comId = comId;
+    }
+
+    public String getComName() {
+        return comName;
+    }
+
+    public void setComName(String comName) {
+        this.comName = comName;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
 
     public OrderGoods() {}
 
-    public OrderGoods(int id, String cmName, int orderNum) {
+    public OrderGoods(int id, String comName, int comNum) {
         this.id = id;
-        this.cmName = cmName;
-        this.orderNum = orderNum;
+        this.comName = comName;
+        this.comNum = comNum;
     }
 
-    public int getOrderNum() {
-        return orderNum;
+    public int getComNum() {
+        return comNum;
     }
 
-    public void setOrderNum(int orderNum) {
-        this.orderNum = orderNum;
+    public void setComNum(int comNum) {
+        this.comNum = comNum;
     }
 
     public OrderGoods(JSONObject obj) {
@@ -51,12 +77,16 @@ public class OrderGoods extends AbsBean implements Serializable{
             String key = null;
             while (iterator.hasNext()) {
                 key = iterator.next();
-                if (key.equals(ApiConstants.KEY_COM_COM_ID)) {
-                    this.id = jsonObj.getInt(ApiConstants.KEY_COM_COM_ID);
-                } else if (key.equals(ApiConstants.KEY_HIS_ORDER_GOOD_NAME)) {
-                    this.cmName = jsonObj.getString(ApiConstants.KEY_HIS_ORDER_GOOD_NAME);
-                } else if (key.equals(ApiConstants.KEY_HIS_ORDER_GOOD_COUNT)) {
-                    this.orderNum = jsonObj.getInt(ApiConstants.KEY_HIS_ORDER_GOOD_COUNT);
+                if (key.equals(ApiConstants.KEY_ORDER_ID)) {
+                    setId(jsonObj.getInt(ApiConstants.KEY_ORDER_ID));
+                } else if (key.equals(ApiConstants.KEY_ORDER_COM_ID)) {
+                    setComId(jsonObj.getInt(ApiConstants.KEY_ORDER_COM_ID));
+                } else if (key.equals(ApiConstants.KEY_ORDER_COM_NAME)) {
+                    setComName(jsonObj.getString(ApiConstants.KEY_ORDER_COM_NAME));
+                } else if (key.equals(ApiConstants.KEY_ORDER_COM_NUM)) {
+                    setComNum(jsonObj.getInt(ApiConstants.KEY_ORDER_COM_NUM));
+                } else if (key.equals(ApiConstants.KEY_ORDER_COM_PRICE)){
+                    setPrice(jsonObj.getDouble(ApiConstants.KEY_ORDER_COM_PRICE));
                 }
             }
         } catch (JSONException e) {

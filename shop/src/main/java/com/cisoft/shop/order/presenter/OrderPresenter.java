@@ -1,6 +1,7 @@
 package com.cisoft.shop.order.presenter;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.cisoft.shop.bean.Order;
 import com.cisoft.shop.goods.model.INetWorkFinished;
@@ -30,21 +31,32 @@ public class OrderPresenter {
     public void onLoad(int type) {
         view.setPage(1);
         view.showProgress();
-
-
-        model.loadOrderList(1, 5, new INetWorkFinished<Order>() {
+        model.findOrdersByOrderState("CREATE", 1, 5, new INetWorkFinished<Order>() {
             @Override
             public void onSuccess(List<Order> l) {
-                view.hideProgress();
                 view.setOrderList(l);
+                view.hideProgress();
             }
 
             @Override
             public void onFailure(String info) {
-                view.hideProgress();
+                Log.d("findOrdersByOrderState", "failed");
                 view.showNoData();
             }
         });
+//        model.loadOrderList(1, 5, new INetWorkFinished<Order>() {
+//            @Override
+//            public void onSuccess(List<Order> l) {
+//                view.hideProgress();
+//                view.setOrderList(l);
+//            }
+//
+//            @Override
+//            public void onFailure(String info) {
+//                view.hideProgress();
+//                view.showNoData();
+//            }
+//        });
     }
 
     public void loadMore(int page, final int size) {

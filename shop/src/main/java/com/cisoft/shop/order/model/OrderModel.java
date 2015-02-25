@@ -68,12 +68,40 @@ public class OrderModel extends AbsService implements IOrderModel {
     }
 
     @Override
-    public void findOrdersByOrderState(String orderState, int page, int size, INetWorkFinished<Order> finishedListener) {
+    public void findOrdersByOrderState(String orderState, int page, int size, final INetWorkFinished<Order> finishedListener) {
         KJStringParams params = new KJStringParams();
         Shop shop = ((MyApplication) ((MainActivity) context).getApplication()).getShop();
         params.put(ApiConstants.KEY_ORDER_MER_ID, String.valueOf(shop.getId()));
+        params.put(ApiConstants.KEY_ORDER_ORDER_STATE, orderState);
         params.put(ApiConstants.KEY_ORDER_PAGE, String.valueOf(page));
         params.put(ApiConstants.KEY_ORDER_SIZE, String.valueOf(size));
+        asyncUrlGet(ApiConstants.METHOD_ORDER_FIND_ORDERS_BY_ORDER_STATE, params, false, new SuccessCallback() {
+            @Override
+            public void onSuccess(String result) throws JSONException {
+                List<Order> orderList = new ArrayList<Order>();
+                JSONObject jsonObj = null;
+                try {
+                    jsonObj = new JSONObject(result);
+                    JSONArray jsonArr = jsonObj.getJSONArray(ApiConstants.KEY_DATA);
+                    for (int i = 0; i < jsonArr.length(); i++) {
+                        orderList.add(new Order(jsonArr.getJSONObject(i)));
+                    }
+                    if (finishedListener != null) {
+                        finishedListener.onSuccess(orderList);
+                    }
+                } catch (JSONException e) {
+                    //这里是json格式不对，无法完成解析
+                    if (finishedListener != null) {
+                        finishedListener.onFailure(getResponseStateInfo(ApiConstants.RESPONSE_STATE_SERVICE_EXCEPTION));
+                    }
+                }
+            }
+        }, new FailureCallback() {
+            @Override
+            public void onFailure(int stateCode) {
+                finishedListener.onFailure(getResponseStateInfo(stateCode));
+            }
+        });
     }
 
 
