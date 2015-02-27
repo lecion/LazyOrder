@@ -26,7 +26,7 @@ import java.util.List;
 public class OrderModel extends AbsService implements IOrderModel {
 
     public OrderModel(Context context) {
-        super(context, ApiConstants.MODULE_COMMODITY);
+        super(context, ApiConstants.MODULE_ORDER);
     }
 
     @Override
@@ -68,14 +68,14 @@ public class OrderModel extends AbsService implements IOrderModel {
     }
 
     @Override
-    public void findOrdersByOrderState(String orderState, int page, int size, final INetWorkFinished<Order> finishedListener) {
+    public void findOrdersByMerId(String orderState, int page, int size, final INetWorkFinished<Order> finishedListener) {
         KJStringParams params = new KJStringParams();
         Shop shop = ((MyApplication) ((MainActivity) context).getApplication()).getShop();
         params.put(ApiConstants.KEY_ORDER_MER_ID, String.valueOf(shop.getId()));
         params.put(ApiConstants.KEY_ORDER_ORDER_STATE, orderState);
         params.put(ApiConstants.KEY_ORDER_PAGE, String.valueOf(page));
         params.put(ApiConstants.KEY_ORDER_SIZE, String.valueOf(size));
-        asyncUrlGet(ApiConstants.METHOD_ORDER_FIND_ORDERS_BY_ORDER_STATE, params, false, new SuccessCallback() {
+        asyncUrlGet(ApiConstants.METHOD_ORDER_FIND_ORDERS_BY_MER_ID, params, false, new SuccessCallback() {
             @Override
             public void onSuccess(String result) throws JSONException {
                 List<Order> orderList = new ArrayList<Order>();
@@ -94,6 +94,30 @@ public class OrderModel extends AbsService implements IOrderModel {
                     if (finishedListener != null) {
                         finishedListener.onFailure(getResponseStateInfo(ApiConstants.RESPONSE_STATE_SERVICE_EXCEPTION));
                     }
+                }
+            }
+        }, new FailureCallback() {
+            @Override
+            public void onFailure(int stateCode) {
+                finishedListener.onFailure(getResponseStateInfo(stateCode));
+            }
+        });
+    }
+
+    @Override
+    public void updateOrderState(int orderId, final String state, final OrderModel.IUpdateOrderState finishedListener) {
+        KJStringParams params = new KJStringParams();
+        params.put(ApiConstants.KEY_ORDER_ORDER_ID, String.valueOf(orderId));
+        params.put(ApiConstants.KEY_ORDER_STATE, String.valueOf(orderId));
+        asyncUrlGet(ApiConstants.METHOD_ORDER_UPDATE_ORDER_STATE, params, false, new SuccessCallback() {
+            @Override
+            public void onSuccess(String result) throws JSONException {
+                JSONObject jsonObject= new JSONObject(result);
+                int state = jsonObject.getInt("state");
+                if (state == 200) {
+                    finishedListener.onSuccess(state);
+                } else {
+                    finishedListener.onFailure(getResponseStateInfo(state));
                 }
             }
         }, new FailureCallback() {
@@ -125,7 +149,7 @@ public class OrderModel extends AbsService implements IOrderModel {
         return stateInfo;
     }
 
-    public interface IUpdateGoodsState {
+    public interface IUpdateOrderState {
         public void onSuccess(int code);
 
         public void onFailure(String msg);

@@ -3,6 +3,7 @@ package com.cisoft.shop.order.view;
 import android.app.Activity;
 import android.app.Dialog;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -119,34 +120,34 @@ public class OrderFragment extends BaseFragment implements IOrderView{
     protected void initWidget(View parentView) {
         initShopStatus();
 
-//        initGoodsList();
+        initOrderList();
     }
 
     /**
-     * 初始化商品列表
+     * 初始化订单列表
      */
-//    private void initGoodsList() {
-//        lvOrder.setPullRefreshEnable(true);
-//        lvOrder.setPullLoadEnable(true);
-//        lvOrder.setOnRefreshListener(new MyListView.OnRefreshListener() {
-//            @Override
-//            public void onRefresh() {
-//                lvOrder.stopRefreshData();
-//                presenter.onLoad(type);
-//            }
-//
-//            @Override
-//            public void onLoadMore() {
-//                lvOrder.stopRefreshData();
-//                if (isLoadMore) {
-//                    return;
-//                }
-//                isLoadMore = true;
-//                presenter.loadMore(++page, size);
-//            }
-//        });
-//        lvOrder.setAdapter(orderListAdapter);
-//    }
+    private void initOrderList() {
+        lvOrder.setPullRefreshEnable(true);
+        lvOrder.setPullLoadEnable(true);
+        lvOrder.setOnRefreshListener(new RefreshDeleteListView.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                lvOrder.stopRefreshData();
+                presenter.onLoad(type);
+            }
+
+            @Override
+            public void onLoadMore() {
+                lvOrder.stopRefreshData();
+                if (isLoadMore) {
+                    return;
+                }
+                isLoadMore = true;
+                presenter.loadMore(++page, size);
+            }
+        });
+        lvOrder.setAdapter(orderListAdapter);
+    }
 
     /**
      * 初始化商店状态
@@ -241,23 +242,17 @@ public class OrderFragment extends BaseFragment implements IOrderView{
     }
 
     @Override
-    public void setOrderStatus(int position, int state) {
-        //TODO 处理state
-        orderList.get(position).setOrderState("CREATE");
+    public void setOrderStatus(int position, String state) {
+        orderList.get(position).setOrderState(state);
         orderListAdapter.notifyDataSetChanged();
     }
 
+    @Override
+    public void changeOrderStatus(String state) {
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
+    }
+
+
     public interface OnFragmentInteractionListener {
         public void onFragmentInteraction(Uri uri);
     }
@@ -281,33 +276,43 @@ public class OrderFragment extends BaseFragment implements IOrderView{
 
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
-            //TODO 状态改变， 订单中的商品显示
             final Order order = (Order) getItem(position);
             ViewHolder holder = null;
             if (convertView == null) {
                 holder = new ViewHolder();
-                convertView = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_goods_list_cell, parent, false);
+                convertView = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_order_list_cell, parent, false);
 
                 holder.tvOrderNumber = (TextView) convertView.findViewById(R.id.tv_order_number);
-//                holder.tvOrderMoneyAll = (TextView) convertView.findViewById(R.id.tv_order_money_all);
                 holder.tvOrderTimeGo = (TextView) convertView.findViewById(R.id.tv_order_time_go);
                 holder.btnOrderStatus = (Button) convertView.findViewById(R.id.btn_order_status);
-//                holder.spOrderGoodsList = (Spinner) convertView.findViewById(R.id.sp_order_goods_list);
                 convertView.setTag(holder);
             }
             holder = (ViewHolder) convertView.getTag();
-            holder.tvOrderNumber.setText(order.getOrderNumber());
-//            holder.tvOrderMoneyAll.setText("￥" + String.valueOf(order.getMoneyAll()));
-            holder.tvOrderTimeGo.setText(String.valueOf(order.getTimeGo()));
-            holder.btnOrderStatus.setText(order.getOrderState());
-//            holder.btnOrderStatus.setBackgroundColor(goodsStateColors[order.getState()]);
-//            holder.btnOrderStatus.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    presenter.switchGoodsStatus(position, order.getState());
-//                }
-//            });
+            final String state = order.getOrderState();
+            Log.d("getVIEW", state);
+            holder.btnOrderStatus.setText(getOrderStatusText(state));
+            holder.btnOrderStatus.setBackgroundDrawable(getOrderStatusBackground(state));
+            holder.btnOrderStatus.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    presenter.switchOrderStatus(order.getId(), position, getOperateState(state));
+                }
+            });
+            holder.tvOrderNumber.setText("NO." + order.getOrderNumber());
+            holder.tvOrderTimeGo.setText(String.format("已下单"+ order.getTimeGo()) +"分钟");
             return convertView;
+        }
+
+        private String getOperateState(String state) {
+            return state.equals("CREATE") ? "READY" : "CREATE";
+        }
+
+        private String getOrderStatusText(String state) {
+            return state.equals("CREATE") ? "未准备" : "已准备";
+        }
+
+        private Drawable getOrderStatusBackground(String state) {
+            return state.equals("CREATE") ? getResources().getDrawable(R.drawable.selector_red_corners_button) : getResources().getDrawable(R.drawable.selector_blue_corners_button);
         }
     }
 

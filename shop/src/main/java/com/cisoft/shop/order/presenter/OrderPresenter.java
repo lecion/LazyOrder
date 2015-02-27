@@ -31,7 +31,7 @@ public class OrderPresenter {
     public void onLoad(int type) {
         view.setPage(1);
         view.showProgress();
-        model.findOrdersByOrderState("CREATE", 1, 5, new INetWorkFinished<Order>() {
+        model.findOrdersByMerId("CREATE", 1, 5, new INetWorkFinished<Order>() {
             @Override
             public void onSuccess(List<Order> l) {
                 view.setOrderList(l);
@@ -40,7 +40,7 @@ public class OrderPresenter {
 
             @Override
             public void onFailure(String info) {
-                Log.d("findOrdersByOrderState", "failed");
+                Log.d("findOrdersByMerId", "failed");
                 view.showNoData();
             }
         });
@@ -97,6 +97,27 @@ public class OrderPresenter {
             @Override
             public void onFailure(String msg) {
                 view.setOperatingState(oldState);
+                ViewInject.toast(msg);
+            }
+        });
+    }
+
+    /**
+     * 切换订单状态
+     * @param orderId
+     * @param position
+     * @param state
+     */
+    public void switchOrderStatus(int orderId, final int position, final String state) {
+
+        model.updateOrderState(orderId, state, new OrderModel.IUpdateOrderState() {
+            @Override
+            public void onSuccess(int code) {
+                view.setOrderStatus(position, state);
+            }
+
+            @Override
+            public void onFailure(String msg) {
                 ViewInject.toast(msg);
             }
         });

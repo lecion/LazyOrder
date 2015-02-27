@@ -44,7 +44,7 @@ public class ApiConstants {
 
 
     public static final String METHOD_ORDER_FIND_ORDERS_BY_MER_ID = "findOrdersByMerId";
-    public static final String METHOD_ORDER_FIND_ORDERS_BY_ORDER_STATE = "findOrdersByOrderState";
+    public static final String METHOD_ORDER_UPDATE_ORDER_STATE= "updateOrderState";
 
     public static final String METHOD_COMMODITY_FIND_ALL_BY_MER_ID = "findCommodityByMerchantsId";
     public static final String METHOD_COMMODITY_FIND_BY_MER_AND_TYPE_ID = "findCommodityByMerchantsIdAndTypeId";
@@ -58,6 +58,7 @@ public class ApiConstants {
     public static final String METHOD_HIS_ORDER_FIND_ALL = "findOrderByUserPhone";
 
     public static final String METHOD_EXPMER_EXPMER_LOGIN = "expmerLogin";
+
 
 
 
@@ -94,10 +95,12 @@ public class ApiConstants {
     public static final String KEY_ORDER_PAGE = "page";
     public static final String KEY_ORDER_SIZE = "size";
     public static final String KEY_ORDER_ID = "id";
+    public static final String KEY_ORDER_ORDER_ID = "orderId";
     public static final String KEY_ORDER_USER_PHONE = "userPhone";
     public static final String KEY_ORDER_USER_NAME = "userName";
     public static final String KEY_ORDER_TIME_GO = "timeGo";                                //已下单时间
     public static final String KEY_ORDER_ORDER_STATE = "orderState";                        //订单状态 CRAETE（最新订单）   READY（已准备）
+    public static final String KEY_ORDER_STATE = "state";                        //订单状态 CRAETE（最新订单）   READY（已准备）
     public static final String KEY_ORDER_ORDER_NUMBER = "orderNumber";
     public static final String KEY_ORDER_ORDER_CONTENT = "content";
     public static final String KEY_ORDER_MONEY_ALL = "moneyAll";
@@ -110,7 +113,7 @@ public class ApiConstants {
     public static final String KEY_ORDER_COM_PRICE = "price";                               //单价
 
 
-    
+
     public static final String KEY_MC_DATA = "data";
     public static final String KEY_MC_CATEGORY_ID = "id";
     public static final String KEY_MC_CATEGORY_NAME = "merCategoryName";

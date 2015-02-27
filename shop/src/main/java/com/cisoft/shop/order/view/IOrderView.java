@@ -32,5 +32,7 @@ public interface IOrderView {
 
     void setPage(int i);
 
-    void setOrderStatus(int position, int state);
+    void setOrderStatus(int position, String state);
+
+    void changeOrderStatus(String state);
 }

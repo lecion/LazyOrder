@@ -11,8 +11,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:text="未准备"
-        android:background="@drawable/abc_ab_share_pack_holo_dark"
+        android:textColor="@color/white"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:background="@drawable/selector_blue_corners_button"
+        android:layout_marginLeft="16dp"
         />
 
     <TextView
@@ -20,7 +23,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:text="￥299.9" />
+        android:textStyle="bold"
+        android:textSize="16sp"
+        />
 
     <TextView
         android:id="@+id/tv_order_time_go"
