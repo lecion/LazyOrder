@@ -45,6 +45,8 @@ public class SimpleActivity extends Activity implements RefreshDeleteListView.On
         mListView = (RefreshDeleteListView) findViewById(R.id.listView);
         mAdapter = new AppAdapter();
         mListView.setAdapter(mAdapter);
+        mListView.setPullLoadEnable(true);
+        mListView.setOnRefreshListener(this);
         SwipeMenuCreator creator = new SwipeMenuCreator() {
 
             @Override
@@ -69,9 +71,7 @@ public class SimpleActivity extends Activity implements RefreshDeleteListView.On
                 menu.addMenuItem(deleteItem);
             }
         };
-        mListView.setPullLoadEnable(true);
         mListView.setMenuCreator(creator);
-        mListView.setOnRefreshListener(this);
         mListView.setOnMenuItemClickListener(new RefreshDeleteListView.OnMenuItemClickListener() {
             @Override
             public void onMenuItemClick(final int position, SwipeMenu menu, int index) {

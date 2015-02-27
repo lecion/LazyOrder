@@ -3,6 +3,7 @@ package com.cisoft.shop.order.view;
 import android.app.Activity;
 import android.app.Dialog;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,8 +22,15 @@ import android.widget.TextView;
 import com.cisoft.myapplication.R;
 import com.cisoft.shop.bean.Order;
 import com.cisoft.shop.order.presenter.OrderPresenter;
+import com.cisoft.shop.util.DeviceUtil;
 import com.cisoft.shop.widget.DialogFactory;
 import com.cisoft.shop.widget.RefreshDeleteListView;
+import com.cisoft.shop.widget.SwipeMenu;
+import com.cisoft.shop.widget.SwipeMenuCreator;
+import com.cisoft.shop.widget.SwipeMenuItem;
+import com.nineoldandroids.animation.Animator;
+import com.nineoldandroids.animation.AnimatorListenerAdapter;
+import com.nineoldandroids.animation.ValueAnimator;
 
 import org.kymjs.aframe.ui.BindView;
 import org.kymjs.aframe.ui.fragment.BaseFragment;
@@ -60,13 +68,7 @@ public class OrderFragment extends BaseFragment implements IOrderView{
 
     private boolean isLoadMore = false;
 
-    private int type = 1;
-
     private int shopOldState;
-
-    private enum GoodsState {
-        SOLDOUT, SALES;
-    }
 
     private static final String ARG_PARAM1 = "tag";
 
@@ -112,7 +114,7 @@ public class OrderFragment extends BaseFragment implements IOrderView{
         presenter = new OrderPresenter(getActivity(), this);
         orderList = new ArrayList<Order>();
         orderListAdapter = new OrderListAdapter();
-        presenter.onLoad(type);
+        presenter.onLoad();
         shopOldState = 0;
     }
 
@@ -133,7 +135,7 @@ public class OrderFragment extends BaseFragment implements IOrderView{
             @Override
             public void onRefresh() {
                 lvOrder.stopRefreshData();
-                presenter.onLoad(type);
+                presenter.onLoad();
             }
 
             @Override
@@ -147,6 +149,52 @@ public class OrderFragment extends BaseFragment implements IOrderView{
             }
         });
         lvOrder.setAdapter(orderListAdapter);
+
+        //设置滑动选项
+        SwipeMenuCreator creator = new SwipeMenuCreator() {
+            @Override
+            public void create(SwipeMenu menu) {
+                SwipeMenuItem deleteItem = new SwipeMenuItem(
+                        getActivity().getApplicationContext());
+                deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9, 0x3F, 0x25)));
+                deleteItem.setWidth(DeviceUtil.dp2px(getActivity(), 90));
+//                deleteItem.setIcon(R.drawable.ic_delete);
+                deleteItem.setTitle("取消订单");
+                deleteItem.setTitleSize(18);
+                deleteItem.setTitleColor(Color.WHITE);
+                menu.addMenuItem(deleteItem);
+            }
+        };
+        lvOrder.setMenuCreator(creator);
+        lvOrder.setOnMenuItemClickListener(new RefreshDeleteListView.OnMenuItemClickListener() {
+            @Override
+            public void onMenuItemClick(final int position, SwipeMenu menu, int index) {
+                switch (index) {
+                    case 0:
+                        final View dismissView = lvOrder.getTouchView();
+                        final ViewGroup.LayoutParams lp = dismissView.getLayoutParams();
+                        final int originHeight = dismissView.getHeight();
+                        ValueAnimator animator = ValueAnimator.ofInt(originHeight, 0).setDuration(300);
+                        animator.start();
+                        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                            @Override
+                            public void onAnimationUpdate(ValueAnimator animation) {
+                                lp.height = (int) animation.getAnimatedValue();
+                                dismissView.setLayoutParams(lp);
+                            }
+                        });
+                        animator.addListener(new AnimatorListenerAdapter() {
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                orderList.remove(position);
+                                orderListAdapter.notifyDataSetChanged();
+                            }
+                        });
+                        break;
+                }
+            }
+        });
+
     }
 
     /**
@@ -247,12 +295,6 @@ public class OrderFragment extends BaseFragment implements IOrderView{
         orderListAdapter.notifyDataSetChanged();
     }
 
-    @Override
-    public void changeOrderStatus(String state) {
-
-    }
-
-
     public interface OnFragmentInteractionListener {
         public void onFragmentInteraction(Uri uri);
     }
@@ -289,7 +331,6 @@ public class OrderFragment extends BaseFragment implements IOrderView{
             }
             holder = (ViewHolder) convertView.getTag();
             final String state = order.getOrderState();
-            Log.d("getVIEW", state);
             holder.btnOrderStatus.setText(getOrderStatusText(state));
             holder.btnOrderStatus.setBackgroundDrawable(getOrderStatusBackground(state));
             holder.btnOrderStatus.setOnClickListener(new View.OnClickListener() {

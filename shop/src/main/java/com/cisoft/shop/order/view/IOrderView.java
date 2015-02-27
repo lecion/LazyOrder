@@ -34,5 +34,4 @@ public interface IOrderView {
 
     void setOrderStatus(int position, String state);
 
-    void changeOrderStatus(String state);
 }

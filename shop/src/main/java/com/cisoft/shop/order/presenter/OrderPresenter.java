@@ -28,12 +28,13 @@ public class OrderPresenter {
         shopModel = new ShopModel(context);
     }
 
-    public void onLoad(int type) {
+    public void onLoad() {
         view.setPage(1);
         view.showProgress();
         model.findOrdersByMerId("CREATE", 1, 5, new INetWorkFinished<Order>() {
             @Override
             public void onSuccess(List<Order> l) {
+                Log.d("findOrdersByMerId", l.size()+"");
                 view.setOrderList(l);
                 view.hideProgress();
             }
