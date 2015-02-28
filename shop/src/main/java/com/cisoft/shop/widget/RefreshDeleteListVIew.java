@@ -562,4 +562,11 @@ public class RefreshDeleteListView extends ListView implements AbsListView.OnScr
         return mTouchView;
     }
 
+    public void showFooterLoading() {
+        footerView.loading();
+    }
+
+    public void showFooterNormal() {
+        footerView.normal();
+    }
 }

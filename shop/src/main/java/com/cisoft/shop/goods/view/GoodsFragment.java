@@ -178,6 +178,7 @@ public class GoodsFragment extends BaseFragment implements IGoodsView{
                     return;
                 }
                 isLoadMore = true;
+                showMoreProgress();
                 presenter.loadMore(++page, size, type, sortType);
             }
         });
@@ -304,6 +305,16 @@ public class GoodsFragment extends BaseFragment implements IGoodsView{
     @Override
     public void setPullLoadEnable(boolean flag) {
         lvGoods.setPullLoadEnable(flag);
+    }
+
+    @Override
+    public void showMoreProgress() {
+        lvGoods.showFooterLoading();
+    }
+
+    @Override
+    public void hideMoreProgress() {
+        lvGoods.showFooterNormal();
     }
 
     @Override

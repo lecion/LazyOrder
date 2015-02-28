@@ -49,4 +49,8 @@ public interface IGoodsView {
     void setDefaultSort();
 
     void setPullLoadEnable(boolean flag);
+
+    void showMoreProgress();
+
+    void hideMoreProgress();
 }

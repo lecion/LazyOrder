@@ -73,15 +73,18 @@ public class GoodsPresenter{
             public void onSuccess(List<Goods> l) {
                 if (l.size() == 0 || l.size() < size) {
                     ViewInject.toast("已经加载完了~");
+                    view.setPullLoadEnable(false);
                 } else {
                     view.setGoodsList(l);
                 }
+                view.hideMoreProgress();
                 view.setOnLoadMore(false);
             }
 
             @Override
             public void onFailure(String info) {
                 ViewInject.toast(info);
+                view.hideProgress();
                 view.setOnLoadMore(false);
             }
         });
