@@ -33,6 +33,7 @@ import com.nineoldandroids.animation.AnimatorListenerAdapter;
 import com.nineoldandroids.animation.ValueAnimator;
 
 import org.kymjs.aframe.ui.BindView;
+import org.kymjs.aframe.ui.ViewInject;
 import org.kymjs.aframe.ui.fragment.BaseFragment;
 
 import java.util.ArrayList;
@@ -193,6 +194,16 @@ public class OrderFragment extends BaseFragment implements IOrderView{
                         });
                         break;
                 }
+            }
+        });
+
+        lvOrder.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Order order = (Order) lvOrder.getItemAtPosition(position);
+                OrderDetailDialog dialog = new OrderDetailDialog();
+                dialog.show(getFragmentManager(), id+"");
+                ViewInject.toast("aaaaaaaaaa");
             }
         });
 

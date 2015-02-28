@@ -1,7 +1,6 @@
 package com.cisoft.shop.order.presenter;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.cisoft.shop.bean.Order;
 import com.cisoft.shop.goods.model.INetWorkFinished;
@@ -35,7 +34,6 @@ public class OrderPresenter {
         model.findOrdersByMerId("CREATE", 1, size, new INetWorkFinished<Order>() {
             @Override
             public void onSuccess(List<Order> l) {
-                Log.d("findOrdersByMerId", l.size()+"");
                 if (l.size() == 0 || l.size() < size) {
                     view.setPullLoadEnable(false);
                 } else {
@@ -47,23 +45,9 @@ public class OrderPresenter {
 
             @Override
             public void onFailure(String info) {
-                Log.d("findOrdersByMerId", "failed");
                 view.showNoData();
             }
         });
-//        model.loadOrderList(1, 5, new INetWorkFinished<Order>() {
-//            @Override
-//            public void onSuccess(List<Order> l) {
-//                view.hideProgress();
-//                view.setOrderList(l);
-//            }
-//
-//            @Override
-//            public void onFailure(String info) {
-//                view.hideProgress();
-//                view.showNoData();
-//            }
-//        });
     }
 
     public void loadMore(int page, final int size) {
@@ -133,22 +117,4 @@ public class OrderPresenter {
         });
     }
 
-
-//    public void switchGoodsStatus(final int position, final int state) {
-//        final int result = state == 1 ? 0 : 1;
-//        model.updateComState(result, new GoodsModel.IUpdateGoodsState(){
-//
-//            @Override
-//            public void onSuccess(int code) {
-//                view.setGoodsStatus(position, result);
-//            }
-//
-//            @Override
-//            public void onFailure(String msg) {
-//                ViewInject.toast(msg);
-//                //TODO 测试状态改变，记得删
-//                view.setGoodsStatus(position, result);
-//            }
-//        });
-//    }
 }

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_order_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No.404"
+        android:textSize="16sp" />
+    <include layout="@layout/divider_line"/>
+    <ListView
+        android:id="@+id/lv_order_goods"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></ListView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <TextView
+            android:id="@+id/tv_distribution_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="配送费" />
+
+        <TextView
+            android:id="@+id/tv_distribution_price_show"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="￥1.0" />
+    </RelativeLayout>
+    <include layout="@layout/divider_line"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+       >
+
+        <TextView
+            android:id="@+id/tv_order_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="总价" />
+
+        <TextView
+            android:id="@+id/tv_order_price_show"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="￥1.0" />
+    </RelativeLayout>
+    <include layout="@layout/divider_line"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="额外留言" />
+
+        <TextView
+            android:id="@+id/tv_tv_content_show"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="饮料要冰的" />
+    </RelativeLayout>
+    <include layout="@layout/divider_line"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="姓名" />
+
+        <TextView
+            android:id="@+id/tv_user_name_show"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="周杰伦" />
+    </RelativeLayout>
+    <include layout="@layout/divider_line"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_user_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="电话" />
+
+        <TextView
+            android:id="@+id/tv_user_phone_show"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="13578979497" />
+    </RelativeLayout>
+    <include layout="@layout/divider_line"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="地址" />
+
+        <TextView
+            android:id="@+id/tv_address_show"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="28栋519" />
+    </RelativeLayout>
+    <include layout="@layout/divider_line"/>
+
+</LinearLayout>

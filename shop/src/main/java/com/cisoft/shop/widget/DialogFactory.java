@@ -55,4 +55,5 @@ public class DialogFactory {
     public interface IConfirm{
         public void onYes();
     }
+
 }
