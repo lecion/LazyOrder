@@ -285,14 +285,14 @@ public class MyListView extends ListView implements AbsListView.OnScrollListener
 				invokeOnScrolling();
 			} else if (getLastVisiblePosition() == totalItemCount - 1
 					&& (footerView.getBottomMargin() > 0 || deltaY < 0)) {
-				updateFooterHeight(-deltaY / OFFSET_RADIO);
-//                Log.d("onTouchEvent", "updateFooterHeight" + -deltaY / OFFSET_RADIO);
+                if (getFirstVisiblePosition() != 0) {
+                    updateFooterHeight(-deltaY / OFFSET_RADIO);
+                }
 			}
 			break;
 		default:
 			lastY = -1;
 			if (getLastVisiblePosition() == totalItemCount - 1) {
-//                Log.d("default onTouchEvent", "footerView.getBottomMargin()" + footerView.getBottomMargin() + "");
 				if (enablePullLoad
 				    && footerView.getBottomMargin() > PULL_LOAD_MORE_DELTA
 				    && !pullLoading) {
