@@ -407,12 +407,10 @@ public class RefreshDeleteListView extends ListView implements AbsListView.OnScr
 					&& (headerView.getVisiableHeight() > 0 || deltaY > 0)) {
 				updateHeaderHeight(deltaY / OFFSET_RADIO);
 				invokeOnScrolling();
-			} else if (getLastVisiblePosition() == totalItemCount - 1
+			}
+            if (getLastVisiblePosition() == totalItemCount - 1
 					&& (footerView.getBottomMargin() > 0 || deltaY < 0)) {
-                //加上这个判断才能保证不被下拉刷新
-                if (getFirstVisiblePosition() != 0) {
-                    updateFooterHeight(-deltaY / OFFSET_RADIO);
-                }
+                updateFooterHeight(-deltaY / OFFSET_RADIO);
 			}
 			break;
 

@@ -26,7 +26,7 @@ import com.cisoft.shop.bean.Shop;
 import com.cisoft.shop.goods.presenter.GoodsPresenter;
 import com.cisoft.shop.util.L;
 import com.cisoft.shop.widget.DialogFactory;
-import com.cisoft.shop.widget.MyListView;
+import com.cisoft.shop.widget.RefreshDeleteListView;
 
 import org.kymjs.aframe.bitmap.KJBitmap;
 import org.kymjs.aframe.ui.BindView;
@@ -56,7 +56,7 @@ public class GoodsFragment extends BaseFragment implements IGoodsView{
     private Spinner spGoodsCategory;
 
     @BindView(id = R.id.lv_goods)
-    private MyListView lvGoods;
+    private RefreshDeleteListView lvGoods;
 
     @BindView(id = R.id.rb_pop)
     private RadioButton rbPop;
@@ -162,9 +162,9 @@ public class GoodsFragment extends BaseFragment implements IGoodsView{
      * 初始化商品列表
      */
     private void initGoodsList() {
-        lvGoods.setPullLoadEnable(true);
+        lvGoods.setPullLoadEnable(false);
         //lvGoods.setEmptyView(llShowNoValueTip);
-        lvGoods.setOnRefreshListener(new MyListView.OnRefreshListener() {
+        lvGoods.setOnRefreshListener(new RefreshDeleteListView.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 lvGoods.stopRefreshData();
@@ -260,7 +260,7 @@ public class GoodsFragment extends BaseFragment implements IGoodsView{
 
     @Override
     public void setGoodsList(List<Goods> goodsList) {
-        Log.d("setGoodsList", goodsList.toString());
+//        Log.d("setGoodsList", goodsList.toString());
         if (page == 1) {
             this.goodsList.clear();
             this.goodsList.addAll(goodsList);
@@ -299,6 +299,11 @@ public class GoodsFragment extends BaseFragment implements IGoodsView{
     public void setDefaultSort() {
         rbPop.toggle();
         setSortType(SORT_SALES);
+    }
+
+    @Override
+    public void setPullLoadEnable(boolean flag) {
+        lvGoods.setPullLoadEnable(flag);
     }
 
     @Override

@@ -283,11 +283,10 @@ public class MyListView extends ListView implements AbsListView.OnScrollListener
 					&& (headerView.getVisiableHeight() > 0 || deltaY > 0)) {
 				updateHeaderHeight(deltaY / OFFSET_RADIO);
 				invokeOnScrolling();
-			} else if (getLastVisiblePosition() == totalItemCount - 1
+			}
+            if (getLastVisiblePosition() == totalItemCount - 1
 					&& (footerView.getBottomMargin() > 0 || deltaY < 0)) {
-                if (getFirstVisiblePosition() != 0) {
                     updateFooterHeight(-deltaY / OFFSET_RADIO);
-                }
 			}
 			break;
 		default:
