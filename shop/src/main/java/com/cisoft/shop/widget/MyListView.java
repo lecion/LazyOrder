@@ -286,21 +286,13 @@ public class MyListView extends ListView implements AbsListView.OnScrollListener
 			} else if (getLastVisiblePosition() == totalItemCount - 1
 					&& (footerView.getBottomMargin() > 0 || deltaY < 0)) {
 				updateFooterHeight(-deltaY / OFFSET_RADIO);
+//                Log.d("onTouchEvent", "updateFooterHeight" + -deltaY / OFFSET_RADIO);
 			}
 			break;
 		default:
 			lastY = -1;
-			if (getFirstVisiblePosition() == 0) {
-				if (enablePullRefresh
-						&& headerView.getVisiableHeight() > headerViewHeight) {
-					pullRefreshing = true;
-					headerView.setState(MyListViewHeader.STATE_REFRESHING);
-					if (listViewListener != null) {
-						listViewListener.onRefresh();
-					}
-				}
-				resetHeaderHeight();
-			} else if (getLastVisiblePosition() == totalItemCount - 1) {
+			if (getLastVisiblePosition() == totalItemCount - 1) {
+//                Log.d("default onTouchEvent", "footerView.getBottomMargin()" + footerView.getBottomMargin() + "");
 				if (enablePullLoad
 				    && footerView.getBottomMargin() > PULL_LOAD_MORE_DELTA
 				    && !pullLoading) {
@@ -308,7 +300,18 @@ public class MyListView extends ListView implements AbsListView.OnScrollListener
 				}
 				resetFooterHeight();
 			}
-			break;
+            if (getFirstVisiblePosition() == 0) {
+                if (enablePullRefresh
+                        && headerView.getVisiableHeight() > headerViewHeight) {
+                    pullRefreshing = true;
+                    headerView.setState(MyListViewHeader.STATE_REFRESHING);
+                    if (listViewListener != null) {
+                        listViewListener.onRefresh();
+                    }
+                }
+                resetHeaderHeight();
+            }
+            break;
 		}
 		return super.onTouchEvent(ev);
 	}

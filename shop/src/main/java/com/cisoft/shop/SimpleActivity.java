@@ -6,7 +6,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,22 +18,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cisoft.myapplication.R;
-import com.cisoft.shop.widget.RefreshDeleteListView;
+import com.cisoft.shop.widget.MyListView;
 import com.cisoft.shop.widget.SwipeMenu;
 import com.cisoft.shop.widget.SwipeMenuCreator;
 import com.cisoft.shop.widget.SwipeMenuItem;
-import com.nineoldandroids.animation.Animator;
-import com.nineoldandroids.animation.AnimatorListenerAdapter;
-import com.nineoldandroids.animation.ValueAnimator;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SimpleActivity extends Activity implements RefreshDeleteListView.OnRefreshListener {
+public class SimpleActivity extends Activity implements MyListView.OnRefreshListener {
 
     private List<String> mAppList = new ArrayList<String>();
     private AppAdapter mAdapter;
-    private RefreshDeleteListView mListView;
+    private MyListView mListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +38,7 @@ public class SimpleActivity extends Activity implements RefreshDeleteListView.On
         setContentView(R.layout.activity_list);
 
         mAppList = getData();
-        mListView = (RefreshDeleteListView) findViewById(R.id.listView);
+        mListView = (MyListView) findViewById(R.id.listView);
         mAdapter = new AppAdapter();
         mListView.setAdapter(mAdapter);
         mListView.setPullLoadEnable(true);
@@ -71,51 +67,7 @@ public class SimpleActivity extends Activity implements RefreshDeleteListView.On
                 menu.addMenuItem(deleteItem);
             }
         };
-        mListView.setMenuCreator(creator);
-        mListView.setOnMenuItemClickListener(new RefreshDeleteListView.OnMenuItemClickListener() {
-            @Override
-            public void onMenuItemClick(final int position, SwipeMenu menu, int index) {
 
-                switch (index) {
-                    case 0:
-                        final View dismissView = mListView.getTouchView();
-                        final ViewGroup.LayoutParams lp = dismissView.getLayoutParams();
-                        final int originHeight = dismissView.getHeight();
-                        Log.d("Animation", "dismissView => " + dismissView + " originHeight => " + originHeight);
-                        ValueAnimator animator = ValueAnimator.ofInt(originHeight, 0).setDuration(300);
-                        animator.start();
-                        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                            @Override
-                            public void onAnimationUpdate(ValueAnimator animation) {
-                                lp.height = (int) animation.getAnimatedValue();
-                                dismissView.setLayoutParams(lp);
-                            }
-                        });
-                        animator.addListener(new AnimatorListenerAdapter() {
-                            @Override
-                            public void onAnimationEnd(Animator animation) {
-                                mAppList.remove(position);
-                                mAdapter.notifyDataSetChanged();
-                            }
-                        });
-
-                        break;
-                }
-            }
-        });
-
-        mListView.setOnSwipeListener(new RefreshDeleteListView.OnSwipeListener() {
-
-            @Override
-            public void onSwipeStart(int position) {
-
-            }
-
-            @Override
-            public void onSwipeEnd(int position) {
-
-            }
-        });
 
         mListView.setOnItemLongClickListener(new OnItemLongClickListener() {
 
@@ -143,7 +95,7 @@ public class SimpleActivity extends Activity implements RefreshDeleteListView.On
 
     public List<String> getData() {
         List<String> result = new ArrayList<String>();
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 5; i++) {
             result.add("Item" + i);
         }
         return result;

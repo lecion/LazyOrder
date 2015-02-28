@@ -130,7 +130,7 @@ public class OrderFragment extends BaseFragment implements IOrderView{
      */
     private void initOrderList() {
         lvOrder.setPullRefreshEnable(true);
-        lvOrder.setPullLoadEnable(true);
+        lvOrder.setPullLoadEnable(false);
         lvOrder.setOnRefreshListener(new RefreshDeleteListView.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -293,6 +293,11 @@ public class OrderFragment extends BaseFragment implements IOrderView{
     public void setOrderStatus(int position, String state) {
         orderList.get(position).setOrderState(state);
         orderListAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void setPullLoadEnable(boolean flag) {
+        lvOrder.setPullLoadEnable(flag);
     }
 
     public interface OnFragmentInteractionListener {

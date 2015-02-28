@@ -29,12 +29,18 @@ public class OrderPresenter {
     }
 
     public void onLoad() {
+        final int size = 5;
         view.setPage(1);
         view.showProgress();
-        model.findOrdersByMerId("CREATE", 1, 5, new INetWorkFinished<Order>() {
+        model.findOrdersByMerId("CREATE", 1, size, new INetWorkFinished<Order>() {
             @Override
             public void onSuccess(List<Order> l) {
                 Log.d("findOrdersByMerId", l.size()+"");
+                if (l.size() == 0 || l.size() < size) {
+                    view.setPullLoadEnable(false);
+                } else {
+                    view.setPullLoadEnable(true);
+                }
                 view.setOrderList(l);
                 view.hideProgress();
             }
@@ -65,6 +71,7 @@ public class OrderPresenter {
             @Override
             public void onSuccess(List<Order> l) {
                 if (l.size() == 0 || l.size() < size) {
+                    view.setPullLoadEnable(false);
                     ViewInject.toast("已经加载完了~");
                 } else {
                     view.setOrderList(l);

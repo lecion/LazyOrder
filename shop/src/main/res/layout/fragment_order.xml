@@ -3,7 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:mContext="com.cisoft.shop.goods.view.GoodsFragment">
+    tools:mContext="com.cisoft.shop.goods.view.GoodsFragment"
+    android:background="@color/white"
+    >
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -96,5 +98,5 @@
         android:id="@+id/lv_order"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:dividerHeight="12dp"></com.cisoft.shop.widget.RefreshDeleteListView>
+        ></com.cisoft.shop.widget.RefreshDeleteListView>
 </LinearLayout>

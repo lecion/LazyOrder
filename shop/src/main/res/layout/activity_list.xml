@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
      >
 
-    <com.cisoft.shop.widget.RefreshDeleteListView
+    <com.cisoft.shop.widget.MyListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

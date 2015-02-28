@@ -103,7 +103,7 @@ public class ApiConstants {
     public static final String KEY_ORDER_STATE = "state";                        //订单状态 CRAETE（最新订单）   READY（已准备）
     public static final String KEY_ORDER_ORDER_NUMBER = "orderNumber";
     public static final String KEY_ORDER_ORDER_CONTENT = "content";
-    public static final String KEY_ORDER_MONEY_ALL = "moneyAll";
+    public static final String KEY_ORDER_RDER_PRICE = "orderPrice";
     public static final String KEY_ORDER_DISTRIBUTION_PRICE = "distributionPrice";          //配送费，为0则免配送费
     public static final String kEY_ORDER_ADDRESS = "address";                               //地址信息
     public static final String KEY_ORDER_ORDER_COMMODITY_VO_LIST = "orderCommodityVOList";  //订单商品列表
@@ -111,6 +111,9 @@ public class ApiConstants {
     public static final String KEY_ORDER_COM_NAME = "comName";
     public static final String KEY_ORDER_COM_NUM = "comNum";
     public static final String KEY_ORDER_COM_PRICE = "price";                               //单价
+    public static final String KEY_ORDER_DEDUCTION = "deduction";                           //优惠价格
+    public static final String KEY_ORDER_SETTLED_PRICE = "settledPrice";                           //结算后价格
+
 
 
 
