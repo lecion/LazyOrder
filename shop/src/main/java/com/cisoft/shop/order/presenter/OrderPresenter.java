@@ -76,12 +76,14 @@ public class OrderPresenter {
                 } else {
                     view.setOrderList(l);
                 }
+                view.hideMoreProgress();
                 view.setOnLoadMore(false);
             }
 
             @Override
             public void onFailure(String info) {
                 ViewInject.toast(info);
+                view.hideMoreProgress();
                 view.setOnLoadMore(false);
             }
         });

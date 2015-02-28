@@ -145,6 +145,7 @@ public class OrderFragment extends BaseFragment implements IOrderView{
                     return;
                 }
                 isLoadMore = true;
+                showMoreProgress();
                 presenter.loadMore(++page, size);
             }
         });
@@ -298,6 +299,16 @@ public class OrderFragment extends BaseFragment implements IOrderView{
     @Override
     public void setPullLoadEnable(boolean flag) {
         lvOrder.setPullLoadEnable(flag);
+    }
+
+    @Override
+    public void showMoreProgress() {
+        lvOrder.showFooterLoading();
+    }
+
+    @Override
+    public void hideMoreProgress() {
+        lvOrder.showFooterNormal();
     }
 
     public interface OnFragmentInteractionListener {
