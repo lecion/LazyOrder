@@ -26,7 +26,7 @@ import com.cisoft.shop.bean.Shop;
 import com.cisoft.shop.goods.presenter.GoodsPresenter;
 import com.cisoft.shop.util.L;
 import com.cisoft.shop.widget.DialogFactory;
-import com.cisoft.shop.widget.RefreshDeleteListView;
+import com.cisoft.shop.widget.RefreshDeleteListVew;
 
 import org.kymjs.aframe.bitmap.KJBitmap;
 import org.kymjs.aframe.ui.BindView;
@@ -56,7 +56,7 @@ public class GoodsFragment extends BaseFragment implements IGoodsView{
     private Spinner spGoodsCategory;
 
     @BindView(id = R.id.lv_goods)
-    private RefreshDeleteListView lvGoods;
+    private RefreshDeleteListVew lvGoods;
 
     @BindView(id = R.id.rb_pop)
     private RadioButton rbPop;
@@ -164,7 +164,7 @@ public class GoodsFragment extends BaseFragment implements IGoodsView{
     private void initGoodsList() {
         lvGoods.setPullLoadEnable(false);
         //lvGoods.setEmptyView(llShowNoValueTip);
-        lvGoods.setOnRefreshListener(new RefreshDeleteListView.OnRefreshListener() {
+        lvGoods.setOnRefreshListener(new RefreshDeleteListVew.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 lvGoods.stopRefreshData();

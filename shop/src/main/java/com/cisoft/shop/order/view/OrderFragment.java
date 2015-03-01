@@ -24,7 +24,7 @@ import com.cisoft.shop.bean.Order;
 import com.cisoft.shop.order.presenter.OrderPresenter;
 import com.cisoft.shop.util.DeviceUtil;
 import com.cisoft.shop.widget.DialogFactory;
-import com.cisoft.shop.widget.RefreshDeleteListView;
+import com.cisoft.shop.widget.RefreshDeleteListVew;
 import com.cisoft.shop.widget.SwipeMenu;
 import com.cisoft.shop.widget.SwipeMenuCreator;
 import com.cisoft.shop.widget.SwipeMenuItem;
@@ -53,7 +53,7 @@ public class OrderFragment extends BaseFragment implements IOrderView{
     private Spinner spShopState;
 
     @BindView(id = R.id.lv_order)
-    private RefreshDeleteListView lvOrder;
+    private RefreshDeleteListVew lvOrder;
 
     private OrderListAdapter orderListAdapter;
 
@@ -132,7 +132,7 @@ public class OrderFragment extends BaseFragment implements IOrderView{
     private void initOrderList() {
         lvOrder.setPullRefreshEnable(true);
         lvOrder.setPullLoadEnable(false);
-        lvOrder.setOnRefreshListener(new RefreshDeleteListView.OnRefreshListener() {
+        lvOrder.setOnRefreshListener(new RefreshDeleteListVew.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 lvOrder.stopRefreshData();
@@ -168,7 +168,7 @@ public class OrderFragment extends BaseFragment implements IOrderView{
             }
         };
         lvOrder.setMenuCreator(creator);
-        lvOrder.setOnMenuItemClickListener(new RefreshDeleteListView.OnMenuItemClickListener() {
+        lvOrder.setOnMenuItemClickListener(new RefreshDeleteListVew.OnMenuItemClickListener() {
             @Override
             public void onMenuItemClick(final int position, SwipeMenu menu, int index) {
                 switch (index) {

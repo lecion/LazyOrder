@@ -22,7 +22,7 @@ import com.cisoft.myapplication.R;
  * 结合KJFrameListView，增加滑动删除功能
  * Created by Lecion on 2015-02-23
  */
-public class RefreshDeleteListView extends ListView implements AbsListView.OnScrollListener {
+public class RefreshDeleteListVew extends ListView implements AbsListView.OnScrollListener {
     //用来保存Y坐标
 	private float lastY = -1;
     private int downY;
@@ -103,17 +103,17 @@ public class RefreshDeleteListView extends ListView implements AbsListView.OnScr
 
 
 
-	public RefreshDeleteListView(Context context) {
+	public RefreshDeleteListVew(Context context) {
 		super(context);
 		initWithContext(context);
 	}
 
-	public RefreshDeleteListView(Context context, AttributeSet attrs) {
+	public RefreshDeleteListVew(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		initWithContext(context);
 	}
 
-	public RefreshDeleteListView(Context context, AttributeSet attrs, int defStyle) {
+	public RefreshDeleteListVew(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 		initWithContext(context);
 	}
