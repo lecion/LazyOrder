@@ -94,9 +94,9 @@
             android:textSize="16sp" />
     </LinearLayout>
 
-    <com.cisoft.shop.widget.RefreshDeleteListVew
+    <com.cisoft.shop.widget.RefreshDeleteListView
         android:id="@+id/lv_order"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        ></com.cisoft.shop.widget.RefreshDeleteListVew>
+        ></com.cisoft.shop.widget.RefreshDeleteListView>
 </LinearLayout>
