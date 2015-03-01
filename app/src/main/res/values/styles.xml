@@ -1,33 +1,46 @@
 <resources>
-
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <item name="android:actionBarStyle">@style/MyActionBar</item>
+    <style name="BaseTheme" parent="android:Theme.Holo.Light.DarkActionBar">
+        <item name="android:windowBackground">@color/gray_bg</item>
+        <item name="android:windowAnimationStyle">@style/AnimationActivity</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:actionBarStyle">@style/ActionBar</item>
+        <item name="android:actionBarSize">@dimen/action_bar_size</item>
+        <item name="android:actionButtonStyle">@style/ActionButton</item>
+        <item name="android:actionMenuTextAppearance">@style/ActionBarTitleTextStyle</item>
+        <item name="android:actionBarItemBackground">@drawable/selector_action_item_bg</item>
+    </style>
+    <style name="AppTheme" parent="@style/BaseTheme">
+        <item name="android:homeAsUpIndicator">@drawable/icon_back</item>
+    </style>
+    <style name="OverlayActionBar" parent="@style/BaseTheme">
+        <item name="android:windowActionBarOverlay">true</item>
+    </style>
+    <style name="NoActionBar" parent="@android:style/Theme.Holo.Light.NoActionBar">
         <item name="android:windowAnimationStyle">@style/AnimationActivity</item>
     </style>
-
-    <!-- ActionBar的样式 -->
-    <style name="MyActionBar" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+    <style name="NoUpIndicator" parent="@style/BaseTheme"></style>
+    <style name="Fullscreen" parent="@android:style/Theme.Holo.Light.NoActionBar.Fullscreen">
+        <item name="android:windowAnimationStyle">@style/AnimationActivity</item>
+    </style>
+    <style name="ActionBarTitleTextStyle" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
+        <item name="android:textSize">@dimen/action_bar_title_text_size</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+    <style name="ActionButton" parent="@android:style/Widget.Holo.Light.ActionButton">
+        <item name="android:paddingLeft">8.0dip</item>
+        <item name="android:paddingRight">8.0dip</item>
+    </style>
+    <style name="ActionBar" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
         <item name="android:background">@color/actionbar_bg_color</item>
-        <item name="android:textColorHint">@android:color/white</item>
-        <item name="android:dropDownListViewStyle">@android:style/Widget.Holo.ListView.DropDown</item>
+        <item name="android:titleTextStyle">@style/ActionBarTitleTextStyle</item>
+        <item name="android:displayOptions">homeAsUp|showCustom</item>
     </style>
-
-    <!--ActionBar列表式导航的样式 -->
-    <style name="MyDropDownNav" parent="@android:style/Widget.ListView.DropDown">
-        <item name="android:background">@android:color/holo_green_light</item>
-        <item name="android:popupBackground">@android:color/holo_blue_light</item>
-        <item name="android:dropDownSelector">@android:color/holo_orange_light</item>
-    </style>
-    <!-- 自定义activity退出和进入时的动画 -->
     <style name="AnimationActivity" parent="@android:style/Animation.Activity">
-        <item name="android:activityOpenEnterAnimation">@anim/push_left_in</item>
-        <item name="android:activityOpenExitAnimation">@anim/push_left_out</item>
-        <item name="android:activityCloseEnterAnimation">@anim/zoom_enter</item>
-        <item name="android:activityCloseExitAnimation">@anim/zoom_exit</item>
+        <item name="android:activityOpenEnterAnimation">@anim/slide_right_in</item>
+        <item name="android:activityOpenExitAnimation">@anim/slide_left_out</item>
+        <item name="android:activityCloseEnterAnimation">@anim/slide_left_in</item>
+        <item name="android:activityCloseExitAnimation">@anim/slide_right_out</item>
     </style>
-
 
     <!-- 吐司类对话框样式 -->
     <style name="toastDialog" parent="@android:style/Theme.Dialog">
@@ -73,7 +86,7 @@
     <style name="order_detail_content_item_text_style">
         <item name="android:text">测试文本</item>
         <item name="android:textSize">14sp</item>
-        <item name="android:textColor">@color/order_detail_text_color</item>
+        <item name="android:textColor">@color/color_73</item>
     </style>
     <style name="order_detail_content_item_title_text_style" parent="order_detail_content_item_text_style">
         <item name="android:paddingTop">15dp</item>

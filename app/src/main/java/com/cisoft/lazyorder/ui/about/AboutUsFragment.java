@@ -13,6 +13,9 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -21,8 +24,9 @@ import com.cisoft.lazyorder.bean.about.UpdateInfo;
 import com.cisoft.lazyorder.core.about.AboutNetwork;
 import com.cisoft.lazyorder.core.about.UpdateService;
 import com.cisoft.lazyorder.finals.ApiConstants;
+import com.cisoft.lazyorder.finals.UrlConstants;
 import com.cisoft.lazyorder.ui.common.WebViewActivity;
-import com.cisoft.lazyorder.ui.main.menu.MenuItemContent;
+import com.cisoft.lazyorder.ui.main.menu.BaseMenuItemFragment;
 import com.cisoft.lazyorder.util.DialogFactory;
 import org.kymjs.kjframe.ui.BindView;
 import org.kymjs.kjframe.ui.ViewInject;
@@ -30,7 +34,7 @@ import org.kymjs.kjframe.ui.ViewInject;
 /**
  * Created by comet on 2014/11/30.
  */
-public class AboutUsFragment extends MenuItemContent {
+public class AboutUsFragment extends BaseMenuItemFragment {
 
     @BindView(id = R.id.tv_check_update, click = true)
     private TextView tvCheckUpdate;
@@ -73,17 +77,17 @@ public class AboutUsFragment extends MenuItemContent {
 
     @Override
     protected void initWidget(View parentView) {
-        initActionBar();
+        initialTitleBar();
     }
 
     /**
      * 初始化标题栏
      */
-    private void initActionBar() {
+    private void initialTitleBar() {
         ActionBar actionBar = getActivity().getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setTitle("  关于我们");
+        actionBar.setTitle(getString(R.string.title_fragment_about_us));
     }
 
 
@@ -98,7 +102,7 @@ public class AboutUsFragment extends MenuItemContent {
                 break;
             case R.id.tv_function_desc:
                 Intent funcDescIntent = new Intent(getActivity(), WebViewActivity.class);
-                funcDescIntent.putExtra(WebViewActivity.CONENT_URL, ApiConstants.FUNCTION_DESC_URL);
+                funcDescIntent.putExtra(WebViewActivity.CONENT_URL, UrlConstants.URL_FUNCTION_DESC_URL);
                 startActivity(funcDescIntent);
                 break;
         }
@@ -109,7 +113,6 @@ public class AboutUsFragment extends MenuItemContent {
      */
     private void checkUpdate() {
         final Dialog tipDialog = DialogFactory.createWaitToastDialog(getActivity(), "正在检查更新");
-        tipDialog.setCanceledOnTouchOutside(false);
         tipDialog.show();
 
         //先从网络上获取到最新的版本信息
@@ -176,12 +179,37 @@ public class AboutUsFragment extends MenuItemContent {
             }
 
             @Override
-            public void onFailure(int stateCode) {
+            public void onFailure(int stateCode, String errorMsg) {
                 tipDialog.dismiss();
-
-                ViewInject.toast(aboutNetwork.getResponseStateInfo(stateCode));
+                ViewInject.toast(errorMsg);
             }
         });
     }
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        if (!getMenuOpenState()) {
+            initialTitleBar();
+            inflater.inflate(R.menu.menu_about, menu);
+        }
+
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_setting:
+                startActivity(new Intent(getActivity(), SettingActivity.class));
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 }

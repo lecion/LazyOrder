@@ -82,7 +82,7 @@ public class UpdateService extends Service implements Handler.Callback{
         notification.when = System.currentTimeMillis();
         notification.defaults = Notification.DEFAULT_LIGHTS;
         notification.flags = Notification.FLAG_AUTO_CANCEL;
-        views = new RemoteViews(getPackageName(), R.layout.state_update_download);
+        views = new RemoteViews(getPackageName(), R.layout.view_update_download);
         notification.contentView = views;
         notification.contentIntent = PendingIntent.getBroadcast(this, 0, new Intent(AboutUsFragment.BR_CLRER_STATE_BAR), 0);
         notifyManager.notify(NOTIFICATION_Id, notification);

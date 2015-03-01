@@ -1,11 +1,9 @@
 package com.cisoft.lazyorder.core.about;
 
 import android.content.Context;
-
 import com.cisoft.lazyorder.bean.about.UpdateInfo;
 import com.cisoft.lazyorder.core.BaseNetwork;
 import com.cisoft.lazyorder.finals.ApiConstants;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.kymjs.kjframe.http.HttpParams;
@@ -46,9 +44,9 @@ public class AboutNetwork extends BaseNetwork {
             }
         }, new FailureCallback() {
             @Override
-            public void onFailure(int stateCode) {
+            public void onFailure(int stateCode, String errorMsg) {
                 if (loadFinishCallback != null) {
-                    loadFinishCallback.onFailure(stateCode);
+                    loadFinishCallback.onFailure(stateCode, errorMsg);
                 }
             }
         }, null);
@@ -73,9 +71,9 @@ public class AboutNetwork extends BaseNetwork {
             }
         }, new FailureCallback() {
             @Override
-            public void onFailure(int stateCode) {
+            public void onFailure(int stateCode, String errorMsg) {
                 if (submitFinishCallback != null) {
-                    submitFinishCallback.onFailure(stateCode);
+                    submitFinishCallback.onFailure(stateCode, errorMsg);
                 }
             }
         }, new PrepareCallback() {
@@ -96,7 +94,7 @@ public class AboutNetwork extends BaseNetwork {
 
         public void onSuccess(UpdateInfo updateInfo);
 
-        public void onFailure(int stateCode);
+        public void onFailure(int stateCode, String errorMsg);
     }
 
     /**
@@ -108,6 +106,6 @@ public class AboutNetwork extends BaseNetwork {
 
         public void onSuccess();
 
-        public void onFailure(int stateCode);
+        public void onFailure(int stateCode, String errorMsg);
     }
 }

@@ -21,7 +21,7 @@ import com.cisoft.lazyorder.R;
 import com.cisoft.lazyorder.bean.goods.Goods;
 import com.cisoft.lazyorder.widget.OrderNumView;
 
-import org.kymjs.aframe.bitmap.KJBitmap;
+import org.kymjs.kjframe.KJBitmap;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,7 +90,7 @@ public class SearchResultAdapterTmp extends BaseAdapter{
             holder.btnGoodsPrice = (Button) convertView.findViewById(R.id.btn_goods_price);
             holder.ivGoodsThumb = (ImageView) convertView.findViewById(R.id.iv_goods_thumb);
             holder.llExpand = (LinearLayout) convertView.findViewById(R.id.ll_expand);
-            holder.orderNumView = (OrderNumView) convertView.findViewById(R.id.order_num_view);
+            holder.addAndSubNumView = (OrderNumView) convertView.findViewById(R.id.order_num_view);
             holder.btnAddToCart = (Button) convertView.findViewById(R.id.btn_add_to_cart);
             convertView.setTag(holder);
         }
@@ -112,7 +112,7 @@ public class SearchResultAdapterTmp extends BaseAdapter{
         holder.tvGoodsType.setText(item.getCatName());
                 /*以下是展开view*/
         holder.llExpand.setVisibility(View.GONE);
-        holder.btnAddToCart.setOnClickListener(new AddToCartListener(holder.orderNumView, item, animView));
+        holder.btnAddToCart.setOnClickListener(new AddToCartListener(holder.addAndSubNumView, item, animView));
         if (mLastVisiblePosition == position + 1 && isExpand) {
             holder.llExpand.setVisibility(View.VISIBLE);
         }
@@ -169,7 +169,7 @@ public class SearchResultAdapterTmp extends BaseAdapter{
      * @param v
      * @param g
      */
-    private void startAnimation(final View v, final Goods g, final OrderNumView orderNumView, final View disableView) {
+    private void startAnimation(final View v, final Goods g, final OrderNumView addAndSubNumView, final View disableView) {
         //重新设置价格，防止重用出现问题
         ((Button)v).setText(g.getCmPrice() + "");
         final View animView = createAnimView(v);
@@ -189,10 +189,10 @@ public class SearchResultAdapterTmp extends BaseAdapter{
             @Override
             public void onAnimationEnd(Animation animation) {
                 if (context != null) {
-                    context.onAddToCart(g, orderNumView.getNum());
+                    context.onAddToCart(g, addAndSubNumView.getNum());
                 }
                 //Did 展开view的复用问题：商品数量选择控件被复用=>暂时先这样解决
-                orderNumView.setNum(1);
+                addAndSubNumView.setNum(1);
                 ((ViewGroup)animLayout.getParent()).removeView(animLayout);
                 disableView.setEnabled(true);
             }
@@ -300,18 +300,18 @@ public class SearchResultAdapterTmp extends BaseAdapter{
      * 添加到购物车按钮被点击时的监听器
      */
     class AddToCartListener implements View.OnClickListener {
-        OrderNumView orderNumView;
+        OrderNumView addAndSubNumView;
         Goods goods;
         View animView;
-        public AddToCartListener(OrderNumView orderNumView, Goods item, View animView) {
-            this.orderNumView = orderNumView;
+        public AddToCartListener(OrderNumView addAndSubNumView, Goods item, View animView) {
+            this.addAndSubNumView = addAndSubNumView;
             this.goods = item;
             this.animView = animView;
         }
 
         @Override
         public void onClick(View v) {
-            startAnimation(animView, goods, orderNumView, v);
+            startAnimation(animView, goods, addAndSubNumView, v);
         }
     }
 
@@ -340,7 +340,7 @@ public class SearchResultAdapterTmp extends BaseAdapter{
         /*以下是展开的view的控件*/
         LinearLayout llExpand;
         ListView lvGoodsComment;
-        OrderNumView orderNumView;
+        OrderNumView addAndSubNumView;
         Button btnAddToCart;
 
     }

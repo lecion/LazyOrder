@@ -2,21 +2,19 @@ package com.cisoft.lazyorder.ui.express;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-
 import com.cisoft.lazyorder.R;
 import com.cisoft.lazyorder.bean.express.SmsInfo;
 import com.cisoft.lazyorder.core.express.SmsContent;
-
-import org.kymjs.kjframe.KJActivity;
+import com.cisoft.lazyorder.ui.BaseActivity;
 import org.kymjs.kjframe.ui.BindView;
-
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChoiceSmsActivity extends KJActivity implements AdapterView.OnItemClickListener{
+public class ChoiceSmsActivity extends BaseActivity implements AdapterView.OnItemClickListener{
 
     @BindView(id = R.id.lv_sms_list)
     private ListView lvSmsList;
@@ -54,4 +52,5 @@ public class ChoiceSmsActivity extends KJActivity implements AdapterView.OnItemC
         setResult(1, data);
         finish();
     }
+
 }

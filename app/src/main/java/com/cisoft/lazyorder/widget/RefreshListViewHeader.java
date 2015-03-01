@@ -45,7 +45,7 @@ public class RefreshListViewHeader extends LinearLayout {
 		LayoutParams lp = new LayoutParams(
 				LayoutParams.MATCH_PARENT, 0);
 		container = (LinearLayout) LayoutInflater.from(context).inflate(
-				R.layout.listview_header_layout, null);
+				R.layout.view_listview_header, null);
 		addView(container, lp);
 		setGravity(Gravity.BOTTOM);
 

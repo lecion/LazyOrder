@@ -22,66 +22,45 @@ public class AdvertiseNetwork extends BaseNetwork {
     /**
      * 从网络获取广告数据
      */
-    public void getAdvertiseDateFromNet(final OnAdvertiseLoadFinish loadFinishCallback) {
-        /*String url = packageAccessApiUrl(ApiConstants.METHOD_ADVERTISE_FIND_ALL, null);
-        String result = null;
-        result = httpCacher.get(url);
-        if (result != null && !AppConfig.IS_DEBUG) {
-            List<Advertise> advertises = new ArrayList<Advertise>();
-            try {
-                JSONObject jsonObj = new JSONObject(result);
-                JSONArray advertiseArr = jsonObj.getJSONArray(ApiConstants.KEY_DATA);
-                JSONObject advertiseObj = null;
-                Advertise advertise = null;
-                for (int i = 0; i < advertiseArr.length(); i++) {
-                    advertiseObj = advertiseArr.getJSONObject(i);
-                    advertise = new Advertise(advertiseObj);
-                    advertises.add(advertise);
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-
-            if(loadFinishCallback != null){
-                loadFinishCallback.onSuccess(advertises);
-            }
-
-        } else {*/
-            getRequest(ApiConstants.METHOD_MER_CATEGORY_FIND_ALL, null, new SuccessCallback() {
-                @Override
-                public void onSuccess(String result) {
-                    List<Advertise> advertises = new ArrayList<Advertise>();
-                    try {
-                        JSONObject jsonObj = new JSONObject(result);
-                        JSONArray advertiseArr = jsonObj.getJSONArray(ApiConstants.KEY_DATA);
-                        JSONObject advertiseObj = null;
-                        Advertise advertise = null;
-                        for (int i = 0; i < advertiseArr.length(); i++) {
-                            advertiseObj = advertiseArr.getJSONObject(i);
-                            advertise = new Advertise(advertiseObj);
-                            advertises.add(advertise);
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+    public void loadAdvertiseDate(final OnAdvertiseLoadFinish loadFinishCallback) {
+        super.getRequest(ApiConstants.METHOD_ADVERTISE_FIND_ALL, null, true, new SuccessCallback() {
+            @Override
+            public void onSuccess(String result) {
+                List<Advertise> advertises = new ArrayList<Advertise>();
+                try {
+                    JSONObject jsonObj = new JSONObject(result);
+                    JSONArray advertiseArr = jsonObj.getJSONArray(ApiConstants.KEY_DATA);
+                    JSONObject advertiseObj = null;
+                    Advertise advertise = null;
+                    for (int i = 0; i < advertiseArr.length(); i++) {
+                        advertiseObj = advertiseArr.getJSONObject(i);
+                        advertise = new Advertise(advertiseObj);
+                        advertises.add(advertise);
                     }
-
+                } catch (JSONException e) {
+                    e.printStackTrace();
 
                     if(loadFinishCallback != null){
-                        loadFinishCallback.onSuccess(advertises);
-                    }
-
-                }
-            }, new FailureCallback() {
-
-                @Override
-                public void onFailure(int stateCode) {
-                    if(loadFinishCallback != null){
-                        loadFinishCallback.onFailure(stateCode);
+                        loadFinishCallback.onFailure(ApiConstants.RES_STATE_SERVICE_EXCEPTION,
+                                getResponseStateInfo(ApiConstants.RES_STATE_SERVICE_EXCEPTION));
                     }
                 }
-            }, null);
-//        }
+
+
+                if(loadFinishCallback != null){
+                    loadFinishCallback.onSuccess(advertises);
+                }
+
+            }
+        }, new FailureCallback() {
+
+            @Override
+            public void onFailure(int stateCode, String errorMsg) {
+                if(loadFinishCallback != null){
+                    loadFinishCallback.onFailure(stateCode, errorMsg);
+                }
+            }
+        }, null);
     }
 
 
@@ -89,7 +68,7 @@ public class AdvertiseNetwork extends BaseNetwork {
 
         public void onSuccess(List<Advertise> advertises);
 
-        public void onFailure(int stateCode);
+        public void onFailure(int stateCode, String errorMsg);
     }
 
 }

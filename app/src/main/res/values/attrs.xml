@@ -12,10 +12,12 @@
     <attr name="menu_name" format="string" />
     <attr name="menu_icon" format="reference|integer" />
     <attr name="content_class" format="string" />
+    <attr name="need_login" format="boolean" />
     <declare-styleable name="drawMenuItemAttrs">
         <attr name="menu_name" />
         <attr name="menu_icon" />
         <attr name="content_class" />
+        <attr name="need_login" />
     </declare-styleable>
 
     <attr name="item_title" format="string" />

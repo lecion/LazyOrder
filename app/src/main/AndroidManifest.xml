@@ -5,29 +5,27 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.READ_SMS" />
-    <uses-permission android:name="android.permission.WRITE_SMS" />
-    <uses-permission android:name="android.permission.RECEIVE_SMS" />
 
     <application
         android:name=".AppContext"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <activity
-            android:name=".WelcomeActivity"
-            android:label="@string/app_name" >
+            android:name=".AppStart"
+            android:label="@string/app_name"
+            android:theme="@style/Fullscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".ui.main.MainActivity"
-            android:label="@string/title_activity_main" >
+            android:theme="@style/NoUpIndicator"
+            android:label="@string/title_activity_main">
         </activity>
         <activity
             android:name=".ui.goods.GoodsActivity"
@@ -41,14 +39,14 @@
             android:label="@string/title_activity_search" />
         <activity
             android:name=".ui.cart.CartActivity"
-            android:label="@string/title_activity_sure_order" >
+            android:label="@string/title_activity_cart" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.cisoft.lazyorder.ui.goods.GoodsActivity" />
         </activity>
         <activity
-            android:name=".ui.sureinfo.SureInfoActivity"
-            android:label="@string/title_activity_sure_info" >
+            android:name=".ui.settle.SettleActivity"
+            android:label="@string/title_activity_settle" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.cisoft.lazyorder.ui.cart.CartActivity" />
@@ -69,9 +67,6 @@
             android:name=".ui.about.FeedbackActivity"
             android:label="@string/title_activity_feedback" >
         </activity>
-
-        <service android:name=".core.about.UpdateService" />
-
         <activity
             android:name=".ui.express.ChoiceSmsActivity"
             android:label="@string/title_activity_choice_sms" >
@@ -81,17 +76,47 @@
             android:label="@string/title_activity_web_view" >
         </activity>
         <activity
-            android:name="com.cisoft.lazyorder.ui.address.ManageAddressActivity"
+            android:name=".ui.address.ManageAddressActivity"
             android:label="@string/title_activity_manage_address" >
         </activity>
         <activity
-            android:name="com.cisoft.lazyorder.ui.address.UpdateAddressActivity"
+            android:name=".ui.address.UpdateAddressActivity"
             android:label="@string/title_activity_update_address" >
         </activity>
         <activity
-            android:name="com.cisoft.lazyorder.ui.address.InsertAddressActivity"
+            android:name=".ui.address.InsertAddressActivity"
             android:label="@string/title_activity_insert_address" >
         </activity>
+        <activity
+            android:name=".ui.account.RegisterActivity"
+            android:label="@string/title_activity_register" >
+        </activity>
+        <activity
+            android:name=".ui.account.RegisterTwoActivity"
+            android:label="@string/title_activity_register" >
+        </activity>
+        <activity
+            android:name=".ui.account.UserCenterActivity"
+            android:label="@string/title_activity_user_center">
+        </activity>
+        <activity
+            android:name=".ui.about.SettingActivity"
+            android:label="@string/title_activity_setting" >
+        </activity>
+        <activity
+            android:name=".ui.account.EditPasswordActivity"
+            android:label="@string/title_activity_edit_password" >
+        </activity>
+        <activity
+            android:name=".ui.account.AlterPhoneVerifyActivity"
+            android:label="@string/title_activity_alter_phone_verify" >
+        </activity>
+        <activity
+            android:name=".ui.account.AlterPhoneBindingActivity"
+            android:label="@string/title_activity_alter_phone_binding" >
+        </activity>
+
+        <service android:name=".core.about.UpdateService" />
     </application>
 
 </manifest>

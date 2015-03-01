@@ -1,8 +1,0 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:mContext="com.cisoft.lazyorder.ui.express.ChoiceSmsActivity" >
-    <item android:id="@+id/menu_sms_import"
-        android:title="本地导入"
-        android:orderInCategory="100"
-        android:showAsAction="always" />
-</menu>

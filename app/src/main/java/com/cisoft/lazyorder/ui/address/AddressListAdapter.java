@@ -11,24 +11,24 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cisoft.lazyorder.R;
-import com.cisoft.lazyorder.bean.address.Address;
+import com.cisoft.lazyorder.bean.address.AddressInfo;
 
 import java.util.List;
 
 public class AddressListAdapter extends BaseAdapter {
 
 	private Context mContext;
-	private List<Address> mData;
+	private List<AddressInfo> mData;
 	private OnOperateBtnClickCallback mOperateBtnCallback;
 
-	public AddressListAdapter(Context context, List<Address> data,
+	public AddressListAdapter(Context context, List<AddressInfo> data,
 			OnOperateBtnClickCallback operateBtnCallback) {
 		mContext = context;
 		mData = data;
 		mOperateBtnCallback = operateBtnCallback;
 	}
 
-	public void addData(List<Address> addData) {
+	public void addData(List<AddressInfo> addData) {
 		mData.addAll(addData);
 	}
 
@@ -46,7 +46,7 @@ public class AddressListAdapter extends BaseAdapter {
 	}
 
 	@Override
-	public Address getItem(int position) {
+	public AddressInfo getItem(int position) {
 		return mData.get(position);
 	}
 
@@ -78,7 +78,7 @@ public class AddressListAdapter extends BaseAdapter {
 			holder = (ViewHolder) convertView.getTag();
 		}
 
-		final Address address = mData.get(position);
+		final AddressInfo address = mData.get(position);
 		holder.mTvName.setText(address.getName());
 		holder.mTvPhone.setText(address.getPhone());
 		holder.mTvAddress.setText(address.getAddress());
@@ -113,8 +113,8 @@ public class AddressListAdapter extends BaseAdapter {
 
     public interface OnOperateBtnClickCallback {
 
-        public void onDeleteBtnClick(Address wantDeleteAddress);
+        public void onDeleteBtnClick(AddressInfo wantDeleteAddress);
 
-        public void onUpdateBtnClick(Address wantUpdateAddress);
+        public void onUpdateBtnClick(AddressInfo wantUpdateAddress);
     }
 }

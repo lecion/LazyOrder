@@ -25,21 +25,18 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
-
 import com.cisoft.lazyorder.AppContext;
 import com.cisoft.lazyorder.R;
 import com.cisoft.lazyorder.bean.goods.Goods;
 import com.cisoft.lazyorder.bean.goods.GoodsCart;
-import com.cisoft.lazyorder.core.goods.INetWorkFinished;
 import com.cisoft.lazyorder.core.search.SearchService;
 import com.cisoft.lazyorder.finals.ApiConstants;
+import com.cisoft.lazyorder.ui.BaseActivity;
 import com.cisoft.lazyorder.ui.cart.CartActivity;
 import com.cisoft.lazyorder.util.DialogFactory;
 import com.cisoft.lazyorder.widget.OrderNumView;
-
-import org.kymjs.aframe.bitmap.KJBitmap;
-import org.kymjs.aframe.ui.BindView;
-import org.kymjs.aframe.ui.activity.BaseActivity;
+import org.kymjs.kjframe.KJBitmap;
+import org.kymjs.kjframe.ui.BindView;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -104,9 +101,6 @@ public class SearchActivity extends BaseActivity implements SearchView.OnQueryTe
 
     private SearchService searchService;
 
-    public SearchActivity() {
-        setHiddenActionBar(false);
-    }
 
     @Override
     public void setRootView() {
@@ -115,7 +109,7 @@ public class SearchActivity extends BaseActivity implements SearchView.OnQueryTe
     }
 
     @Override
-    protected void initData() {
+    public void initData() {
         Bundle data = getIntent().getExtras();
         shopId = data.getInt(ApiConstants.KEY_MER_ID, 0);
         shopName = data.getString(ApiConstants.KEY_MER_NAME);
@@ -125,7 +119,7 @@ public class SearchActivity extends BaseActivity implements SearchView.OnQueryTe
     }
 
     @Override
-    protected void initWidget() {
+    public void initWidget() {
         initSearchView();
         initResultListView();
         updateCartView();
@@ -160,7 +154,6 @@ public class SearchActivity extends BaseActivity implements SearchView.OnQueryTe
         //getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setDisplayShowTitleEnabled(false);
         getActionBar().setHomeButtonEnabled(true);
-        getActionBar().setIcon(R.drawable.nav_back_arrow);
         getActionBar().setDisplayShowCustomEnabled(true);
         getActionBar().setCustomView(LayoutInflater.from(this).inflate(R.layout.searchview_actionbar, null), new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT));
     }
@@ -246,7 +239,7 @@ public class SearchActivity extends BaseActivity implements SearchView.OnQueryTe
     @Override
     public boolean onQueryTextSubmit(String query) {
         showLoadingTip();
-        searchService.queryGoodsList(shopId, query, new INetWorkFinished<Goods>() {
+        searchService.queryGoodsList(shopId, query, new SearchService.OnQueryGoodsFinishCallback() {
             @Override
             public void onSuccess(List<Goods> l) {
                 mAdapter.setData(l);
@@ -254,7 +247,7 @@ public class SearchActivity extends BaseActivity implements SearchView.OnQueryTe
             }
 
             @Override
-            public void onFailure(String info) {
+            public void onFailure(int stateCode, String errorMsg) {
                 mAdapter.clearData();
                 showNoValueTip();
             }
@@ -272,7 +265,7 @@ public class SearchActivity extends BaseActivity implements SearchView.OnQueryTe
      */
     public void showLoadingTip() {
         if (loadingTipDialog == null) {
-            loadingTipDialog = DialogFactory.createToastDialog(this, "正在努力的找啊找啊找。。。");
+            loadingTipDialog = DialogFactory.createWaitToastDialog(this, "正在努力的找啊找啊找。。。");
         }
         if (!loadingTipDialog.isShowing()) {
             loadingTipDialog.show();
@@ -465,7 +458,7 @@ public class SearchActivity extends BaseActivity implements SearchView.OnQueryTe
                 holder.btnGoodsPrice = (Button) convertView.findViewById(R.id.btn_goods_price);
                 holder.ivGoodsThumb = (ImageView) convertView.findViewById(R.id.iv_goods_thumb);
                 holder.llExpand = (LinearLayout) convertView.findViewById(R.id.ll_expand);
-                holder.orderNumView = (OrderNumView) convertView.findViewById(R.id.order_num_view);
+                holder.addAndSubNumView = (OrderNumView) convertView.findViewById(R.id.order_num_view);
                 holder.btnAddToCart = (Button) convertView.findViewById(R.id.btn_add_to_cart);
                 convertView.setTag(holder);
             }
@@ -487,7 +480,7 @@ public class SearchActivity extends BaseActivity implements SearchView.OnQueryTe
             holder.tvGoodsType.setText(item.getCatName());
                 /*以下是展开view*/
             holder.llExpand.setVisibility(View.GONE);
-            holder.btnAddToCart.setOnClickListener(new AddToCartListener(holder.orderNumView, item, animView));
+            holder.btnAddToCart.setOnClickListener(new AddToCartListener(holder.addAndSubNumView, item, animView));
             if (mLastVisiblePosition == position + 1 && isExpand) {
                 holder.llExpand.setVisibility(View.VISIBLE);
             }
@@ -542,7 +535,7 @@ public class SearchActivity extends BaseActivity implements SearchView.OnQueryTe
          * @param v
          * @param g
          */
-        private void startAnimation(final View v, final Goods g, final OrderNumView orderNumView, final View disableView) {
+        private void startAnimation(final View v, final Goods g, final OrderNumView addAndSubNumView, final View disableView) {
             //重新设置价格，防止重用出现问题
             ((Button)v).setText(g.getCmPrice() + "");
             final View animView = createAnimView(v);
@@ -561,9 +554,9 @@ public class SearchActivity extends BaseActivity implements SearchView.OnQueryTe
 
                 @Override
                 public void onAnimationEnd(Animation animation) {
-                    onAddToCart(g, orderNumView.getNum());
+                    onAddToCart(g, addAndSubNumView.getNum());
                     //Did 展开view的复用问题：商品数量选择控件被复用=>暂时先这样解决
-                    orderNumView.setNum(1);
+                    addAndSubNumView.setNum(1);
                     ((ViewGroup)animLayout.getParent()).removeView(animLayout);
                     disableView.setEnabled(true);
                 }
@@ -671,18 +664,18 @@ public class SearchActivity extends BaseActivity implements SearchView.OnQueryTe
          * 添加到购物车按钮被点击时的监听器
          */
         class AddToCartListener implements View.OnClickListener {
-            OrderNumView orderNumView;
+            OrderNumView addAndSubNumView;
             Goods goods;
             View animView;
-            public AddToCartListener(OrderNumView orderNumView, Goods item, View animView) {
-                this.orderNumView = orderNumView;
+            public AddToCartListener(OrderNumView addAndSubNumView, Goods item, View animView) {
+                this.addAndSubNumView = addAndSubNumView;
                 this.goods = item;
                 this.animView = animView;
             }
 
             @Override
             public void onClick(View v) {
-                startAnimation(animView, goods, orderNumView, v);
+                startAnimation(animView, goods, addAndSubNumView, v);
             }
         }
 
@@ -711,7 +704,7 @@ public class SearchActivity extends BaseActivity implements SearchView.OnQueryTe
             /*以下是展开的view的控件*/
             LinearLayout llExpand;
             ListView lvGoodsComment;
-            OrderNumView orderNumView;
+            OrderNumView addAndSubNumView;
             Button btnAddToCart;
 
         }

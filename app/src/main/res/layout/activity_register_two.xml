@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_bg"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/content_padding"
+        android:layout_marginRight="@dimen/content_padding"
+        android:layout_marginTop="@dimen/content_padding"
+        android:background="@drawable/btn_radius_all_normal" >
+
+        <EditText
+            android:id="@+id/et_password"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/cell_height"
+            android:layout_marginLeft="10.0dip"
+            android:layout_marginRight="10.0dip"
+            android:background="@android:color/transparent"
+            android:gravity="left|center"
+            android:hint="@string/input_password_hint"
+            android:inputType="textPassword"
+            android:textColor="@color/text_edit_color"
+            android:textColorHint="@color/text_edit_hint_color"
+            android:textSize="16.0sp" />
+
+        <View
+            android:id="@+id/view_line_first"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/stroke"
+            android:layout_below="@+id/et_password"
+            android:background="@color/stroke" />
+
+        <EditText
+            android:id="@+id/et_password_confirm"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/cell_height"
+            android:layout_below="@id/view_line_first"
+            android:layout_marginLeft="10.0dip"
+            android:layout_marginRight="10.0dip"
+            android:background="@android:color/transparent"
+            android:gravity="left|center"
+            android:hint="@string/input_password_confirm_hint"
+            android:inputType="textPassword"
+            android:textColor="@color/text_edit_color"
+            android:textColorHint="@color/text_edit_hint_color"
+            android:textSize="16.0sp" />
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/btn_sure_and_register"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/cell_height"
+        android:layout_marginLeft="@dimen/content_padding"
+        android:layout_marginRight="@dimen/content_padding"
+        android:layout_marginTop="@dimen/content_padding"
+        android:background="@drawable/selector_red_corners_button"
+        android:text="@string/btn_confirm_and_register"
+        android:textColor="@color/white"
+        android:textSize="16.0sp" />
+
+</LinearLayout>

@@ -29,7 +29,7 @@ public class OrderNumShowView extends FrameLayout{
     public OrderNumShowView(Context context) {
         super(context);
         this.context = context;
-        LayoutInflater.from(context).inflate(R.layout.order_num_show_layout, this);
+        LayoutInflater.from(context).inflate(R.layout.view_order_num_show, this);
 
         control();
     }
@@ -37,7 +37,7 @@ public class OrderNumShowView extends FrameLayout{
     public OrderNumShowView(Context context, Map<String, String> value) {
         super(context);
         this.context = context;
-        LayoutInflater.from(context).inflate(R.layout.order_num_show_layout, this);
+        LayoutInflater.from(context).inflate(R.layout.view_order_num_show, this);
 
         control();
         setNameAndCountWithMap(value);
@@ -47,7 +47,7 @@ public class OrderNumShowView extends FrameLayout{
     public OrderNumShowView(Context context, String goodName, int goodCount) {
         super(context);
         this.context = context;
-        LayoutInflater.from(context).inflate(R.layout.order_num_show_layout, this);
+        LayoutInflater.from(context).inflate(R.layout.view_order_num_show, this);
 
         control();
         setGoodName(goodName);
@@ -77,11 +77,11 @@ public class OrderNumShowView extends FrameLayout{
     }
 
     public void setNameAndCountWithMap(Map<String, String> value){
-        goodName = value.get(ApiConstants.KEY_ORDER_GOODS_NAME);
-        goodCount = Integer.parseInt(value.get(ApiConstants.KEY_ORDER_GOODS_COUNT));
-
-        tvGoodName.setText(goodName);
-        tvGoodCount.setText(String.valueOf(goodCount));
+//        goodName = value.get(ApiConstants.KEY_ORDER_GOODS_NAME);
+//        goodCount = Integer.parseInt(value.get(ApiConstants.KEY_ORDER_GOODS_COUNT));
+//
+//        tvGoodName.setText(goodName);
+//        tvGoodCount.setText(String.valueOf(goodCount));
     }
 
 }

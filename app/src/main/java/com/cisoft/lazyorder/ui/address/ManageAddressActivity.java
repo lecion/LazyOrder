@@ -1,36 +1,38 @@
 package com.cisoft.lazyorder.ui.address;
 
-import android.app.ActionBar;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.cisoft.lazyorder.AppContext;
 import com.cisoft.lazyorder.R;
-import com.cisoft.lazyorder.bean.address.Address;
+import com.cisoft.lazyorder.bean.account.User;
+import com.cisoft.lazyorder.bean.address.AddressInfo;
 import com.cisoft.lazyorder.core.address.AddressNetwork;
 import com.cisoft.lazyorder.core.address.AddressNetwork.OnAddressListLoadFinish;
 import com.cisoft.lazyorder.core.address.AddressNetwork.OnDeleteAddressFinish;
 import com.cisoft.lazyorder.finals.ApiConstants;
+import com.cisoft.lazyorder.ui.BaseActivity;
 import com.cisoft.lazyorder.util.DialogFactory;
 import com.cisoft.lazyorder.widget.EmptyView;
 import com.cisoft.lazyorder.widget.SlideListView;
 
-import org.kymjs.kjframe.KJActivity;
 import org.kymjs.kjframe.ui.BindView;
 import org.kymjs.kjframe.ui.ViewInject;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ManageAddressActivity extends KJActivity implements
+public class ManageAddressActivity extends BaseActivity implements
         SlideListView.OnItemClickListener {
 
 	/*
@@ -39,27 +41,29 @@ public class ManageAddressActivity extends KJActivity implements
 	 * LOOK_ADDRESS_MODE：只能进行编辑，点击某一个地址后会设置成默认地址而不会跳转
 	 */
 	public static final String ENTER_MODE = "enterMode";
-	public static final int CHOOSE_ADDRESS_MODE = 1;
-	public static final int LOOK_ADDRESS_MODE = 2;
+    public static final int CHOOSE_ADDRESS_MODE = 1;
+    public static final int LOOK_ADDRESS_MODE = 2;
+
 	public static final int REQ_CODE_UPDATE_ADDRESS = 100;
 	public static final int REQ_CODE_INSERT_ADDRESS = 200;
-	public static final String CHOSE_ADDRESS = "choseAddress";
+	public static final String CHOSEN_ADDRESS = "choseAddress";
 
     @BindView(id = R.id.rl_root_view)
     private RelativeLayout mRootView;
     @BindView(id = R.id.ll_content)
     private LinearLayout mLlContent;
-	@BindView(id = R.id.btn_want_insert_address, click = true)
-	private Button mBtnWantInsertAddress;
     @BindView(id = R.id.lv_address_list)
     private SlideListView mLvAddressListView;
     private EmptyView mEmptyView;
+    private Dialog mWaitTipDialog;
 
 	private AddressListAdapter mAddressListAdapter;
 	private AddressNetwork mAddressNetwork;
 	private AddressListAdapter.OnOperateBtnClickCallback onOperateBtnCallback;
-	private List<Address> mAddressesListData;
-	private Dialog mWaitTipDialog;
+	private List<AddressInfo> mAddressesListData;
+	private AppContext mAppContext;
+    private User mLoginUser;
+
 	private int mEnterMode = LOOK_ADDRESS_MODE;
 
 	@Override
@@ -69,32 +73,32 @@ public class ManageAddressActivity extends KJActivity implements
 
 	@Override
 	public void initData() {
-		mEnterMode = getIntent().getExtras().getInt(ENTER_MODE, LOOK_ADDRESS_MODE);
+		mEnterMode = getIntent().getIntExtra(ENTER_MODE, LOOK_ADDRESS_MODE);
 		mAddressNetwork = new AddressNetwork(ManageAddressActivity.this);
-		mAddressesListData = new ArrayList<Address>();
+		mAddressesListData = new ArrayList<AddressInfo>();
+        mAppContext = (AppContext) getApplication();
+        mLoginUser = mAppContext.getLoginInfo();
 	}
 
 	@Override
 	public void initWidget() {
-		initialTitleBar();
 		initialAddressListView();
-		asyncLoadAddressListData();
+		loadAddressListData();
 	}
 
-	@Override
-	public void widgetClick(View v) {
-		switch (v.getId()) {
-		case R.id.btn_want_insert_address:
-			skipInsertAddressActivity();
-			break;
-		}
-	}
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_address_list, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
+            case R.id.add_address:
+                InsertAddressActivity.startFrom(this, InsertAddressActivity.NETWORK_INSERT_MODE,
+                        REQ_CODE_INSERT_ADDRESS);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -106,7 +110,7 @@ public class ManageAddressActivity extends KJActivity implements
 		switch (requestCode) {
 		case REQ_CODE_INSERT_ADDRESS:
 			if (resultCode == 1) {
-				Address insertedAddressObj = (Address) data
+				AddressInfo insertedAddressObj = (AddressInfo) data
 						.getSerializableExtra(InsertAddressActivity.INSERTED_ADDRESS_OBJ);
 				mAddressesListData.add(insertedAddressObj);
 				mAddressListAdapter.refresh();
@@ -114,7 +118,7 @@ public class ManageAddressActivity extends KJActivity implements
 			break;
 		case REQ_CODE_UPDATE_ADDRESS:
 			if (resultCode == 1) {
-				Address updatedAddressObj = (Address) data
+				AddressInfo updatedAddressObj = (AddressInfo) data
 						.getSerializableExtra(UpdateAddressActivity.UPDATED_ADDRESS_OBJ);
 				updateDataInAddressList(updatedAddressObj);
 				mAddressListAdapter.refresh();
@@ -126,16 +130,6 @@ public class ManageAddressActivity extends KJActivity implements
 		}
 	}
 
-	/**
-	 * 初始化title bar
-	 */
-	private void initialTitleBar() {
-		ActionBar actionBar = getActionBar();
-		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-		actionBar.setDisplayShowTitleEnabled(true);
-		actionBar.setDisplayHomeAsUpEnabled(true);
-		actionBar.setTitle(getString(R.string.title_activity_manage_address));
-	}
 
 	/**
 	 * 初始化地址列表视图
@@ -143,13 +137,13 @@ public class ManageAddressActivity extends KJActivity implements
 	private void initialAddressListView() {
 		onOperateBtnCallback = new AddressListAdapter.OnOperateBtnClickCallback() {
 			@Override
-			public void onDeleteBtnClick(Address wantDeleteAddress) {
+			public void onDeleteBtnClick(AddressInfo wantDeleteAddress) {
 				mLvAddressListView.turnToNormal();
                 doDeleteAddress(wantDeleteAddress);
 			}
 
 			@Override
-			public void onUpdateBtnClick(Address wantUpdateAddress) {
+			public void onUpdateBtnClick(AddressInfo wantUpdateAddress) {
                 mLvAddressListView.turnToNormal();
 				skipUpdateAddressActivity(wantUpdateAddress);
 			}
@@ -163,8 +157,7 @@ public class ManageAddressActivity extends KJActivity implements
         mEmptyView.setOnClickReloadListener(new EmptyView.OnClickReloadListener() {
             @Override
             public void onReload() {
-                mEmptyView.hideEmptyView();
-                asyncLoadAddressListData();
+                loadAddressListData();
             }
         });
 	}
@@ -172,15 +165,15 @@ public class ManageAddressActivity extends KJActivity implements
 	/**
 	 * 加载地址列表数据
 	 */
-	private void asyncLoadAddressListData() {
-		mAddressNetwork.loadAddrListByUId(1, new OnAddressListLoadFinish() {
+	private void loadAddressListData() {
+		mAddressNetwork.loadAddrListByUId(mLoginUser.getUserId(), new OnAddressListLoadFinish() {
 			@Override
 			public void onPreStart() {
 				showWaitTip();
 			}
 
 			@Override
-			public void onSuccess(List<Address> addresses) {
+			public void onSuccess(List<AddressInfo> addresses) {
 				closeWaitTip();
 				if (addresses.size() == 0) {
                     mEmptyView.showEmptyView(EmptyView.NO_DATA);
@@ -193,12 +186,11 @@ public class ManageAddressActivity extends KJActivity implements
 			}
 
 			@Override
-			public void onFailure(int stateCode) {
+			public void onFailure(int stateCode, String errorMsg) {
 				closeWaitTip();
                 mLlContent.setVisibility(View.GONE);
-                ViewInject.toast(mAddressNetwork
-                        .getResponseStateInfo(stateCode));
-                if(stateCode == ApiConstants.RESPONSE_STATE_NOT_NET || stateCode == ApiConstants.RESPONSE_STATE_NET_POOR) {
+                ViewInject.toast(errorMsg);
+                if(stateCode == ApiConstants.RES_STATE_NOT_NET || stateCode == ApiConstants.RES_STATE_NET_POOR) {
                     mEmptyView.showEmptyView(EmptyView.NO_NETWORK);
                 } else {
                     mEmptyView.showEmptyView(EmptyView.NO_DATA);
@@ -210,20 +202,21 @@ public class ManageAddressActivity extends KJActivity implements
 	/**
 	 * 执行删除地址操作
 	 */
-	private void doDeleteAddress(final Address wantDeleteAddressObj) {
-        if(wantDeleteAddressObj.isDefault() == 1) {
-            ViewInject.toast(getString(R.string.app_name));
-            return;
-        }
+	private void doDeleteAddress(final AddressInfo wantDeleteAddressObj) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle(getString(R.string.confirm_delete_address_title))
-				.setMessage(getString(R.string.confirm_delete_address_tip))
-				.setPositiveButton(getString(R.string.sure),
+		builder.setTitle(getString(R.string.dialog_confirm_delete_address_title))
+				.setMessage(getString(R.string.dialog_confirm_delete_address_content))
+				.setPositiveButton(getString(R.string.btn_confirm),
 						new DialogInterface.OnClickListener() {
 							@Override
 							public void onClick(DialogInterface dialog,
 									int which) {
-								mAddressNetwork.deleteAddressByAddrId(wantDeleteAddressObj.getId(),
+                                if(wantDeleteAddressObj.isDefault() == 1) {
+                                    ViewInject.toast(getString(R.string.toast_can_not_delete_default_address));
+                                    return;
+                                }
+
+								mAddressNetwork.deleteAddressByAddrId(mLoginUser.getUserId(), wantDeleteAddressObj.getId(),
 										new OnDeleteAddressFinish() {
 
 											@Override
@@ -237,41 +230,33 @@ public class ManageAddressActivity extends KJActivity implements
 												mAddressesListData.remove(wantDeleteAddressObj);
 												mAddressListAdapter.refresh();
 												ViewInject
-														.toast(getString(R.string.success_to_delete_address));
+														.toast(getString(R.string.toast_success_to_delete_address));
 											}
 
 											@Override
-											public void onFailure(int stateCode) {
+											public void onFailure(int stateCode, String errorMsg) {
 												closeWaitTip();
-												ViewInject.toast(mAddressNetwork
-														.getResponseStateInfo(stateCode));
+												ViewInject.toast(errorMsg);
 											}
 										});
 							}
-						}).setNegativeButton(getString(R.string.cancel), null)
+						}).setNegativeButton(getString(R.string.btn_cancel), null)
 				.create().show();
 		;
 	}
+
 
 	/**
 	 * 跳转到修改地址界面
 	 * 
 	 * @param wantUpdateAddressObj
 	 */
-	private void skipUpdateAddressActivity(Address wantUpdateAddressObj) {
+	private void skipUpdateAddressActivity(AddressInfo wantUpdateAddressObj) {
 		Intent i = new Intent(ManageAddressActivity.this,
 				UpdateAddressActivity.class);
 		i.putExtra(UpdateAddressActivity.WANT_UPDATE_ADDRESS_OBJ,
 				wantUpdateAddressObj);
 		startActivityForResult(i, REQ_CODE_UPDATE_ADDRESS);
-	}
-
-	/**
-	 * 跳转到添加地址界面
-	 */
-	private void skipInsertAddressActivity() {
-		startActivityForResult(new Intent(ManageAddressActivity.this,
-				InsertAddressActivity.class), REQ_CODE_INSERT_ADDRESS);
 	}
 
 	/**
@@ -281,7 +266,7 @@ public class ManageAddressActivity extends KJActivity implements
 	private void showWaitTip() {
 		if (mWaitTipDialog == null)
 			mWaitTipDialog = DialogFactory.createWaitToastDialog(this,
-                    getString(R.string.wait));
+                    getString(R.string.toast_wait));
 		mWaitTipDialog.show();
 	}
 
@@ -298,10 +283,10 @@ public class ManageAddressActivity extends KJActivity implements
 	@Override
 	public void onItemClick(AdapterView adapterView, View view, int position,
 			long id) {
-		final Address checkedAddress = (Address) adapterView
+		final AddressInfo checkedAddress = (AddressInfo) adapterView
 				.getItemAtPosition(position);
 		
-		mAddressNetwork.setDefaultAddressByAddrId(checkedAddress.getId(),
+		mAddressNetwork.setDefaultAddressByAddrId(mLoginUser.getUserId(), checkedAddress.getId(),
 				new AddressNetwork.OnSetDefaultAddressFinish() {
 					@Override
 					public void onPreStart() {
@@ -318,18 +303,18 @@ public class ManageAddressActivity extends KJActivity implements
 						if(mEnterMode == CHOOSE_ADDRESS_MODE){
 							Intent data = new Intent();
 							Bundle bundle = new Bundle();
-							bundle.putSerializable(CHOSE_ADDRESS,
+							bundle.putSerializable(CHOSEN_ADDRESS,
 									checkedAddress);
 							data.putExtras(bundle);
 							setResult(1, data);
+                            ManageAddressActivity.this.finish();
 						}
 					}
 
 					@Override
-					public void onFailure(int stateCode) {
+					public void onFailure(int stateCode, String errorMsg) {
 						closeWaitTip();
-						ViewInject.toast(mAddressNetwork
-								.getResponseStateInfo(stateCode));
+						ViewInject.toast(errorMsg);
 					}
 				});
 
@@ -338,9 +323,9 @@ public class ManageAddressActivity extends KJActivity implements
 	/**
 	 * 修改地址数据集合中的地址数据
 	 */
-	private void updateDataInAddressList(Address newAddressObj) {
+	private void updateDataInAddressList(AddressInfo newAddressObj) {
         for (int i = 0; i < mAddressesListData.size(); i++) {
-			Address tmpAddress = mAddressesListData.get(i);
+			AddressInfo tmpAddress = mAddressesListData.get(i);
 			if(tmpAddress.isDefault() == 1 && newAddressObj.isDefault() == 1
                     && tmpAddress.getId() != newAddressObj.getId()) {
                 tmpAddress.setDefault(0);
@@ -351,5 +336,15 @@ public class ManageAddressActivity extends KJActivity implements
 		}
 	}
 
+    public static void startFrom(Activity activity, int enterMode) {
+        Intent i = new Intent(activity, ManageAddressActivity.class);
+        i.putExtra(ManageAddressActivity.ENTER_MODE, enterMode);
+        activity.startActivity(i);
+    }
 
+    public static void startFrom(Activity activity, int enterMode, int requestCode) {
+        Intent i = new Intent(activity, ManageAddressActivity.class);
+        i.putExtra(ManageAddressActivity.ENTER_MODE, enterMode);
+        activity.startActivityForResult(i, requestCode);
+    }
 }

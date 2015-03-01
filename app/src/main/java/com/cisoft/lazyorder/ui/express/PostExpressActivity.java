@@ -1,6 +1,5 @@
 package com.cisoft.lazyorder.ui.express;
 
-import android.app.ActionBar;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,23 +11,25 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.cisoft.lazyorder.AppContext;
 import com.cisoft.lazyorder.R;
-import com.cisoft.lazyorder.bean.address.Address;
+import com.cisoft.lazyorder.bean.account.User;
+import com.cisoft.lazyorder.bean.address.AddressInfo;
 import com.cisoft.lazyorder.bean.express.SmsInfo;
-import com.cisoft.lazyorder.bean.order.ExpressOrder;
-import com.cisoft.lazyorder.core.order.OrderNetwork;
+import com.cisoft.lazyorder.bean.express.Express;
+import com.cisoft.lazyorder.core.express.ExpressNetwork;
+import com.cisoft.lazyorder.finals.ApiConstants;
+import com.cisoft.lazyorder.ui.BaseActivity;
+import com.cisoft.lazyorder.ui.address.InsertAddressActivity;
 import com.cisoft.lazyorder.ui.address.ManageAddressActivity;
 import com.cisoft.lazyorder.util.DialogFactory;
-
-import org.kymjs.kjframe.KJActivity;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.kymjs.kjframe.ui.BindView;
 import org.kymjs.kjframe.ui.ViewInject;
 import org.kymjs.kjframe.utils.StringUtils;
-import org.kymjs.kjframe.utils.SystemTool;
 
-public class PostExpressActivity extends KJActivity {
+public class PostExpressActivity extends BaseActivity {
 
     @BindView(id = R.id.et_sms_content)
     private EditText mEtSMSContent;
@@ -42,21 +43,21 @@ public class PostExpressActivity extends KJActivity {
     private TextView mTvPhone;
     @BindView(id = R.id.tv_address)
     private TextView mTvAddress;
-
     @BindView(id = R.id.btn_post_express, click = true)
     private Button mBtnPostExpress;
     private Dialog mWaitTipDialog;
     private Dialog mSuccessTipDialog;
 
     private AppContext mAppContext;
-    private OrderNetwork mOrderNetwork;
+    private ExpressNetwork mExpressNetwork;
 
     public static final int REQ_CODE_IMPORT_SMS = 100;
     public static final int REQ_CODE_CHOOSE_ADDRESS = 200;
+    public static final int REQ_CODE_INSERT_ADDRESS = 300;
     public static final String POSTED_EXPRESS = "submitedExpress";
 
-    private int schoolId;
-    private Address mChoiceAddress;
+    private int schoolId = 0;
+    private AddressInfo mChoiceAddress;
 
     @Override
     public void setRootView() {
@@ -66,35 +67,40 @@ public class PostExpressActivity extends KJActivity {
     @Override
     public void initData() {
         mAppContext = (AppContext) getApplication();
-        mOrderNetwork = new OrderNetwork(this);
+        mExpressNetwork = new ExpressNetwork(this);
         schoolId = mAppContext.getSchoolId();
     }
 
     @Override
     public void initWidget() {
-        initialTitleBar();
-        initDefaultData();
+        initAddressInfo();
     }
 
-
     /**
-     * 初始化标题栏
+     * 初始化地址信息
      */
-    private void initialTitleBar() {
-        ActionBar actionBar = getActionBar();
-        actionBar.setDisplayShowHomeEnabled(true);
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setHomeButtonEnabled(true);
-        actionBar.setIcon(R.drawable.nav_back_arrow);
-        actionBar.setTitle("  提交快递");
-    }
-
-
-    /**
-     * 从SP里读取默认的信息数据
-     */
-    private void initDefaultData(){
-
+    private void initAddressInfo(){
+        if(mAppContext.isLogin()) {
+            User loginUser = mAppContext.getLoginInfo();
+            mChoiceAddress = loginUser.getDefAddressInfo();
+            // 可能默认地址为空
+            if (mChoiceAddress != null) {
+                mTvName.setText(mChoiceAddress.getName());
+                mTvPhone.setText(mChoiceAddress.getPhone());
+                mTvAddress.setText(mChoiceAddress.getAddress());
+            }
+        } else {
+            if (!StringUtils.isEmpty(mAppContext.getRecentName())
+                    && !StringUtils.isEmpty(mAppContext.getRecentPhone())
+                    && !StringUtils.isEmpty(mAppContext.getRecentAddress())) {
+                mChoiceAddress = new AddressInfo(mAppContext.getRecentName(),
+                        mAppContext.getRecentPhone(),
+                        mAppContext.getRecentAddress(), 0);
+                mTvName.setText(mChoiceAddress.getName());
+                mTvPhone.setText(mChoiceAddress.getPhone());
+                mTvAddress.setText(mChoiceAddress.getAddress());
+            }
+        }
     }
 
     /**
@@ -105,24 +111,16 @@ public class PostExpressActivity extends KJActivity {
         String extraMsg = mEtExtraMsg.getText().toString();
 
         if (StringUtils.isEmpty(smsContent)) {
-            ViewInject.toast("请粘贴上你收到的快递短信");
+            ViewInject.toast(getString(R.string.toast_sms_content_not_be_empty));
             return;
         }
         if (mChoiceAddress == null) {
-            ViewInject.toast("请选择地址");
+            ViewInject.toast(getString(R.string.toast_address_info_not_be_empty));
             return;
         }
-
-        /* 组装Express类的订单对象 */
-        final ExpressOrder expressOrder = new ExpressOrder();
-        expressOrder.setUserName(mChoiceAddress.getName());
-        expressOrder.setUserPhone(mChoiceAddress.getPhone());
-        expressOrder.setAddress(mChoiceAddress.getAddress());
-        expressOrder.setExtraMsg(extraMsg);
-        expressOrder.setSmsCotent(smsContent);
-        expressOrder.setDeliveryMoney(1);
-
-        mOrderNetwork.submitExpressOrderForServer(expressOrder, new OrderNetwork.OnExpressOrderSubmitFinish() {
+        String expressJsonStr = createExpressJsonStr(smsContent, extraMsg);
+        mExpressNetwork.submitExpressOrderForServer(expressJsonStr,
+                new ExpressNetwork.OnExpressSubmitFinish() {
             @Override
             public void onPreStart() {
                 showWaitTip();
@@ -132,13 +130,14 @@ public class PostExpressActivity extends KJActivity {
             public void onSuccess() {
                 closeWaitTip();
                 showSuccessTip();
-                expressOrder.setSubmitTime(SystemTool.getDataTime("yyyy-MM-dd HH:mm:ss"));
+
+                final Express express = new Express();
                 new Handler().postDelayed(new Runnable() {
                     public void run() {
                         closeSuccessTip();
                         Intent data = new Intent();
                         Bundle bundle = new Bundle();
-                        bundle.putSerializable(POSTED_EXPRESS, expressOrder);
+                        bundle.putSerializable(POSTED_EXPRESS, express);
                         data.putExtras(bundle);
                         setResult(1, data);
                         PostExpressActivity.this.finish();
@@ -147,9 +146,9 @@ public class PostExpressActivity extends KJActivity {
             }
 
             @Override
-            public void onFailure(int stateCode) {
+            public void onFailure(int stateCode, String errorMsg) {
                 closeWaitTip();
-                ViewInject.toast(mOrderNetwork.getResponseStateInfo(stateCode));
+                ViewInject.toast(errorMsg);
             }
         });
     }
@@ -164,22 +163,21 @@ public class PostExpressActivity extends KJActivity {
                 doPostExpress();
                 break;
             case R.id.rl_choice_address:
-                skipChooseAddressActivity();
+                if (mAppContext.isLogin()) {
+                    ManageAddressActivity.startFrom(this, ManageAddressActivity.CHOOSE_ADDRESS_MODE,
+                            REQ_CODE_CHOOSE_ADDRESS);
+                } else {
+                    InsertAddressActivity.startFrom(this, InsertAddressActivity.NORMAL_INSERT_MODE,
+                            REQ_CODE_INSERT_ADDRESS);
+                }
                 break;
         }
     }
 
 
-    private void skipChooseAddressActivity() {
-        Intent i = new Intent(this, ManageAddressActivity.class);
-        i.putExtra(ManageAddressActivity.ENTER_MODE, ManageAddressActivity.CHOOSE_ADDRESS_MODE);
-        startActivityForResult(i, REQ_CODE_CHOOSE_ADDRESS);
-    }
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.post_express, menu);
+        getMenuInflater().inflate(R.menu.menu_post_express, menu);
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -187,11 +185,9 @@ public class PostExpressActivity extends KJActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
             case R.id.menu_sms_import:
-                startActivityForResult(new Intent(this, ChoiceSmsActivity.class), REQ_CODE_IMPORT_SMS);
+                startActivityForResult(new Intent(this, ChoiceSmsActivity.class),
+                        REQ_CODE_IMPORT_SMS);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -209,10 +205,23 @@ public class PostExpressActivity extends KJActivity {
                 break;
             case REQ_CODE_CHOOSE_ADDRESS:
                 if (resultCode == 1) {
-                    mChoiceAddress = (Address) data.getSerializableExtra(ManageAddressActivity.CHOSE_ADDRESS);
+                    mChoiceAddress = (AddressInfo) data.getSerializableExtra(ManageAddressActivity.CHOSEN_ADDRESS);
                     mTvName.setText(mChoiceAddress.getName());
                     mTvPhone.setText(mChoiceAddress.getPhone());
                     mTvAddress.setText(mChoiceAddress.getAddress());
+                }
+                break;
+            case REQ_CODE_INSERT_ADDRESS:
+                if (resultCode == 1) {
+                    mChoiceAddress = (AddressInfo) data
+                            .getSerializableExtra(InsertAddressActivity.INSERTED_ADDRESS_OBJ);
+                    mTvName.setText(mChoiceAddress.getName());
+                    mTvPhone.setText(mChoiceAddress.getPhone());
+                    mTvAddress.setText(mChoiceAddress.getAddress());
+                    // 将填写的地址信息记录下来
+                    mAppContext.setRecentName(mChoiceAddress.getName());
+                    mAppContext.setRecentName(mChoiceAddress.getPhone());
+                    mAppContext.setRecentName(mChoiceAddress.getAddress());
                 }
                 break;
             default:
@@ -227,7 +236,7 @@ public class PostExpressActivity extends KJActivity {
     private void showWaitTip() {
         if (mWaitTipDialog == null)
             mWaitTipDialog = DialogFactory.createWaitToastDialog(this,
-                    getString(R.string.wait));
+                    getString(R.string.toast_wait));
         mWaitTipDialog.show();
     }
 
@@ -247,7 +256,7 @@ public class PostExpressActivity extends KJActivity {
         if (mSuccessTipDialog == null)
             mSuccessTipDialog = DialogFactory.createSuccessToastDialog(
                     this,
-                    getString(R.string.success_to_submit_feedback));
+                    getString(R.string.toast_success_to_submit_express));
         mSuccessTipDialog.show();
     }
 
@@ -259,5 +268,30 @@ public class PostExpressActivity extends KJActivity {
                 && mSuccessTipDialog.isShowing()) {
             mSuccessTipDialog.dismiss();
         }
+    }
+
+
+    /**
+     * 创建Express json字符串
+     * @return
+     */
+    private String createExpressJsonStr(String smsContent, String extraMsg){
+        String jsonStr = "";
+
+        try {
+            JSONObject resultJsonObj = new JSONObject();
+            resultJsonObj.put(ApiConstants.KEY_EXPRESS_NAME, mChoiceAddress.getName());
+            resultJsonObj.put(ApiConstants.KEY_EXPRESS_PHONE, mChoiceAddress.getPhone());
+            resultJsonObj.put(ApiConstants.KEY_EXPRESS_ADDRESS, mChoiceAddress.getAddress());
+            resultJsonObj.put(ApiConstants.KEY_EXPRESS_SHIPPING_FEE, 1);
+            resultJsonObj.put(ApiConstants.KEY_EXPRESS_EXTRA_MSG, extraMsg);
+            resultJsonObj.put(ApiConstants.KEY_EXPRESS_SMS_CONTENT, smsContent);
+
+            jsonStr = resultJsonObj.toString();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return jsonStr;
     }
 }

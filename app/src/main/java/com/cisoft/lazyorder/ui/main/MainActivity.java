@@ -1,21 +1,21 @@
 package com.cisoft.lazyorder.ui.main;
 
 import android.app.ActionBar;
+import android.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.view.KeyEvent;
 import android.view.Menu;
-import android.view.MenuItem;
-
 import com.cisoft.lazyorder.R;
-
+import com.cisoft.lazyorder.ui.main.menu.DrawerMenuFragment;
+import com.cisoft.lazyorder.ui.main.menu.MenuFragmentManager;
 import org.kymjs.kjframe.KJActivity;
 import org.kymjs.kjframe.ui.ViewInject;
 
-public class MainActivity extends KJActivity{
+public class MainActivity extends KJActivity implements DrawerMenuFragment.NavigationDrawerCallbacks{
 
-    private DrawMenuFragment navDrawerFragment;
+    private DrawerMenuFragment navDrawerFragment;
+    private CharSequence mTitle;
     private long lastKeyTime;
-
 
     @Override
     public void setRootView() {
@@ -23,51 +23,43 @@ public class MainActivity extends KJActivity{
     }
 
     @Override
-    public void initData() {
+    public void initWidget() {
+        navDrawerFragment = (DrawerMenuFragment)
+                getFragmentManager().findFragmentById(R.id.navigation_drawer);
+        navDrawerFragment.setUp(
+                R.id.navigation_drawer,
+                (DrawerLayout) findViewById(R.id.drawer_layout));
+        mTitle = getTitle();
     }
 
     @Override
-    public void initWidget() {
-        initNavDrawer();
+    public void onNavigationDrawerItemSelected(int position) {
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.container, MenuFragmentManager.getInstance(this)
+                        .getMenuItemByPosition(position).fragment)
+                .commit();
     }
 
-    /**
-     * 初始化导航抽屉
-     */
-    private void initNavDrawer(){
-        navDrawerFragment = (DrawMenuFragment)
-                getFragmentManager().findFragmentById(R.id.drawer_menu_fragment);
-
-        navDrawerFragment.setUp(
-                R.id.drawer_menu_fragment,
-                (DrawerLayout) findViewById(R.id.drawe_menu_layout));
+    public void onSectionAttached(int position) {
+        mTitle = MenuFragmentManager.getInstance(this)
+                .getMenuItemByPosition(position).title;
     }
 
-    /**
-     * 重置ActionBar
-     */
     public void restoreActionBar() {
         ActionBar actionBar = getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setTitle(R.string.app_name);
+        actionBar.setTitle(mTitle);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        menu.clear();
-
-        if(navDrawerFragment.isNavDrawerOpen()) {
+        if(!navDrawerFragment.isDrawerOpen()) {
             restoreActionBar();
+            return true;
         }
-
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override

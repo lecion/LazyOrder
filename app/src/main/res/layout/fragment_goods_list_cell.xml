@@ -137,7 +137,6 @@
                 android:padding="0dp"
                 android:layout_margin="0dp"
                 android:layout_centerVertical="true">
-
             </com.cisoft.lazyorder.widget.OrderNumView>
         </RelativeLayout>
 
@@ -145,9 +144,10 @@
             android:id="@+id/btn_add_to_cart"
             android:layout_width="match_parent"
             android:layout_height="42dp"
-            android:background="#ffc50000"
+            android:background="@drawable/selector_red_corners_button"
             android:text="添加到购物车"
-            android:textColor="@android:color/white" />
+            android:textColor="@color/white"
+            android:textSize="14.0sp"/>
 
     </LinearLayout>
 </LinearLayout>

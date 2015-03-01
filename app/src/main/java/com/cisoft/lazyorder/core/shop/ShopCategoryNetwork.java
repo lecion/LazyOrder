@@ -1,18 +1,13 @@
 package com.cisoft.lazyorder.core.shop;
 
 import android.content.Context;
-import android.util.Log;
-
 import com.cisoft.lazyorder.bean.shop.ShopCategory;
 import com.cisoft.lazyorder.core.BaseNetwork;
 import com.cisoft.lazyorder.finals.ApiConstants;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.kymjs.aframe.ui.ViewInject;
-import org.kymjs.kjframe.KJHttp;
-import org.kymjs.kjframe.http.HttpCallBack;
-
+import org.kymjs.kjframe.http.HttpParams;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,92 +18,67 @@ public class ShopCategoryNetwork extends BaseNetwork {
 	}
 
 	
-	
 	/**
      * 加载全部店家类别列表的数据
      */
-    public void loadAllShopCategoryData(final OnCategoryLoadFinish loadFinishCallback){
+    public void loadShopCategoryListData(int schoolId, final OnCategoryLoadCallback onCategoryLoadCallback){
+        HttpParams params = new HttpParams();
+        params.put(ApiConstants.KEY_MC_SCHOOL_ID, String.valueOf(schoolId));
 
-    	/*String url = packageAccessApiUrl(ApiConstants.METHOD_MER_CATEGORY_FIND_ALL, null);
-        String result = null;
-        result = httpCacher.get(url);
-        if (result != null && !AppConfig.IS_DEBUG) {
-            List<ShopCategory> shopCategorys = new ArrayList<ShopCategory>();
-            try {
-                JSONObject jsonObj = new JSONObject(result);
-                JSONArray shopCategoryArr = jsonObj.getJSONArray(ApiConstants.KEY_MC_DATA);
-                JSONObject shopCategoryObj = null;
-                ShopCategory shopCategory = null;
-                for (int i = 0; i < shopCategoryArr.length(); i++) {
-                    shopCategoryObj = shopCategoryArr.getJSONObject(i);
-                    shopCategory = new ShopCategory(shopCategoryObj);
-                    shopCategorys.add(shopCategory);
+        super.getRequest(ApiConstants.METHOD_MER_CATEGORY_FIND_ALL, params, true, new SuccessCallback() {
+            @Override
+            public void onSuccess(String result) {
+                List<ShopCategory> shopCategorys = new ArrayList<ShopCategory>();
+                try {
+                    JSONObject jsonObj = new JSONObject(result);
+                    JSONArray shopCateogyArr = jsonObj.getJSONArray(ApiConstants.KEY_DATA);
+                    JSONObject shopCategoryObj = null;
+                    ShopCategory shopCategory = null;
+                    for (int i = 0; i < shopCateogyArr.length(); i++) {
+                        shopCategoryObj = shopCateogyArr.getJSONObject(i);
+                        shopCategory = new ShopCategory(shopCategoryObj);
+                        shopCategorys.add(shopCategory);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+
+                    if(onCategoryLoadCallback != null){
+                        onCategoryLoadCallback.onFailure(ApiConstants.RES_STATE_SERVICE_EXCEPTION,
+                                getResponseStateInfo(ApiConstants.RES_STATE_SERVICE_EXCEPTION));
+                    }
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
+
+                if (onCategoryLoadCallback != null) {
+                    onCategoryLoadCallback.onSuccess(shopCategorys);
+                }
+
             }
+        }, new FailureCallback() {
 
-
-            if(loadFinishCallback != null){
-                loadFinishCallback.onSuccess(shopCategorys);
+            @Override
+            public void onFailure(int stateCode, String errorMsg) {
+                if (onCategoryLoadCallback != null) {
+                    onCategoryLoadCallback.onFailure(stateCode, errorMsg);
+                }
             }
-
-        } else {*/
-            getRequest(ApiConstants.METHOD_MER_CATEGORY_FIND_ALL, null, new SuccessCallback() {
-                @Override
-                public void onSuccess(String result) {
-
-
-                    List<ShopCategory> shopCategorys = new ArrayList<ShopCategory>();
-                    try {
-                        JSONObject jsonObj = new JSONObject(result);
-                        JSONArray shopCateogyArr = jsonObj.getJSONArray(ApiConstants.KEY_MC_DATA);
-                        JSONObject shopCategoryObj = null;
-                        ShopCategory shopCategory = null;
-                        for (int i = 0; i < shopCateogyArr.length(); i++) {
-                            shopCategoryObj = shopCateogyArr.getJSONObject(i);
-                            shopCategory = new ShopCategory(shopCategoryObj);
-                            shopCategorys.add(shopCategory);
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                    if (loadFinishCallback != null) {
-                        loadFinishCallback.onSuccess(shopCategorys);
-                    }
-
+        }, new PrepareCallback() {
+            @Override
+            public void onPreStart() {
+                if (onCategoryLoadCallback != null) {
+                    onCategoryLoadCallback.onPreStart();
                 }
-            }, new FailureCallback() {
-
-                @Override
-                public void onFailure(int stateCode) {
-                    if (loadFinishCallback != null) {
-                        loadFinishCallback.onFailure(stateCode);
-                    }
-                }
-            }, new PrepareCallback() {
-                @Override
-                public void onPreStart() {
-                    if (loadFinishCallback != null) {
-                        loadFinishCallback.onPreStart();
-                    }
-                }
-            });
-//        }
+            }
+        });
     }
-	
-	
 
 
-
-    public interface OnCategoryLoadFinish{
+    public interface OnCategoryLoadCallback {
 
         public void onPreStart();
 
         public void onSuccess(List<ShopCategory> categories);
 
-        public void onFailure(int stateCode);
+        public void onFailure(int stateCode, String errorMsg);
     }
 
 }

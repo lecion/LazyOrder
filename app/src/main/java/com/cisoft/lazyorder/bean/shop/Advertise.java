@@ -2,17 +2,16 @@ package com.cisoft.lazyorder.bean.shop;
 
 import com.cisoft.lazyorder.bean.BaseBean;
 import com.cisoft.lazyorder.finals.ApiConstants;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.Iterator;
 
 /**
  * Created by comet on 2014/12/8.
  */
 public class Advertise extends BaseBean {
-    private int type;   //广告的类别：1为WebView式广告，2是直接进入店家商品列表页式的广告
+
+    private String type;   //广告的类别
     private String imageUrl;   //广告图的url地址
     private String contentUrl; //如果是WebView式广告的话，内容的url地址
     private String contentTitle; //如果是WebView式广告的话，内容的url标题
@@ -28,11 +27,11 @@ public class Advertise extends BaseBean {
         this.parse(jsonObj);
     }
 
-    public int getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(int type) {
+    public void setType(String type) {
         this.type = type;
     }
 
@@ -108,7 +107,7 @@ public class Advertise extends BaseBean {
             while (iterator.hasNext()) {
                 key = iterator.next();
                 if (key.equals(ApiConstants.KEY_ADVERTISE_TYPE)) {
-                    this.type = jsonObj.getInt(ApiConstants.KEY_ADVERTISE_TYPE);
+                    this.type = jsonObj.getString(ApiConstants.KEY_ADVERTISE_TYPE);
                 } else if (key.equals(ApiConstants.KEY_ADVERTISE_IMAGE_URL)) {
                     this.imageUrl = jsonObj.getString(ApiConstants.KEY_ADVERTISE_IMAGE_URL);
                 } else if(key.equals(ApiConstants.KEY_ADVERTISE_CONTENT_URL)) {

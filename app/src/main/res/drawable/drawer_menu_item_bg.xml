@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector
-  xmlns:android="http://schemas.android.com/apk/res/android">
+  xmlns:android="http://schemas.android.com/apk/res/android"
+    android:exitFadeDuration="@android:integer/config_mediumAnimTime">
+    <item
+        android:state_activated="true"
+        android:drawable="@color/color_cc" />
     <item
         android:state_pressed="true"
-        android:drawable="@color/blue" />
+        android:drawable="@color/color_cc" />
     <item
-        android:state_pressed="false">
-        <color android:color="#ff2f3036" />
-    </item>
+        android:drawable="@android:color/transparent" />
 </selector>

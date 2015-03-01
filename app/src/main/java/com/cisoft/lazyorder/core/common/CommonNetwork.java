@@ -18,57 +18,71 @@ public class CommonNetwork extends BaseNetwork {
 
     /**
      * 获取短信验证码
-     * @param userMobileNum
-     * @param sendFinishCallback
+     * @param userPhone
+     * @param sendCallback
      */
-    public void obtainSMSAuthCode(String userMobileNum, final OnSMSCodeSendFinish sendFinishCallback){
+    public void obtainSMSAuthCode(String userPhone, final OnSMSCodeSendCallback sendCallback){
         HttpParams params = new HttpParams();
-        params.put(ApiConstants.KEY_COMMON_USER_PHONE, userMobileNum);
+        params.put(ApiConstants.KEY_COMMON_USER_PHONE, userPhone);
 
         getRequest(ApiConstants.METHOD_COMMON_GET_SMS_AUTH_CODE, params, new SuccessCallback() {
             @Override
             public void onSuccess(String result) {
-                if (sendFinishCallback != null) {
-                    sendFinishCallback.onSuccess();
+                if (sendCallback != null) {
+                    sendCallback.onSuccess();
                 }
             }
         }, new FailureCallback() {
             @Override
-            public void onFailure(int stateCode) {
-                if (sendFinishCallback != null) {
-                    sendFinishCallback.onFailure(stateCode);
+            public void onFailure(int stateCode, String errorMsg) {
+                if (sendCallback != null) {
+                    sendCallback.onFailure(stateCode, errorMsg);
                 }
             }
-        }, null);
+        },  new PrepareCallback() {
+            @Override
+            public void onPreStart() {
+                if(sendCallback != null){
+                    sendCallback.onPreStart();
+                }
+            }
+        });
     }
 
 
     /**
      * 通过短信验证码验证手机
-     * @param userMobileNum
+     * @param userPhone
      * @param authCode
-     * @param verifyFinishCallback
+     * @param verifyCallback
      */
-    public void verifyPhoneBySMSAuthCode(String userMobileNum, String authCode, final OnPhoneVerifyFinish verifyFinishCallback){
+    public void verifyPhoneBySMSAuthCode(String userPhone, String authCode, final OnPhoneVerifyCallback verifyCallback){
         HttpParams params = new HttpParams();
-        params.put(ApiConstants.KEY_COMMON_USER_PHONE, userMobileNum);
+        params.put(ApiConstants.KEY_COMMON_USER_PHONE, userPhone);
         params.put(ApiConstants.KEY_COMMON_SMS_AUTH_CODE, authCode);
 
         getRequest(ApiConstants.METHOD_COMMON_VERIFY_PHONE, params, new SuccessCallback() {
             @Override
             public void onSuccess(String result) {
-                if(verifyFinishCallback != null){
-                    verifyFinishCallback.onSuccess();
+                if(verifyCallback != null){
+                    verifyCallback.onSuccess();
                 }
             }
         }, new FailureCallback() {
             @Override
-            public void onFailure(int stateCode) {
-                if(verifyFinishCallback != null){
-                    verifyFinishCallback.onFailure(stateCode);
+            public void onFailure(int stateCode, String errorMsg) {
+                if(verifyCallback != null){
+                    verifyCallback.onFailure(stateCode, errorMsg);
                 }
             }
-        }, null);
+        }, new PrepareCallback() {
+            @Override
+            public void onPreStart() {
+                if(verifyCallback != null){
+                    verifyCallback.onPreStart();
+                }
+            }
+        });
     }
 
 
@@ -76,19 +90,25 @@ public class CommonNetwork extends BaseNetwork {
     /**
      * 短信验证码发送完成的回调
      */
-    public interface OnSMSCodeSendFinish{
+    public interface OnSMSCodeSendCallback {
+
+        public void onPreStart();
+
         public void onSuccess();
 
-        public void onFailure(int stateCode);
+        public void onFailure(int stateCode, String errorMsg);
     }
 
     /**
      * 手机验证完成的回调
      */
-    public interface OnPhoneVerifyFinish{
+    public interface OnPhoneVerifyCallback {
+
+        public void onPreStart();
+
         public void onSuccess();
 
-        public void onFailure(int stateCode);
+        public void onFailure(int stateCode, String errorMsg);
     }
 
 }

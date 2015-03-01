@@ -2,9 +2,9 @@ package com.cisoft.lazyorder.ui.shop;
 
 import android.app.ActionBar;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,20 +20,18 @@ import com.cisoft.lazyorder.bean.shop.Advertise;
 import com.cisoft.lazyorder.bean.shop.Shop;
 import com.cisoft.lazyorder.bean.shop.ShopCategory;
 import com.cisoft.lazyorder.core.account.I_LoginStateObserver;
+import com.cisoft.lazyorder.core.account.LoginStateObserver;
 import com.cisoft.lazyorder.core.shop.AdvertiseNetwork;
 import com.cisoft.lazyorder.core.shop.ShopCategoryNetwork;
 import com.cisoft.lazyorder.core.shop.ShopNetwork;
 import com.cisoft.lazyorder.finals.ApiConstants;
 import com.cisoft.lazyorder.ui.account.LoginActivity;
 import com.cisoft.lazyorder.ui.goods.GoodsActivity;
-import com.cisoft.lazyorder.ui.main.menu.MenuItemContent;
+import com.cisoft.lazyorder.ui.main.menu.BaseMenuItemFragment;
 import com.cisoft.lazyorder.util.DialogFactory;
-import com.cisoft.lazyorder.widget.AdRotator;
+import com.cisoft.lazyorder.widget.AdvertiseRotator;
 import com.cisoft.lazyorder.widget.EmptyView;
 import com.cisoft.lazyorder.widget.RefreshListView;
-
-import org.kymjs.kjframe.KJHttp;
-import org.kymjs.kjframe.http.HttpCallBack;
 import org.kymjs.kjframe.ui.BindView;
 import org.kymjs.kjframe.ui.ViewInject;
 import org.kymjs.kjframe.utils.DensityUtils;
@@ -43,14 +41,14 @@ import java.util.List;
 /**
  * Created by comit on 10/16/14.
  */
-public class ShopFragment extends MenuItemContent implements ActionBar.OnNavigationListener,
+public class ShopFragment extends BaseMenuItemFragment implements ActionBar.OnNavigationListener,
         AdapterView.OnItemClickListener, I_LoginStateObserver {
 
     @BindView(id = R.id.rl_root_view)
     private RelativeLayout mRootView;
     @BindView(id = R.id.lv_shop_list)
     private RefreshListView mLvShopListView;
-    private AdRotator mImageAdRotator;
+    private AdvertiseRotator mImageAdRotator;
     private EmptyView mEmptyView;
     private Dialog mWaitTipDialog;
 
@@ -68,6 +66,7 @@ public class ShopFragment extends MenuItemContent implements ActionBar.OnNavigat
     private int mPage = 1;    //页码
     private int mPager = 5;    //每页显示的Shop个数
     private int mShopCategoryId = 0;
+    private int mSchoolId = 0;
     private boolean mShopCategoryLoadFinish = false;
     private boolean mAdvertiseLoadFinish = false;
 
@@ -81,11 +80,13 @@ public class ShopFragment extends MenuItemContent implements ActionBar.OnNavigat
     @Override
     protected void initData() {
         appContext = (AppContext) getActivity().getApplication();
+        LoginStateObserver.getInstance().attach(this);
         mShopListData = new ArrayList<Shop>();
         mShopCategoryListData = new ArrayList<ShopCategory>();
         mAdvertiseNetwork = new AdvertiseNetwork(getActivity());
         mShopNetwork = new ShopNetwork(getActivity());
         mShopCategoryNetwork = new ShopCategoryNetwork(getActivity());
+        mSchoolId = appContext.getSchoolId();
     }
 
     @Override
@@ -104,7 +105,7 @@ public class ShopFragment extends MenuItemContent implements ActionBar.OnNavigat
         ActionBar actionBar = getActivity().getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setTitle(getText(R.string.shop_category_loading_title));
+        actionBar.setTitle(getText(R.string.toast_shop_category_loading));
     }
 
     /**
@@ -131,7 +132,7 @@ public class ShopFragment extends MenuItemContent implements ActionBar.OnNavigat
      * 初始化广告轮播器
      */
     private void initialAdRotator() {
-        mImageAdRotator = new AdRotator(getActivity());
+        mImageAdRotator = new AdvertiseRotator(getActivity());
         mImageAdRotator.setLayoutParams(new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT,
                 DensityUtils.dip2px(getActivity(), 150)));
     }
@@ -154,7 +155,7 @@ public class ShopFragment extends MenuItemContent implements ActionBar.OnNavigat
             @Override
             public void onLoadMore() {
                 ++mPage; //页码自增加1
-                mShopNetwork.loadShopDataByTypeId(mShopCategoryId, mPage, mPager, new ShopNetwork.OnShopLoadFinish() {
+                mShopNetwork.loadShopDataByTypeId(mShopCategoryId, mPage, mPager, new ShopNetwork.OnShopLoadCallback() {
                     @Override
                     public void onPreStart() {}
 
@@ -163,7 +164,7 @@ public class ShopFragment extends MenuItemContent implements ActionBar.OnNavigat
                         mLvShopListView.stopRefreshData();
 
                         if (shops.size() == 0) {
-                            ViewInject.toast(getText(R.string.shop_data_no_more_title).toString());
+                            ViewInject.toast(getText(R.string.toast_no_more_data).toString());
                             mLvShopListView.setPullLoadEnable(false);
                         } else {
                             if (shops.size() < mPager) {
@@ -177,11 +178,11 @@ public class ShopFragment extends MenuItemContent implements ActionBar.OnNavigat
                     }
 
                     @Override
-                    public void onFailure(int stateCode) {
+                    public void onFailure(int stateCode, String errorMsg) {
                         mLvShopListView.stopRefreshData();
 
                         //之前有数据显示就不显示EmptyView了,只吐司提示
-                        ViewInject.toast(mShopNetwork.getResponseStateInfo(stateCode));
+                        ViewInject.toast(errorMsg);
                     }
                 });
             }
@@ -221,7 +222,7 @@ public class ShopFragment extends MenuItemContent implements ActionBar.OnNavigat
      */
     private void loadDataForTitleBar() {
         initialTitleBar();
-        mShopCategoryNetwork.loadAllShopCategoryData(new ShopCategoryNetwork.OnCategoryLoadFinish() {
+        mShopCategoryNetwork.loadShopCategoryListData(mSchoolId, new ShopCategoryNetwork.OnCategoryLoadCallback() {
             @Override
             public void onPreStart() {
                 showWaitTip();
@@ -230,7 +231,7 @@ public class ShopFragment extends MenuItemContent implements ActionBar.OnNavigat
             @Override
             public void onSuccess(List<ShopCategory> categories) {
                 if (categories.size() == 0) {
-                    getActivity().getActionBar().setTitle(getText(R.string.shop_type_loading_error_title));
+                    getActivity().getActionBar().setTitle(getText(R.string.toast_shop_type_loading_error));
                     mEmptyView.showEmptyView(EmptyView.NO_DATA);
                     mShopCategoryLoadFinish = false;
                     closeWaitTip();
@@ -244,14 +245,13 @@ public class ShopFragment extends MenuItemContent implements ActionBar.OnNavigat
             }
 
             @Override
-            public void onFailure(int stateCode) {
+            public void onFailure(int stateCode, String errorMsg) {
                 closeWaitTip();
 
-                getActivity().getActionBar().setTitle(getText(R.string.shop_type_loading_error_title));
+                getActivity().getActionBar().setTitle(getText(R.string.toast_shop_type_loading_error));
                 mShopCategoryLoadFinish = false;
-                ViewInject.toast(mShopCategoryNetwork
-                        .getResponseStateInfo(stateCode));
-                if (stateCode == ApiConstants.RESPONSE_STATE_NOT_NET || stateCode == ApiConstants.RESPONSE_STATE_NET_POOR) {
+                ViewInject.toast(errorMsg);
+                if (stateCode == ApiConstants.RES_STATE_NOT_NET || stateCode == ApiConstants.RES_STATE_NET_POOR) {
                     mEmptyView.showEmptyView(EmptyView.NO_NETWORK);
                 } else {
                     mEmptyView.showEmptyView(EmptyView.NO_DATA);
@@ -264,7 +264,7 @@ public class ShopFragment extends MenuItemContent implements ActionBar.OnNavigat
      * 异步加载轮播广告组件的数据
      */
     private void loadDateForAdRotator() {
-        mAdvertiseNetwork.getAdvertiseDateFromNet(new AdvertiseNetwork.OnAdvertiseLoadFinish() {
+        mAdvertiseNetwork.loadAdvertiseDate(new AdvertiseNetwork.OnAdvertiseLoadFinish() {
             @Override
             public void onSuccess(List<Advertise> advertises) {
                 if (advertises.size() != 0) {
@@ -276,7 +276,7 @@ public class ShopFragment extends MenuItemContent implements ActionBar.OnNavigat
             }
 
             @Override
-            public void onFailure(int stateCode) {
+            public void onFailure(int stateCode, String errorMsg) {
                 mAdvertiseLoadFinish = false;
             }
         });
@@ -287,7 +287,8 @@ public class ShopFragment extends MenuItemContent implements ActionBar.OnNavigat
      * @param isRefresh
      */
     private void loadShopListData(final boolean isRefresh) {
-        mShopNetwork.loadShopDataByTypeId(mShopCategoryId, mPage, mPager, new ShopNetwork.OnShopLoadFinish() {
+        mPage = 1;//初始化page
+        mShopNetwork.loadShopDataByTypeId(mShopCategoryId, mPage, mPager, new ShopNetwork.OnShopLoadCallback() {
             @Override
             public void onPreStart() {
                 if (!isRefresh) {
@@ -319,16 +320,15 @@ public class ShopFragment extends MenuItemContent implements ActionBar.OnNavigat
             }
 
             @Override
-            public void onFailure(int stateCode) {
+            public void onFailure(int stateCode, String errorMsg) {
                 if (isRefresh)
                     mLvShopListView.stopRefreshData();
                 else
                     closeWaitTip();
 
                 mLvShopListView.setPullLoadEnable(false);
-                ViewInject.toast(mShopNetwork
-                        .getResponseStateInfo(stateCode));
-                if(stateCode == ApiConstants.RESPONSE_STATE_NOT_NET || stateCode == ApiConstants.RESPONSE_STATE_NET_POOR) {
+                ViewInject.toast(errorMsg);
+                if(stateCode == ApiConstants.RES_STATE_NOT_NET || stateCode == ApiConstants.RES_STATE_NET_POOR) {
                     mEmptyView.showEmptyView(EmptyView.NO_NETWORK);
                 } else {
                     mEmptyView.showEmptyView(EmptyView.NO_DATA);
@@ -345,7 +345,7 @@ public class ShopFragment extends MenuItemContent implements ActionBar.OnNavigat
     private void showWaitTip() {
         if (mWaitTipDialog == null)
             mWaitTipDialog = DialogFactory.createWaitToastDialog(getActivity(),
-                    getActivity().getString(R.string.wait));
+                    getActivity().getString(R.string.toast_wait));
         mWaitTipDialog.show();
     }
 
@@ -365,8 +365,8 @@ public class ShopFragment extends MenuItemContent implements ActionBar.OnNavigat
      */
     @Override
     public boolean onNavigationItemSelected(int position, long l) {
-        mPage = 1;//初始化page
         mShopCategoryId = mShopCategoryListData.get(position).getId();
+        mEmptyView.hideEmptyView();
         loadShopListData(false);
 
         return true;
@@ -379,16 +379,18 @@ public class ShopFragment extends MenuItemContent implements ActionBar.OnNavigat
     @Override
     public void onItemClick(AdapterView adapterView, View view, int position, long l) {
         Shop shop = (Shop) adapterView.getItemAtPosition(position);
-        Bundle bundle = new Bundle();
-        bundle.putInt(ApiConstants.KEY_MER_ID, shop.getId());
-        bundle.putString(ApiConstants.KEY_MER_ADDRESS, shop.getAddress());
-        bundle.putString(ApiConstants.KEY_MER_PROMOTION_INFO, shop.getPromotionInfo());
-        bundle.putString(ApiConstants.KEY_MER_NAME, shop.getName());
-        bundle.putString(ApiConstants.KEY_MER_FACE_PIC, shop.getFaceImgUrl());
-        Intent intent = new Intent();
-        intent.putExtras(bundle);
-        intent.setClass(getActivity(), GoodsActivity.class);
-        startActivity(intent);
+        if (shop != null) {
+            Bundle bundle = new Bundle();
+            bundle.putInt(ApiConstants.KEY_MER_ID, shop.getId());
+            bundle.putString(ApiConstants.KEY_MER_ADDRESS, shop.getAddress());
+            bundle.putString(ApiConstants.KEY_MER_PROMOTION_INFO, shop.getPromotionInfo());
+            bundle.putString(ApiConstants.KEY_MER_NAME, shop.getName());
+            bundle.putString(ApiConstants.KEY_MER_FACE_PIC, shop.getFaceImgUrl());
+            Intent intent = new Intent();
+            intent.putExtras(bundle);
+            intent.setClass(getActivity(), GoodsActivity.class);
+            startActivity(intent);
+        }
     }
 
     /**
@@ -412,10 +414,12 @@ public class ShopFragment extends MenuItemContent implements ActionBar.OnNavigat
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         //抽屉菜单没有展开时才显示此fragment的菜单选项
-        if (!getMenuOpenState() && !appContext.isLogin()) {
-            inflater.inflate(R.menu.shop, menu);
+        if (!getMenuOpenState()){
             if(mShopCategoryLoadFinish) {
                 reinitialNavList();
+            }
+            if (!appContext.isLogin()) {
+                inflater.inflate(R.menu.menu_shop, menu);
             }
         }
 

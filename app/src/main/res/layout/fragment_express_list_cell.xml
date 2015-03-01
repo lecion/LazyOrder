@@ -17,12 +17,6 @@
             android:textSize="14sp"
             android:textColor="@color/order_detail_text_color">
         </TextView>
-        <!--<ImageButton
-            android:id="@+id/ib_collapsible_flag"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"/>-->
         <TextView
             android:id="@+id/tv_submit_time"
             android:layout_width="wrap_content"
@@ -63,7 +57,7 @@
                 android:layout_marginLeft="20dp"
                 android:padding="5dp"
                 android:gravity="left"
-                android:text="这是短信内容"
+                android:text=""
                 android:textSize="14sp"
                 android:textColor="@color/order_detail_text_color"/>
         </LinearLayout>
@@ -84,7 +78,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:padding="5dp"
-                android:text="这是额外留言"
+                android:text=""
                 android:textSize="14sp"
                 android:textColor="@color/order_detail_text_color"/>
         </LinearLayout>
@@ -116,7 +110,49 @@
                 android:paddingRight="5dp"
                 android:paddingLeft="0dp"
                 android:paddingBottom="5dp"
-                android:text="1"
+                android:text=""
+                android:textSize="14sp"
+                android:textColor="@color/order_detail_text_color"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:text="收件人"
+                android:textSize="14sp"
+                android:textColor="@color/order_detail_text_color"/>
+            <TextView
+                android:id="@+id/tv_contact_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:padding="5dp"
+                android:text=""
+                android:textSize="14sp"
+                android:textColor="@color/order_detail_text_color"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:text="电话"
+                android:textSize="14sp"
+                android:textColor="@color/order_detail_text_color"/>
+            <TextView
+                android:id="@+id/tv_contact_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:padding="5dp"
+                android:text=""
                 android:textSize="14sp"
                 android:textColor="@color/order_detail_text_color"/>
         </LinearLayout>
@@ -137,7 +173,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:padding="5dp"
-                android:text="26栋101"
+                android:text=""
                 android:textSize="14sp"
                 android:textColor="@color/order_detail_text_color"/>
         </LinearLayout>

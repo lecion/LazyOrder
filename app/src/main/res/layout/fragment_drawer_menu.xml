@@ -1,54 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:clickable="true"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/drawer_bg_color">
 
-    <com.cisoft.lazyorder.ui.main.menu.DrawerMenuHeaderView
-        android:id="@+id/drawer_header"
+    <LinearLayout
+        android:id="@+id/ll_go_to_usercenter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:content_class="com.cisoft.lazyorder.ui.usercenter.UserCenterFragment"/>
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="#ff2f3036">
-        <LinearLayout
-            android:id="@+id/menu_container"
-            android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="@dimen/content_padding"
+        android:background="@drawable/drawer_menu_item_bg">
+        <org.kymjs.kjframe.widget.RoundImageView
+            android:id="@+id/riv_user_face"
+            android:layout_width="80.0dip"
+            android:layout_height="80.0dip"
+            android:scaleType="fitCenter"
+            android:src="@drawable/default_user_face"
+            android:layout_margin="@dimen/content_margin"/>
+        <TextView
+            android:id="@+id/tv_user_account"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <com.cisoft.lazyorder.ui.main.menu.DrawerMenuItemView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:content_class="com.cisoft.lazyorder.ui.shop.ShopFragment"
-                app:menu_icon="@drawable/selector_drawer_icon_order_goods"
-                app:menu_name="我要订餐" />
+            android:layout_margin="@dimen/content_margin"
+            android:text="@string/text_please_login"
+            android:textColor="@color/color_66"
+            android:textSize="18.0sp"/>
+    </LinearLayout>
 
-            <com.cisoft.lazyorder.ui.main.menu.DrawerMenuItemView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:content_class="com.cisoft.lazyorder.ui.order.HistoryOrderFragment"
-                app:menu_icon="@drawable/selector_drawer_icon_order_list"
-                app:menu_name="订单中心" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/stroke"
+        android:layout_marginLeft="@dimen/content_padding"
+        android:layout_marginRight="@dimen/content_padding"
+        android:background="@color/stroke" />
 
-            <com.cisoft.lazyorder.ui.main.menu.DrawerMenuItemView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:content_class="com.cisoft.lazyorder.ui.express.ExpressOrderListFragment"
-                app:menu_icon="@drawable/selector_drawer_icon_order_list"
-                app:menu_name="代领快递" />
-
-            <com.cisoft.lazyorder.ui.main.menu.DrawerMenuItemView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:content_class="com.cisoft.lazyorder.ui.about.AboutUsFragment"
-                app:menu_icon="@drawable/selector_drawer_icon_about"
-                app:menu_name="关于我们" />
-        </LinearLayout>
-    </ScrollView>
+    <ListView
+        android:id="@+id/lv_drawer_menu_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fadingEdge="none"
+        android:overScrollMode="never"
+        android:scrollbars="none"
+        android:choiceMode="singleChoice"
+        android:divider="@android:color/transparent"/>
 </LinearLayout>

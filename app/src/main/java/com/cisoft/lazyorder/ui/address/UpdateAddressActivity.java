@@ -10,10 +10,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.cisoft.lazyorder.AppContext;
 import com.cisoft.lazyorder.R;
-import com.cisoft.lazyorder.bean.address.Address;
+import com.cisoft.lazyorder.bean.account.User;
+import com.cisoft.lazyorder.bean.address.AddressInfo;
 import com.cisoft.lazyorder.core.address.AddressNetwork;
 import com.cisoft.lazyorder.core.address.AddressNetwork.OnUpdateAddressFinish;
+import com.cisoft.lazyorder.ui.BaseActivity;
 import com.cisoft.lazyorder.util.DialogFactory;
 
 import org.kymjs.kjframe.KJActivity;
@@ -21,7 +24,7 @@ import org.kymjs.kjframe.ui.BindView;
 import org.kymjs.kjframe.ui.ViewInject;
 import org.kymjs.kjframe.utils.StringUtils;
 
-public class UpdateAddressActivity extends KJActivity {
+public class UpdateAddressActivity extends BaseActivity {
 
 	@BindView(id = R.id.et_input_name)
 	private EditText mEtInputName;
@@ -31,11 +34,13 @@ public class UpdateAddressActivity extends KJActivity {
 	private EditText mEtInputAddress;
 	@BindView(id = R.id.btn_sure_update_address, click = true)
 	private Button mBtnSureUpdateAddress;
+    private Dialog mWaitUpdateTipDialog;
+    private Dialog mSuccessUpdateTipDialog;
 
+    private AppContext mAppContext;
 	private AddressNetwork mAddressNetwork;
-	private Dialog mWaitUpdateTipDialog;
-	private Dialog mSuccessUpdateTipDialog;
-	private Address mWantUpdateAddressObj;
+	private AddressInfo mWantUpdateAddressObj;
+    private User mLoginUser;
 
 	public static final String WANT_UPDATE_ADDRESS_OBJ = "wantUpdateAddressObj";
 	public static final String UPDATED_ADDRESS_OBJ = "updatedAddressObj";
@@ -47,14 +52,15 @@ public class UpdateAddressActivity extends KJActivity {
 
 	@Override
 	public void initData() {
+        mAppContext = (AppContext) getApplication();
 		mAddressNetwork = new AddressNetwork(UpdateAddressActivity.this);
-		mWantUpdateAddressObj = (Address) getIntent().getSerializableExtra(
+		mWantUpdateAddressObj = (AddressInfo) getIntent().getSerializableExtra(
 				WANT_UPDATE_ADDRESS_OBJ);
+        mLoginUser = mAppContext.getLoginInfo();
 	}
 
 	@Override
 	public void initWidget() {
-		initialTitleBar();
 		initialDefText();
 	}
 
@@ -76,18 +82,6 @@ public class UpdateAddressActivity extends KJActivity {
 		default:
 			return super.onOptionsItemSelected(item);
 		}
-	}
-
-	/**
-	 * 初始化title bar
-	 */
-	private void initialTitleBar() {
-		ActionBar actionBar = getActionBar();
-		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-		actionBar.setDisplayShowTitleEnabled(true);
-		actionBar.setHomeButtonEnabled(true);
-		actionBar.setDisplayHomeAsUpEnabled(true);
-		actionBar.setTitle(getString(R.string.title_activity_update_address));
 	}
 
 	/**
@@ -121,7 +115,7 @@ public class UpdateAddressActivity extends KJActivity {
 			return;
 		}
 		if (!StringUtils.isPhone(inputPhone)) {
-			ViewInject.toast(getString(R.string.input_standard_phone_hint));
+			ViewInject.toast(getString(R.string.toast_input_standard_phone));
 			return;
 		}
 
@@ -134,9 +128,8 @@ public class UpdateAddressActivity extends KJActivity {
 	/**
 	 * 执行添加地址的网络操作
 	 * 
-	 * @param addressObj
 	 */
-	private void networkUpdateAddress(final Address wantUpdateAddressObj) {
+	private void networkUpdateAddress(final AddressInfo wantUpdateAddressObj) {
 		mAddressNetwork.updateAddressByAddrId(wantUpdateAddressObj,
 				new OnUpdateAddressFinish() {
 
@@ -166,10 +159,9 @@ public class UpdateAddressActivity extends KJActivity {
 					}
 
 					@Override
-					public void onFailure(int stateCode) {
+					public void onFailure(int stateCode, String errorMsg) {
 						closeWaitTip();
-						ViewInject.toast(mAddressNetwork
-								.getResponseStateInfo(stateCode));
+						ViewInject.toast(errorMsg);
 					}
 				});
 
@@ -182,7 +174,7 @@ public class UpdateAddressActivity extends KJActivity {
 	private void showWaitTip() {
 		if (mWaitUpdateTipDialog == null) {
 			mWaitUpdateTipDialog = DialogFactory.createWaitToastDialog(this,
-                    getString(R.string.being_update_address_tip));
+                    getString(R.string.toast_being_update_address));
 			mWaitUpdateTipDialog.setCancelable(false);
 			mWaitUpdateTipDialog.setCanceledOnTouchOutside(false);
 		}
@@ -207,7 +199,7 @@ public class UpdateAddressActivity extends KJActivity {
 		if (mSuccessUpdateTipDialog == null) {
 			mSuccessUpdateTipDialog = DialogFactory.createSuccessToastDialog(
                     UpdateAddressActivity.this,
-                    getString(R.string.success_to_update_address));
+                    getString(R.string.toast_success_to_update_address));
 			mSuccessUpdateTipDialog.setCancelable(false);
 			mSuccessUpdateTipDialog.setCanceledOnTouchOutside(false);
 		}

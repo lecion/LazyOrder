@@ -8,34 +8,18 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 import com.cisoft.lazyorder.R;
-import org.kymjs.aframe.ui.KJActivityManager;
-import org.kymjs.aframe.utils.DensityUtils;
 import org.kymjs.kjframe.ui.KJActivityStack;
+import org.kymjs.kjframe.utils.DensityUtils;
 
 /**
  * Created by comet on 2014/10/23.
  */
 public class DialogFactory {
 
-    public static Dialog createToastDialog(Context context, String tip) {
-        final Dialog dialog = new Dialog(context, R.style.toastDialog);
-        dialog.setContentView(R.layout.layout_wait_toast_dialog);
-        Window window = dialog.getWindow();
-        WindowManager.LayoutParams lp = window.getAttributes();
-        int width = DensityUtils.getScreenW(KJActivityManager.create().topActivity());
-        lp.width = (int) (0.6 * width);
-        TextView tvLoadLabel = (TextView) dialog.findViewById(R.id.tvLoadLabel);
-        if (tip == null || tip.length() == 0) {
-            tvLoadLabel.setText("");
-        } else {
-            tvLoadLabel.setText(tip);
-        }
-        return dialog;
-    }
-
     public static Dialog createSuccessToastDialog(Context context, String tip) {
         final Dialog dialog = new Dialog(context, R.style.toastDialog);
         dialog.setContentView(R.layout.layout_success_toast_dialog);
+        dialog.setCanceledOnTouchOutside(false);
         Window window = dialog.getWindow();
         WindowManager.LayoutParams lp = window.getAttributes();
         int width = DensityUtils.getScreenW(KJActivityStack.create().topActivity());
@@ -74,6 +58,7 @@ public class DialogFactory {
     public static Dialog createWaitToastDialog(Context context, String tip) {
         final Dialog dialog = new Dialog(context, R.style.toastDialog);
         dialog.setContentView(R.layout.layout_wait_toast_dialog);
+        dialog.setCanceledOnTouchOutside(false);
         Window window = dialog.getWindow();
         WindowManager.LayoutParams lp = window.getAttributes();
         int width = DensityUtils.getScreenW(KJActivityStack.create().topActivity());

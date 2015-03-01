@@ -32,7 +32,6 @@ public class UserCenterItemView extends LinearLayout {
         super(context, attrs, defStyle);
 
         LayoutInflater.from(context).inflate(R.layout.fragment_user_center_item, this, true);
-        setBackgroundResource(R.drawable.selector_list_cell);
 
         TypedArray localTypedArray = context.obtainStyledAttributes(attrs, R.styleable.userCenterItemAttrs);
         String itemTitle = localTypedArray.getString(R.styleable.userCenterItemAttrs_item_title);

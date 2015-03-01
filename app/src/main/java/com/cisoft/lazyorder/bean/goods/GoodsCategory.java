@@ -2,10 +2,8 @@ package com.cisoft.lazyorder.bean.goods;
 
 import com.cisoft.lazyorder.bean.AbsBean;
 import com.cisoft.lazyorder.finals.ApiConstants;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.Iterator;
 
 /**

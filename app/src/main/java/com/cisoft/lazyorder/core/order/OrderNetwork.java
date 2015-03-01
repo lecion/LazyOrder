@@ -2,16 +2,16 @@ package com.cisoft.lazyorder.core.order;
 
 import android.content.Context;
 
-import com.cisoft.lazyorder.bean.goods.Goods;
-import com.cisoft.lazyorder.bean.order.DishOrder;
-import com.cisoft.lazyorder.bean.order.ExpressOrder;
+import com.cisoft.lazyorder.bean.order.Order;
+import com.cisoft.lazyorder.bean.order.SettledOrder;
 import com.cisoft.lazyorder.core.BaseNetwork;
 import com.cisoft.lazyorder.finals.ApiConstants;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.kymjs.kjframe.http.HttpCallBack;
 import org.kymjs.kjframe.http.HttpParams;
+import org.kymjs.kjframe.ui.ViewInject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,23 +27,22 @@ public class OrderNetwork extends BaseNetwork {
 
 
     /**
-     * 提交商品类订单给服务器
+     * 提交商品订单给服务器
      */
-    public void submitDishOrderForServer(DishOrder dishOrder, final OnDishOrderSubmitFinish submitFinishCallback){
+    public void submitOrderForServer(String orderJsonStr, final OnOrderSubmitFinish submitFinishCallback){
         HttpParams params = new HttpParams();
-        params.put(ApiConstants.KEY_ORDER_SAVE_ORDER_JSON_DATA, createDishOrderJsonStrByObj(dishOrder));
+        params.put(ApiConstants.KEY_ORDER_JSON_STR, orderJsonStr);
 
-        getRequest(ApiConstants.METHOD_ORDER_SAVE_ORDER, params, new SuccessCallback() {
+        super.postRequest(ApiConstants.METHOD_ORDER_SUBMIT, params, new SuccessCallback() {
             @Override
             public void onSuccess(String result) {
                 try {
                     JSONObject jsonObj = new JSONObject(result);
-                    JSONObject dataObj = jsonObj.getJSONObject(ApiConstants.KEY_ORDER_SAVE_ORDER_DATA);
+                    JSONObject dataObj = jsonObj.getJSONObject(ApiConstants.KEY_DATA);
+                    Order order = new Order(dataObj);
 
                     if(submitFinishCallback != null){
-                        submitFinishCallback.onSuccess(dataObj.getString(ApiConstants.KEY_ORDER_SAVE_ORDER_AFTER_ORDER_NUM),
-                                dataObj.getString(ApiConstants.KEY_ORDER_SAVE_ORDER_AFTER_MSG),
-                                dataObj.getDouble(ApiConstants.KEY_ORDER_SAVE_ORDER_AFTER_MONEY_ALL));
+                        submitFinishCallback.onSuccess(order);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -51,139 +50,62 @@ public class OrderNetwork extends BaseNetwork {
             }
         }, new FailureCallback() {
             @Override
-            public void onFailure(int stateCode) {
+            public void onFailure(int stateCode, String errorMsg) {
                 if(submitFinishCallback != null){
-                    submitFinishCallback.onFailure(stateCode);
+                    submitFinishCallback.onFailure(stateCode, errorMsg);
                 }
             }
-        }, null);
-    }
-
-    /**
-     * 通过商品类订单对象得到json形式的订单数据
-     * @param dishOrder
-     * @return
-     */
-    private String createDishOrderJsonStrByObj(DishOrder dishOrder){
-        String jsonStr = "";
-
-        try {
-            JSONObject resultJsonObj = new JSONObject();
-            resultJsonObj.put(ApiConstants.KEY_ORDER_SAVE_ORDER_TYPE, ApiConstants.KEY_ORDER_SAVE_ORDER_TYPE_DISH);//商品类订单
-            resultJsonObj.put(ApiConstants.KEY_ORDER_SAVE_ORDER_USER_NAME, dishOrder.getUserName());//用户的姓名
-            resultJsonObj.put(ApiConstants.KEY_ORDER_SAVE_ORDER_USER_PHONE, dishOrder.getUserPhone());//用户的联系电话
-            resultJsonObj.put(ApiConstants.KEY_ORDER_SAVE_ORDER_BUILDING_ID, dishOrder.getBuildingId());//用户的楼栋id
-            resultJsonObj.put(ApiConstants.KEY_ORDER_SAVE_ORDER_ROOM_NUM, dishOrder.getDormitory());//用户的寝室号
-            resultJsonObj.put(ApiConstants.KEY_ORDER_SAVE_ORDER_EXTRA_MSG, dishOrder.getExtraMsg());//额外留言
-            resultJsonObj.put(ApiConstants.KEY_ORDER_SAVE_ORDER_SHOP_ID, dishOrder.getShopId());//店家id
-
-            List<Goods> goodsList = dishOrder.getGoodsList();
-            JSONArray comListJsonArray = new JSONArray();
-            JSONObject jsonObj = null;
-            for (Goods good : goodsList) {
-                jsonObj = new JSONObject();
-                jsonObj.put(ApiConstants.KEY_ORDER_SAVE_ORDER_COM_LIST_ITEM_COM_ID, good.getId());
-                jsonObj.put(ApiConstants.KEY_ORDER_SAVE_ORDER_COM_LIST_ITEM_ORDERED_COUNT, good.getOrderNum());
-                comListJsonArray.put(jsonObj);
+        }, new PrepareCallback() {
+            @Override
+            public void onPreStart() {
+                if(submitFinishCallback != null){
+                    submitFinishCallback.onPreStart();
+                }
             }
-            resultJsonObj.put(ApiConstants.KEY_ORDER_SAVE_ORDER_COM_LIST, comListJsonArray);//所定的商品列表
-
-            jsonStr = resultJsonObj.toString();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return jsonStr;
+        });
     }
 
 
-
-
     /**
-     * 从网络加载Dish类历史订单列表的数据
+     * 从网络加载订单列表的数据
      * @param page
      * @param pager
      */
-    public void loadDishHisOrderData(String userPhone, final int page, int pager, final OnDishHisOrderLoadFinish loadFinishCallback){
+    public void loadOrderListData(String userPhone, final int page, int pager,
+                                  final OnOrderListLoadFinish loadFinishCallback){
         HttpParams params = new HttpParams();
-        params.put(ApiConstants.KEY_ORDER_FIND_ALL_USER_PHONE, userPhone);
-        params.put(ApiConstants.KEY_ORDER_FIND_ALL_PAGE, String.valueOf(page));
-        params.put(ApiConstants.KEY_ORDER_FIND_ALL_PAGER, String.valueOf(pager));
+        params.put(ApiConstants.KEY_ORDER_PHONE, userPhone);
+        params.put(ApiConstants.KEY_ORDER_PAGE, String.valueOf(page));
+        params.put(ApiConstants.KEY_ORDER_PAGER, String.valueOf(pager));
 
-        getRequest(ApiConstants.METHOD_ORDER_FIND_ALL, params, new SuccessCallback() {
+        super.getRequest(ApiConstants.METHOD_ORDER_FIND_ALL, params, new SuccessCallback() {
             @Override
             public void onSuccess(String result) {
-                List<DishOrder> HistoryOrders = new ArrayList<DishOrder>();
+                List<Order> orders = new ArrayList<Order>();
                 try {
                     JSONObject jsonObj = new JSONObject(result);
-                    JSONArray hisOrderArr = jsonObj.getJSONArray(ApiConstants.KEY_ORDER_FIND_ALL_DATA);
-                    JSONObject hisOrderObj = null;
-                    DishOrder hisOrder = null;
-                    for (int i = 0; i < hisOrderArr.length(); i++) {
-                        hisOrderObj = hisOrderArr.getJSONObject(i);
-                        hisOrder = new DishOrder(hisOrderObj);
-                        HistoryOrders.add(hisOrder);
+                    JSONArray orderArr = jsonObj.getJSONArray(ApiConstants.KEY_DATA);
+                    JSONObject orderObj = null;
+                    Order order = null;
+                    for (int i = 0; i < orderArr.length(); i++) {
+                        orderObj = orderArr.getJSONObject(i);
+                        order = new Order(orderObj);
+                        orders.add(order);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
                 if(loadFinishCallback != null){
-                    loadFinishCallback.onSuccess(HistoryOrders);
+                    loadFinishCallback.onSuccess(orders);
                 }
 
             }}, new FailureCallback() {
 
             @Override
-            public void onFailure(int stateCode) {
+            public void onFailure(int stateCode, String errorMsg) {
                 if(loadFinishCallback != null){
-                    loadFinishCallback.onFailure(stateCode);
-                }
-
-            }
-        }, null);
-    }
-
-
-    /**
-     * 从网络加载Express类型历史订单列表的数据
-     * @param page
-     * @param pager
-     */
-    public void loadExpressHisOrderData(String userPhone, final int page, int pager, final OnExpressHisOrderLoadFinish loadFinishCallback){
-        HttpParams params = new HttpParams();
-        params.put(ApiConstants.KEY_ORDER_EXPRESS_ORDER_LIST_USER_PHONE, userPhone);
-        params.put(ApiConstants.KEY_ORDER_EXPRESS_ORDER_LIST_PAGE, String.valueOf(page));
-        params.put(ApiConstants.KEY_ORDER_EXPRESS_ORDER_LIST_PAGER, String.valueOf(pager));
-
-        getRequest(ApiConstants.METHOD_ORDER_EXPRESS_ORDER_LIST, params, new SuccessCallback() {
-            @Override
-            public void onSuccess(String result) {
-                List<ExpressOrder> expressOrders = new ArrayList<ExpressOrder>();
-                try {
-                    JSONObject jsonObj = new JSONObject(result);
-                    JSONArray hisOrderArr = jsonObj.getJSONArray(ApiConstants.KEY_ORDER_EXPRESS_ORDER_LIST_DATA);
-                    JSONObject hisOrderObj = null;
-                    ExpressOrder hisOrder = null;
-                    for (int i = 0; i < hisOrderArr.length(); i++) {
-                        hisOrderObj = hisOrderArr.getJSONObject(i);
-                        hisOrder = new ExpressOrder(hisOrderObj);
-                        expressOrders.add(hisOrder);
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                if(loadFinishCallback != null){
-                    loadFinishCallback.onSuccess(expressOrders);
-                }
-
-            }}, new FailureCallback() {
-
-            @Override
-            public void onFailure(int stateCode) {
-                if(loadFinishCallback != null){
-                    loadFinishCallback.onFailure(stateCode);
+                    loadFinishCallback.onFailure(stateCode, errorMsg);
                 }
 
             }
@@ -198,107 +120,85 @@ public class OrderNetwork extends BaseNetwork {
     }
 
 
-
     /**
-     * 通过Express类订单对象得到json形式的订单数据
-     * @param expressOrder
-     * @return
+     * 通过服务器结算订单
      */
-    private String createExpressOrderJsonStrByObj(ExpressOrder expressOrder){
-        String jsonStr = "";
-
-        try {
-            JSONObject resultJsonObj = new JSONObject();
-            resultJsonObj.put(ApiConstants.KEY_ORDER_SAVE_ORDER_TYPE, ApiConstants.KEY_ORDER_SAVE_ORDER_TYPE_EXPRESS);//Express类订单
-            resultJsonObj.put(ApiConstants.KEY_ORDER_SAVE_ORDER_USER_NAME, expressOrder.getUserName());//用户的姓名
-            resultJsonObj.put(ApiConstants.KEY_ORDER_SAVE_ORDER_USER_PHONE, expressOrder.getUserPhone());//用户的联系电话
-            resultJsonObj.put(ApiConstants.KEY_ORDER_SAVE_ORDER_BUILDING_ID, expressOrder.getBuildingId());//用户的楼栋id
-            resultJsonObj.put(ApiConstants.KEY_ORDER_SAVE_ORDER_ROOM_NUM, expressOrder.getDormitory());//用户的寝室号
-            resultJsonObj.put(ApiConstants.KEY_ORDER_SAVE_ORDER_EXTRA_MSG, expressOrder.getExtraMsg());//额外留言
-            resultJsonObj.put(ApiConstants.KEY_ORDER_SAVE_ORDER_SMS_CONTENT, expressOrder.getSmsCotent());//收到的快递短信
-
-            jsonStr = resultJsonObj.toString();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return jsonStr;
-    }
-
-
-
-    /**
-     * 提交Express类订单给服务器
-     */
-    public void submitExpressOrderForServer(ExpressOrder expressOrder, final OnExpressOrderSubmitFinish submitFinishCallback) {
+    public void settleOrderByServer(String jsonStr, final OnOrderSettleFinish onOrderSettleFinish) {
         HttpParams params = new HttpParams();
-        params.put(ApiConstants.KEY_ORDER_SAVE_ORDER_JSON_DATA, createExpressOrderJsonStrByObj(expressOrder));
+        params.put(ApiConstants.KEY_ORDER_JSON_STR, jsonStr);
 
-        getRequest(ApiConstants.METHOD_ORDER_SAVE_ORDER, params, new SuccessCallback() {
+        super.postRequest(ApiConstants.METHOD_ORDER_SETTLE, params, new SuccessCallback() {
             @Override
             public void onSuccess(String result) {
-                if(submitFinishCallback != null){
-                    submitFinishCallback.onSuccess();
+                try {
+                    JSONObject jsonObj = new JSONObject(result);
+                    JSONObject dataObj = jsonObj.getJSONObject(ApiConstants.KEY_DATA);
+                    SettledOrder settledOrder = new SettledOrder(dataObj);
+
+                    if (onOrderSettleFinish != null) {
+                        onOrderSettleFinish.onSuccess(settledOrder);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+
+                    if(onOrderSettleFinish != null){
+                        onOrderSettleFinish.onFailure(ApiConstants.RES_STATE_SERVICE_EXCEPTION,
+                                getResponseStateInfo(ApiConstants.RES_STATE_SERVICE_EXCEPTION));
+                    }
                 }
             }
         }, new FailureCallback() {
             @Override
-            public void onFailure(int stateCode) {
-                if(submitFinishCallback != null){
-                    submitFinishCallback.onFailure(stateCode);
+            public void onFailure(int stateCode, String errorMsg) {
+                if (onOrderSettleFinish != null) {
+                    onOrderSettleFinish.onFailure(stateCode, errorMsg);
                 }
             }
         }, new PrepareCallback() {
             @Override
             public void onPreStart() {
-                if(submitFinishCallback != null){
-                    submitFinishCallback.onPreStart();
+                if (onOrderSettleFinish != null) {
+                    onOrderSettleFinish.onPreStart();
                 }
             }
         });
     }
 
-
-
     /**
-     * Dish类历史订单加载完成后的回调
+     * 历史订单加载完成后的回调
      */
-    public interface OnDishHisOrderLoadFinish {
-        public void onSuccess(List<DishOrder> historyOrders);
-
-        public void onFailure(int stateCode);
-    }
-
-    /**
-     * Express类历史订单加载完成后的回调
-     */
-    public interface OnExpressHisOrderLoadFinish{
+    public interface OnOrderListLoadFinish {
 
         public void onPreStart();
 
-        public void onSuccess(List<ExpressOrder> expressOrders);
+        public void onSuccess(List<Order> orders);
 
-        public void onFailure(int stateCode);
+        public void onFailure(int stateCode, String errorMsg);
     }
 
-    /**
-     * Dish类订单提交完成后的回调
-     */
-    public interface OnDishOrderSubmitFinish {
-        public void onSuccess(String orderNum, String message, double moneyAll);
-
-        public void onFailure(int stateCode);
-    }
 
     /**
-     * Express类订单提交完成后的回调
+     * 订单提交完成后的回调
      */
-    public interface OnExpressOrderSubmitFinish{
+    public interface OnOrderSubmitFinish {
 
         public void onPreStart();
 
-        public void onSuccess();
+        public void onSuccess(Order order);
 
-        public void onFailure(int stateCode);
+        public void onFailure(int stateCode, String errorMsg);
+    }
+
+
+    /**
+     * 订单结算完成后的回调
+     */
+    public interface OnOrderSettleFinish {
+
+        public void onPreStart();
+
+        public void onSuccess(SettledOrder settledOrder);
+
+        public void onFailure(int stateCode, String errorMsg);
     }
 }
