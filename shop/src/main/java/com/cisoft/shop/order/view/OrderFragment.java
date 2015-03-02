@@ -15,14 +15,17 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.cisoft.myapplication.R;
 import com.cisoft.shop.bean.Order;
+import com.cisoft.shop.bean.Shop;
 import com.cisoft.shop.order.presenter.OrderPresenter;
 import com.cisoft.shop.util.DeviceUtil;
+import com.cisoft.shop.util.L;
 import com.cisoft.shop.widget.DialogFactory;
 import com.cisoft.shop.widget.RefreshDeleteListView;
 import com.cisoft.shop.widget.SwipeMenu;
@@ -32,6 +35,7 @@ import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.AnimatorListenerAdapter;
 import com.nineoldandroids.animation.ValueAnimator;
 
+import org.kymjs.aframe.bitmap.KJBitmap;
 import org.kymjs.aframe.ui.BindView;
 import org.kymjs.aframe.ui.fragment.BaseFragment;
 
@@ -47,6 +51,18 @@ import java.util.List;
  * create an instance of this fragment.
  */
 public class OrderFragment extends BaseFragment implements IOrderView{
+
+    @BindView(id = R.id.iv_shop_logo)
+    private ImageView ivShopLogo;
+
+    @BindView(id = R.id.tv_shop_name)
+    private TextView tvShopName;
+
+    @BindView(id = R.id.tv_shop_time_show)
+    private TextView tvShopTime;
+
+    @BindView(id = R.id.tv_shop_privilege_show)
+    private TextView tvShopPrivilege;
 
     @BindView(id = R.id.sp_shop_state)
     private Spinner spShopState;
@@ -211,6 +227,11 @@ public class OrderFragment extends BaseFragment implements IOrderView{
      * 初始化商店状态
      */
     private void initShopStatus() {
+        Shop shop = L.app(this).getShop();
+        tvShopName.setText(shop.getName());
+        tvShopTime.setText(shop.getOpenTime() + "-" + shop.getCloseTime());
+        tvShopPrivilege.setText(shop.getPromotionInfo());
+        KJBitmap.create().display(ivShopLogo, shop.getFaceImgUrl());
         spShopState.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.fragment_goods_shop_state_cell, shopOperatingStates));
         spShopState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

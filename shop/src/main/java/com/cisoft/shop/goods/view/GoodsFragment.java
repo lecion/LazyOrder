@@ -193,7 +193,7 @@ public class GoodsFragment extends BaseFragment implements IGoodsView{
         tvShopName.setText(shop.getName());
         tvShopTime.setText(shop.getOpenTime() + "-" + shop.getCloseTime());
         tvShopPrivilege.setText(shop.getPromotionInfo());
-
+        KJBitmap.create().display(ivShopLogo, shop.getFaceImgUrl());
         spShopState.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.fragment_goods_shop_state_cell, shopOperatingStates));
         spShopState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

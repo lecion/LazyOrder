@@ -11,13 +11,14 @@
         android:layout_width="match_parent"
         android:layout_height="109dp"
         android:background="@color/white"
+        android:paddingTop="8dp"
         >
 
         <ImageView
             android:id="@+id/iv_shop_logo"
-            android:layout_width="71dp"
+            android:layout_width="70dp"
             android:layout_height="50dp"
-            android:layout_marginLeft="12dp"
+            android:layout_marginLeft="20dp"
             android:layout_marginTop="8dp"
             android:src="@drawable/ic_launcher" />
 
@@ -40,7 +41,6 @@
             android:layout_alignLeft="@id/tv_shop_name"
             android:layout_below="@id/tv_shop_name"
             android:layout_toRightOf="@id/iv_shop_logo"
-            android:layout_marginTop="4dp"
             android:text="营业时间："
             android:textSize="10sp" />
 
@@ -93,7 +93,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="41dp"
+            android:layout_height="42dp"
             android:background="@drawable/bg_select_bar"
             android:orientation="horizontal"
             android:layout_alignParentBottom="true"
@@ -139,7 +139,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <TextView
             android:layout_width="wrap_content"
