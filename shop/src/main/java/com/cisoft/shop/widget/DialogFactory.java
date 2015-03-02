@@ -8,7 +8,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
-import com.cisoft.myapplication.R;
+import com.cisoft.shop.R;
 
 import org.kymjs.aframe.ui.KJActivityManager;
 import org.kymjs.aframe.utils.DensityUtils;

@@ -2,7 +2,7 @@ package com.cisoft.shop.http;
 
 import android.content.Context;
 
-import com.cisoft.myapplication.R;
+import com.cisoft.shop.R;
 import com.cisoft.shop.ApiConstants;
 import com.cisoft.shop.AppConfig;
 

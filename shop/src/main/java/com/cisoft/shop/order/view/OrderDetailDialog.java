@@ -13,7 +13,7 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.cisoft.myapplication.R;
+import com.cisoft.shop.R;
 import com.cisoft.shop.bean.Order;
 import com.cisoft.shop.bean.OrderGoods;
 import com.cisoft.shop.util.DeviceUtil;

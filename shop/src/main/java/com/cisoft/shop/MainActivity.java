@@ -1,12 +1,19 @@
 package com.cisoft.shop;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,9 +23,10 @@ import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
-import com.cisoft.myapplication.R;
 import com.cisoft.shop.goods.view.GoodsFragment;
 import com.cisoft.shop.order.view.OrderFragment;
+import com.cisoft.shop.util.L;
+import com.igexin.sdk.PushConsts;
 import com.igexin.sdk.PushManager;
 
 import org.kymjs.aframe.ui.BindView;
@@ -52,6 +60,8 @@ public class MainActivity extends BaseActivity implements GoodsFragment.OnFragme
 
     private  ActionBarDrawerToggle drawerToggle = null;
 
+    private MyReceiver receiver;
+
     public MainActivity() {
         setHiddenActionBar(false);
     }
@@ -59,7 +69,14 @@ public class MainActivity extends BaseActivity implements GoodsFragment.OnFragme
     @Override
     public void setRootView() {
         setContentView(R.layout.activity_main);
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("com.cisoft.receivemsg");
+        receiver = new MyReceiver();
+        getApplicationContext().registerReceiver(receiver, filter);
+
         PushManager.getInstance().initialize(this.getApplicationContext());
+        String clientId = PushManager.getInstance().getClientid(this);
+        bindAlias();
     }
 
     @Override
@@ -221,4 +238,63 @@ public class MainActivity extends BaseActivity implements GoodsFragment.OnFragme
         super.onConfigurationChanged(newConfig);
         drawerToggle.onConfigurationChanged(newConfig);
     }
+
+    /**
+     * 将ShopId与别名相互绑定
+     * 别名格式：shop_***  ***为shop的id号
+     */
+    private void bindAlias() {
+        PushManager.getInstance().bindAlias(this, "shop_" + L.getShop(this).getId());
+    }
+
+    public class MyReceiver extends BroadcastReceiver {
+        public static final int GET_MSG = 1;
+
+        public MyReceiver() {
+        }
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Bundle data = intent.getExtras();
+            Log.d("onReceive", "我是main的receiver2");
+            switch (data.getInt(PushConsts.CMD_ACTION)) {
+                case PushConsts.GET_MSG_DATA:
+                    byte[] payload = data.getByteArray("payload");
+                    if (payload != null) {
+                        String rs = new String(payload);
+                        Log.d("GET_MESSAGE", rs);
+                        Message msg = handler.obtainMessage();
+                        msg.what = GET_MSG;
+                        Bundle bundle = new Bundle();
+                        bundle.putString("msg", rs);
+                        msg.setData(bundle);
+                        handler.sendMessage(msg);
+                    }
+                    break;
+                case PushConsts.GET_CLIENTID:
+                    String clientId = data.getString("clientid");
+                    Log.d("GET_CLIENTID", clientId);
+                    break;
+            }
+        }
+    }
+
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case MyReceiver.GET_MSG:
+                    newOrders(msg.getData());
+                    break;
+                default:
+                    super.handleMessage(msg);
+            }
+        }
+    };
+
+    private void newOrders(Bundle data) {
+        //TODO 获得新订单更新UI
+        Log.d("DEBUGDEBUG", data.getString("msg"));
+    }
+
 }

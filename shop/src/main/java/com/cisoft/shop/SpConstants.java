@@ -14,4 +14,6 @@ public class SpConstants {
 
     public static final String KEY_LOGIN_OBJ = "login_obj";
 
+    public static final String KEY_GETUI_CLIENT_ID = "client_id";
+
 }

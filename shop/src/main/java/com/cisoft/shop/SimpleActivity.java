@@ -17,7 +17,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.cisoft.myapplication.R;
 import com.cisoft.shop.widget.MyListView;
 import com.cisoft.shop.widget.SwipeMenu;
 import com.cisoft.shop.widget.SwipeMenuCreator;

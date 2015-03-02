@@ -19,7 +19,7 @@ import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.cisoft.myapplication.R;
+import com.cisoft.shop.R;
 import com.cisoft.shop.bean.Goods;
 import com.cisoft.shop.bean.GoodsCategory;
 import com.cisoft.shop.bean.Shop;

@@ -12,7 +12,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Scroller;
 
-import com.cisoft.myapplication.R;
+import com.cisoft.shop.R;
 
 
 /**

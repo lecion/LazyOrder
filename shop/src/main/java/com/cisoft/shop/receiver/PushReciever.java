@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.cisoft.shop.MyService;
 import com.igexin.sdk.PushConsts;
 
 public class PushReciever extends BroadcastReceiver {
@@ -22,6 +23,9 @@ public class PushReciever extends BroadcastReceiver {
                 if (payload != null) {
                     String rs = new String(payload);
                     Log.d("GET_MESSAGE", rs);
+                    Intent i = new Intent(context, MyService.class);
+                    i.putExtras(data);
+                    context.startService(i);
                 }
                 break;
             case PushConsts.GET_CLIENTID:

@@ -5,7 +5,7 @@ android {
     buildToolsVersion "20.0.0"
 
     defaultConfig {
-        applicationId "com.cisoft.myapplication"
+        applicationId "com.cisoft.shop"
         minSdkVersion 14
         targetSdkVersion 21
         versionCode 1
@@ -32,4 +32,5 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:21.0.0'
     compile 'com.daimajia.swipelayout:library:1.1.8@aar'
     compile files('libs/swipemenulistview.jar')
+    compile files('/Users/Lecion/dev/android/LazyOrder/libs/GetuiSdk2.4.1.0.jar')
 }

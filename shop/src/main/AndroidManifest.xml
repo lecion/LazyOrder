@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.cisoft.myapplication" >
+    package="com.cisoft.shop" >
 
     <!-- 以下为必须的权限 -->
     <uses-permission android:name="android.permission.INTERNET" />
@@ -12,21 +12,21 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="getui.permission.GetuiService.com.cisoft.shop" />
-
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
     <!-- 自定义权限 -->
     <permission
         android:name="getui.permission.GetuiService.com.cisoft.shop"
-        android:protectionLevel="normal" >
-    </permission>
+        android:protectionLevel="normal" />
 
     <application
-        android:name="com.cisoft.shop.MyApplication"
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.cisoft.shop.welcome.view.WelcomeActivity"
+            android:name=".welcome.view.WelcomeActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,35 +34,37 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name="com.cisoft.shop.MainActivity"
-            android:label="@string/app_name">
-            </activity>
-        <activity android:name="com.cisoft.shop.SimpleActivity"
-            android:label="Test"></activity>
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name=".SimpleActivity"
+            android:label="Test" />
 
         <!-- 个推SDK配置开始 -->
-        <!-- 配置的第三方参数属性 -->
-        <meta-mData
+        <!-- 配置第三方应用参数属性 -->
+        <meta-data
             android:name="PUSH_APPID"
             android:value="MLqtCyWjpiA3S1tcanJb72" />
-        <meta-mData
-            android:name="PUSH_APPSECRET"
-            android:value="b5e8q8Z80f9zMyoTK4gdX3" />
-        <meta-mData
+        <!-- 替换为第三方应用的APPID -->
+        <meta-data
             android:name="PUSH_APPKEY"
             android:value="OzlUNu2kvDA5QFJLUjWBj2" />
-        <meta-mData
+        <!-- 替换为第三方应用的APPKEY -->
+        <meta-data
+            android:name="PUSH_APPSECRET"
+            android:value="b5e8q8Z80f9zMyoTK4gdX3" />
+        <!-- 替换为第三方应用的APPSECRET -->
+        <meta-data
             android:name="PUSH_GROUPID"
             android:value="" />
-
         <!-- 配置SDK核心服务 -->
         <service
             android:name="com.igexin.sdk.PushService"
             android:exported="true"
             android:label="NotificationCenter"
-            android:process=":pushservice" >
-        </service>
+            android:process=":pushservice" />
 
         <receiver android:name="com.igexin.sdk.PushReceiver" >
             <intent-filter>
@@ -86,9 +88,7 @@
             android:exported="false"
             android:process=":pushservice"
             android:taskAffinity="com.igexin.sdk.PushActivityTask"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
-        </activity>
-
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <!-- 配置弹框activity -->
         <activity
             android:name="com.igexin.getuiext.activity.GetuiExtActivity"
@@ -106,7 +106,7 @@
 
                 <!-- 这个com.igexin.sdk.action.7fjUl2Z3LH6xYy7NQK4ni4固定，不能修改 -->
                 <action android:name="com.igexin.sdk.action.7fjUl2Z3LH6xYy7NQK4ni4" />
-                <!-- android:name="com.igexin.sdk.action.第三方的appId" -->
+                <!-- 替换为android:name="com.igexin.sdk.action.第三方的appId" -->
                 <action android:name="com.igexin.sdk.action.MLqtCyWjpiA3S1tcanJb72" />
             </intent-filter>
         </receiver>
@@ -114,15 +114,12 @@
         <service
             android:name="com.igexin.getuiext.service.GetuiExtService"
             android:process=":pushservice" />
-
         <!-- 个推download模块配置 -->
         <service
             android:name="com.igexin.download.DownloadService"
             android:process=":pushservice" />
 
-        <receiver
-            android:name="com.igexin.download.DownloadReceiver"
-            android:exported="false" >
+        <receiver android:name="com.igexin.download.DownloadReceiver" >
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
@@ -132,10 +129,10 @@
             android:name="com.igexin.download.DownloadProvider"
             android:authorities="downloads.com.cisoft.shop"
             android:process=":pushservice" />
-        <!-- android:authorities="downloads.第三方包名" -->
-        <!-- ====================================================== -->
+        <!-- 替换为downloads.第三方包名 -->
+        <!-- =========================================================================== -->
         <receiver
-            android:name="com.cisoft.shop.receiver.PushReciever"
+            android:name=".receiver.PushReciever"
             android:enabled="true"
             android:exported="false" >
             <intent-filter>
@@ -144,9 +141,14 @@
         </receiver>
 
         <activity
-            android:name="com.cisoft.shop.login.view.LoginActivity"
-            android:label="@string/title_activity_login" >
-        </activity>
+            android:name=".login.view.LoginActivity"
+            android:label="@string/title_activity_login" />
+
+        <service
+            android:name=".MyService"
+            android:enabled="true"
+            android:exported="true" >
+        </service>
     </application>
 
 </manifest>

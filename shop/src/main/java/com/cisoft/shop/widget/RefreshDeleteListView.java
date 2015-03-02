@@ -15,7 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.Scroller;
 import android.widget.TextView;
 
-import com.cisoft.myapplication.R;
+import com.cisoft.shop.R;
 
 
 /**

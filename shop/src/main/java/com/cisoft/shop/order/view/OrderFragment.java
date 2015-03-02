@@ -20,7 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.cisoft.myapplication.R;
+import com.cisoft.shop.R;
 import com.cisoft.shop.bean.Order;
 import com.cisoft.shop.bean.Shop;
 import com.cisoft.shop.order.presenter.OrderPresenter;

@@ -13,7 +13,7 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
-import com.cisoft.myapplication.R;
+import com.cisoft.shop.R;
 import com.cisoft.shop.MainActivity;
 import com.cisoft.shop.login.presenter.LoginPresenter;
 import com.cisoft.shop.util.DeviceUtil;

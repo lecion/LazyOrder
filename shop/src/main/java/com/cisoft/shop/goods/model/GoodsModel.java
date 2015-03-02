@@ -2,7 +2,7 @@ package com.cisoft.shop.goods.model;
 
 import android.content.Context;
 
-import com.cisoft.myapplication.R;
+import com.cisoft.shop.R;
 import com.cisoft.shop.ApiConstants;
 import com.cisoft.shop.MainActivity;
 import com.cisoft.shop.MyApplication;
