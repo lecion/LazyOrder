@@ -50,7 +50,7 @@ public class OrderDetailDialog extends DialogFragment {
     }
 
     private void initData() {
-//        lvOrderGoods.setAdapter(new OrderGoodsAdapter(order.getGoodsList()));
+        lvOrderGoods.setAdapter(new OrderGoodsAdapter(order.getGoodsList()));
         tvOrderNumber.setText("No." + order.getOrderNumber());
         tvDistribution.setText("￥" + order.getDistributionPrice());
         tvPrice.setText("￥" + order.getOrderPrice());
@@ -103,7 +103,24 @@ public class OrderDetailDialog extends DialogFragment {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            return null;
+            ViewHolder holder = null;
+            if (convertView == null) {
+                holder = new ViewHolder();
+                convertView = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_fragment_order_detial_cell, parent, false);
+                holder.tvOrderGoodsName = (TextView) convertView.findViewById(R.id.tv_order_goods_name);
+                holder.tvOrderGoodsPrice = (TextView) convertView.findViewById(R.id.tv_order_goods_price);
+                convertView.setTag(holder);
+            }
+            holder = (ViewHolder) convertView.getTag();
+            OrderGoods goods = (OrderGoods) getItem(position);
+            holder.tvOrderGoodsName.setText(goods.getComName() + "×" + goods.getComNum());
+            holder.tvOrderGoodsPrice.setText("￥" + goods.getPrice());
+            return convertView;
         }
+    }
+
+    private static class ViewHolder {
+        TextView tvOrderGoodsName;
+        TextView tvOrderGoodsPrice;
     }
 }

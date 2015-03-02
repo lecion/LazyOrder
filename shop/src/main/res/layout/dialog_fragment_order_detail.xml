@@ -23,11 +23,20 @@
         android:textSize="16sp" />
     </RelativeLayout>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="详细"
+        style="@style/order_detail_text_view_style"
+        android:textSize="16sp" />
+    <include layout="@layout/divider_line"/>
     <ListView
         android:id="@+id/lv_order_goods"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></ListView>
-
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        ></ListView>
+    <include layout="@layout/divider_line"/>
     <RelativeLayout
         style="@style/order_detail_text_view_style"
         android:layout_width="match_parent"
@@ -44,6 +53,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:textColor="@color/order_detail_price"
             android:text="￥1.0" />
     </RelativeLayout>
 
@@ -65,6 +75,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:textColor="@color/order_detail_price"
             android:text="￥1.0" />
     </RelativeLayout>
 
