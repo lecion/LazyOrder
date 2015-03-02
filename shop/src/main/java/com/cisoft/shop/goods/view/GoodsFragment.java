@@ -194,7 +194,8 @@ public class GoodsFragment extends BaseFragment implements IGoodsView{
         tvShopTime.setText(shop.getOpenTime() + "-" + shop.getCloseTime());
         tvShopPrivilege.setText(shop.getPromotionInfo());
         KJBitmap.create().display(ivShopLogo, shop.getFaceImgUrl());
-        spShopState.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.fragment_goods_shop_state_cell, shopOperatingStates));
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), R.layout.fragment_goods_shop_state_cell, shopOperatingStates);
+        spShopState.setAdapter(adapter);
         spShopState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -458,7 +459,7 @@ public class GoodsFragment extends BaseFragment implements IGoodsView{
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             View v = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_goods_shop_state_cell, parent, false);
-            TextView tv = (TextView) v.findViewById(R.id.tv_shop_state_title);
+            TextView tv = (TextView) v.findViewById(android.R.id.text1);
             tv.setText(((GoodsCategory)getItem(position)).getCateName());
             return v;
         }

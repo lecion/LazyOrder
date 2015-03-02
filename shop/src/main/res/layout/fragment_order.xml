@@ -77,11 +77,14 @@
 
         <Spinner
             android:id="@+id/sp_shop_state"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
+            android:layout_height="32dp"
             android:layout_alignParentRight="true"
             android:layout_marginRight="12dp"
-            ></Spinner>
+            android:background="@drawable/selector_drop_list_button_bg"
+            android:gravity="center"
+            android:padding="0dp"
+            />
     </RelativeLayout>
     <include layout="@layout/divider_line"/>
 

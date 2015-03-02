@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/tv_shop_state_title"
+<CheckedTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/text1"
     style="?android:attr/dropDownItemStyle"
     android:singleLine="true"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:text="aaa"
-    android:ellipsize="marquee" />
+    android:ellipsize="marquee"
+    android:gravity="center"
+    android:textColor="@color/white"
+    android:textSize="13sp"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
+    android:background="#ff1a9ee4"
+    />
