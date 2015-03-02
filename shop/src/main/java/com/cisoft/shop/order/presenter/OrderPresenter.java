@@ -51,7 +51,7 @@ public class OrderPresenter {
     }
 
     public void loadMore(int page, final int size) {
-        model.loadOrderList(page, size, new INetWorkFinished<Order>() {
+        model.findOrdersByMerId("CREATE", page, size, new INetWorkFinished<Order>() {
             @Override
             public void onSuccess(List<Order> l) {
                 if (l.size() == 0 || l.size() < size) {
