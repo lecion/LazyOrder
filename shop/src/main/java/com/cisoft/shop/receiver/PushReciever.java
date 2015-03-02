@@ -3,11 +3,8 @@ package com.cisoft.shop.receiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
 
 import com.cisoft.shop.MyService;
-import com.igexin.sdk.PushConsts;
 
 public class PushReciever extends BroadcastReceiver {
     public PushReciever() {
@@ -15,23 +12,8 @@ public class PushReciever extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Bundle data = intent.getExtras();
-        Log.d("onReceive", data.getInt("action") + "");
-        switch (data.getInt(PushConsts.CMD_ACTION)) {
-            case PushConsts.GET_MSG_DATA:
-                byte[] payload = data.getByteArray("payload");
-                if (payload != null) {
-                    String rs = new String(payload);
-                    Log.d("GET_MESSAGE", rs);
-                    Intent i = new Intent(context, MyService.class);
-                    i.putExtras(data);
-                    context.startService(i);
-                }
-                break;
-            case PushConsts.GET_CLIENTID:
-                String clientId = data.getString("clientid");
-                Log.d("GET_CLIENTID", clientId);
-                break;
-        }
+        Intent i = new Intent(context, MyService.class);
+        i.putExtras(intent.getExtras());
+        context.startService(i);
     }
 }
