@@ -295,6 +295,7 @@ public class MainActivity extends BaseActivity implements GoodsFragment.OnFragme
     private void newOrders(Bundle data) {
         //TODO 获得新订单更新UI
         Log.d("DEBUGDEBUG", data.getString("msg"));
+//        今天写简历去了，刷个存在- -
     }
 
 }
