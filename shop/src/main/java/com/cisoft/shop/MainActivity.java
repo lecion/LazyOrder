@@ -24,8 +24,11 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
 import com.cisoft.shop.goods.view.GoodsFragment;
+import com.cisoft.shop.login.view.LoginActivity;
 import com.cisoft.shop.order.view.OrderFragment;
+import com.cisoft.shop.util.IOUtil;
 import com.cisoft.shop.util.L;
+import com.cisoft.shop.widget.DialogFactory;
 import com.igexin.sdk.PushConsts;
 import com.igexin.sdk.PushManager;
 
@@ -166,7 +169,7 @@ public class MainActivity extends BaseActivity implements GoodsFragment.OnFragme
                 ViewInject.toast("统计");
                 break;
             case 4:
-                ViewInject.toast("注销");
+                doLogout();
                 break;
         }
         actionBarTitle = (String) drawerTitle.get(position).get(KEY_TITLE);
@@ -174,6 +177,19 @@ public class MainActivity extends BaseActivity implements GoodsFragment.OnFragme
         if (drawerLayout.isDrawerOpen(Gravity.LEFT)) {
             drawerLayout.closeDrawer(Gravity.LEFT);
         }
+    }
+
+    /**
+     * 执行注销
+     */
+    private void doLogout() {
+        IOUtil.clearLoginInfo(this);
+        DialogFactory.createConfirmDialog(this, "", "一定要离开我吗", "抹泪离去", "再逗逗我", new DialogFactory.IConfirm() {
+            @Override
+            public void onYes() {
+                skipActivity(MainActivity.this, LoginActivity.class);
+            }
+        }).show();
     }
 
     private class DrawerToggle extends ActionBarDrawerToggle {

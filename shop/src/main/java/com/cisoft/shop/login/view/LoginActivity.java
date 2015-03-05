@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.app.Dialog;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.Button;
@@ -17,6 +18,7 @@ import com.cisoft.shop.R;
 import com.cisoft.shop.MainActivity;
 import com.cisoft.shop.login.presenter.LoginPresenter;
 import com.cisoft.shop.util.DeviceUtil;
+import com.cisoft.shop.util.IOUtil;
 import com.cisoft.shop.widget.DialogFactory;
 
 import org.kymjs.aframe.ui.BindView;
@@ -64,6 +66,14 @@ public class LoginActivity extends BaseActivity implements ILoginView{
     protected void initWidget() {
         btnLogin.setOnClickListener(this);
         startLoginAnimation();
+        initInput();
+    }
+
+    private void initInput() {
+        String phone = IOUtil.getLoginPhone(this);
+        if (!TextUtils.isEmpty(phone)) {
+            etPhone.setText(phone);
+        }
     }
 
     /**

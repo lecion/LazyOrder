@@ -71,4 +71,22 @@ public class IOUtil {
         PreferenceHelper.write(ctx, SpConstants.SP_FILE_NAME, SpConstants.KEY_LOGIN_PWD, pwd);
         PreferenceHelper.write(ctx, SpConstants.SP_FILE_NAME, SpConstants.KEY_LOGIN_OBJ, IOUtil.encode(t));
     }
+
+    /**
+     * 注销登录信息
+     */
+    public static void clearLoginInfo(Context ctx) {
+        PreferenceHelper.remove(ctx, SpConstants.SP_FILE_NAME, SpConstants.KEY_LOGIN_TYPE);
+        PreferenceHelper.remove(ctx, SpConstants.SP_FILE_NAME, SpConstants.KEY_LOGIN_PWD);
+        PreferenceHelper.remove(ctx, SpConstants.SP_FILE_NAME, SpConstants.KEY_LOGIN_OBJ);
+    }
+
+    /**
+     * 获取电话号码
+     * @param ctx
+     * @return
+     */
+    public static String getLoginPhone(Context ctx) {
+        return PreferenceHelper.readString(ctx, SpConstants.SP_FILE_NAME, SpConstants.KEY_LOGIN_PHONE);
+    }
 }
