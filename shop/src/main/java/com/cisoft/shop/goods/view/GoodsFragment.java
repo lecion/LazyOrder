@@ -64,6 +64,12 @@ public class GoodsFragment extends BaseFragment implements IGoodsView{
     @BindView(id = R.id.rb_price)
     private RadioButton rbPrice;
 
+    @BindView(id = R.id.llShowNoValueTip)
+    private LinearLayout llShowNoValueTip;
+
+    @BindView(id = R.id.btn_reload)
+    private Button btnReload;
+
     private String sortType = SORT_SALES;
 
     private GoodsCategoryAdapter goodsCategoryAdapter;
@@ -98,9 +104,6 @@ public class GoodsFragment extends BaseFragment implements IGoodsView{
 
     private OnFragmentInteractionListener mListener;
     private Dialog loadingTipDialog;
-
-    @BindView(id = R.id.llShowNoValueTip)
-    private LinearLayout llShowNoValueTip;
 
     private int page = 1;
     private int size = 5;
@@ -151,6 +154,13 @@ public class GoodsFragment extends BaseFragment implements IGoodsView{
         initCategory();
 
         initGoodsList();
+
+        btnReload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.onLoad(type, sortType);
+            }
+        });
     }
 
     private void initSortButton() {

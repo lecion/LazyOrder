@@ -76,7 +76,6 @@ public class IOUtil {
      * 注销登录信息
      */
     public static void clearLoginInfo(Context ctx) {
-        PreferenceHelper.remove(ctx, SpConstants.SP_FILE_NAME, SpConstants.KEY_LOGIN_TYPE);
         PreferenceHelper.remove(ctx, SpConstants.SP_FILE_NAME, SpConstants.KEY_LOGIN_PWD);
         PreferenceHelper.remove(ctx, SpConstants.SP_FILE_NAME, SpConstants.KEY_LOGIN_OBJ);
     }

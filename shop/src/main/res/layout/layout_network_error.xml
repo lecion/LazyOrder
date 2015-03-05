@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/llShowNoValueTip"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:visibility="visible">
+    >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/have_not_goods_list"
+        android:textColor="#E70012"
+        android:textSize="16sp" />
+
+    <Button
+        android:id="@+id/btn_reload"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="重新加载"
+        />
+
+</LinearLayout>

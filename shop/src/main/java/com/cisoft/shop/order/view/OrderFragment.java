@@ -42,14 +42,7 @@ import org.kymjs.aframe.ui.fragment.BaseFragment;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A simple {@link android.app.Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link com.cisoft.shop.order.view.OrderFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link com.cisoft.shop.order.view.OrderFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class OrderFragment extends BaseFragment implements IOrderView{
 
     @BindView(id = R.id.iv_shop_logo)
@@ -69,6 +62,12 @@ public class OrderFragment extends BaseFragment implements IOrderView{
 
     @BindView(id = R.id.lv_order)
     private RefreshDeleteListView lvOrder;
+
+    @BindView(id = R.id.llShowNoValueTip)
+    private LinearLayout llShowNoValueTip;
+
+    @BindView(id = R.id.btn_reload)
+    private Button rbReload;
 
     private OrderListAdapter orderListAdapter;
 
@@ -93,9 +92,6 @@ public class OrderFragment extends BaseFragment implements IOrderView{
     private OnFragmentInteractionListener mListener;
     private Dialog loadingTipDialog;
 
-    @BindView(id = R.id.llShowNoValueTip)
-    private LinearLayout llShowNoValueTip;
-
     private int page = 1;
     private int size = 5;
 
@@ -108,9 +104,7 @@ public class OrderFragment extends BaseFragment implements IOrderView{
         return fragment;
     }
 
-    public OrderFragment() {
-        // Required empty public constructor
-    }
+    public OrderFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -139,6 +133,13 @@ public class OrderFragment extends BaseFragment implements IOrderView{
         initShopStatus();
 
         initOrderList();
+
+        rbReload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.onLoad();
+            }
+        });
     }
 
     /**

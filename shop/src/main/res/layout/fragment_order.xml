@@ -88,20 +88,7 @@
     </RelativeLayout>
     <include layout="@layout/divider_line"/>
 
-    <LinearLayout
-        android:id="@+id/llShowNoValueTip"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:visibility="gone">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/have_not_goods_list"
-            android:textColor="#E70012"
-            android:textSize="16sp" />
-    </LinearLayout>
+    <include layout="@layout/layout_network_error"/>
 
     <com.cisoft.shop.widget.RefreshDeleteListView
         android:id="@+id/lv_order"
