@@ -87,6 +87,25 @@ public class IOUtil {
      * @return
      */
     public static String getLoginPhone(Context ctx) {
-        return PreferenceHelper.readString(ctx, SpConstants.SP_FILE_NAME, SpConstants.KEY_LOGIN_PHONE);
+        return PreferenceHelper.readString(ctx, SpConstants.SP_FILE_NAME, SpConstants.KEY_LOGIN_PHONE, null);
+    }
+
+    /**
+     * 获取登录密码
+     * @param ctx
+     * @return
+     */
+    public static String getLoginPwd(Context ctx) {
+        return PreferenceHelper.readString(ctx, SpConstants.SP_FILE_NAME, SpConstants.KEY_LOGIN_PWD, null);
+    }
+
+    /**
+     * 获取登录类型
+     * @param ctx
+     * @return
+     */
+    public static int getLoginType(Context ctx) {
+        return PreferenceHelper.readInt(ctx, SpConstants.SP_FILE_NAME, SpConstants.KEY_LOGIN_TYPE, -1);
+
     }
 }

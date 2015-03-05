@@ -74,7 +74,20 @@ public class LoginActivity extends BaseActivity implements ILoginView{
         if (!TextUtils.isEmpty(phone)) {
             etPhone.setText(phone);
         }
+        String pwd = IOUtil.getLoginPwd(this);
+        if (!TextUtils.isEmpty(pwd)) {
+            etPwd.setText(pwd);
+        }
+        int type = IOUtil.getLoginType(this);
+        if (type != -1) {
+            if (type == 0) {
+                rbNormal.setChecked(true);
+            } else if (type == 1) {
+                rbExpress.setChecked(true);
+            }
+        }
     }
+
 
     /**
      * 执行登陆界面动画
