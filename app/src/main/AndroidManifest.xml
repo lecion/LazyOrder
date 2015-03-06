@@ -12,20 +12,21 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme" >
         <activity
             android:name=".AppStart"
             android:label="@string/app_name"
-            android:theme="@style/Fullscreen">
+            android:theme="@style/Fullscreen" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".ui.main.MainActivity"
-            android:theme="@style/NoUpIndicator"
-            android:label="@string/title_activity_main">
+            android:label="@string/title_activity_main"
+            android:theme="@style/NoUpIndicator" >
         </activity>
         <activity
             android:name=".ui.goods.GoodsActivity"
@@ -97,7 +98,7 @@
         </activity>
         <activity
             android:name=".ui.account.UserCenterActivity"
-            android:label="@string/title_activity_user_center">
+            android:label="@string/title_activity_user_center" >
         </activity>
         <activity
             android:name=".ui.about.SettingActivity"
@@ -116,7 +117,12 @@
             android:label="@string/title_activity_alter_phone_binding" >
         </activity>
 
-        <service android:name=".core.about.UpdateService" />
+        <service android:name=".core.about.AppDownloadService" />
+
+        <activity
+            android:name=".ui.account.AboutActivity"
+            android:label="@string/title_activity_about" >
+        </activity>
     </application>
 
 </manifest>

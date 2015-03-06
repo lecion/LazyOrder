@@ -1,6 +1,11 @@
 package com.cisoft.lazyorder;
 
 import android.content.Context;
+
+import com.cisoft.lazyorder.finals.SPConstants;
+
+import org.kymjs.kjframe.utils.PreferenceHelper;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -22,6 +27,8 @@ public class AppConfig {
     public static final String HTTP_CACHE_PATH = APP_PATH + File.separator + "cache";
     //图片缓存路径
     public static final String IMAGE_CACHE_PATH = APP_PATH + File.separator + "image";
+    //文件下载路径
+    public static final String FILE_DOWNLOAD_PATH = APP_PATH + File.separator + "download";
     //配置文件的文件名
     public static final String CONFIG_FILE_NAME = "config";
 
@@ -35,6 +42,27 @@ public class AppConfig {
         }
         return appConfig;
     }
+
+
+    /**
+     * 是否开启了无图模式
+     * @return
+     */
+    public boolean enableNoDrawingMode() {
+        boolean enable = PreferenceHelper.readBoolean(mContext, SPConstants.SP_FILE_NAME,
+                SPConstants.KEY_IS_NO_DRAWING_MODE, false);
+        return enable;
+    }
+
+    /**
+     * 设置是否开启无图模式
+     * @param enable
+     */
+    public void setEnableNoDrawingMode(boolean enable) {
+        PreferenceHelper.write(mContext, SPConstants.SP_FILE_NAME,
+                SPConstants.KEY_IS_NO_DRAWING_MODE, enable);
+    }
+
 
 
     /**

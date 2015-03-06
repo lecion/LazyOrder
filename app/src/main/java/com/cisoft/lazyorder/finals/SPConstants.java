@@ -9,6 +9,8 @@ public class SPConstants {
 
     // 是否是第一次安装
     public static final String KEY_IS_FIRST_INSTALL = "isFirstInstall";
+    // 是否开启无图模式
+    public static final String KEY_IS_NO_DRAWING_MODE = "isNoDrawingMode";
 
     // 最近的一次保存的姓名
     public static final String KEY_RECENT_NAME = "recentName";
@@ -22,4 +24,6 @@ public class SPConstants {
     public static final String KEY_DRAWER_SELECTED_POSITION = "selectedPosition";
     // 抽屉菜单是否给用户展示过
     public static final String KEY_DRAWER_USER_LEARNED = "navDrawerLearned";
+    // 最新的APP版本名称
+    public static final String KEY_LATEST_VERSION_NAME = "latestVersionName";
 }

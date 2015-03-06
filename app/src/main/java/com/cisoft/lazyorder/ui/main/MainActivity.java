@@ -14,6 +14,7 @@ import org.kymjs.kjframe.ui.ViewInject;
 public class MainActivity extends KJActivity implements DrawerMenuFragment.NavigationDrawerCallbacks{
 
     private DrawerMenuFragment navDrawerFragment;
+    private MenuFragmentManager.MenuItem currMenuItem;
     private CharSequence mTitle;
     private long lastKeyTime;
 
@@ -34,16 +35,16 @@ public class MainActivity extends KJActivity implements DrawerMenuFragment.Navig
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
+        currMenuItem = MenuFragmentManager.getInstance(this).get(position);
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.container, MenuFragmentManager.getInstance(this)
-                        .getMenuItemByPosition(position).fragment)
+                .replace(R.id.container, currMenuItem.fragment)
                 .commit();
     }
 
     public void onSectionAttached(int position) {
         mTitle = MenuFragmentManager.getInstance(this)
-                .getMenuItemByPosition(position).title;
+                .get(position).title;
     }
 
     public void restoreActionBar() {
@@ -65,13 +66,16 @@ public class MainActivity extends KJActivity implements DrawerMenuFragment.Navig
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if(keyCode == KeyEvent.KEYCODE_BACK){
-            if((System.currentTimeMillis() - lastKeyTime) > 2000){
-                lastKeyTime = System.currentTimeMillis();
-                ViewInject.toast("再按一次退出程序");
-            }else{
-                finish();
+            if (currMenuItem.position == 0) {
+                if((System.currentTimeMillis() - lastKeyTime) > 2000){
+                    lastKeyTime = System.currentTimeMillis();
+                    ViewInject.toast("再按一次退出程序");
+                }else{
+                    finish();
+                }
+            } else {
+                navDrawerFragment.selectItem(0);
             }
-
             return true;
         }
 

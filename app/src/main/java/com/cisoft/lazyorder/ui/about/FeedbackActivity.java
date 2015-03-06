@@ -1,7 +1,9 @@
 package com.cisoft.lazyorder.ui.about;
 
 
+import android.app.Activity;
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
@@ -149,5 +151,10 @@ public class FeedbackActivity extends BaseActivity {
                 && mSuccessTipDialog.isShowing()) {
             mSuccessTipDialog.dismiss();
         }
+    }
+
+    public static void startFrom(Activity activity) {
+        Intent intent = new Intent(activity, FeedbackActivity.class);
+        activity.startActivity(intent);
     }
 }

@@ -1,6 +1,7 @@
 package com.cisoft.lazyorder.util;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
@@ -37,5 +38,13 @@ public class Utility {
         KJBitmap KjBitmap = KJBitmap.create(bitmapConfig);
 
         return KjBitmap;
+    }
+
+    public static boolean isIntentAvailable(Context context, Intent intent) {
+        if (context.getPackageManager().queryIntentActivities(intent, Intent.FLAG_ACTIVITY_NO_ANIMATION).size() > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

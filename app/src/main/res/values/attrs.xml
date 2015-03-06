@@ -26,4 +26,19 @@
         <attr name="item_title" />
         <attr name="item_icon" />
     </declare-styleable>
+
+
+    <attr name="name" format="reference|string" />
+    <attr name="icon" format="reference" />
+    <declare-styleable name="SectionItemView">
+        <attr name="name" />
+        <attr name="icon" />
+    </declare-styleable>
+
+    <attr name="headerText" format="string" />
+    <attr name="footerText" format="string" />
+    <declare-styleable name="SectionView">
+        <attr name="headerText" />
+        <attr name="footerText" />
+    </declare-styleable>
 </resources>

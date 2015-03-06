@@ -1,137 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/gray_bg" >
+    android:background="@color/gray_bg">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/content_padding"
-        android:orientation="vertical">
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:background="@color/stroke" />
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/cell_height"
-            android:background="@drawable/selector_list_item_bg"
-            android:padding="@dimen/content_padding" >
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:text="常见问题"
-                android:textColor="@color/text_dark_gray_color"
-                android:textSize="14.0sp" />
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:contentDescription="@string/app_name"
-                android:src="@drawable/gray_arrows_next" />
-        </RelativeLayout>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:background="@color/stroke" />
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/cell_height"
-            android:background="@drawable/selector_list_item_bg"
-            android:gravity="center_vertical" >
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="@dimen/content_padding"
-                android:gravity="center"
-                android:text="开启无图模式"
-                android:textColor="@color/text_dark_gray_color"
-                android:textSize="14.0sp" />
-            <TextView
-                android:layout_width="0.0dip"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="@dimen/content_padding"
-                android:layout_marginRight="@dimen/content_padding"
-                android:layout_weight="1.0"
-                android:ellipsize="marquee"
-                android:gravity="left|center"
-                android:marqueeRepeatLimit="marquee_forever"
-                android:singleLine="true"
-                android:text="建议在3G环境下开启节省流量"
-                android:textColor="@color/text_light_gray_color"
-                android:textSize="10.0sp"  />
-            <com.cisoft.lazyorder.widget.SwitchButton
-                style="@style/Switch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="true" />
-        </LinearLayout>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:background="@color/stroke" />
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/cell_height"
-            android:background="@drawable/selector_list_item_bg"
-            android:gravity="center_vertical" >
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="@dimen/content_padding"
-                android:gravity="center"
-                android:text="清除缓存"
-                android:textColor="@color/text_dark_gray_color"
-                android:textSize="14.0sp" />
-            <TextView
-                android:layout_width="0.0dip"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="@dimen/content_padding"
-                android:layout_marginRight="@dimen/content_padding"
-                android:layout_weight="1.0"
-                android:ellipsize="marquee"
-                android:gravity="left|center"
-                android:marqueeRepeatLimit="marquee_forever"
-                android:singleLine="true"
-                android:text="1.3M"
-                android:textColor="@color/text_light_gray_color"
-                android:textSize="10.0sp"  />
-        </LinearLayout>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:background="@color/stroke" />
-    </LinearLayout>
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/section_space">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/content_padding"
-        android:orientation="vertical">
-        <View
+        <com.cisoft.lazyorder.widget.section.SectionView
             android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:background="@color/stroke" />
-        <LinearLayout
+            android:layout_height="wrap_content">
+            <com.cisoft.lazyorder.widget.section.SectionListView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <com.cisoft.lazyorder.widget.section.SectionTextItemView
+                    android:id="@+id/clear_cache_setting"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:name="@string/settings_title_clear_cache" />
+                <com.cisoft.lazyorder.widget.section.SectionCheckBoxItemView
+                    android:id="@+id/no_drawing_mode_setting"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:name="@string/settings_title_no_drawing_mode" />
+            </com.cisoft.lazyorder.widget.section.SectionListView>
+        </com.cisoft.lazyorder.widget.section.SectionView>
+
+        <com.cisoft.lazyorder.widget.section.SectionView
             android:layout_width="match_parent"
-            android:layout_height="@dimen/cell_height"
-            android:background="@drawable/selector_list_item_bg"
-            android:gravity="center_vertical" >
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="@dimen/content_padding"
-                android:gravity="center"
-                android:text="退出程序"
-                android:textColor="@color/text_dark_gray_color"
-                android:textSize="14.0sp" />
-        </LinearLayout>
-        <View
+            android:layout_height="wrap_content">
+            <com.cisoft.lazyorder.widget.section.SectionListView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <com.cisoft.lazyorder.widget.section.SectionTextItemView
+                    android:id="@+id/feedback_setting"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:name="@string/settings_title_feedback" />
+                <com.cisoft.lazyorder.widget.section.SectionTextItemView
+                    android:id="@+id/check_update_setting"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:name="@string/settings_title_check_update" />
+                <com.cisoft.lazyorder.widget.section.SectionTextItemView
+                    android:id="@+id/about_us_setting"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:name="@string/settings_title_about_us" />
+                <com.cisoft.lazyorder.widget.section.SectionTextItemView
+                    android:id="@+id/function_desc_setting"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:name="@string/settings_title_function_desc" />
+                <com.cisoft.lazyorder.widget.section.SectionTextItemView
+                    android:id="@+id/welcome_page_setting"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:name="@string/settings_title_welcome_page" />
+            </com.cisoft.lazyorder.widget.section.SectionListView>
+        </com.cisoft.lazyorder.widget.section.SectionView>
+
+        <com.cisoft.lazyorder.widget.section.SectionView
             android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:background="@color/stroke" />
+            android:layout_height="wrap_content">
+            <com.cisoft.lazyorder.widget.section.SectionListView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <com.cisoft.lazyorder.widget.section.SectionTextItemView
+                    android:id="@+id/logout_setting"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:name="@string/settings_title_logout" />
+            </com.cisoft.lazyorder.widget.section.SectionListView>
+        </com.cisoft.lazyorder.widget.section.SectionView>
     </LinearLayout>
-</LinearLayout>
+</ScrollView>

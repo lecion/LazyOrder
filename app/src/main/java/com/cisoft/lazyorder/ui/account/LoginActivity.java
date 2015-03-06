@@ -1,5 +1,6 @@
 package com.cisoft.lazyorder.ui.account;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -191,5 +192,10 @@ public class LoginActivity extends BaseActivity {
                 && mSuccessTipDialog.isShowing()) {
             mSuccessTipDialog.dismiss();
         }
+    }
+
+    public static void startFrom(Activity activity) {
+        Intent intent = new Intent(activity, LoginActivity.class);
+        activity.startActivity(intent);
     }
 }

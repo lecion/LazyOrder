@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="drawer_bg_color">#F3F3F3</color>
+    <color name="drawer_bg_color">#FBFBFB</color>
     <color name="goods_btn_bg_color">#fff</color>
     <color name="red">#ffff0000</color>
     <color name="price_shadow_color">#ffc50000</color>
@@ -9,7 +9,7 @@
     <color name="text_gray_color">#ff555555</color>
     <color name="text_ligth_black">#494949</color>
 
-    <color name="stroke">#ffdddddd</color>
+    <color name="stroke">#ffdcdcdc</color>
 
     <color name="text_ligth_black_color">#FF494949</color>
     <color name="text_dark_black_color">#FF282828</color>
@@ -44,6 +44,8 @@
     <color name="order_detail_text_color">#737373</color>
     <color name="order_detail_money_all_text_color">#FF802C</color>
 
+
+
     <color name="gray_bg">#F2F2F2</color>
     <color name="white">#ffffffff</color>
     <color name="blue">#ff3993cf</color>
@@ -58,11 +60,13 @@
     <color name="orange_dark">#FF6600</color>
     <color name="orange_light">#F2AD77</color>
 
+    <color name="color_f3">#F3F3F3</color>
     <color name="color_2a">#2A2A2A</color>
     <color name="color_d2">#d2d2d2</color>
     <color name="color_f7">#f7f7f7</color>
     <color name="color_f6">#f6f6f6</color>
     <color name="color_88">#888888</color>
+    <color name="color_99">#999999</color>
     <color name="color_e3">#E3E3E3</color>
     <color name="color_e9">#E9E9E9</color>
     <color name="color_73">#737373</color>

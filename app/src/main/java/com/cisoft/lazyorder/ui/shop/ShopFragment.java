@@ -2,7 +2,6 @@ package com.cisoft.lazyorder.ui.shop;
 
 import android.app.ActionBar;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,13 +18,11 @@ import com.cisoft.lazyorder.R;
 import com.cisoft.lazyorder.bean.shop.Advertise;
 import com.cisoft.lazyorder.bean.shop.Shop;
 import com.cisoft.lazyorder.bean.shop.ShopCategory;
-import com.cisoft.lazyorder.core.account.I_LoginStateObserver;
-import com.cisoft.lazyorder.core.account.LoginStateObserver;
 import com.cisoft.lazyorder.core.shop.AdvertiseNetwork;
 import com.cisoft.lazyorder.core.shop.ShopCategoryNetwork;
 import com.cisoft.lazyorder.core.shop.ShopNetwork;
 import com.cisoft.lazyorder.finals.ApiConstants;
-import com.cisoft.lazyorder.ui.account.LoginActivity;
+import com.cisoft.lazyorder.ui.express.PostExpressActivity;
 import com.cisoft.lazyorder.ui.goods.GoodsActivity;
 import com.cisoft.lazyorder.ui.main.menu.BaseMenuItemFragment;
 import com.cisoft.lazyorder.util.DialogFactory;
@@ -42,7 +39,7 @@ import java.util.List;
  * Created by comit on 10/16/14.
  */
 public class ShopFragment extends BaseMenuItemFragment implements ActionBar.OnNavigationListener,
-        AdapterView.OnItemClickListener, I_LoginStateObserver {
+        AdapterView.OnItemClickListener {
 
     @BindView(id = R.id.rl_root_view)
     private RelativeLayout mRootView;
@@ -80,7 +77,6 @@ public class ShopFragment extends BaseMenuItemFragment implements ActionBar.OnNa
     @Override
     protected void initData() {
         appContext = (AppContext) getActivity().getApplication();
-        LoginStateObserver.getInstance().attach(this);
         mShopListData = new ArrayList<Shop>();
         mShopCategoryListData = new ArrayList<ShopCategory>();
         mAdvertiseNetwork = new AdvertiseNetwork(getActivity());
@@ -414,13 +410,11 @@ public class ShopFragment extends BaseMenuItemFragment implements ActionBar.OnNa
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         //抽屉菜单没有展开时才显示此fragment的菜单选项
-        if (!getMenuOpenState()){
+        if (!getMenuOpenState()) {
             if(mShopCategoryLoadFinish) {
                 reinitialNavList();
             }
-            if (!appContext.isLogin()) {
-                inflater.inflate(R.menu.menu_shop, menu);
-            }
+            inflater.inflate(R.menu.menu_shop, menu);
         }
 
         super.onCreateOptionsMenu(menu, inflater);
@@ -429,17 +423,12 @@ public class ShopFragment extends BaseMenuItemFragment implements ActionBar.OnNa
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menu_login:
-                startActivity(new Intent(getActivity(), LoginActivity.class));
-                return true;
+            case R.id.post_express:
+                PostExpressActivity.startFrom(getActivity());
+                break;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-
-    @Override
-    public void onLoginSateChange() {
-        getActivity().invalidateOptionsMenu();
-    }
 }

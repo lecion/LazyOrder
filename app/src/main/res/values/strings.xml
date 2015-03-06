@@ -1,29 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="hello_world">Hello world!</string>
     <string name="title_section1">Section 1</string>
     <string name="title_section2">Section 2</string>
     <string name="title_section3">Section 3</string>
-
     <string name="app_name">懒人订餐</string>
     <string name="app_version">懒人订餐 Android 1.0</string>
-
     <string name="action_settings">Settings</string>
     <string name="action_example">Example action</string>
     <string name="action_search">搜索</string>
-    <string name="action_post_express">发布</string>
+    <string name="action_post_express">发布快递</string>
     <string name="action_add_address">添加地址</string>
     <string name="action_setting">设置</string>
     <string name="action_import_sms">本地导入</string>
     <string name="action_login">登录</string>
-
     <string name="listview_header_hint_normal">下拉刷新</string>
     <string name="listview_header_hint_ready">松开刷新数据</string>
     <string name="listview_header_hint_loading">正在加载...</string>
     <string name="listview_header_last_time">上次更新时间：</string>
     <string name="listview_footer_hint_normal">查看更多</string>
     <string name="listview_footer_hint_ready">松开载入更多</string>
-
     <string name="title_activity_cart">购物车</string>
     <string name="title_activity_settle">结算</string>
     <string name="title_activity_main">首页</string>
@@ -48,7 +45,15 @@
     <string name="title_activity_search">搜索</string>
     <string name="title_activity_alter_phone_binding">修改手机绑定</string>
     <string name="title_activity_alter_phone_verify">修改手机验证</string>
-
+    <string name="settings_title_no_drawing_mode">开启无图模式</string>
+    <string name="settings_title_clear_cache">清除缓存</string>
+    <string name="settings_title_feedback">意见反馈</string>
+    <string name="settings_title_logout">退出登录</string>
+    <string name="settings_title_check_update">检查更新</string>
+    <string name="settings_title_about_us">关于我们</string>
+    <string name="settings_title_function_desc">功能介绍</string>
+    <string name="settings_title_welcome_page">欢迎页</string>
+    <string name="settings_version_current">版本 V%1$s</string>
     <string name="text_no_network">获取数据失败，请检查网络，点击屏幕重新加载</string>
     <string name="text_phone">联系电话</string>
     <string name="text_address">联系地址</string>
@@ -62,7 +67,9 @@
     <string name="text_please_choose_address">请选择地址</string>
     <string name="text_drawer_menu_open">Open navigation drawer</string>
     <string name="text_drawer_menu_close">Close navigation drawer</string>
-
+    <string name="notification_app_downloading">正在下载更新,请稍后</string>
+    <string name="notification_success_download">应用已下载</string>
+    <string name="notification_download_error">下载更新失败</string>
     <string name="btn_reload">重新获取</string>
     <string name="btn_login">登录</string>
     <string name="btn_submit">提交</string>
@@ -77,11 +84,9 @@
     <string name="btn_confirm_modify">确认修改</string>
     <string name="btn_confirm_insert">确认添加</string>
     <string name="btn_obtain_auth_code">获取验证码</string>
-
     <string name="dialog_confirm_delete_address_title">删除地址</string>
     <string name="dialog_confirm_delete_address_content">你真的要删除该地址吗？</string>
     <string name="dialog_confirm_logout_content">你真的要退出登录吗？</string>
-
     <string name="input_address_hint">请输入联系地址</string>
     <string name="input_phone_hint">请输入手机号码</string>
     <string name="input_new_phone_hint">请输入新的手机号码</string>
@@ -101,4 +106,6 @@
     <string name="input_contact_address_hint">请输入联系地址</string>
     <string name="input_name_hint">请输入姓名</string>
     <string name="register_name">._0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLIMNOPQRSTUVWXYZ~!@#$%^*()+-=:?</string>
+    <string name="title_activity_about">关于我们</string>
+
 </resources>

@@ -51,17 +51,10 @@ public class MenuFragmentManager {
         menuItem.title = "代领快递";
         menuItem.fragment = createMenuItemFragment("com.cisoft.lazyorder.ui.express.ExpressListFragment");
         mMenuItems.add(menuItem.position, menuItem);
-
-        menuItem = new MenuItem();
-        menuItem.position = 3;
-        menuItem.iconResId = R.drawable.selector_drawer_icon_about;
-        menuItem.title = "关于我们";
-        menuItem.fragment = createMenuItemFragment("com.cisoft.lazyorder.ui.about.AboutUsFragment");
-        mMenuItems.add(menuItem.position, menuItem);
     }
 
 
-    public MenuItem getMenuItemByPosition(int position) {
+    public MenuItem get(int position) {
         return mMenuItems.get(position);
     }
 

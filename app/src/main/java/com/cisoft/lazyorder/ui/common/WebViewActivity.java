@@ -1,8 +1,11 @@
 package com.cisoft.lazyorder.ui.common;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuItem;
 import com.cisoft.lazyorder.R;
+import com.cisoft.lazyorder.finals.UrlConstants;
 import com.cisoft.lazyorder.ui.BaseActivity;
 import com.cisoft.lazyorder.widget.ProgressWebView;
 import org.kymjs.kjframe.ui.BindView;
@@ -50,5 +53,12 @@ public class WebViewActivity extends BaseActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public static void startFrom(Activity activity, String contentTitle, String contentUrl) {
+        Intent intent = new Intent(activity, WebViewActivity.class);
+        intent.putExtra(CONENT_TITLE, contentTitle);
+        intent.putExtra(CONENT_URL, contentUrl);
+        activity.startActivity(intent);
     }
 }

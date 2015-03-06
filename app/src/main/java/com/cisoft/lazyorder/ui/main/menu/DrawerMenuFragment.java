@@ -103,6 +103,7 @@ public class DrawerMenuFragment extends FrameFragment implements I_LoginStateObs
         switch (v.getId()) {
             case R.id.ll_go_to_usercenter:
                 UserCenterActivity.startFrom(getActivity());
+                mDrawerLayout.closeDrawer(mDrawerMenuView);
                 break;
         }
     }
@@ -171,7 +172,7 @@ public class DrawerMenuFragment extends FrameFragment implements I_LoginStateObs
         }
     }
 
-    private void selectItem(int position) {
+    public void selectItem(int position) {
         mCurrentSelectedPosition = position;
         if (mDrawerListView != null) {
             mDrawerListView.setItemChecked(position, true);

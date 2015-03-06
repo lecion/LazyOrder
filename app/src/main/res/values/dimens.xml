@@ -14,6 +14,9 @@
     <dimen name="cell_height">45.0dp</dimen>
     <dimen name="stroke">1.0px</dimen>
     <dimen name="corner_radiu">4.0px</dimen>
+    <dimen name="section_space">16.0dip</dimen>
+    <dimen name="check_box_width">40.0dip</dimen>
+    <dimen name="check_box_height">24.0dip</dimen>
 
 
     <dimen name="action_bar_title_text_size">18.0sp</dimen>

@@ -55,7 +55,7 @@
         android:layout_toLeftOf="@id/onvGoodOrderNum"
         android:layout_alignParentLeft="true"
         android:gravity="left"
-        android:textColor="#626262"
+        android:textColor="@color/text_light_gray_color"
         android:textSize="16sp"
         android:text="香菇滑鸡"/>
 

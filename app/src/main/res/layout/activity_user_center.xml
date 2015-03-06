@@ -73,12 +73,6 @@
                     android:layout_height="wrap_content"
                     app:item_icon="@drawable/ic_launcher"
                     app:item_title="修改手机"/>
-                <com.cisoft.lazyorder.ui.account.UserCenterItemView
-                    android:id="@+id/item_logout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:item_icon="@drawable/ic_launcher"
-                    app:item_title="退出登录"/>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

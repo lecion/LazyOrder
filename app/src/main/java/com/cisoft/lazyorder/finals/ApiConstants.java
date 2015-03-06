@@ -41,6 +41,7 @@ public class ApiConstants {
     public static final String MODULE_ADVERTISE = "advertise";
     public static final String MODULE_ADDRESS = "address";
     public static final String MODULE_ACCOUNT = "user";
+    public static final String MODULE_SETTING = "setting";
 
     /* 这里存放API接口里的方法名,以"METHOD_+模块名简写"打头 */
     public static final String METHOD_MERCHANTS_FIND_BY_TYPE_ID = "findMerchantsOrCanteen.json";
@@ -63,8 +64,8 @@ public class ApiConstants {
     public static final String METHOD_COMMON_GET_SMS_AUTH_CODE = "getNum.json";
     public static final String METHOD_COMMON_VERIFY_PHONE = "phoneVerify.json";
 
-    public static final String METHOD_ABOUT_CHECK_UPDATE = "checkUpdate";
-    public static final String METHOD_ABOUT_SUBMIT_FEEDBACK = "submitFeedback";
+    public static final String METHOD_ABOUT_CHECK_UPDATE = "checkUpdate.json";
+    public static final String METHOD_ABOUT_SUBMIT_FEEDBACK = "sendFeedback.json";
 
     public static final String METHOD_ADDRESS_FIND_ALL = "addressList.json";
     public static final String METHOD_ADDRESS_INSERT = "addAddress.json";

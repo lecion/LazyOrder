@@ -1,5 +1,6 @@
 package com.cisoft.lazyorder.ui.express;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -293,5 +294,11 @@ public class PostExpressActivity extends BaseActivity {
         }
 
         return jsonStr;
+    }
+
+
+    public static void startFrom(Activity activity) {
+        Intent intent = new Intent(activity, PostExpressActivity.class);
+        activity.startActivity(intent);
     }
 }

@@ -1,11 +1,11 @@
 package com.cisoft.lazyorder.ui.account;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -15,6 +15,7 @@ import com.cisoft.lazyorder.bean.account.User;
 import com.cisoft.lazyorder.core.account.I_LoginStateObserver;
 import com.cisoft.lazyorder.core.account.LoginStateObserver;
 import com.cisoft.lazyorder.ui.BaseActivity;
+import com.cisoft.lazyorder.ui.about.SettingActivity;
 import com.cisoft.lazyorder.ui.address.ManageAddressActivity;
 import com.cisoft.lazyorder.util.Utility;
 import org.kymjs.kjframe.KJBitmap;
@@ -22,8 +23,6 @@ import org.kymjs.kjframe.bitmap.helper.BitmapOperateUtil;
 import org.kymjs.kjframe.ui.BindView;
 import org.kymjs.kjframe.ui.ViewInject;
 import org.kymjs.kjframe.widget.RoundImageView;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by comet on 2014/11/23.
@@ -36,8 +35,7 @@ public class UserCenterActivity extends BaseActivity implements I_LoginStateObse
     private RoundImageView mRivUserFace;
     @BindView(id = R.id.tv_user_account, click = true)
     private TextView mTvUserAccount;
-    @BindView(id = R.id.item_logout, click = true)
-    private UserCenterItemView mItemLogout;
+
     @BindView(id = R.id.item_edit_password, click = true)
     private UserCenterItemView mItemEditPwd;
     @BindView(id = R.id.item_alter_phone_binding, click = true)
@@ -48,8 +46,6 @@ public class UserCenterActivity extends BaseActivity implements I_LoginStateObse
     private AppContext mAppContext;
     private KJBitmap mKjBitmap;
     private Bitmap mLoadingBitmap;
-    private List<View> loginStateViews;
-    private List<View> notLoginStateViews;
 
 
     @Override
@@ -60,8 +56,6 @@ public class UserCenterActivity extends BaseActivity implements I_LoginStateObse
     @Override
     public void initData() {
         mAppContext = (AppContext)getApplication();
-        loginStateViews = new ArrayList<View>();
-        notLoginStateViews = new ArrayList<View>();
         LoginStateObserver.getInstance().attach(this);
         mKjBitmap = Utility.getKjBitmapInstance();
         mLoadingBitmap = BitmapFactory.decodeResource(mAppContext.getResources(), R.drawable.default_user_face);
@@ -75,51 +69,38 @@ public class UserCenterActivity extends BaseActivity implements I_LoginStateObse
         // 设置圆角头像的边框
         mRivUserFace.setBorderOutsideColor(0xFFF2F2F2);
 
-        loginStateViews.add(mItemLogout);
-        loginStateViews.add(mItemEditPwd);
-        loginStateViews.add(mItemManageAddress);
-        loginStateViews.add(mItemAlterPhoneBinding);
-
         // 根据登录状态显示相应的内容
+        initUserInfoByLoginState();
+    }
+
+
+    public void initUserInfoByLoginState() {
         if (mAppContext.isLogin()) {
-            showLoginState();
+            mTvUserAccount.setText(mAppContext.getLoginAccount());
+            Utility.getKjBitmapInstance().display(mRivUserFace,
+                    mAppContext.getLoginInfo().getUserFaceUrl());
         } else {
-            showNotLoginState();
+            mTvUserAccount.setText("请登录");
+            mRivUserFace.setImageResource(R.drawable.default_user_face);
         }
     }
 
+
     @Override
     public void widgetClick(View v) {
+        if (!mAppContext.isLogin()) {
+            LoginActivity.startFrom(this);
+            return;
+        }
+
         switch (v.getId()) {
             case R.id.item_manage_address:
-                startActivity(new Intent(this, ManageAddressActivity.class));
-                break;
-            case R.id.item_logout:
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setMessage(getString(R.string.dialog_confirm_logout_content))
-                        .setPositiveButton(getString(R.string.btn_confirm),
-                                new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog,
-                                                        int which) {
-                                        mAppContext.logout();
-                                        LoginStateObserver.getInstance().notifyStateChanged();
-                                        ViewInject.toast(getString(R.string.toast_success_to_logout));
-                                    }
-                                }).setNegativeButton(getString(R.string.btn_cancel), null)
-                        .create().show();
+                ManageAddressActivity.startFrom(this, ManageAddressActivity.LOOK_ADDRESS_MODE);
                 break;
             case R.id.tv_user_account:
-                if (!mAppContext.isLogin()) {
-                    startActivity(new Intent(this, LoginActivity.class));
-                }
                 break;
             case R.id.riv_user_face:
-                if (mAppContext.isLogin()) {
-                    ViewInject.toast("目前不支持更换头像，攻城师正在加班制造");
-                } else {
-                    startActivity(new Intent(this, LoginActivity.class));
-                }
+                ViewInject.toast("目前不支持更换头像，攻城师正在加班制造");
                 break;
             case R.id.item_edit_password:
                 startActivity(new Intent(this, EditPasswordActivity.class));
@@ -130,48 +111,9 @@ public class UserCenterActivity extends BaseActivity implements I_LoginStateObse
         }
     }
 
-
-    /**
-     * 显示未登录状态
-     */
-    private void showNotLoginState() {
-        mRivUserFace.setImageResource(R.drawable.default_user_face);
-        mTvUserAccount.setText(mAppContext.getText(R.string.text_please_login));
-
-        for (View view : loginStateViews) {
-            view.setVisibility(View.GONE);
-        }
-        for (View view : notLoginStateViews) {
-            view.setVisibility(View.VISIBLE);
-        }
-    }
-
-    /**
-     * 显示登录状态
-     */
-    private void showLoginState() {
-        User loginUser = mAppContext.getLoginInfo();
-//        mKjBitmap.display(mRivUserFace, loginUser.getUserFaceUrl(), mLoadingBitmap);
-        mRivUserFace.setImageResource(R.drawable.default_user_face);
-        mTvUserAccount.setText(mAppContext.getLoginAccount());
-
-        for (View view : loginStateViews) {
-            view.setVisibility(View.VISIBLE);
-        }
-        for (View view : notLoginStateViews) {
-            view.setVisibility(View.GONE);
-        }
-    }
-
-
     @Override
     public void onLoginSateChange() {
-        // 根据登录状态显示相应的内容
-        if (mAppContext.isLogin()) {
-            showLoginState();
-        } else {
-            showNotLoginState();
-        }
+        initUserInfoByLoginState();
     }
 
     @Override
@@ -183,5 +125,22 @@ public class UserCenterActivity extends BaseActivity implements I_LoginStateObse
     public static void startFrom(Activity activity) {
         Intent i = new Intent(activity, UserCenterActivity.class);
         activity.startActivity(i);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_user_center, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_setting:
+                SettingActivity.startFrom(this);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }
