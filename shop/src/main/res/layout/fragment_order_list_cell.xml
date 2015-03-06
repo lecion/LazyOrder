@@ -2,45 +2,45 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="8dp"
-    android:paddingLeft="48dp"
-    android:paddingRight="48dp">
+    android:descendantFocusability="blocksDescendants"
+    android:background="@color/white"
+    android:paddingTop="16dp"
+    android:paddingBottom="16dp"
+    android:paddingLeft="12dp"
+    android:paddingRight="12dp"
+
+    >
+
+    <Button
+        android:id="@+id/btn_order_status"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_centerVertical="true"
+        android:textColor="@color/white"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:background="@drawable/selector_blue_corners_button"
+        android:layout_marginLeft="16dp"
+        android:focusable="false"
+        android:textSize="13sp"
+        />
 
     <TextView
         android:id="@+id/tv_order_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="No.404" />
-
-    <TextView
-        android:id="@+id/tv_order_money_all"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:text="￥299.9" />
+        android:layout_centerInParent="true"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        />
 
     <TextView
         android:id="@+id/tv_order_time_go"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
         android:text="已下单20分钟" />
-
-    <Button
-        android:id="@+id/btn_order_status"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="未准备"
-        android:layout_below="@id/tv_order_number"
-        />
-
-    <Spinner
-        android:id="@+id/sp_order_goods_list"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        >
-        </Spinner>
 
 
 </RelativeLayout>

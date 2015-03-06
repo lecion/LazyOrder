@@ -5,100 +5,83 @@ import com.cisoft.shop.ApiConstants;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.Iterator;
 
 /**
- * Created by comet on 2014/10/16.
+ * Created by Lecion on 2014/2/16.
  */
-public class Shop extends AbsBean{
-    public int id;
-    public String name;
-    public String openTime;
-    public String closeTime;
-    public int monthSales;
-    public int operatingState;
-    public String faceImgUrl;
-    public String promotionInfo;
-    public String address;
+public class Shop extends AbsBean implements Serializable{
+    private int id;
+    private String name;
+    private String openTime;
+    private String closeTime;
+    private int monthSales;
+    private int operatingState;
+    private String faceImgUrl;
+    private String promotionInfo;
+    private String address;
+    private int nodistributionPrice;
+    private String cID;
 
     public Shop(){};
 
-    public Shop(int id, String name, String openTime, String closeTime, int monthSales, String faceImgUrl, String promotionInfo, String address) {
+    public Shop(int id, String name, String openTime, String closeTime, int monthSales, int operatingState, String faceImgUrl, String promotionInfo, String address, int nodistributionPrice, String cID) {
         this.id = id;
         this.name = name;
         this.openTime = openTime;
         this.closeTime = closeTime;
         this.monthSales = monthSales;
+        this.operatingState = operatingState;
         this.faceImgUrl = faceImgUrl;
         this.promotionInfo = promotionInfo;
         this.address = address;
+        this.nodistributionPrice = nodistributionPrice;
+        this.cID = cID;
     }
-
-    public Shop(String name, String openTime, String closeTime, int monthSales, String faceImgUrl, String promotionInfo, String address) {
-        this.name = name;
-        this.openTime = openTime;
-        this.closeTime = closeTime;
-        this.monthSales = monthSales;
-        this.faceImgUrl = faceImgUrl;
-        this.promotionInfo = promotionInfo;
-        this.address = address;
-    }
-
     
     public Shop(JSONObject jsonObj){
     	this.parse(jsonObj);
     };
 
+    public int getId() {
+        return id;
+    }
+
     public void setId(int id) {
         this.id = id;
     }
 
-    public int getId() {
-        return id;
+    public String getName() {
+        return name;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
-
-    public String getName() {
-        return name;
+    public String getOpenTime() {
+        return openTime;
     }
 
     public void setOpenTime(String openTime) {
         this.openTime = openTime;
     }
 
-
-    public String getOpenTime() {
-        return openTime;
+    public String getCloseTime() {
+        return closeTime;
     }
 
     public void setCloseTime(String closeTime) {
         this.closeTime = closeTime;
     }
 
-
-    public String getCloseTime() {
-        return closeTime;
-    }
-
-    public void setMonthSales(int monthSales) {
-        this.monthSales = monthSales;
-    }
-
     public int getMonthSales() {
         return monthSales;
     }
 
-
-    public String getFaceImgUrl() {
-        return faceImgUrl;
-    }
-
-    public void setFaceImgUrl(String faceImgUrl) {
-        this.faceImgUrl = faceImgUrl;
+    public void setMonthSales(int monthSales) {
+        this.monthSales = monthSales;
     }
 
     public int getOperatingState() {
@@ -107,6 +90,14 @@ public class Shop extends AbsBean{
 
     public void setOperatingState(int operatingState) {
         this.operatingState = operatingState;
+    }
+
+    public String getFaceImgUrl() {
+        return faceImgUrl;
+    }
+
+    public void setFaceImgUrl(String faceImgUrl) {
+        this.faceImgUrl = faceImgUrl;
     }
 
     public String getPromotionInfo() {
@@ -125,6 +116,21 @@ public class Shop extends AbsBean{
         this.address = address;
     }
 
+    public int getNodistributionPrice() {
+        return nodistributionPrice;
+    }
+
+    public void setNodistributionPrice(int nodistributionPrice) {
+        this.nodistributionPrice = nodistributionPrice;
+    }
+
+    public String getcID() {
+        return cID;
+    }
+
+    public void setcID(String cID) {
+        this.cID = cID;
+    }
 
     public void parse(JSONObject jsonObj){
         try {
@@ -135,21 +141,25 @@ public class Shop extends AbsBean{
                 if (key.equals(ApiConstants.KEY_MER_ID)) {
                     this.id = jsonObj.getInt(ApiConstants.KEY_MER_ID);
                 } else if (key.equals(ApiConstants.KEY_MER_NAME)) {
-                    this.name = jsonObj.getString(ApiConstants.KEY_MER_NAME);
+                    setName(jsonObj.getString(ApiConstants.KEY_MER_NAME));
                 } else if(key.equals(ApiConstants.KEY_MER_OPEN_TIME)) {
-                    this.openTime = jsonObj.getString(ApiConstants.KEY_MER_OPEN_TIME);
+                    setOpenTime(jsonObj.getString(ApiConstants.KEY_MER_OPEN_TIME));
                 } else if(key.equals(ApiConstants.KEY_MER_CLOSE_TIME)) {
-                    this.closeTime = jsonObj.getString(ApiConstants.KEY_MER_CLOSE_TIME);
+                    setCloseTime(jsonObj.getString(ApiConstants.KEY_MER_CLOSE_TIME));
                 } else if(key.equals(ApiConstants.KEY_MER_MONTH_SALES)) {
-                    this.monthSales = jsonObj.getInt(ApiConstants.KEY_MER_MONTH_SALES);
+                    setMonthSales(jsonObj.getInt(ApiConstants.KEY_MER_MONTH_SALES));
                 } else if(key.equals(ApiConstants.KEY_MER_FACE_PIC)) {
-                    this.faceImgUrl = jsonObj.getString(ApiConstants.KEY_MER_FACE_PIC);
+                    setFaceImgUrl(jsonObj.getString(ApiConstants.KEY_MER_FACE_PIC));
                 } else if(key.equals(ApiConstants.KEY_MER_OPERATING_STATE)) {
-                    this.operatingState = jsonObj.getInt(ApiConstants.KEY_MER_OPERATING_STATE);
+                    setOperatingState(jsonObj.getInt(ApiConstants.KEY_MER_OPERATING_STATE));
                 } else if(key.equals(ApiConstants.KEY_MER_PROMOTION_INFO)) {
-                    this.promotionInfo = jsonObj.getString(ApiConstants.KEY_MER_PROMOTION_INFO);
+                    setPromotionInfo(jsonObj.getString(ApiConstants.KEY_MER_PROMOTION_INFO));
                 } else if(key.equals(ApiConstants.KEY_MER_ADDRESS)) {
-                    this.address = jsonObj.getString(ApiConstants.KEY_MER_ADDRESS);
+                    setAddress(jsonObj.getString(ApiConstants.KEY_MER_ADDRESS));
+                } else if (key.equals(ApiConstants.KEY_MER_NODISTRIBUTION_PRICE)) {
+                    setNodistributionPrice(jsonObj.getInt(ApiConstants.KEY_MER_NODISTRIBUTION_PRICE));
+                } else if (key.equals(ApiConstants.KEY_MER_CID)) {
+                    setcID(ApiConstants.KEY_MER_CID);
                 }
             }
         } catch (JSONException e) {

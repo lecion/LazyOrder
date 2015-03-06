@@ -2,12 +2,11 @@ package com.cisoft.shop.goods.model;
 
 import android.content.Context;
 
-import com.cisoft.myapplication.R;
+import com.cisoft.shop.R;
 import com.cisoft.shop.ApiConstants;
-import com.cisoft.shop.MainActivity;
-import com.cisoft.shop.MyApplication;
 import com.cisoft.shop.bean.Shop;
 import com.cisoft.shop.http.AbsService;
+import com.cisoft.shop.util.L;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -76,8 +75,7 @@ public class ShopModel extends AbsService {
      * @param state
      */
     public void updateOperateState(int state, final IUpdateOperateState finishedListener) {
-        //TODO 更改shop获取
-        Shop shop = ((MyApplication)((MainActivity)context).getApplication()).getShop();
+        Shop shop = L.getShop(context);
         KJStringParams params = new KJStringParams();
         params.put(ApiConstants.KEY_MER_OPERATE_STATE, String.valueOf(state));
         params.put(ApiConstants.KEY_MER_MER_ID, String.valueOf(shop.getId()));
@@ -101,10 +99,44 @@ public class ShopModel extends AbsService {
         });
     }
 
+    /**
+     * 普通商家登陆
+     * @param merPhone
+     * @param merPwd
+     */
+    public void merLogin(String merPhone, String merPwd, final ILoginListener loginListener) {
+        KJStringParams params = new KJStringParams();
+        params.put(ApiConstants.KEY_MER_MER_PHONE, merPhone);
+        params.put(ApiConstants.KEY_MER_MER_PWD, merPwd);
+        asyncUrlGet(ApiConstants.METHOD_MER_MER_LOGIN, params, false, new SuccessCallback() {
+            @Override
+            public void onSuccess(String result) throws JSONException {
+                JSONObject jsonObj = new JSONObject(result);
+                int state = jsonObj.getInt(ApiConstants.KEY_STATE);
+                if (state == 200) {
+                    //登陆成功
+                    loginListener.onSuccess(jsonObj.getJSONObject("data"));
+                } else {
+                    loginListener.onFailure(getResponseStateInfo(state));
+                }
 
+            }
+        }, new FailureCallback() {
+            @Override
+            public void onFailure(int stateCode) {
+                loginListener.onFailure(getResponseStateInfo(stateCode));
+            }
+        });
+    }
 
     public interface IUpdateOperateState{
         public void onSuccess(int code);
+
+        public void onFailure(String msg);
+    }
+
+    public interface ILoginListener {
+        public void onSuccess(JSONObject data);
 
         public void onFailure(String msg);
     }
@@ -113,8 +145,8 @@ public class ShopModel extends AbsService {
     public String getResponseStateInfo(int stateCode) {
         String stateInfo = "";
         switch (stateCode) {
-            case ApiConstants.RESPONSE_STATE_FAILURE:
-                stateInfo = "无法找到商家";
+            case ApiConstants.RESPONSE_STATE_ERROR_LOGIN:
+                stateInfo = "账号或密码错误";
                 break;
             case ApiConstants.RESPONSE_STATE_SUCCESS:
                 stateInfo = "加载商品成功";

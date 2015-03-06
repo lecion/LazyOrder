@@ -9,4 +9,7 @@ import com.cisoft.shop.goods.model.INetWorkFinished;
 public interface IOrderModel {
     void loadOrderList(int page, int size, INetWorkFinished<Order> finishedListener);
 
+    void findOrdersByMerId(String orderState, int page, int size, INetWorkFinished<Order> finishedListener);
+
+    void updateOrderState(int orderId, String state, OrderModel.IUpdateOrderState finishedListener);
 }

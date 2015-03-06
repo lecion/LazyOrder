@@ -15,6 +15,7 @@ public class ApiConstants {
     public static final int RESPONSE_STATE_SERVICE_EXCEPTION = 103;
     public static final int RESPONSE_STATE_NOT_NET = 102;
     public static final int RESPONSE_STATE_NET_POOR = 101;
+    public static final int RESPONSE_STATE_ERROR_LOGIN = 400;
 
     /* 这里存放全局使用的key */
     public static final String KEY_STATE = "state";
@@ -24,7 +25,6 @@ public class ApiConstants {
     public static final String MODULE_MERCHANTS = "merchants";
     public static final String MODULE_MER_CATEGORY = "merCategory";
     public static final String MODULE_ORDER = "order";
-
 
 
     public static final String MODULE_COMMODITY = "commodity";
@@ -44,6 +44,7 @@ public class ApiConstants {
 
 
     public static final String METHOD_ORDER_FIND_ORDERS_BY_MER_ID = "findOrdersByMerId";
+    public static final String METHOD_ORDER_UPDATE_ORDER_STATE= "updateOrderState";
 
     public static final String METHOD_COMMODITY_FIND_ALL_BY_MER_ID = "findCommodityByMerchantsId";
     public static final String METHOD_COMMODITY_FIND_BY_MER_AND_TYPE_ID = "findCommodityByMerchantsIdAndTypeId";
@@ -57,6 +58,7 @@ public class ApiConstants {
     public static final String METHOD_HIS_ORDER_FIND_ALL = "findOrderByUserPhone";
 
     public static final String METHOD_EXPMER_EXPMER_LOGIN = "expmerLogin";
+
 
 
 
@@ -93,19 +95,28 @@ public class ApiConstants {
     public static final String KEY_ORDER_PAGE = "page";
     public static final String KEY_ORDER_SIZE = "size";
     public static final String KEY_ORDER_ID = "id";
+    public static final String KEY_ORDER_ORDER_ID = "orderId";
     public static final String KEY_ORDER_USER_PHONE = "userPhone";
     public static final String KEY_ORDER_USER_NAME = "userName";
-    public static final String KEY_ORDER_TIME_GO = "timeGo";
-    public static final String KEY_ORDER_ORDER_STATE = "orderState";
+    public static final String KEY_ORDER_TIME_GO = "timeGo";                                //已下单时间
+    public static final String KEY_ORDER_ORDER_STATE = "orderState";                        //订单状态 CRAETE（最新订单）   READY（已准备）
+    public static final String KEY_ORDER_STATE = "state";                        //订单状态 CRAETE（最新订单）   READY（已准备）
     public static final String KEY_ORDER_ORDER_NUMBER = "orderNumber";
     public static final String KEY_ORDER_ORDER_CONTENT = "content";
-    public static final String KEY_ORDER_MONEY_ALL = "moneyAll";
-    public static final String KEY_ORDER_ORDER_COMMODITY_VO_LIST = "orderCommodityVOList";
+    public static final String KEY_ORDER_RDER_PRICE = "orderPrice";
+    public static final String KEY_ORDER_DISTRIBUTION_PRICE = "distributionPrice";          //配送费，为0则免配送费
+    public static final String kEY_ORDER_ADDRESS = "address";                               //地址信息
+    public static final String KEY_ORDER_ORDER_COMMODITY_VO_LIST = "orderCommodityVOList";  //订单商品列表
     public static final String KEY_ORDER_COM_ID = "comId";
     public static final String KEY_ORDER_COM_NAME = "comName";
     public static final String KEY_ORDER_COM_NUM = "comNum";
+    public static final String KEY_ORDER_COM_PRICE = "price";                               //单价
+    public static final String KEY_ORDER_DEDUCTION = "deduction";                           //优惠价格
+    public static final String KEY_ORDER_SETTLED_PRICE = "settledPrice";                           //结算后价格
 
-    
+
+
+
     public static final String KEY_MC_DATA = "data";
     public static final String KEY_MC_CATEGORY_ID = "id";
     public static final String KEY_MC_CATEGORY_NAME = "merCategoryName";
@@ -154,10 +165,16 @@ public class ApiConstants {
     public static final String KEY_HIS_ORDER_GOOD_NAME = "comName";
     public static final String KEY_HIS_ORDER_GOOD_COUNT = "comNum";
 
-
+    public static final String KEY_EXPMER_ID = "id";
     public static final String KEY_EXPMER_EXPMER_PHONE = "expmerPhone";
     public static final String KEY_EXPMER_EXPMER_PWD = "expmerPwd";
     public static final String KEY_EXPMER_CID = "cID";
+    public static final String KEY_EXPMER_ADDRESS = "expmerAddress";
+    public static final String KEY_EXPMER_OPENTIME = "expmerOpenTime";
+    public static final String KEY_EXPMER_CLOSETIME = "expmerCloseTime";
+    public static final String KEY_EXPMER_PIC = "expmerPic";
+    public static final String KEY_EXPMER_OPERATING_STATE = "operatingState";
+    public static final String KEY_EXPMER_SALES = "sales";
 
 
 

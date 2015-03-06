@@ -27,41 +27,47 @@ public class OrderPresenter {
         shopModel = new ShopModel(context);
     }
 
-    public void onLoad(int type) {
+    public void onLoad() {
+        final int size = 5;
         view.setPage(1);
         view.showProgress();
-
-
-        model.loadOrderList(1, 5, new INetWorkFinished<Order>() {
+        model.findOrdersByMerId("CREATE", 1, size, new INetWorkFinished<Order>() {
             @Override
             public void onSuccess(List<Order> l) {
-                view.hideProgress();
+                if (l.size() == 0 || l.size() < size) {
+                    view.setPullLoadEnable(false);
+                } else {
+                    view.setPullLoadEnable(true);
+                }
                 view.setOrderList(l);
+                view.hideProgress();
             }
 
             @Override
             public void onFailure(String info) {
-                view.hideProgress();
                 view.showNoData();
             }
         });
     }
 
     public void loadMore(int page, final int size) {
-        model.loadOrderList(page, size, new INetWorkFinished<Order>() {
+        model.findOrdersByMerId("CREATE", page, size, new INetWorkFinished<Order>() {
             @Override
             public void onSuccess(List<Order> l) {
                 if (l.size() == 0 || l.size() < size) {
+                    view.setPullLoadEnable(false);
                     ViewInject.toast("已经加载完了~");
                 } else {
                     view.setOrderList(l);
                 }
+                view.hideMoreProgress();
                 view.setOnLoadMore(false);
             }
 
             @Override
             public void onFailure(String info) {
                 ViewInject.toast(info);
+                view.hideMoreProgress();
                 view.setOnLoadMore(false);
             }
         });
@@ -90,22 +96,25 @@ public class OrderPresenter {
         });
     }
 
+    /**
+     * 切换订单状态
+     * @param orderId
+     * @param position
+     * @param state
+     */
+    public void switchOrderStatus(int orderId, final int position, final String state) {
 
-//    public void switchGoodsStatus(final int position, final int state) {
-//        final int result = state == 1 ? 0 : 1;
-//        model.updateComState(result, new GoodsModel.IUpdateGoodsState(){
-//
-//            @Override
-//            public void onSuccess(int code) {
-//                view.setGoodsStatus(position, result);
-//            }
-//
-//            @Override
-//            public void onFailure(String msg) {
-//                ViewInject.toast(msg);
-//                //TODO 测试状态改变，记得删
-//                view.setGoodsStatus(position, result);
-//            }
-//        });
-//    }
+        model.updateOrderState(orderId, state, new OrderModel.IUpdateOrderState() {
+            @Override
+            public void onSuccess(int code) {
+                view.setOrderStatus(position, state);
+            }
+
+            @Override
+            public void onFailure(String msg) {
+                ViewInject.toast(msg);
+            }
+        });
+    }
+
 }

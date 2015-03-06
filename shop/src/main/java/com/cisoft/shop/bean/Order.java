@@ -23,8 +23,28 @@ public class Order extends AbsBean {
     private String orderState;
     private String orderNumber;
     private String content;
-    private double moneyAll;
+    private double orderPrice;
+    private double distributionPrice;   //配送费
+    private String address;             //地址信息
+    private double settledPrice;
+    private double deduction;
     private List<OrderGoods> goodsList;
+
+    public double getDistributionPrice() {
+        return distributionPrice;
+    }
+
+    public void setDistributionPrice(double distributionPrice) {
+        this.distributionPrice = distributionPrice;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
     public Order(JSONObject jsonObj){
         this.parse(jsonObj);
@@ -86,12 +106,12 @@ public class Order extends AbsBean {
         this.content = content;
     }
 
-    public double getMoneyAll() {
-        return moneyAll;
+    public double getOrderPrice() {
+        return orderPrice;
     }
 
-    public void setMoneyAll(double moneyAll) {
-        this.moneyAll = moneyAll;
+    public void setOrderPrice(double orderPrice) {
+        this.orderPrice = orderPrice;
     }
 
     public List<OrderGoods> getGoodsList() {
@@ -124,21 +144,43 @@ public class Order extends AbsBean {
                     this.orderNumber = jsonObj.getString(ApiConstants.KEY_ORDER_ORDER_NUMBER);
                 } else if (key.equals(ApiConstants.KEY_ORDER_ORDER_CONTENT)) {
                     this.content = jsonObj.getString(ApiConstants.KEY_ORDER_ORDER_CONTENT);
-                } else if (key.equals(ApiConstants.KEY_ORDER_MONEY_ALL)) {
-                    this.moneyAll = jsonObj.getDouble(ApiConstants.KEY_ORDER_MONEY_ALL);
-                } else if (key.equals(ApiConstants.KEY_ORDER_ORDER_COMMODITY_VO_LIST)) {
+                } else if (key.equals(ApiConstants.KEY_ORDER_RDER_PRICE)) {
+                    this.orderPrice = jsonObj.getDouble(ApiConstants.KEY_ORDER_RDER_PRICE);
+                } else if (key.equals(ApiConstants.KEY_ORDER_DISTRIBUTION_PRICE)) {
+                    setDistributionPrice(jsonObj.getDouble(ApiConstants.KEY_ORDER_DISTRIBUTION_PRICE));
+                } else if (key.equals(ApiConstants.kEY_ORDER_ADDRESS)) {
+                    setAddress(jsonObj.getString(ApiConstants.kEY_ORDER_ADDRESS));
+                } else if (key.equals(ApiConstants.KEY_ORDER_DEDUCTION)) {
+                    setDeduction(jsonObj.getDouble(ApiConstants.KEY_ORDER_DEDUCTION));
+                } else if (key.equals(ApiConstants.KEY_ORDER_SETTLED_PRICE)) {
+                    setSettledPrice(jsonObj.getDouble(ApiConstants.KEY_ORDER_SETTLED_PRICE));
+                }else if (key.equals(ApiConstants.KEY_ORDER_ORDER_COMMODITY_VO_LIST)) {
                     JSONArray goodListArr = jsonObj.getJSONArray(ApiConstants.KEY_ORDER_ORDER_COMMODITY_VO_LIST);
                     JSONObject goodsObj = null;
-                    OrderGoods goods = null;
                     for (int i = 0; i < goodListArr.length(); i++) {
                         goodsObj = goodListArr.getJSONObject(i);
-                        goods = new OrderGoods(goodsObj);
-                        goodsList.add(goods);
+                        goodsList.add(new OrderGoods(goodsObj));
                     }
                 }
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    public double getSettledPrice() {
+        return settledPrice;
+    }
+
+    public void setSettledPrice(double settledPrice) {
+        this.settledPrice = settledPrice;
+    }
+
+    public double getDeduction() {
+        return deduction;
+    }
+
+    public void setDeduction(double deduction) {
+        this.deduction = deduction;
     }
 }

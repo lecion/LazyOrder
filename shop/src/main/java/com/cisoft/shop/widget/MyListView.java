@@ -11,9 +11,8 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Scroller;
-import android.widget.TextView;
 
-import com.cisoft.myapplication.R;
+import com.cisoft.shop.R;
 
 
 /**
@@ -37,7 +36,7 @@ public class MyListView extends ListView implements AbsListView.OnScrollListener
 	private RelativeLayout headerViewContent;
 
     //HeadView上次更新的时间
-    private TextView headerTimeView;
+//    private TextView headerTimeView;
 
     //HeadView的高度
 	private int headerViewHeight;
@@ -97,8 +96,8 @@ public class MyListView extends ListView implements AbsListView.OnScrollListener
 		headerView = new MyListViewHeader(context);
 		headerViewContent = (RelativeLayout) headerView
 				.findViewById(R.id.listview_header_content);
-		headerTimeView = (TextView) headerView
-				.findViewById(R.id.listview_header_time);
+//		headerTimeView = (TextView) headerView
+//				.findViewById(R.id.listview_header_time);
 		addHeaderView(headerView);
 
 		footerView = new MyListViewFooter(context);
@@ -195,7 +194,7 @@ public class MyListView extends ListView implements AbsListView.OnScrollListener
 	 * @param time
 	 */
 	public void setRefreshTime(String time) {
-		headerTimeView.setText(time);
+//		headerTimeView.setText(time);
 	}
 
 	private void invokeOnScrolling() {
@@ -284,24 +283,15 @@ public class MyListView extends ListView implements AbsListView.OnScrollListener
 					&& (headerView.getVisiableHeight() > 0 || deltaY > 0)) {
 				updateHeaderHeight(deltaY / OFFSET_RADIO);
 				invokeOnScrolling();
-			} else if (getLastVisiblePosition() == totalItemCount - 1
+			}
+            if (getLastVisiblePosition() == totalItemCount - 1
 					&& (footerView.getBottomMargin() > 0 || deltaY < 0)) {
-				updateFooterHeight(-deltaY / OFFSET_RADIO);
+                    updateFooterHeight(-deltaY / OFFSET_RADIO);
 			}
 			break;
 		default:
 			lastY = -1;
-			if (getFirstVisiblePosition() == 0) {
-				if (enablePullRefresh
-						&& headerView.getVisiableHeight() > headerViewHeight) {
-					pullRefreshing = true;
-					headerView.setState(MyListViewHeader.STATE_REFRESHING);
-					if (listViewListener != null) {
-						listViewListener.onRefresh();
-					}
-				}
-				resetHeaderHeight();
-			} else if (getLastVisiblePosition() == totalItemCount - 1) {
+			if (getLastVisiblePosition() == totalItemCount - 1) {
 				if (enablePullLoad
 				    && footerView.getBottomMargin() > PULL_LOAD_MORE_DELTA
 				    && !pullLoading) {
@@ -309,7 +299,18 @@ public class MyListView extends ListView implements AbsListView.OnScrollListener
 				}
 				resetFooterHeight();
 			}
-			break;
+            if (getFirstVisiblePosition() == 0) {
+                if (enablePullRefresh
+                        && headerView.getVisiableHeight() > headerViewHeight) {
+                    pullRefreshing = true;
+                    headerView.setState(MyListViewHeader.STATE_REFRESHING);
+                    if (listViewListener != null) {
+                        listViewListener.onRefresh();
+                    }
+                }
+                resetHeaderHeight();
+            }
+            break;
 		}
 		return super.onTouchEvent(ev);
 	}

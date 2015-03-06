@@ -2,15 +2,15 @@ package com.cisoft.shop.order.model;
 
 import android.content.Context;
 
-import com.cisoft.myapplication.R;
+import com.cisoft.shop.R;
 import com.cisoft.shop.ApiConstants;
 import com.cisoft.shop.MainActivity;
 import com.cisoft.shop.MyApplication;
 import com.cisoft.shop.bean.Order;
-import com.cisoft.shop.bean.OrderGoods;
 import com.cisoft.shop.bean.Shop;
 import com.cisoft.shop.goods.model.INetWorkFinished;
 import com.cisoft.shop.http.AbsService;
+import com.cisoft.shop.util.L;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,14 +26,13 @@ import java.util.List;
 public class OrderModel extends AbsService implements IOrderModel {
 
     public OrderModel(Context context) {
-        super(context, ApiConstants.MODULE_COMMODITY);
+        super(context, ApiConstants.MODULE_ORDER);
     }
 
     @Override
     public void loadOrderList(int page, int size, final INetWorkFinished<Order> finishedListener) {
+        Shop shop = L.getShop(context);
         KJStringParams params = new KJStringParams();
-        //TODO 更改shop获取
-        Shop shop = ((MyApplication) ((MainActivity) context).getApplication()).getShop();
         params.put(ApiConstants.KEY_ORDER_MER_ID, String.valueOf(shop.getId()));
         params.put(ApiConstants.KEY_ORDER_PAGE, String.valueOf(page));
         params.put(ApiConstants.KEY_ORDER_SIZE, String.valueOf(size));
@@ -69,6 +68,68 @@ public class OrderModel extends AbsService implements IOrderModel {
     }
 
     @Override
+    public void findOrdersByMerId(String orderState, int page, int size, final INetWorkFinished<Order> finishedListener) {
+        KJStringParams params = new KJStringParams();
+        Shop shop = ((MyApplication) ((MainActivity) context).getApplication()).getShop();
+        params.put(ApiConstants.KEY_ORDER_MER_ID, String.valueOf(shop.getId()));
+        params.put(ApiConstants.KEY_ORDER_ORDER_STATE, orderState);
+        params.put(ApiConstants.KEY_ORDER_PAGE, String.valueOf(page));
+        params.put(ApiConstants.KEY_ORDER_SIZE, String.valueOf(size));
+        asyncUrlGet(ApiConstants.METHOD_ORDER_FIND_ORDERS_BY_MER_ID, params, false, new SuccessCallback() {
+            @Override
+            public void onSuccess(String result) throws JSONException {
+                List<Order> orderList = new ArrayList<Order>();
+                JSONObject jsonObj = null;
+                try {
+                    jsonObj = new JSONObject(result);
+                    JSONArray jsonArr = jsonObj.getJSONArray(ApiConstants.KEY_DATA);
+                    for (int i = 0; i < jsonArr.length(); i++) {
+                        orderList.add(new Order(jsonArr.getJSONObject(i)));
+                    }
+                    if (finishedListener != null) {
+                        finishedListener.onSuccess(orderList);
+                    }
+                } catch (JSONException e) {
+                    //这里是json格式不对，无法完成解析
+                    if (finishedListener != null) {
+                        finishedListener.onFailure(getResponseStateInfo(ApiConstants.RESPONSE_STATE_SERVICE_EXCEPTION));
+                    }
+                }
+            }
+        }, new FailureCallback() {
+            @Override
+            public void onFailure(int stateCode) {
+                finishedListener.onFailure(getResponseStateInfo(stateCode));
+            }
+        });
+    }
+
+    @Override
+    public void updateOrderState(int orderId, final String state, final OrderModel.IUpdateOrderState finishedListener) {
+        KJStringParams params = new KJStringParams();
+        params.put(ApiConstants.KEY_ORDER_ORDER_ID, String.valueOf(orderId));
+        params.put(ApiConstants.KEY_ORDER_STATE, String.valueOf(orderId));
+        asyncUrlGet(ApiConstants.METHOD_ORDER_UPDATE_ORDER_STATE, params, false, new SuccessCallback() {
+            @Override
+            public void onSuccess(String result) throws JSONException {
+                JSONObject jsonObject= new JSONObject(result);
+                int state = jsonObject.getInt("state");
+                if (state == 200) {
+                    finishedListener.onSuccess(state);
+                } else {
+                    finishedListener.onFailure(getResponseStateInfo(state));
+                }
+            }
+        }, new FailureCallback() {
+            @Override
+            public void onFailure(int stateCode) {
+                finishedListener.onFailure(getResponseStateInfo(stateCode));
+            }
+        });
+    }
+
+
+    @Override
     public String getResponseStateInfo(int stateCode) {
         String stateInfo = "";
         switch (stateCode) {
@@ -88,7 +149,7 @@ public class OrderModel extends AbsService implements IOrderModel {
         return stateInfo;
     }
 
-    public interface IUpdateGoodsState {
+    public interface IUpdateOrderState {
         public void onSuccess(int code);
 
         public void onFailure(String msg);

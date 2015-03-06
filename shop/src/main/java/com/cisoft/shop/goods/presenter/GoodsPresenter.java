@@ -34,6 +34,7 @@ public class GoodsPresenter{
     public void onLoad(int type, String sortType) {
         view.setPage(1);
         view.showProgress();
+        final int size = 5;
         categoryModel.loadCateogryByShopId(new INetWorkFinished<GoodsCategory>() {
             @Override
             public void onSuccess(List<GoodsCategory> l) {
@@ -46,9 +47,14 @@ public class GoodsPresenter{
             }
         });
 
-        model.loadGoodsListByType(1, 5, type, sortType, new INetWorkFinished<Goods>() {
+        model.loadGoodsListByType(1, size, type, sortType, new INetWorkFinished<Goods>() {
             @Override
             public void onSuccess(List<Goods> l) {
+                if (l.size() == 0 || l.size() < size) {
+                    view.setPullLoadEnable(false);
+                } else {
+                    view.setPullLoadEnable(true);
+                }
                 view.hideProgress();
                 view.setGoodsList(l);
             }
@@ -67,15 +73,18 @@ public class GoodsPresenter{
             public void onSuccess(List<Goods> l) {
                 if (l.size() == 0 || l.size() < size) {
                     ViewInject.toast("已经加载完了~");
+                    view.setPullLoadEnable(false);
                 } else {
                     view.setGoodsList(l);
                 }
+                view.hideMoreProgress();
                 view.setOnLoadMore(false);
             }
 
             @Override
             public void onFailure(String info) {
                 ViewInject.toast(info);
+                view.hideProgress();
                 view.setOnLoadMore(false);
             }
         });

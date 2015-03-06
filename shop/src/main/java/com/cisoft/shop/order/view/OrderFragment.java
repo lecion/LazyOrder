@@ -3,6 +3,8 @@ package com.cisoft.shop.order.view;
 import android.app.Activity;
 import android.app.Dialog;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,37 +15,59 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.cisoft.myapplication.R;
+import com.cisoft.shop.R;
 import com.cisoft.shop.bean.Order;
+import com.cisoft.shop.bean.Shop;
 import com.cisoft.shop.order.presenter.OrderPresenter;
+import com.cisoft.shop.util.DeviceUtil;
+import com.cisoft.shop.util.L;
 import com.cisoft.shop.widget.DialogFactory;
-import com.cisoft.shop.widget.MyListView;
+import com.cisoft.shop.widget.RefreshDeleteListView;
+import com.cisoft.shop.widget.SwipeMenu;
+import com.cisoft.shop.widget.SwipeMenuCreator;
+import com.cisoft.shop.widget.SwipeMenuItem;
+import com.nineoldandroids.animation.Animator;
+import com.nineoldandroids.animation.AnimatorListenerAdapter;
+import com.nineoldandroids.animation.ValueAnimator;
 
+import org.kymjs.aframe.bitmap.KJBitmap;
 import org.kymjs.aframe.ui.BindView;
 import org.kymjs.aframe.ui.fragment.BaseFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A simple {@link android.app.Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link com.cisoft.shop.order.view.OrderFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link com.cisoft.shop.order.view.OrderFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class OrderFragment extends BaseFragment implements IOrderView{
+
+    @BindView(id = R.id.iv_shop_logo)
+    private ImageView ivShopLogo;
+
+    @BindView(id = R.id.tv_shop_name)
+    private TextView tvShopName;
+
+    @BindView(id = R.id.tv_shop_time_show)
+    private TextView tvShopTime;
+
+    @BindView(id = R.id.tv_shop_privilege_show)
+    private TextView tvShopPrivilege;
 
     @BindView(id = R.id.sp_shop_state)
     private Spinner spShopState;
 
     @BindView(id = R.id.lv_order)
-    private MyListView lvOrder;
+    private RefreshDeleteListView lvOrder;
+
+    @BindView(id = R.id.llShowNoValueTip)
+    private LinearLayout llShowNoValueTip;
+
+    @BindView(id = R.id.btn_reload)
+    private Button rbReload;
 
     private OrderListAdapter orderListAdapter;
 
@@ -59,13 +83,7 @@ public class OrderFragment extends BaseFragment implements IOrderView{
 
     private boolean isLoadMore = false;
 
-    private int type = 1;
-
     private int shopOldState;
-
-    private enum GoodsState {
-        SOLDOUT, SALES;
-    }
 
     private static final String ARG_PARAM1 = "tag";
 
@@ -74,21 +92,10 @@ public class OrderFragment extends BaseFragment implements IOrderView{
     private OnFragmentInteractionListener mListener;
     private Dialog loadingTipDialog;
 
-    @BindView(id = R.id.llShowNoValueTip)
-    private LinearLayout llShowNoValueTip;
-
     private int page = 1;
     private int size = 5;
 
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @return A new instance of fragment GoodsFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static OrderFragment newInstance(String param1) {
         OrderFragment fragment = new OrderFragment();
         Bundle args = new Bundle();
@@ -97,9 +104,7 @@ public class OrderFragment extends BaseFragment implements IOrderView{
         return fragment;
     }
 
-    public OrderFragment() {
-        // Required empty public constructor
-    }
+    public OrderFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -119,7 +124,7 @@ public class OrderFragment extends BaseFragment implements IOrderView{
         presenter = new OrderPresenter(getActivity(), this);
         orderList = new ArrayList<Order>();
         orderListAdapter = new OrderListAdapter();
-        presenter.onLoad(type);
+        presenter.onLoad();
         shopOldState = 0;
     }
 
@@ -127,20 +132,27 @@ public class OrderFragment extends BaseFragment implements IOrderView{
     protected void initWidget(View parentView) {
         initShopStatus();
 
-        initGoodsList();
+        initOrderList();
+
+        rbReload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.onLoad();
+            }
+        });
     }
 
     /**
-     * 初始化商品列表
+     * 初始化订单列表
      */
-    private void initGoodsList() {
+    private void initOrderList() {
         lvOrder.setPullRefreshEnable(true);
-        lvOrder.setPullLoadEnable(true);
-        lvOrder.setOnRefreshListener(new MyListView.OnRefreshListener() {
+        lvOrder.setPullLoadEnable(false);
+        lvOrder.setOnRefreshListener(new RefreshDeleteListView.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 lvOrder.stopRefreshData();
-                presenter.onLoad(type);
+                presenter.onLoad();
             }
 
             @Override
@@ -150,16 +162,77 @@ public class OrderFragment extends BaseFragment implements IOrderView{
                     return;
                 }
                 isLoadMore = true;
+                showMoreProgress();
                 presenter.loadMore(++page, size);
             }
         });
         lvOrder.setAdapter(orderListAdapter);
+
+        //设置滑动选项
+        SwipeMenuCreator creator = new SwipeMenuCreator() {
+            @Override
+            public void create(SwipeMenu menu) {
+                SwipeMenuItem deleteItem = new SwipeMenuItem(
+                        getActivity().getApplicationContext());
+                deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9, 0x3F, 0x25)));
+                deleteItem.setWidth(DeviceUtil.dp2px(getActivity(), 90));
+//                deleteItem.setIcon(R.drawable.ic_delete);
+                deleteItem.setTitle("取消订单");
+                deleteItem.setTitleSize(18);
+                deleteItem.setTitleColor(Color.WHITE);
+                menu.addMenuItem(deleteItem);
+            }
+        };
+        lvOrder.setMenuCreator(creator);
+        lvOrder.setOnMenuItemClickListener(new RefreshDeleteListView.OnMenuItemClickListener() {
+            @Override
+            public void onMenuItemClick(final int position, SwipeMenu menu, int index) {
+                switch (index) {
+                    case 0:
+                        final View dismissView = lvOrder.getTouchView();
+                        final ViewGroup.LayoutParams lp = dismissView.getLayoutParams();
+                        final int originHeight = dismissView.getHeight();
+                        ValueAnimator animator = ValueAnimator.ofInt(originHeight, 0).setDuration(300);
+                        animator.start();
+                        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                            @Override
+                            public void onAnimationUpdate(ValueAnimator animation) {
+                                lp.height = (int) animation.getAnimatedValue();
+                                dismissView.setLayoutParams(lp);
+                            }
+                        });
+                        animator.addListener(new AnimatorListenerAdapter() {
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                orderList.remove(position);
+                                orderListAdapter.notifyDataSetChanged();
+                            }
+                        });
+                        break;
+                }
+            }
+        });
+
+        lvOrder.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Order order = (Order) lvOrder.getItemAtPosition(position);
+                OrderDetailDialog dialog = new OrderDetailDialog(order);
+                dialog.show(getFragmentManager(), order.getId() + "");
+            }
+        });
+
     }
 
     /**
      * 初始化商店状态
      */
     private void initShopStatus() {
+        Shop shop = L.app(this).getShop();
+        tvShopName.setText(shop.getName());
+        tvShopTime.setText(shop.getOpenTime() + "-" + shop.getCloseTime());
+        tvShopPrivilege.setText(shop.getPromotionInfo());
+        KJBitmap.create().display(ivShopLogo, shop.getFaceImgUrl());
         spShopState.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.fragment_goods_shop_state_cell, shopOperatingStates));
         spShopState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -200,7 +273,7 @@ public class OrderFragment extends BaseFragment implements IOrderView{
 
     @Override
     public void setOrderList(List<Order> orderList) {
-        Log.d("setGoodsList", orderList.toString());
+//        Log.d("setGoodsList", orderList.toString());
         if (page == 1) {
             this.orderList.clear();
             this.orderList.addAll(orderList);
@@ -249,25 +322,27 @@ public class OrderFragment extends BaseFragment implements IOrderView{
     }
 
     @Override
-    public void setOrderStatus(int position, int state) {
-        //TODO 处理state
-        orderList.get(position).setOrderState("CREATE");
+    public void setOrderStatus(int position, String state) {
+        orderList.get(position).setOrderState(state);
         orderListAdapter.notifyDataSetChanged();
     }
 
+    @Override
+    public void setPullLoadEnable(boolean flag) {
+        lvOrder.setPullLoadEnable(flag);
+    }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
+    @Override
+    public void showMoreProgress() {
+        lvOrder.showFooterLoading();
+    }
+
+    @Override
+    public void hideMoreProgress() {
+        lvOrder.showFooterNormal();
+    }
+
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
     }
 
@@ -290,43 +365,49 @@ public class OrderFragment extends BaseFragment implements IOrderView{
 
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
-            //TODO 状态改变， 订单中的商品显示
             final Order order = (Order) getItem(position);
             ViewHolder holder = null;
             if (convertView == null) {
                 holder = new ViewHolder();
-                convertView = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_goods_list_cell, parent, false);
+                convertView = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_order_list_cell, parent, false);
 
                 holder.tvOrderNumber = (TextView) convertView.findViewById(R.id.tv_order_number);
-                holder.tvOrderMoneyAll = (TextView) convertView.findViewById(R.id.tv_order_money_all);
                 holder.tvOrderTimeGo = (TextView) convertView.findViewById(R.id.tv_order_time_go);
                 holder.btnOrderStatus = (Button) convertView.findViewById(R.id.btn_order_status);
-                holder.spOrderGoodsList = (Spinner) convertView.findViewById(R.id.sp_order_goods_list);
                 convertView.setTag(holder);
             }
             holder = (ViewHolder) convertView.getTag();
-            holder.tvOrderNumber.setText(order.getOrderNumber());
-            holder.tvOrderMoneyAll.setText("￥" + String.valueOf(order.getMoneyAll()));
-            holder.tvOrderTimeGo.setText(String.valueOf(order.getTimeGo()));
-            holder.btnOrderStatus.setText(order.getOrderState());
-//            holder.btnOrderStatus.setBackgroundColor(goodsStateColors[order.getState()]);
-//            holder.btnOrderStatus.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    presenter.switchGoodsStatus(position, order.getState());
-//                }
-//            });
+            final String state = order.getOrderState();
+            holder.btnOrderStatus.setText(getOrderStatusText(state));
+            holder.btnOrderStatus.setBackgroundDrawable(getOrderStatusBackground(state));
+            holder.btnOrderStatus.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    presenter.switchOrderStatus(order.getId(), position, getOperateState(state));
+                }
+            });
+            holder.tvOrderNumber.setText("NO." + order.getOrderNumber());
+            holder.tvOrderTimeGo.setText(String.format("已下单"+ order.getTimeGo()) +"分钟");
             return convertView;
+        }
+
+        private String getOperateState(String state) {
+            return state.equals("CREATE") ? "READY" : "CREATE";
+        }
+
+        private String getOrderStatusText(String state) {
+            return state.equals("CREATE") ? "未准备" : "已准备";
+        }
+
+        private Drawable getOrderStatusBackground(String state) {
+            return state.equals("CREATE") ? getResources().getDrawable(R.drawable.selector_red_corners_button) : getResources().getDrawable(R.drawable.selector_blue_corners_button);
         }
     }
 
-
     private static class ViewHolder {
         TextView tvOrderNumber;
-        TextView tvOrderMoneyAll;
         TextView tvOrderTimeGo;
         Button btnOrderStatus;
-        Spinner spOrderGoodsList;
     }
 
 }

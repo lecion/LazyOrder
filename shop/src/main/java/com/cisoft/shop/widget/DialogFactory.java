@@ -8,7 +8,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
-import com.cisoft.myapplication.R;
+import com.cisoft.shop.R;
 
 import org.kymjs.aframe.ui.KJActivityManager;
 import org.kymjs.aframe.utils.DensityUtils;
@@ -34,16 +34,19 @@ public class DialogFactory {
         return dialog;
     }
 
-    public static Dialog createConfirmDialog(Context context, String msg, final IConfirm onClick) {
+    public static Dialog createConfirmDialog(Context context, String title, String msg, String yes, String no, final IConfirm onClick) {
+        if (title == null || title.equals("")) {
+            title = "友情提醒";
+        }
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("友情提醒").setMessage(msg).setPositiveButton("残忍清空", new DialogInterface.OnClickListener() {
+        builder.setTitle(title).setMessage(msg).setPositiveButton(yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (onClick != null) {
                     onClick.onYes();
                 }
             }
-        }).setNegativeButton("再看看", new DialogInterface.OnClickListener() {
+        }).setNegativeButton(no, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
@@ -55,4 +58,5 @@ public class DialogFactory {
     public interface IConfirm{
         public void onYes();
     }
+
 }

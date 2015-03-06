@@ -56,4 +56,12 @@
         <item name="android:backgroundDimEnabled">true</item><!-- 设置屏幕变暗 -->
     </style>
 
+    <!--订单详情TextView样式-->
+    <style name="order_detail_text_view_style">
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:layout_marginLeft">16dp</item>
+        <item name="android:layout_marginRight">16dp</item>
+    </style>
+
 </resources>
