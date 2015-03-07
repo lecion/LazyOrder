@@ -96,7 +96,6 @@ public class SwipeMenuLayout extends FrameLayout {
 			@Override
 			public boolean onFling(MotionEvent e1, MotionEvent e2,
 					float velocityX, float velocityY) {
-				// TODO
 				if ((e1.getX() - e2.getX()) > MIN_FLING
 						&& velocityX < MAX_VELOCITYX) {
 					isFling = true;

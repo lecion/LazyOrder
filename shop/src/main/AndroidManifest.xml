@@ -14,6 +14,7 @@
     <uses-permission android:name="getui.permission.GetuiService.com.cisoft.shop" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.GET_TASKS" />
+
     <!-- 自定义权限 -->
     <permission
         android:name="getui.permission.GetuiService.com.cisoft.shop"

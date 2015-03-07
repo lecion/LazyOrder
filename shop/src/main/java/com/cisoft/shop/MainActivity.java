@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -53,6 +54,9 @@ public class MainActivity extends BaseActivity implements GoodsFragment.OnFragme
     @BindView(id = R.id.fl_container)
     private FrameLayout flContainer;
 
+    @BindView(id = R.id.btn_new_msg)
+    private Button btnNewMsg;
+
     private List<Map<String, ?>> drawerTitle;
 
     private static final String KEY_TITLE = "drawer_title";
@@ -72,13 +76,14 @@ public class MainActivity extends BaseActivity implements GoodsFragment.OnFragme
     @Override
     public void setRootView() {
         setContentView(R.layout.activity_main);
+
         IntentFilter filter = new IntentFilter();
         filter.addAction("com.cisoft.receivemsg");
         receiver = new MyReceiver();
         getApplicationContext().registerReceiver(receiver, filter);
-
         PushManager.getInstance().initialize(this.getApplicationContext());
         String clientId = PushManager.getInstance().getClientid(this);
+//        Log.d("MainActivity", clientId);
         bindAlias();
     }
 
@@ -272,7 +277,7 @@ public class MainActivity extends BaseActivity implements GoodsFragment.OnFragme
         @Override
         public void onReceive(Context context, Intent intent) {
             Bundle data = intent.getExtras();
-            Log.d("onReceive", "我是main的receiver2");
+            Log.d("onReceive", "MainActivity");
             switch (data.getInt(PushConsts.CMD_ACTION)) {
                 case PushConsts.GET_MSG_DATA:
                     byte[] payload = data.getByteArray("payload");
@@ -311,7 +316,17 @@ public class MainActivity extends BaseActivity implements GoodsFragment.OnFragme
     private void newOrders(Bundle data) {
         //TODO 获得新订单更新UI
         Log.d("DEBUGDEBUG", data.getString("msg"));
-//        今天写简历去了，刷个存在- -
+        String msg = data.getString("msg");
+        if (btnNewMsg.getVisibility() == View.VISIBLE) {
+            Log.d("newOrders", "visible");
+            //已经有新消息提示
+            btnNewMsg.setText(msg);
+        } else {
+            //还没有新消息提示
+            btnNewMsg.setVisibility(View.VISIBLE);
+            btnNewMsg.setText(msg);
+            Log.d("newOrders", "invisible");
+        }
     }
 
 }
