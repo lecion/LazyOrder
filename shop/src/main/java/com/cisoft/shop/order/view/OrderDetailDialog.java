@@ -32,6 +32,8 @@ public class OrderDetailDialog extends DialogFragment {
     private TextView tvUserName;
     private TextView tvUserPhone;
     private TextView tvAddress;
+    private TextView tvDeduction;
+    private TextView tvSettled;
 
 
     private Order order;
@@ -54,6 +56,8 @@ public class OrderDetailDialog extends DialogFragment {
         tvOrderNumber.setText("No." + order.getOrderNumber());
         tvDistribution.setText("￥" + order.getDistributionPrice());
         tvPrice.setText("￥" + order.getOrderPrice());
+        tvSettled.setText("￥" + order.getSettledPrice());
+        tvDeduction.setText("-￥" + order.getDeduction());
         tvContent.setText(order.getContent());
         tvUserName.setText(order.getUserName());
         tvUserPhone.setText(order.getUserPhone());
@@ -69,6 +73,8 @@ public class OrderDetailDialog extends DialogFragment {
         tvUserName = (TextView) parent.findViewById(R.id.tv_user_name_show);
         tvUserPhone = (TextView) parent.findViewById(R.id.tv_user_phone_show);
         tvAddress = (TextView) parent.findViewById(R.id.tv_address_show);
+        tvSettled = (TextView) parent.findViewById(R.id.tv_order_settled_price_show);
+        tvDeduction = (TextView) parent.findViewById(R.id.tv_order_deduction_show);
     }
 
     @Override
