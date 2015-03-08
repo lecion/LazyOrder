@@ -69,6 +69,8 @@ public class MainActivity extends BaseActivity implements GoodsFragment.OnFragme
 
     private MyReceiver receiver;
 
+    private int loginType;
+
     public MainActivity() {
         setHiddenActionBar(false);
     }
@@ -85,6 +87,7 @@ public class MainActivity extends BaseActivity implements GoodsFragment.OnFragme
         String clientId = PushManager.getInstance().getClientid(this);
 //        Log.d("MainActivity", clientId);
         bindAlias();
+        loginType = IOUtil.getLoginType(this);
     }
 
     @Override
@@ -108,10 +111,12 @@ public class MainActivity extends BaseActivity implements GoodsFragment.OnFragme
         item.put(KEY_TITLE, "查看订单");
         drawerTitle.add(item);
 
-        item = new HashMap<String, Object>();
-        item.put(KEY_ICON, R.drawable.ic_launcher);
-        item.put(KEY_TITLE, "查看商品");
-        drawerTitle.add(item);
+        if (loginType == AppConfig.TYPE_MERCHANT) {
+            item = new HashMap<String, Object>();
+            item.put(KEY_ICON, R.drawable.ic_launcher);
+            item.put(KEY_TITLE, "查看商品");
+            drawerTitle.add(item);
+        }
 
         item = new HashMap<String, Object>();
         item.put(KEY_ICON, R.drawable.ic_launcher);
@@ -158,24 +163,43 @@ public class MainActivity extends BaseActivity implements GoodsFragment.OnFragme
     }
 
     private void selectItem(int position) {
-        switch (position) {
-            case 0:
-                ViewInject.toast("查看订单");
-                getFragmentManager().beginTransaction().replace(R.id.fl_container, OrderFragment.newInstance("订单"), "order").commit();
-                break;
-            case 1:
-                ViewInject.toast("查看商品");
-                getFragmentManager().beginTransaction().replace(R.id.fl_container, GoodsFragment.newInstance("商品"), "goods").commit();
-                break;
-            case 2:
-                ViewInject.toast("已完成订单");
-                break;
-            case 3:
-                ViewInject.toast("统计");
-                break;
-            case 4:
-                doLogout();
-                break;
+        if (loginType == AppConfig.TYPE_MERCHANT) {
+            switch (position) {
+                case 0:
+                    ViewInject.toast("查看订单");
+                    getFragmentManager().beginTransaction().replace(R.id.fl_container, OrderFragment.newInstance("订单", loginType), "order").commit();
+                    break;
+                case 1:
+                    ViewInject.toast("查看商品");
+                    getFragmentManager().beginTransaction().replace(R.id.fl_container, GoodsFragment.newInstance("商品"), "goods").commit();
+                    break;
+                case 2:
+                    ViewInject.toast("已完成订单");
+                    break;
+                case 3:
+                    ViewInject.toast("统计");
+                    break;
+                case 4:
+                    doLogout();
+                    break;
+            }
+
+        } else if (loginType == AppConfig.TYPE_EXPMER) {
+            switch (position) {
+                case 0:
+                    ViewInject.toast("查看订单");
+                    getFragmentManager().beginTransaction().replace(R.id.fl_container, OrderFragment.newInstance("订单", loginType), "order").commit();
+                    break;
+                case 1:
+                    ViewInject.toast("已完成订单");
+                    break;
+                case 2:
+                    ViewInject.toast("统计");
+                    break;
+                case 3:
+                    doLogout();
+                    break;
+            }
         }
         actionBarTitle = (String) drawerTitle.get(position).get(KEY_TITLE);
         getActionBar().setTitle(actionBarTitle);
@@ -265,7 +289,11 @@ public class MainActivity extends BaseActivity implements GoodsFragment.OnFragme
      * 别名格式：shop_***  ***为shop的id号
      */
     private void bindAlias() {
-        PushManager.getInstance().bindAlias(this, "shop_" + L.getShop(this).getId());
+        if (loginType == AppConfig.TYPE_MERCHANT) {
+            PushManager.getInstance().bindAlias(this, "shop_" + L.getShop(this).getId());
+        } else if (loginType == AppConfig.TYPE_EXPMER) {
+            PushManager.getInstance().bindAlias(this, "express_" + L.getExpmer(this).getId());
+        }
     }
 
     public class MyReceiver extends BroadcastReceiver {

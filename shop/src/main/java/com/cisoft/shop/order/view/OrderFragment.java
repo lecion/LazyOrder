@@ -85,9 +85,11 @@ public class OrderFragment extends BaseFragment implements IOrderView{
 
     private int shopOldState;
 
-    private static final String ARG_PARAM1 = "tag";
+    private static final String ARG_TAG = "tag";
+    private static final String ARG_LOGIN_TYPE = "loginType";
 
     private String FRAGMENT_TAG;
+    private int loginType;
 
     private OnFragmentInteractionListener mListener;
     private Dialog loadingTipDialog;
@@ -96,10 +98,11 @@ public class OrderFragment extends BaseFragment implements IOrderView{
     private int size = 5;
 
 
-    public static OrderFragment newInstance(String param1) {
+    public static OrderFragment newInstance(String tag, int loginType) {
         OrderFragment fragment = new OrderFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_TAG, tag);
+        args.putInt(ARG_LOGIN_TYPE, loginType);
         fragment.setArguments(args);
         return fragment;
     }
@@ -110,7 +113,8 @@ public class OrderFragment extends BaseFragment implements IOrderView{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            FRAGMENT_TAG = getArguments().getString(ARG_PARAM1);
+            FRAGMENT_TAG = getArguments().getString(ARG_TAG);
+            loginType = getArguments().getInt(ARG_LOGIN_TYPE);
         }
     }
 
