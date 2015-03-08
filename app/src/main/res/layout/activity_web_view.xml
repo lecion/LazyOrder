@@ -1,9 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/gray_bg"
-    tools:mContext="com.cisoft.lazyorder.ui.comment.WebViewActivity">
+    android:background="@color/gray_bg">
     <com.cisoft.lazyorder.widget.ProgressWebView
         android:id="@+id/wv_show_content"
         android:layout_width="match_parent"

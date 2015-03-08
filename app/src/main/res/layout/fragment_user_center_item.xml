@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/selector_list_cell">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -20,8 +24,8 @@
             android:textColor="@color/text_ligth_black_color"
             android:text="管理地址"/>
     </LinearLayout>
-    <ImageView
+    <View
         android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:src="@color/stroke" />
-</merge>
+        android:layout_height="@dimen/stroke"
+        android:background="@color/stroke" />
+</LinearLayout>

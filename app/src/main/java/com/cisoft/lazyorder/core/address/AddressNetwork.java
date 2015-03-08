@@ -2,7 +2,7 @@ package com.cisoft.lazyorder.core.address;
 
 import android.content.Context;
 
-import com.cisoft.lazyorder.bean.address.Address;
+import com.cisoft.lazyorder.bean.address.AddressInfo;
 import com.cisoft.lazyorder.core.BaseNetwork;
 import com.cisoft.lazyorder.finals.ApiConstants;
 
@@ -32,19 +32,24 @@ public class AddressNetwork extends BaseNetwork {
 		getRequest(ApiConstants.METHOD_ADDRESS_FIND_ALL, params, new SuccessCallback() {
 	      @Override
 	      public void onSuccess(String result) {
-	          List<Address> addresses = new ArrayList<Address>();
+	          List<AddressInfo> addresses = new ArrayList<AddressInfo>();
 	          try {
 	              JSONObject jsonObj = new JSONObject(result);
 	              JSONArray addressArr = jsonObj.getJSONArray(ApiConstants.KEY_DATA);
 	              JSONObject addressObj = null;
-	              Address address = null;
+	              AddressInfo address = null;
 	              for (int i = 0; i < addressArr.length(); i++) {
 	            	  addressObj = addressArr.getJSONObject(i);
-	            	  address = new Address(addressObj);
+	            	  address = new AddressInfo(addressObj);
 	            	  addresses.add(address);
 	              }
 	          } catch (JSONException e) {
 	              e.printStackTrace();
+
+                  if(loadFinishCallback != null){
+                      loadFinishCallback.onFailure(ApiConstants.RES_STATE_SERVICE_EXCEPTION,
+                              getResponseStateInfo(ApiConstants.RES_STATE_SERVICE_EXCEPTION));
+                  }
 	          }
 	
 	          if(loadFinishCallback != null){
@@ -54,9 +59,9 @@ public class AddressNetwork extends BaseNetwork {
 	      }}, new FailureCallback() {
 	
 	      @Override
-	      public void onFailure(int stateCode) {
+	      public void onFailure(int stateCode, String errorMsg) {
 	          if(loadFinishCallback != null){
-	              loadFinishCallback.onFailure(stateCode);
+	              loadFinishCallback.onFailure(stateCode, errorMsg);
 	          }
 	      }
 	  }, new PrepareCallback() {
@@ -73,7 +78,7 @@ public class AddressNetwork extends BaseNetwork {
      * 新增送货地址
      *
      */
-    public void insertAddressByUserId(int userId, Address addressObj, final OnInsertAddressFinish onInsertAddressFinish) {
+    public void insertAddressByUserId(int userId, AddressInfo addressObj, final OnInsertAddressFinish onInsertAddressFinish) {
     	HttpParams params = new HttpParams();
     	params.put(ApiConstants.KEY_ADDRESS_UID, String.valueOf(userId));
         params.put(ApiConstants.KEY_ADDRESS_NAME, addressObj.getName());
@@ -96,9 +101,9 @@ public class AddressNetwork extends BaseNetwork {
             }
         }, new FailureCallback() {
             @Override
-            public void onFailure(int stateCode) {
+            public void onFailure(int stateCode, String errorMsg) {
                 if(onInsertAddressFinish != null){
-                	onInsertAddressFinish.onFailure(stateCode);
+                	onInsertAddressFinish.onFailure(stateCode, errorMsg);
                 }
             }
         }, new PrepareCallback() {
@@ -115,7 +120,7 @@ public class AddressNetwork extends BaseNetwork {
      * @param addressObj
      * @param onUpdateFinishCallback
      */
-    public void updateAddressByAddrId(Address addressObj, final OnUpdateAddressFinish onUpdateFinishCallback) {
+    public void updateAddressByAddrId(AddressInfo addressObj, final OnUpdateAddressFinish onUpdateFinishCallback) {
     	HttpParams params = new HttpParams();
     	params.put(ApiConstants.KEY_ADDRESS_ID, String.valueOf(addressObj.getId()));
         params.put(ApiConstants.KEY_ADDRESS_NAME, addressObj.getName());
@@ -131,9 +136,9 @@ public class AddressNetwork extends BaseNetwork {
             }
         }, new FailureCallback() {
             @Override
-            public void onFailure(int stateCode) {
+            public void onFailure(int stateCode, String errorMsg) {
                 if(onUpdateFinishCallback != null){
-                	onUpdateFinishCallback.onFailure(stateCode);
+                	onUpdateFinishCallback.onFailure(stateCode, errorMsg);
                 }
             }
         }, new PrepareCallback() {
@@ -150,9 +155,10 @@ public class AddressNetwork extends BaseNetwork {
      * @param addrId
      * @param onDeleteAddressFinish
      */
-    public void deleteAddressByAddrId(int addrId, final OnDeleteAddressFinish onDeleteAddressFinish) {
+    public void deleteAddressByAddrId(int userId, int addrId, final OnDeleteAddressFinish onDeleteAddressFinish) {
     	HttpParams params = new HttpParams();
     	params.put(ApiConstants.KEY_ADDRESS_ID, String.valueOf(addrId));
+        params.put(ApiConstants.KEY_ADDRESS_UID, String.valueOf(userId));
 
         getRequest(ApiConstants.METHOD_ADDRESS_DELETE, params, new SuccessCallback() {
             @Override
@@ -163,9 +169,9 @@ public class AddressNetwork extends BaseNetwork {
             }
         }, new FailureCallback() {
             @Override
-            public void onFailure(int stateCode) {
+            public void onFailure(int stateCode, String errorMsg) {
                 if(onDeleteAddressFinish != null){
-                	onDeleteAddressFinish.onFailure(stateCode);
+                	onDeleteAddressFinish.onFailure(stateCode, errorMsg);
                 }
             }
         }, new PrepareCallback() {
@@ -181,9 +187,10 @@ public class AddressNetwork extends BaseNetwork {
      * 设置默认地址
      *
      */
-    public void setDefaultAddressByAddrId(int addrId, final OnSetDefaultAddressFinish onSetDefFinishCallback) {
+    public void setDefaultAddressByAddrId(int userId, int addrId, final OnSetDefaultAddressFinish onSetDefFinishCallback) {
     	HttpParams params = new HttpParams();
-    	params.put(ApiConstants.KEY_ADDRESS_ID, String.valueOf(addrId));
+        params.put(ApiConstants.KEY_ADDRESS_ID, String.valueOf(addrId));
+        params.put(ApiConstants.KEY_ADDRESS_UID, String.valueOf(userId));
 
         getRequest(ApiConstants.METHOD_ADDRESS_SET_DEFAULT, params, new SuccessCallback() {
             @Override
@@ -194,9 +201,9 @@ public class AddressNetwork extends BaseNetwork {
             }
         }, new FailureCallback() {
             @Override
-            public void onFailure(int stateCode) {
+            public void onFailure(int stateCode, String errorMsg) {
                 if(onSetDefFinishCallback != null){
-                	onSetDefFinishCallback.onFailure(stateCode);
+                	onSetDefFinishCallback.onFailure(stateCode, errorMsg);
                 }
             }
         }, new PrepareCallback() {
@@ -213,9 +220,9 @@ public class AddressNetwork extends BaseNetwork {
 		
 		public void onPreStart();
 		
-		public void onSuccess(List<Address> addresses);
+		public void onSuccess(List<AddressInfo> addresses);
 
-		public void onFailure(int stateCode);
+		public void onFailure(int stateCode, String errorMsg);
 	}
 	
 	
@@ -225,7 +232,7 @@ public class AddressNetwork extends BaseNetwork {
     	
         public void onSuccess(int addrId);
 
-        public void onFailure(int stateCode);
+        public void onFailure(int stateCode, String errorMsg);
     }
     
     public interface OnUpdateAddressFinish {
@@ -234,7 +241,7 @@ public class AddressNetwork extends BaseNetwork {
     	
         public void onSuccess();
 
-        public void onFailure(int stateCode);
+        public void onFailure(int stateCode, String errorMsg);
     }
     
     public interface OnDeleteAddressFinish {
@@ -243,7 +250,7 @@ public class AddressNetwork extends BaseNetwork {
     	
         public void onSuccess();
 
-        public void onFailure(int stateCode);
+        public void onFailure(int stateCode, String errorMsg);
     }
     
     public interface OnSetDefaultAddressFinish {
@@ -252,7 +259,7 @@ public class AddressNetwork extends BaseNetwork {
     	
         public void onSuccess();
 
-        public void onFailure(int stateCode);
+        public void onFailure(int stateCode, String errorMsg);
     }
 
 }

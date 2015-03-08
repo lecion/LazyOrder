@@ -1,6 +1,5 @@
 package com.cisoft.lazyorder.ui.cart;
 
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -10,21 +9,21 @@ import android.widget.TextView;
 import com.cisoft.lazyorder.R;
 import com.cisoft.lazyorder.bean.goods.Goods;
 import com.cisoft.lazyorder.bean.goods.GoodsCart;
-import com.cisoft.lazyorder.ui.sureinfo.SureInfoActivity;
+import com.cisoft.lazyorder.ui.BaseActivity;
+import com.cisoft.lazyorder.ui.settle.SettleActivity;
 import com.cisoft.lazyorder.util.Utility;
 import com.cisoft.lazyorder.widget.CompatListView;
 
-import org.kymjs.kjframe.KJActivity;
 import org.kymjs.kjframe.ui.BindView;
 
 import java.util.List;
 
-public class CartActivity extends KJActivity {
+public class CartActivity extends BaseActivity {
 
     @BindView(id = R.id.lvOrderList)
     private CompatListView lvOrderList;
 
-    @BindView(id = R.id.tv_money_all)
+    @BindView(id = R.id.tv_settled_price)
     private TextView tvMoneyAll;
 
     @BindView(id = R.id.rlShowGoodsCart)
@@ -37,7 +36,7 @@ public class CartActivity extends KJActivity {
     private Button btnSureOrder;
 
     private List<Goods> orderListData;
-    private OrderListAdapter orderListAdapter;
+    private CartListAdapter cartListAdapter;
 
 
     @Override
@@ -52,22 +51,13 @@ public class CartActivity extends KJActivity {
 
     @Override
     public void initWidget() {
-        initActionBar();
         initAdapter();
         setMoneyAll();
     }
 
-    private void initActionBar() {
-        getActionBar().setDisplayShowHomeEnabled(true);
-        getActionBar().setDisplayShowTitleEnabled(true);
-        getActionBar().setHomeButtonEnabled(true);
-        getActionBar().setIcon(R.drawable.nav_back_arrow);
-        getActionBar().setTitle("  确认订单");
-    }
-
     private void initAdapter() {
-        orderListAdapter = new OrderListAdapter(this, orderListData);
-        lvOrderList.setAdapter(orderListAdapter);
+        cartListAdapter = new CartListAdapter(this, orderListData);
+        lvOrderList.setAdapter(cartListAdapter);
         resetListViewHeight();
     }
 
@@ -76,20 +66,8 @@ public class CartActivity extends KJActivity {
     public void widgetClick(View v) {
         switch (v.getId()){
             case R.id.btnSureOrder:
-                showActivity(this, SureInfoActivity.class);
+                showActivity(this, SettleActivity.class);
                 break;
-        }
-    }
-
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
         }
     }
 

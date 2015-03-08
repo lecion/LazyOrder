@@ -4,14 +4,12 @@ import android.content.Context;
 
 import com.cisoft.lazyorder.R;
 import com.cisoft.lazyorder.bean.goods.Goods;
-import com.cisoft.lazyorder.core.AbsService;
-import com.cisoft.lazyorder.core.goods.INetWorkFinished;
+import com.cisoft.lazyorder.core.BaseNetwork;
 import com.cisoft.lazyorder.finals.ApiConstants;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.kymjs.aframe.http.KJStringParams;
+import org.kymjs.kjframe.http.HttpParams;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +17,7 @@ import java.util.List;
 /**
  * Created by Lecion on 14/11/17.
  */
-public class SearchService extends AbsService {
+public class SearchService extends BaseNetwork {
     public SearchService(Context context, String moduleName) {
         super(context, ApiConstants.MODULE_COMMODITY);
     }
@@ -33,11 +31,11 @@ public class SearchService extends AbsService {
      * @param shopId
      * @param query
      */
-    public void queryGoodsList(int shopId, String query, final INetWorkFinished<Goods> onNetwordFinished) {
-        KJStringParams params = new KJStringParams();
+    public void queryGoodsList(int shopId, String query, final OnQueryGoodsFinishCallback onQueryGoodsFinishCallback) {
+        HttpParams params = new HttpParams();
         params.put(ApiConstants.KEY_COM_MER_ID, String.valueOf(shopId));
         params.put(ApiConstants.KEY_COM_KEY_NAME, query);
-        super.asyncUrlGet(ApiConstants.METHOD_COMMODITY_FIND_COMMODITY_BY_KEY, params, false, new SuccessCallback() {
+        getRequest(ApiConstants.METHOD_COMMODITY_FIND_COMMODITY_BY_KEY, params, new SuccessCallback() {
             @Override
             public void onSuccess(String result) {
                 List<Goods> goodsList = new ArrayList<Goods>();
@@ -48,46 +46,51 @@ public class SearchService extends AbsService {
                     for (int i = 0; i < jsonArr.length(); i++) {
                         goodsList.add(new Goods(jsonArr.getJSONObject(i)));
                     }
-                    if (onNetwordFinished != null) {
-                        onNetwordFinished.onSuccess(goodsList);
-                    }
                 } catch (JSONException e) {
-                    //这里是json格式不对，无法完成解析
-                    if (onNetwordFinished != null) {
-                        onNetwordFinished.onFailure(getResponseStateInfo(ApiConstants.RESPONSE_STATE_SERVICE_EXCEPTION));
-                    }
+                    e.printStackTrace();
                 }
-
+                if (onQueryGoodsFinishCallback != null) {
+                    onQueryGoodsFinishCallback.onSuccess(goodsList);
+                }
             }
         }, new FailureCallback() {
             @Override
-            public void onFailure(int stateCode) {
+            public void onFailure(int stateCode, String errorMsg) {
                 //这里出错，根据code查询错误信息
-                if (onNetwordFinished != null) {
-                    onNetwordFinished.onFailure(getResponseStateInfo(stateCode));
+                if (onQueryGoodsFinishCallback != null) {
+                    onQueryGoodsFinishCallback.onFailure(stateCode,
+                            getResponseStateInfo(stateCode));
                 }
             }
-        });
+        }, null);
     }
 
     @Override
     public String getResponseStateInfo(int stateCode) {
         String stateInfo = "";
         switch (stateCode) {
-            case ApiConstants.RESPONSE_STATE_FAILURE:
-                stateInfo = context.getResources().getString(R.string.fail_to_query_goods_list);
+            case ApiConstants.RES_STATE_FAILURE:
+                stateInfo = mContext.getResources().getString(R.string.toast_fail_to_query_goods_list);
                 break;
-            case ApiConstants.RESPONSE_STATE_SUCCESS:
-                stateInfo = context.getResources().getString(R.string.success_to_load_goods_list);
+            case ApiConstants.RES_STATE_SUCCESS:
+                stateInfo = mContext.getResources().getString(R.string.toast_success_to_load_goods_list);
                 break;
-            case ApiConstants.RESPONSE_STATE_NOT_NET:
-                stateInfo = context.getResources().getString(R.string.no_net_service);
+            case ApiConstants.RES_STATE_NOT_NET:
+                stateInfo = mContext.getResources().getString(R.string.toast_have_not_network);
                 break;
-            case ApiConstants.RESPONSE_STATE_SERVICE_EXCEPTION:
-                stateInfo = context.getResources().getString(R.string.service_have_error_exception);
+            case ApiConstants.RES_STATE_SERVICE_EXCEPTION:
+                stateInfo = mContext.getResources().getString(R.string.toast_service_have_exception);
                 break;
         }
         return stateInfo;
     }
 
+
+    public interface OnQueryGoodsFinishCallback {
+
+        public void onSuccess(List<Goods> goodses);
+
+        public void onFailure(int stateCode, String errorMsg);
+
+    }
 }

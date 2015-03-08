@@ -29,7 +29,7 @@ public class OrderNumView extends FrameLayout{
     public OrderNumView(Context context) {
         super(context);
         this.context = context;
-        LayoutInflater.from(context).inflate(R.layout.order_num_layout, this);
+        LayoutInflater.from(context).inflate(R.layout.view_order_num, this);
 
         control();
     }
@@ -39,7 +39,7 @@ public class OrderNumView extends FrameLayout{
         super(context);
         this.context = context;
         this.num = num;
-        LayoutInflater.from(context).inflate(R.layout.order_num_layout, this);
+        LayoutInflater.from(context).inflate(R.layout.view_order_num, this);
 
         control();
     }
@@ -48,7 +48,7 @@ public class OrderNumView extends FrameLayout{
     public OrderNumView(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
-        LayoutInflater.from(context).inflate(R.layout.order_num_layout, this);
+        LayoutInflater.from(context).inflate(R.layout.view_order_num, this);
 
         control();
     }

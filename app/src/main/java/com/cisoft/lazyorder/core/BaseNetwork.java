@@ -10,10 +10,12 @@ import org.kymjs.kjframe.KJHttp;
 import org.kymjs.kjframe.http.HttpCallBack;
 import org.kymjs.kjframe.http.HttpConfig;
 import org.kymjs.kjframe.http.HttpParams;
-import org.kymjs.kjframe.ui.ViewInject;
 import org.kymjs.kjframe.utils.SystemTool;
-import java.io.IOException;
+
+import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
+import java.net.SocketException;
+import java.net.SocketTimeoutException;
 
 public abstract class BaseNetwork {
     protected Context mContext;
@@ -25,54 +27,50 @@ public abstract class BaseNetwork {
         mContext = context;
         mModuleName = moduleName;
         mHttpConfig = new HttpConfig();
-//        mHttpConfig.cachePath = AppConfig.HTTP_CACHE_PATH;
-//        mHttpConfig.cacheTime = AppConfig.IS_DEBUG ? 0 : AppConfig.CACHE_EFFECTIVE_TIME;
+        mHttpConfig.cachePath = AppConfig.HTTP_CACHE_PATH;
         mKjHttp = new KJHttp(mHttpConfig);
     }
 
-    // /**
-    // * 以get的方式异步请求Api的网络数据并保存数据到缓存
-    // *
-    // * @param methodName
-    // * Api接口的方法名，如"findAll.json"
-    // * @param params
-    // * Api接口的参数对
-    // * @param successCallback
-    // * 成功后的回调
-    // * @param failureCallback
-    // * 失败后的回调
-    // */
-    // protected void getRequest(String methodName, final HttpParams params,
-    // final SuccessCallback successCallback,
-    // final FailureCallback failureCallback) {
-    // this.getRequest(methodName, params, true, successCallback,
-    // failureCallback);
-    // }
-
     /**
-     * 是否保存成功的数据到缓存里
-     *
+     * 以get的请求方式且不使用缓存的方式来获取网络数据
      * @param methodName
      * @param params
-     *            是否保存数据为缓存
      * @param successCallback
      * @param failureCallback
+     * @param prepareCallback
      */
     protected void getRequest(String methodName, final HttpParams params,
                               final SuccessCallback successCallback,
                               final FailureCallback failureCallback,
                               final PrepareCallback prepareCallback) {
+        getRequest(methodName, params, false, successCallback, failureCallback, prepareCallback);
+    }
 
+    /**
+     * 以get的请求方式来获取网络数据
+     * @param methodName
+     * @param params
+     * @param isUseCache
+     * @param successCallback
+     * @param failureCallback
+     * @param prepareCallback
+     */
+    protected void getRequest(String methodName, final HttpParams params, boolean isUseCache,
+                              final SuccessCallback successCallback,
+                              final FailureCallback failureCallback,
+                              final PrepareCallback prepareCallback) {
         // 判断网络状态
         if (!SystemTool.checkNet(mContext)) {
             if (failureCallback != null) {
-                failureCallback.onFailure(ApiConstants.RESPONSE_STATE_NOT_NET);
+                failureCallback.onFailure(ApiConstants.RES_STATE_NOT_NET,
+                        getResponseStateInfo(ApiConstants.RES_STATE_NOT_NET));
             }
             return;
         }
-
+        // 打包url
         final String url = packageAccessApiUrl(methodName, params);
-
+        // 根据是否使用缓存来设置缓存时间
+        mHttpConfig.cacheTime = (AppConfig.IS_DEBUG || !isUseCache) ? 0 : AppConfig.CACHE_EFFECTIVE_TIME;
         mKjHttp.get(url, new HttpCallBack() {
 
             @Override
@@ -88,21 +86,18 @@ public abstract class BaseNetwork {
                 if (params != null)
                     System.out.println("params:" + params.toString());
                 System.out.println("result:" + result);
-
                 try {
                     JSONObject jsonObj = new JSONObject(result);
                     int stateCode = jsonObj.getInt(ApiConstants.KEY_STATE);
-                    if (stateCode == ApiConstants.RESPONSE_STATE_SUCCESS) {
-//						// 获取数据正常,就保存到缓存里 */
-//						if (isSaveCache && !AppConfig.IS_DEBUG)
-//							httpCacher.add(url, result);
-
+                    if (stateCode == ApiConstants.RES_STATE_SUCCESS) {
                         if (successCallback != null) {
                             successCallback.onSuccess(result);
                         }
+                    // 不正常的状态下才获取message
                     } else {
+                        String errorMsg = jsonObj.getString(ApiConstants.KEY_MESSAGE);
                         if (failureCallback != null) {
-                            failureCallback.onFailure(stateCode);
+                            failureCallback.onFailure(stateCode, errorMsg);
                         }
                     }
                 } catch (JSONException e) {
@@ -111,7 +106,8 @@ public abstract class BaseNetwork {
                     // 解析不了,就说明是服务器端的原因了
                     if (failureCallback != null) {
                         failureCallback
-                                .onFailure(ApiConstants.RESPONSE_STATE_SERVICE_EXCEPTION);
+                                .onFailure(ApiConstants.RES_STATE_SERVICE_EXCEPTION,
+                                        getResponseStateInfo(ApiConstants.RES_STATE_SERVICE_EXCEPTION));
                     }
                 }
             }
@@ -119,60 +115,71 @@ public abstract class BaseNetwork {
             @Override
             public void onFailure(Throwable t, int errorNo, String strMsg) {
                 if (failureCallback != null) {
+                    // 错误的URL(协议错误)
                     if (t instanceof MalformedURLException) {
-                        ViewInject.toast("不是标准的URL");
-                    } else if (t instanceof IOException) {
                         failureCallback
-                                .onFailure(ApiConstants.RESPONSE_STATE_NET_POOR);
+                                .onFailure(ApiConstants.RES_STATE_SERVICE_EXCEPTION,
+                                        getResponseStateInfo(ApiConstants.RES_STATE_SERVICE_EXCEPTION));
+                    // 404(Api地址错误)
+                    }else if (t instanceof FileNotFoundException) {
+                        failureCallback
+                                .onFailure(ApiConstants.RES_STATE_SERVICE_EXCEPTION,
+                                        getResponseStateInfo(ApiConstants.RES_STATE_SERVICE_EXCEPTION));
+                    // 连接超时(网络差)
+                    } else if (t instanceof SocketException || t instanceof SocketTimeoutException) {
+                        failureCallback
+                                .onFailure(ApiConstants.RES_STATE_NET_POOR,
+                                        getResponseStateInfo(ApiConstants.RES_STATE_NET_POOR));
                     } else {
                         failureCallback
-                                .onFailure(ApiConstants.RESPONSE_STATE_FAILURE);
+                                .onFailure(ApiConstants.RES_STATE_UNKNOWN_EXCEPTION,
+                                        getResponseStateInfo(ApiConstants.RES_STATE_UNKNOWN_EXCEPTION));
                     }
                 }
             }
         });
     }
 
-//	/**
-//	 * 以post的方式异步请求Api的网络数据并将获取到的数据保存为缓存
-//	 * 
-//	 * @param methodName
-//	 *            Api接口的方法名，如"findAll.json"
-//	 * @param params
-//	 *            Api接口的参数对
-//	 * @param successCallback
-//	 *            成功后的回调
-//	 * @param failureCallback
-//	 *            失败后的回调
-//	 */
-//	protected void postRequest(String methodName, final KJStringParams params,
-//			final SuccessCallback successCallback,
-//			final FailureCallback failureCallback) {
-//		this.asyncUrlPost(methodName, params, true, successCallback,
-//				failureCallback);
-//	}
-
-    /**
-     *
+	/**
+	 * 以post的请求方式且不使用缓存的方式来获取网络数据
      * @param methodName
      * @param params
-     *            是否获取到数据后保存为缓存
      * @param successCallback
      * @param failureCallback
+     * @param prepareCallback
      */
-    protected void postRequest(String methodName, final HttpParams params, final SuccessCallback successCallback,
-                               final FailureCallback failureCallback, final PrepareCallback prepareCallback) {
+	protected void postRequest(String methodName, final HttpParams params,
+                               final SuccessCallback successCallback,
+                               final FailureCallback failureCallback,
+                               final PrepareCallback prepareCallback) {
+		postRequest(methodName, params, false, successCallback, failureCallback, prepareCallback);
+	}
 
+    /**
+     * 以post的请求方式来获取网络数据
+     * @param methodName
+     * @param params
+     * @param isUseCache
+     * @param successCallback
+     * @param failureCallback
+     * @param prepareCallback
+     */
+    protected void postRequest(String methodName, final HttpParams params, boolean isUseCache,
+                               final SuccessCallback successCallback,
+                               final FailureCallback failureCallback,
+                               final PrepareCallback prepareCallback) {
         // 判断网络状态
         if (!SystemTool.checkNet(mContext)) {
             if (failureCallback != null) {
-                failureCallback.onFailure(ApiConstants.RESPONSE_STATE_NOT_NET);
+                failureCallback.onFailure(ApiConstants.RES_STATE_NOT_NET,
+                        getResponseStateInfo(ApiConstants.RES_STATE_NOT_NET));
             }
             return;
         }
-
+        // 打包url
         final String url = packageAccessApiUrl(methodName, null);
-
+        // 根据是否使用缓存来设置缓存时间
+        mHttpConfig.cacheTime = (AppConfig.IS_DEBUG || !isUseCache) ? 0 : AppConfig.CACHE_EFFECTIVE_TIME;
         mKjHttp.post(url, params, new HttpCallBack() {
 
             @Override
@@ -192,17 +199,15 @@ public abstract class BaseNetwork {
                 try {
                     JSONObject jsonObj = new JSONObject(result);
                     int stateCode = jsonObj.getInt(ApiConstants.KEY_STATE);
-                    if (stateCode == ApiConstants.RESPONSE_STATE_SUCCESS) {
-//						// 获取数据正常,就保存到缓存里 */
-//						if (isSaveCache && !AppConfig.IS_DEBUG)
-//							httpCacher.add(url, result);
-
+                    if (stateCode == ApiConstants.RES_STATE_SUCCESS) {
                         if (successCallback != null) {
                             successCallback.onSuccess(result);
                         }
+                    // 不正常的状态下才获取message
                     } else {
+                        String errorMsg = jsonObj.getString(ApiConstants.KEY_MESSAGE);
                         if (failureCallback != null) {
-                            failureCallback.onFailure(stateCode);
+                            failureCallback.onFailure(stateCode, errorMsg);
                         }
                     }
                 } catch (JSONException e) {
@@ -211,7 +216,8 @@ public abstract class BaseNetwork {
                     // 解析不了,就说明是服务器端的原因了
                     if (failureCallback != null) {
                         failureCallback
-                                .onFailure(ApiConstants.RESPONSE_STATE_SERVICE_EXCEPTION);
+                                .onFailure(ApiConstants.RES_STATE_SERVICE_EXCEPTION,
+                                        getResponseStateInfo(ApiConstants.RES_STATE_SERVICE_EXCEPTION));
                     }
                 }
             }
@@ -219,14 +225,25 @@ public abstract class BaseNetwork {
             @Override
             public void onFailure(Throwable t, int errorNo, String strMsg) {
                 if (failureCallback != null) {
+                    // 错误的URL(协议错误)
                     if (t instanceof MalformedURLException) {
-                        ViewInject.longToast("不是标准的URL");
-                    } else if (t instanceof IOException) {
                         failureCallback
-                                .onFailure(ApiConstants.RESPONSE_STATE_NET_POOR);
+                                .onFailure(ApiConstants.RES_STATE_SERVICE_EXCEPTION,
+                                        getResponseStateInfo(ApiConstants.RES_STATE_SERVICE_EXCEPTION));
+                    // 404(Api地址错误)
+                    }else if (t instanceof FileNotFoundException) {
+                        failureCallback
+                                .onFailure(ApiConstants.RES_STATE_SERVICE_EXCEPTION,
+                                        getResponseStateInfo(ApiConstants.RES_STATE_SERVICE_EXCEPTION));
+                    // 连接超时(网络差)
+                    } else if (t instanceof SocketException || t instanceof SocketTimeoutException) {
+                        failureCallback
+                                .onFailure(ApiConstants.RES_STATE_NET_POOR,
+                                        getResponseStateInfo(ApiConstants.RES_STATE_NET_POOR));
                     } else {
                         failureCallback
-                                .onFailure(ApiConstants.RESPONSE_STATE_FAILURE);
+                                .onFailure(ApiConstants.RES_STATE_UNKNOWN_EXCEPTION,
+                                        getResponseStateInfo(ApiConstants.RES_STATE_UNKNOWN_EXCEPTION));
                     }
                 }
             }
@@ -235,7 +252,6 @@ public abstract class BaseNetwork {
 
     /**
      * 通过方法名包装访问api的url（不带参数的url）
-     *
      * @param methodName
      * @return
      */
@@ -255,24 +271,26 @@ public abstract class BaseNetwork {
     }
 
     /**
-     * 根据请求api响应的状态码来获取对应的信息
-     *
+     * 根据请求api响应的状态码来获取全局响应信息
      * @param stateCode
      * @return
      */
-    public String getResponseStateInfo(int stateCode) {
+    protected String getResponseStateInfo(int stateCode) {
         String stateInfo = "";
         switch (stateCode) {
-            case ApiConstants.RESPONSE_STATE_NOT_NET:
+            case ApiConstants.RES_STATE_NOT_NET:
                 stateInfo = mContext.getResources().getString(
-                        R.string.no_net_service);
+                        R.string.toast_have_not_network);
                 break;
-            case ApiConstants.RESPONSE_STATE_NET_POOR:
-                stateInfo = mContext.getResources().getString(R.string.net_too_poor);
+            case ApiConstants.RES_STATE_NET_POOR:
+                stateInfo = mContext.getResources().getString(R.string.toast_network_too_poor);
                 break;
-            case ApiConstants.RESPONSE_STATE_SERVICE_EXCEPTION:
+            case ApiConstants.RES_STATE_SERVICE_EXCEPTION:
                 stateInfo = mContext.getResources().getString(
-                        R.string.service_have_error_exception);
+                        R.string.toast_service_have_exception);
+                break;
+            case ApiConstants.RES_STATE_UNKNOWN_EXCEPTION:
+                stateInfo = mContext.getResources().getString(R.string.toast_unknown_exception);
                 break;
         }
 
@@ -288,6 +306,6 @@ public abstract class BaseNetwork {
     }
 
     public interface FailureCallback {
-        public void onFailure(int stateCode);
+        public void onFailure(int stateCode, String errorMsg);
     }
 }

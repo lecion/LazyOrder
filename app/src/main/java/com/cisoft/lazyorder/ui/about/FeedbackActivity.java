@@ -1,7 +1,9 @@
 package com.cisoft.lazyorder.ui.about;
 
 
+import android.app.Activity;
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
@@ -9,9 +11,9 @@ import android.widget.EditText;
 
 import com.cisoft.lazyorder.R;
 import com.cisoft.lazyorder.core.about.AboutNetwork;
+import com.cisoft.lazyorder.ui.BaseActivity;
 import com.cisoft.lazyorder.util.DialogFactory;
 
-import org.kymjs.kjframe.KJActivity;
 import org.kymjs.kjframe.ui.BindView;
 import org.kymjs.kjframe.ui.ViewInject;
 import org.kymjs.kjframe.utils.StringUtils;
@@ -19,7 +21,7 @@ import org.kymjs.kjframe.utils.StringUtils;
 /**
  * Created by comet on 2014/12/3.
  */
-public class FeedbackActivity extends KJActivity {
+public class FeedbackActivity extends BaseActivity {
 
     @BindView(id = R.id.et_input_feedback_content)
     private EditText mEtFeedbackContent;
@@ -46,18 +48,7 @@ public class FeedbackActivity extends KJActivity {
 
     @Override
     public void initWidget() {
-        initActionBar();
-    }
-
-    /**
-     * 初始化标题栏
-     */
-    private void initActionBar() {
-        getActionBar().setDisplayShowHomeEnabled(true);
-        getActionBar().setDisplayShowTitleEnabled(true);
-        getActionBar().setHomeButtonEnabled(true);
-        getActionBar().setIcon(R.drawable.nav_back_arrow);
-        getActionBar().setTitle(getText(R.string.title_activity_feedback));
+        setTitle(R.string.title_activity_feedback);
     }
 
     @Override
@@ -114,9 +105,9 @@ public class FeedbackActivity extends KJActivity {
             }
 
             @Override
-            public void onFailure(int stateCode) {
+            public void onFailure(int stateCode, String errorMsg) {
                 closeWaitTip();
-                ViewInject.toast(mAboutNetwork.getResponseStateInfo(stateCode));
+                ViewInject.toast(errorMsg);
             }
         });
     }
@@ -128,7 +119,7 @@ public class FeedbackActivity extends KJActivity {
     private void showWaitTip() {
         if (mWaitTipDialog == null)
             mWaitTipDialog = DialogFactory.createWaitToastDialog(this,
-                    getString(R.string.wait));
+                    getString(R.string.toast_wait));
         mWaitTipDialog.show();
     }
 
@@ -148,7 +139,7 @@ public class FeedbackActivity extends KJActivity {
         if (mSuccessTipDialog == null)
             mSuccessTipDialog = DialogFactory.createSuccessToastDialog(
                     this,
-                    getString(R.string.success_to_submit_feedback));
+                    getString(R.string.toast_success_to_submit_feedback));
         mSuccessTipDialog.show();
     }
 
@@ -160,5 +151,10 @@ public class FeedbackActivity extends KJActivity {
                 && mSuccessTipDialog.isShowing()) {
             mSuccessTipDialog.dismiss();
         }
+    }
+
+    public static void startFrom(Activity activity) {
+        Intent intent = new Intent(activity, FeedbackActivity.class);
+        activity.startActivity(intent);
     }
 }

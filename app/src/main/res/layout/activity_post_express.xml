@@ -19,7 +19,7 @@
                 android:layout_marginTop="@dimen/content_margin"
                 android:padding="@dimen/content_padding"
                 android:gravity="left"
-                android:hint="请在此处粘贴您收到的短信"
+                android:hint="@string/input_paste_sms_hint"
                 android:textColor="@color/text_edit_color"
                 android:textColorHint="@color/text_edit_hint_color"
                 android:textSize="14sp"
@@ -32,62 +32,31 @@
                 android:layout_marginTop="@dimen/content_margin"
                 android:padding="@dimen/content_padding"
                 android:gravity="left"
-                android:hint="如果有留言,请在此处填写"
+                android:hint="@string/input_extra_message_hint"
                 android:textColor="@color/text_edit_color"
                 android:textColorHint="@color/text_edit_hint_color"
                 android:textSize="14sp"
                 android:background="@drawable/text_field"/>
 
-            <RelativeLayout
+            <include
                 android:id="@+id/rl_choice_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/content_margin"
-                android:gravity="center_vertical"
-                android:padding="@dimen/content_padding"
-                android:background="@drawable/selector_list_cell">
-                <TextView
-                    android:id="@+id/tv_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:singleLine="true"
-                    android:text="点击选择地址"
-                    android:textColor="@color/text_dark_gray_color"
-                    android:textSize="16.0sp" />
-                <TextView
-                    android:id="@+id/tv_phone"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10.0dp"
-                    android:layout_toLeftOf="@id/iv_is_default"
-                    android:layout_toRightOf="@id/tv_name"
-                    android:singleLine="true"
-                    android:text=""
-                    android:textColor="@color/text_dark_gray_color"
-                    android:textSize="16.0sp" />
-                <TextView
-                    android:id="@+id/tv_address"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignLeft="@id/tv_name"
-                    android:layout_below="@id/tv_name"
-                    android:layout_marginTop="2.0dp"
-                    android:layout_toLeftOf="@id/iv_is_default"
-                    android:singleLine="true"
-                    android:text=""
-                    android:textColor="@color/text_light_gray_color"
-                    android:textSize="14.0sp" />
-            </RelativeLayout>
+                layout="@layout/layout_choose_address"/>
         </LinearLayout>
     </ScrollView>
+
     <Button
         android:id="@+id/btn_post_express"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:text="提交"
-        android:textSize="16sp"
+        android:layout_height="@dimen/cell_height"
+        android:layout_marginLeft="@dimen/content_padding"
+        android:layout_marginRight="@dimen/content_padding"
+        android:layout_marginTop="@dimen/content_padding"
+        android:background="@drawable/selector_red_corners_button"
+        android:padding="8.0dip"
+        android:text="@string/btn_submit"
         android:textColor="@color/white"
-        android:background="@drawable/selector_red_corners_button"/>
+        android:textSize="16.0sp" />
 </LinearLayout>

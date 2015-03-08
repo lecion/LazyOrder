@@ -1,7 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <org.kymjs.aframe.ui.widget.KJScrollView
+    <org.kymjs.kjframe.widget.KJScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/order_detail_bg_color">
@@ -28,7 +28,7 @@
                         android:textAppearance="?android:attr/textAppearanceLarge"
                         style="@style/order_detail_content_item_title_text_style"/>
                     <TextView
-                        android:id="@+id/tv_money_all"
+                        android:id="@+id/tv_settled_price"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
@@ -37,15 +37,15 @@
                         android:paddingLeft="0dp"
                         android:paddingRight="0dp"
                         android:paddingBottom="10dp"
-                        android:text="72.5"
+                        android:text=""
                         android:textSize="14sp"
                         android:textColor="@color/order_detail_money_all_text_color"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_toLeftOf="@id/tv_money_all"
+                        android:layout_toLeftOf="@id/tv_settled_price"
                         android:layout_centerVertical="true"
-                        android:layout_alignBottom="@id/tv_money_all"
+                        android:layout_alignBottom="@id/tv_settled_price"
                         android:paddingTop="10dp"
                         android:paddingLeft="10dp"
                         android:paddingRight="0dp"
@@ -68,10 +68,10 @@
                         android:text="下单时间"
                         style="@style/order_detail_content_item_title_text_style"/>
                     <TextView
-                        android:id="@+id/tv_order_time"
+                        android:id="@+id/tv_submit_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="2014年11月16日 18:15:24"
+                        android:text=""
                         style="@style/order_detail_content_item_content_text_style"/>
                 </LinearLayout>
                 <ImageView
@@ -116,7 +116,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="left"
                         android:singleLine="false"
-                        android:text="麻婆豆腐的豆豉少放点"
+                        android:text=""
                         style="@style/order_detail_content_item_content_text_style"/>
                 </LinearLayout>
                 <ImageView
@@ -139,7 +139,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:text="1"
+                        android:text=""
                         style="@style/order_detail_content_item_content_text_style"
                         android:paddingRight="0dp"
                         android:paddingLeft="0dp"/>
@@ -165,10 +165,10 @@
                     android:text="订单编号"
                     style="@style/order_detail_content_item_title_text_style"/>
                 <TextView
-                    android:id="@+id/tv_order_no"
+                    android:id="@+id/tv_order_number"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="20141116175632562"
+                    android:text=""
                     style="@style/order_detail_content_item_content_text_style"/>
             </LinearLayout>
 
@@ -187,9 +187,9 @@
                     android:id="@+id/tv_contact_address"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="26栋学生公寓101室"
+                    android:text=""
                     style="@style/order_detail_content_item_content_text_style"/>
             </LinearLayout>
         </LinearLayout>
-    </org.kymjs.aframe.ui.widget.KJScrollView>
+    </org.kymjs.kjframe.widget.KJScrollView>
 </LinearLayout>

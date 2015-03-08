@@ -8,8 +8,10 @@
         android:id="@+id/lv_shop_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:divider="@null"
-        android:scrollbars="none"
-        android:dividerHeight="5dp">
+        android:layout_margin="@dimen/content_margin"
+        android:divider="@drawable/list_separator_line"
+        android:fadingEdge="none"
+        android:overScrollMode="never"
+        android:scrollbars="none">
     </com.cisoft.lazyorder.widget.RefreshListView>
 </RelativeLayout>

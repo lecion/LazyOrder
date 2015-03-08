@@ -3,14 +3,14 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@android:color/transparent"
     android:gravity="center">
     <TextView
         android:id="@+id/tvShopCategoryName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@android:color/white"
-        android:padding="10dp"
+        android:text="测试分类"
         android:textSize="14sp"
-        android:text="测试分类"/>
+        android:textColor="@android:color/white"
+        android:padding="10.0dp"
+        />
 </LinearLayout>

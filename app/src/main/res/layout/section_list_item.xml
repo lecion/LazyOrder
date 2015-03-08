@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="48.0dip"
+    android:background="@drawable/item_background_holo_light_white_bg">
+
+    <TextView
+        android:id="@+id/section_item_name"
+        android:layout_width="wrap_content"
+        android:layout_height="48.0dip"
+        android:layout_marginLeft="@dimen/section_space"
+        android:gravity="center_vertical"
+        android:textSize="17.0sp" />
+
+    <FrameLayout
+        android:id="@+id/section_item_ext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:paddingRight="@dimen/section_space" />
+
+    <View
+        android:id="@+id/section_item_line"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/stroke"
+        android:layout_alignLeft="@id/section_item_name"
+        android:layout_alignParentBottom="true"
+        android:background="@color/stroke" />
+</RelativeLayout>

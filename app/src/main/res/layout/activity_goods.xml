@@ -2,9 +2,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
     android:orientation="vertical"
-    tools:mContext="com.cisoft.lazyorder.ui.goods.GoodsActivity">
+    android:background="@color/white"
+    tools:context="com.cisoft.lazyorder.ui.goods.GoodsActivity">
     <!--顶部广告图-->
 
     <RelativeLayout
@@ -12,53 +12,47 @@
         android:layout_width="match_parent"
         android:layout_height="84dp"
         android:background="@drawable/goods_top_image">
-            <org.kymjs.aframe.ui.widget.RoundImageView
-                android:id="@+id/iv_shop_logo"
-                android:layout_width="53dp"
-                android:layout_height="53dp"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="22dp"
-                android:scaleType="centerCrop"
-                />
+        <org.kymjs.kjframe.widget.RoundImageView
+            android:id="@+id/iv_shop_logo"
+            android:layout_width="53dp"
+            android:layout_height="53dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="22dp"
+            android:scaleType="centerCrop" />
 
-            <TextView
-                android:id="@+id/tv_shop_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:textColor="@android:color/white"
-                android:layout_alignTop="@id/iv_shop_logo"
-                android:text="大学生食堂"
-                android:layout_toRightOf="@id/iv_shop_logo"
-                android:layout_marginLeft="36dp"
-                />
-            <TextView
-                android:id="@+id/tv_shop_promotion_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="特惠信息"
-                android:layout_toRightOf="@id/iv_shop_logo"
-                android:layout_alignBottom="@id/iv_shop_logo"
-                android:layout_marginLeft="36dp"
-                android:textColor="@android:color/white"
-                />
-            <TextView
-                android:id="@+id/tv_shop_promotion_info"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/tv_shop_promotion_title"
-                android:text="今日特惠！"
-                android:layout_alignTop="@id/tv_shop_promotion_title"
-                android:layout_marginLeft="8dp"
-                android:textColor="@android:color/white"
-                />
-
-
-        </RelativeLayout>
+        <TextView
+            android:id="@+id/tv_shop_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textColor="@android:color/white"
+            android:layout_alignTop="@id/iv_shop_logo"
+            android:text="大学生食堂"
+            android:layout_toRightOf="@id/iv_shop_logo"
+            android:layout_marginLeft="36dp" />
+        <TextView
+            android:id="@+id/tv_shop_promotion_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="特惠信息"
+            android:layout_toRightOf="@id/iv_shop_logo"
+            android:layout_alignBottom="@id/iv_shop_logo"
+            android:layout_marginLeft="36dp"
+            android:textColor="@android:color/white" />
+        <TextView
+            android:id="@+id/tv_shop_promotion_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/tv_shop_promotion_title"
+            android:text="今日特惠！"
+            android:layout_alignTop="@id/tv_shop_promotion_title"
+            android:layout_marginLeft="8dp"
+            android:textColor="@android:color/white" />
+    </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="41dp"
+        android:layout_height="41.0dp"
         android:background="@drawable/bg_select_bar"
         android:orientation="horizontal">
 
@@ -93,7 +87,6 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="7">
-
     </FrameLayout>
 
 
@@ -102,6 +95,10 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:background="@android:color/white">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/stroke" />
 
         <ImageView
             android:id="@+id/iv_cart_logo"
@@ -141,7 +138,7 @@
             android:layout_marginRight="8dp"
             android:layout_centerVertical="true"
             android:textColor="@android:color/white"
-            android:text="@string/text_go_to_settle" />
+            android:text="@string/btn_go_to_settle" />
     </RelativeLayout>
 
 

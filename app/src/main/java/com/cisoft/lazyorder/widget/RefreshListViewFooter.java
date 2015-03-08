@@ -83,7 +83,7 @@ public class RefreshListViewFooter extends LinearLayout {
 	
 	private void initView(Context context) {
 		this.context = context;
-		LinearLayout moreView = (LinearLayout)LayoutInflater.from(this.context).inflate(R.layout.listview_footer_layout, null);
+		LinearLayout moreView = (LinearLayout)LayoutInflater.from(this.context).inflate(R.layout.view_listview_footer, null);
 		addView(moreView);
 		moreView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 		

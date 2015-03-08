@@ -1,57 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ll_root_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:mContext="com.cisoft.lazyorder.ui.goods.GoodsFragment">
-
-
-    <!--<LinearLayout-->
-        <!--android:id="@+id/llLoadingGoodsListTip"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="48dp"-->
-        <!--android:gravity="center"-->
-        <!--android:visibility="visible">-->
-        <!--<ProgressBar-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:indeterminateDrawable="@drawable/red_progressbar_layer_list"/>-->
-        <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginLeft="10dp"-->
-            <!--android:textSize="12sp"-->
-            <!--android:textColor="@color/loading_shop_list_text_color"-->
-            <!--android:text="@string/loading_goods_list"/>-->
-    <!--</LinearLayout>-->
-
-    <LinearLayout
-        android:id="@+id/llShowNoValueTip"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:visibility="gone">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:textColor="@color/loading_shop_list_text_color"
-            android:text="@string/have_not_goods_list"/>
-    </LinearLayout>
+    tools:context="com.cisoft.lazyorder.ui.goods.GoodsFragment">
 
     <com.cisoft.lazyorder.widget.RefreshListView
         android:id="@+id/lv_goods"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="0dp"
-        android:layout_marginTop="8dp"
         android:background="#fff"
         android:divider="@color/list_divider_color"
         android:dividerHeight="1dp"
         android:clickable="true"
-        android:focusableInTouchMode="true"
-        >
-        </com.cisoft.lazyorder.widget.RefreshListView>
+        android:focusableInTouchMode="true" />
 
 </LinearLayout>

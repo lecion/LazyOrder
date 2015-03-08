@@ -1,7 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="shop_category_loading_title">正在加载...</string>
-    <string name="shop_type_loading_error_title">加载失败</string>
-    <string name="shop_data_no_more_title">没有更多店家数据了</string>
-    <string name="express_data_no_more_title">没有更多快递数据了</string>
+    <string name="toast_wait">请稍候...</string>
+    <string name="toast_shop_category_loading">正在加载...</string>
+    <string name="toast_shop_type_loading_error">加载失败</string>
+    <string name="toast_no_more_data">没有更多数据了</string>
+
+    <string name="toast_user_account_can_not_be_empty">用户名/手机号/邮箱 不能为空</string>
+    <string name="toast_sms_auth_code_can_not_be_empty">请输入短信验证码</string>
+    <string name="toast_phone_can_not_be_empty">手机号不能为空</string>
+    <string name="toast_phone_format_error">手机号格式有误</string>
+    <string name="toast_password_can_not_be_empty">密码不能为空</string>
+
+    <string name="toast_sms_content_not_be_empty">短信内容不能为空</string>
+    <string name="toast_address_info_not_be_empty">地址信息不能为空</string>
+
+    <string name="toast_sure_password_can_not_be_empty">确认密码不能为空</string>
+    <string name="toast_old_password_error">原始密码输入不正确</string>
+    <string name="toast_twice_password_not_same">两次密码输入不一致</string>
+    <string name="toast_being_alter_password">正在修改密码,请稍候...</string>
+    <string name="toast_being_login">正在登录,请稍候...</string>
+    <string name="toast_being_register">正在注册,请稍候...</string>
+    <string name="toast_can_not_delete_default_address">不能删除默认地址</string>
+
+    <string name="toast_current_password_can_not_be_empty">请输入当前密码</string>
+    <string name="toast_new_phone_can_not_be_empty">请输入新的手机号码</string>
+    <string name="toast_new_password_can_not_be_empty">请输入新密码</string>
+    <string name="toast_new_password_confirm_can_not_be_empty">请重复输入新密码</string>
+
+
+    <string name="toast_input_standard_phone">请输入正确的手机号码</string>
+    <string name="toast_have_not_network">抱歉,当前没有网络</string>
+    <string name="toast_network_too_poor">连接超时,请检查你的网络设置</string>
+    <string name="toast_service_have_exception">抱歉！服务器出现异常，请稍候再试</string>
+    <string name="toast_unknown_exception">出现未知异常</string>
+    <string name="toast_being_load_shop_list">正在加载商家列表中,请稍候...</string>
+    <string name="toast_being_load_goods_list">正在加载商品列表中,请稍候...</string>
+    <string name="toast_being_insert_address">正在新增地址,请稍等...</string>
+    <string name="toast_being_update_address">正在修改地址,请稍等...</string>
+
+    <string name="toast_success_to_alter_phone_binding">手机号绑定修改成功,需重新登录</string>
+    <string name="toast_success_to_update_password">密码修改成功,需重新登录</string>
+    <string name="toast_success_to_send_sms_auth_code">短信验证码已经发送,请等待...</string>
+    <string name="toast_success_to_logout">退出登录成功</string>
+    <string name="toast_success_to_load_shop_category_list">加载商家类别列表成功</string>
+    <string name="toast_success_to_load_shop_list">加载商家列表成功</string>
+    <string name="toast_success_to_load_goods_list">加载商品列表成功</string>
+    <string name="toast_success_to_load_goods_category_list">加载商品类别列表成功</string>
+    <string name="toast_success_to_load_build_list">加载楼栋列表成功</string>
+    <string name="toast_success_to_delete_address">删除地址成功</string>
+    <string name="toast_success_to_query_goods_list">以找到您搜索的商品</string>
+    <string name="toast_success_to_submit_feedback">提交成功</string>
+    <string name="toast_success_to_submit_express">提交成功</string>
+    <string name="toast_success_to_register">注册成功</string>
+    <string name="toast_success_to_login">登录成功</string>
+    <string name="toast_success_to_submit_order">提交成功</string>
+    <string name="toast_success_to_insert_address">新增地址成功</string>
+    <string name="toast_success_to_update_address">修改地址成功</string>
+
+    <string name="toast_fail_to_load_shop_list">加载商家列表失败,请稍候再试</string>
+    <string name="toast_fail_to_load_shop_category_list">加载商家类别列表失败,请稍候再试</string>
+    <string name="toast_fail_to_load_goods_category_list">加载商品类别列表失败,请稍候再试</string>
+    <string name="toast_fail_to_load_build_list">加载楼栋列表失败,请稍候再试</string>
+    <string name="toast_fail_to_query_goods_list">暂未搜索到您要找的商品</string>
+    <string name="toast_fail_to_load_goods_list">加载商品列表失败,请稍候再试</string>
 </resources>

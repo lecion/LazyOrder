@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@color/gray_bg">
 
     <LinearLayout
@@ -34,12 +34,12 @@
         <Button
             android:id="@+id/btn_submit_feedback"
             android:layout_width="match_parent"
-            android:layout_height="48.0dip"
-            android:layout_marginTop="15.0dip"
+            android:layout_height="@dimen/cell_height"
+            android:layout_marginTop="@dimen/content_padding"
             android:background="@drawable/selector_red_corners_button"
-            android:gravity="center"
-            android:text="提交"
+            android:padding="8.0dip"
+            android:text="@string/btn_submit"
             android:textColor="@color/white"
-            android:textSize="18.0sp" />
+            android:textSize="16.0sp" />
     </LinearLayout>
 </ScrollView>

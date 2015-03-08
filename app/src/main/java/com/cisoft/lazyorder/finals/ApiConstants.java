@@ -5,82 +5,84 @@ package com.cisoft.lazyorder.finals;
  */
 public class ApiConstants {
 
-    //短信提供商的电话号码
-    public static final String SMS_PROVIDER_PHONE = "106903662027";
 
-    public static final String SERVER_URL = "http://comit-wh.net/lazyorder/index.php";
-    //public static final String SERVER_URL = "http://lazyorder.yliec.com";
+    public final static String HOST = "lazyorder.duapp.com";
+    public final static String HTTP = "http://";
+    public final static String HTTPS = "https://";
     public static final String URL_SEPERATOR = "/";
+    public static final String SERVER_URL = HTTP + HOST;
 
-    //功能说明的url
-    public static final String FUNCTION_DESC_URL = "";
 
     /* 这里存放响应的状态码 */
-    public static final int RESPONSE_STATE_SUCCESS = 200;
-    public static final int RESPONSE_STATE_FAILURE = 400;
-    public static final int RESPONSE_STATE_SERVICE_EXCEPTION = 103;
-    public static final int RESPONSE_STATE_NOT_NET = 102;
-    public static final int RESPONSE_STATE_NET_POOR = 101;
+    public static final int RES_STATE_SUCCESS = 200;
+    public static final int RES_STATE_FAILURE = 400;
+    public static final int RES_STATE_NET_POOR = 101;
+    public static final int RES_STATE_NOT_NET = 102;
+    public static final int RES_STATE_SERVICE_EXCEPTION = 103;
+    public static final int RES_STATE_UNKNOWN_EXCEPTION = 104;
+
 
     /* 这里存放全局使用的key */
     public static final String KEY_STATE = "state";
     public static final String KEY_DATA = "data";
+    public static final String KEY_MESSAGE = "message";
+
 
     /* 这里存放API接口里的模块名（控制器名）,以"MODULE_"打头 */
     public static final String MODULE_MERCHANTS = "merchants";
     public static final String MODULE_MER_CATEGORY = "merCategory";
-
     public static final String MODULE_COMMODITY = "commodity";
     public static final String MODULE_COM_CATEGORY = "category";
     public static final String MODULE_COM_DISCUSS = "discuss";
-
-    public static final String MODULE_BUILDING = "building";
-
     public static final String MODULE_ORDER = "order";
-
+    public static final String MODULE_EXPRESS = "express";
     public static final String MODULE_COMMON = "common";
     public static final String MODULE_ABOUT = "about";
     public static final String MODULE_ADVERTISE = "advertise";
     public static final String MODULE_ADDRESS = "address";
+    public static final String MODULE_ACCOUNT = "user";
+    public static final String MODULE_SETTING = "setting";
 
+    /* 这里存放API接口里的方法名,以"METHOD_+模块名简写"打头 */
+    public static final String METHOD_MERCHANTS_FIND_BY_TYPE_ID = "findMerchantsOrCanteen.json";
 
+    public static final String METHOD_MER_CATEGORY_FIND_ALL = "findAll.json";
 
-
-
-
-    /* 这里存放API接口里的方法名,以"METHOD_+模块名"打头 */
-    public static final String METHOD_MERCHANTS_FIND_BY_TYPE_ID = "findMerchantsOrCanteen";
-    public static final String METHOD_MER_CATEGORY_FIND_ALL = "findAll";
-
-    public static final String METHOD_COMMODITY_FIND_ALL_BY_MER_ID = "findCommodityByMerchantsId";
-    public static final String METHOD_COMMODITY_FIND_BY_MER_AND_TYPE_ID = "findCommodityByMerchantsIdAndTypeId";
-    public static final String METHOD_COMMODITY_FIND_COMMODITY_BY_KEY = "findCommodityByKey";
-    public static final String METHOD_CATEGORY_FIND_ALL_BY_MER_ID = "findCategoryByMerchantsId";
+    public static final String METHOD_COMMODITY_FIND_ALL_BY_MER_ID = "findCommodityByMerchantsId.json";
+    public static final String METHOD_COMMODITY_FIND_BY_MER_AND_TYPE_ID = "findCommodityByMerchantsIdAndTypeId.json";
+    public static final String METHOD_COMMODITY_FIND_COMMODITY_BY_KEY = "findCommodityByKey.json";
+    public static final String METHOD_CATEGORY_FIND_ALL_BY_MER_ID = "findCategoryByMerchantsId.json";
     public static final String METHOD_DISCUSS_FIND_ALL_BY_COM_ID = "findDiscussByCommodityId";
 
-    public static final String METHOD_BUILDING_FIND_ALL = "findBuildings";
 
-    public static final String METHOD_ORDER_FIND_ALL = "findOrderByUserPhone";
-    public static final String METHOD_ORDER_SAVE_ORDER = "saveOrder";
-    public static final String METHOD_ORDER_EXPRESS_ORDER_LIST = "expressOrderList";
+    public static final String METHOD_EXPRESS_FIND_ALL_BY_PHONE = "findExpressByuserPhone.json";
 
-    public static final String METHOD_COMMON_GET_SMS_AUTH_CODE = "getNum";
-    public static final String METHOD_COMMON_VERIFY_PHONE = "phoneVerify";
+    public static final String METHOD_ORDER_SETTLE = "settleOrder.json";
+    public static final String METHOD_ORDER_FIND_ALL = "findOrderByUserPhone.json";
+    public static final String METHOD_ORDER_SUBMIT = "saveOrder.json";
 
-    public static final String METHOD_ABOUT_CHECK_UPDATE = "checkUpdate";
-    public static final String METHOD_ABOUT_SUBMIT_FEEDBACK = "submitFeedback";
+    public static final String METHOD_COMMON_GET_SMS_AUTH_CODE = "getNum.json";
+    public static final String METHOD_COMMON_VERIFY_PHONE = "phoneVerify.json";
 
-    public static final String METHOD_ADDRESS_FIND_ALL = "addressList";
-    public static final String METHOD_ADDRESS_INSERT = "addAddress";
-    public static final String METHOD_ADDRESS_UPDATE = "modifyAddress";
-    public static final String METHOD_ADDRESS_DELETE = "deleteAddress";
-    public static final String METHOD_ADDRESS_SET_DEFAULT = "setDefaultAddress";
+    public static final String METHOD_ABOUT_CHECK_UPDATE = "checkUpdate.json";
+    public static final String METHOD_ABOUT_SUBMIT_FEEDBACK = "sendFeedback.json";
 
+    public static final String METHOD_ADDRESS_FIND_ALL = "addressList.json";
+    public static final String METHOD_ADDRESS_INSERT = "addAddress.json";
+    public static final String METHOD_ADDRESS_UPDATE = "modifyAddress.json";
+    public static final String METHOD_ADDRESS_DELETE = "deleteAddress.json";
+    public static final String METHOD_ADDRESS_SET_DEFAULT = "setDefaultAddress.json";
 
+    public static final String METHOD_ACCOUNT_REGISTER = "userRegister.json";
+    public static final String METHOD_ACCOUNT_LOGIN = "login.json";
+    public static final String METHOD_ACCOUNT_UPDATE_PWD = "updatePassword.json";
+    public static final String METHOD_ACCOUNT_UPDATE_PHONE = "setUserPhone.json";
 
+    public static final String METHOD_ADVERTISE_FIND_ALL = "findAllAdvertise.json";
 
 
     /* 这里存放返回json的key,以"KEY_ + 模块名简写"打头,以模块扎堆↖(^ω^)↗ */
+    // MERCHANTS模块下的KEY:
     public static final String KEY_MER_PAGE = "page";
     public static final String KEY_MER_PAGER = "size";
     public static final String KEY_MER_ID = "id";
@@ -94,10 +96,12 @@ public class ApiConstants {
     public static final String KEY_MER_PROMOTION_INFO = "sales";
     public static final String KEY_MER_TYPE_ID = "typeId";
 
-    public static final String KEY_MC_DATA = "data";
+    // MER_CATEGORY模块下的KEY:
+    public static final String KEY_MC_SCHOOL_ID = "schoolId";
     public static final String KEY_MC_CATEGORY_ID = "id";
     public static final String KEY_MC_CATEGORY_NAME = "merCategoryName";
 
+    // COMMODITY模块下的KEY:
     public static final String KEY_COM_MER_ID = "merId";
     public static final String KEY_COM_PAGE = "page";
     public static final String KEY_COM_SIZE = "size";
@@ -112,11 +116,12 @@ public class ApiConstants {
     public static final String KEY_COM_TYPE_ID = "typeId";
     public static final String KEY_COM_KEY_NAME = "keyName";
 
+    // COM_CATEGORY模块下的KEY:
     public static final String KEY_CAT_MER_ID = "merId";
     public static final String KEY_CAT_ID = "id";
     public static final String KEY_CAT_NAME = "catName";
 
-
+    // DISCUSS模块下的KEY:
     public static final String KEY_DIS_COM_ID = "comId";
     public static final String KEY_DIS_PAGE = "page";
     public static final String KEY_DIS_SIZE = "size";
@@ -126,72 +131,48 @@ public class ApiConstants {
     public static final String KEY_DIS_CONTENT = "discussContent";
     public static final String KEY_DIS_CONTENT_TIME = "contentTime";
 
-
-    public static final String KEY_BUILDING_DATA = "data";
-    public static final String KEY_BUILDING_ID = "id";
-    public static final String KEY_BUILDING_NAME = "building";
-    public static final String KEY_BUILDING_SCHOOL_ID = "schoolId";
-
-
-
-    /*   ORDER模板下的KEY   */
-
-    //ORDER模块下的SAVE_ORDER方法所需要的KEY：
-    public static final String KEY_ORDER_SAVE_ORDER_TYPE = "orderType";
-    public static final String KEY_ORDER_SAVE_ORDER_TYPE_DISH = "DISH";
-    public static final String KEY_ORDER_SAVE_ORDER_TYPE_EXPRESS = "EXPRESS";
-    public static final String KEY_ORDER_SAVE_ORDER_USER_NAME = "userName";
-    public static final String KEY_ORDER_SAVE_ORDER_USER_PHONE = "userPhone";
-    public static final String KEY_ORDER_SAVE_ORDER_BUILDING_ID = "buildingId";
-    public static final String KEY_ORDER_SAVE_ORDER_ROOM_NUM = "dormitory";
-    public static final String KEY_ORDER_SAVE_ORDER_SHOP_ID = "merchantId";
-    public static final String KEY_ORDER_SAVE_ORDER_EXTRA_MSG = "content";
-    public static final String KEY_ORDER_SAVE_ORDER_SMS_CONTENT = "message";
-    public static final String KEY_ORDER_SAVE_ORDER_COM_LIST = "comList";
-    public static final String KEY_ORDER_SAVE_ORDER_COM_LIST_ITEM_COM_ID = "comId";
-    public static final String KEY_ORDER_SAVE_ORDER_COM_LIST_ITEM_ORDERED_COUNT = "num";
-    public static final String KEY_ORDER_SAVE_ORDER_JSON_DATA = "jsonData";
-    public static final String KEY_ORDER_SAVE_ORDER_DATA = "data";
-    public static final String KEY_ORDER_SAVE_ORDER_AFTER_MSG = "message";
-    public static final String KEY_ORDER_SAVE_ORDER_AFTER_ORDER_NUM = "orderNumber";
-    public static final String KEY_ORDER_SAVE_ORDER_AFTER_MONEY_ALL = "moneyAll";
-
-    //ORDER模块下的FIND_ALL方法所需要的KEY：
-    public static final String KEY_ORDER_FIND_ALL_DATA = "data";
-    public static final String KEY_ORDER_FIND_ALL_PAGE = "page";
-    public static final String KEY_ORDER_FIND_ALL_PAGER = "size";
-    public static final String KEY_ORDER_FIND_ALL_USER_PHONE = "userPhone";
-    public static final String KEY_ORDER_FIND_ALL_ID = "id";
-    public static final String KEY_ORDER_FIND_ALL_SHOP_ID = "merId";
-    public static final String KEY_ORDER_FIND_ALL_SHOP_NAME = "merName";
-    public static final String KEY_ORDER_FIND_ALL_SUBMIT_TIME = "orderDate";
-    public static final String KEY_ORDER_FIND_ALL_ORDER_NUM = "orderNum";
-    public static final String KEY_ORDER_FIND_ALL_EXTRA_MSG = "message";
-    public static final String KEY_ORDER_FIND_ALL_ADDRESS = "address";
-    public static final String KEY_ORDER_FIND_ALL_MONEY_ALL = "moneyAll";
-    public static final String KEY_ORDER_FIND_ALL_GOODS_LIST = "orderComVOlist";
-    public static final String KEY_ORDER_FIND_ALL_GOODS_LIST_ITEM_GOODS_ID = "comId";
-    public static final String KEY_ORDER_FIND_ALL_GOODS_LIST_ITEM_GOODS_NAME = "comName";
-    public static final String KEY_ORDER_FIND_ALL_GOODS_LIST_ITEM_GOODS_ORDERED_COUNT = "comNum";
-
-    //ORDER模块下的EXPRESS_ORDER_LIST方法所需要的KEY：
-    public static final String KEY_ORDER_EXPRESS_ORDER_LIST_DATA = "data";
-    public static final String KEY_ORDER_EXPRESS_ORDER_LIST_USER_PHONE = "userPhone";
-    public static final String KEY_ORDER_EXPRESS_ORDER_LIST_PAGE = "page";
-    public static final String KEY_ORDER_EXPRESS_ORDER_LIST_PAGER = "size";
-    public static final String KEY_ORDER_EXPRESS_ORDER_LIST_ID = "id";
-    public static final String KEY_ORDER_EXPRESS_ORDER_LIST_BUILDING_ID = "buildingName";
-    public static final String KEY_ORDER_EXPRESS_ORDER_LIST_ROOM_NUM = "dormitory";
-    public static final String KEY_ORDER_EXPRESS_ORDER_LIST_SSM = "message";
-    public static final String KEY_ORDER_EXPRESS_ORDER_LIST_EXTRA_MSG = "content";
-    public static final String KEY_ORDER_EXPRESS_ORDER_LIST_DELIVERY_MONEY = "deliveryMoney";
-    public static final String KEY_ORDER_EXPRESS_ORDER_LIST_SUBMIT_TIME = "submitTime";
-
-
-    public static final String KEY_ORDER_GOODS_NAME = "comName";
+    // ORDER模板下的KEY
+    public static final String KEY_ORDER_PAGE = "page";
+    public static final String KEY_ORDER_PAGER = "size";
+    public static final String KEY_ORDER_ID = "id";
+    public static final String KEY_ORDER_NUMBER = "orderNumber";
+    public static final String KEY_ORDER_TIME = "orderTime";
+    public static final String KEY_ORDER_SHOP_ID = "merId";
+    public static final String KEY_ORDER_SHOP_NAME = "merName";
+    public static final String KEY_ORDER_USER_ID = "userId";
+    public static final String KEY_ORDER_NAME = "userName";
+    public static final String KEY_ORDER_PHONE = "userPhone";
+    public static final String KEY_ORDER_ADDRESS = "address";
+    public static final String KEY_ORDER_GOODS_LIST = "orderComVOList";
+    public static final String KEY_ORDER_PRICE = "orderPrice";    //订单价格
+    public static final String KEY_ORDER_DEDUCTION = "deduction";   //优惠减免
+    public static final String KEY_ORDER_SHIPPING_FEE = "distributionPrice";  //配送费
+    public static final String KEY_ORDER_SETTLED_PRICE = "settledPrice";    //结算后的价格
+    public static final String KEY_ORDER_EXTRA_MSG = "extraMsg";
+    public static final String KEY_ORDER_COM_ID = "comId";
+    public static final String KEY_ORDER_COM_NAME = "comName";
     public static final String KEY_ORDER_GOODS_COUNT = "comNum";
+    public static final String KEY_ORDER_JSON_STR = "jsonData";
 
-    //ABOUT模块下的KEY:
+
+
+    // EXPRESS模板下的KEY
+    public static final String KEY_EXPRESS_PAGE = "page";
+    public static final String KEY_EXPRESS_PAGER = "size";
+    public static final String KEY_EXPRESS_ID = "id";
+    public static final String KEY_EXPRESS_ADDRESS = "address";
+    public static final String KEY_EXPRESS_EXTRA_MSG = "content";
+    public static final String KEY_EXPRESS_SHIPPING_FEE = "distributionPrice";
+    public static final String KEY_EXPRESS_NUMBER = "expressNumber";
+    public static final String KEY_EXPRESS_SUBMIT_TIME = "expressTime";
+    public static final String KEY_EXPRESS_OBTAIN_TIME = "getmessageTime";
+    public static final String KEY_EXPRESS_SMS_CONTENT = "message";
+    public static final String KEY_EXPRESS_STATE = "statue";
+    public static final String KEY_EXPRESS_NAME = "userName";
+    public static final String KEY_EXPRESS_PHONE = "userPhone";
+
+
+    // ABOUT模块下的KEY:
     public static final String KEY_ABOUT_VERSION_CODE = "versionCode";
     public static final String KEY_ABOUT_VERSION_NAME = "versionName";
     public static final String KEY_ABOUT_DOWNLOAD_URL = "downloadUrl";
@@ -200,17 +181,18 @@ public class ApiConstants {
     public static final String KEY_ABOUT_CONTACT_METHOD = "contactMethod";
 
 
-    //COMMON模块下所需要的KEY
-
+    // COMMON模块下所需要的KEY
     public static final String KEY_COMMON_USER_PHONE = "phone";
     public static final String KEY_COMMON_SMS_AUTH_CODE = "num";
 
 
-    //ADVERTISE模块下的KEY:
-    public static final String KEY_ADVERTISE_TYPE = "type";
-    public static final String KEY_ADVERTISE_IMAGE_URL = "imageUrl";
-    public static final String KEY_ADVERTISE_CONTENT_URL = "contentUrl";
-    public static final String KEY_ADVERTISE_CONTENT_TITLE = "contentTitle";
+    // ADVERTISE模块下的KEY:
+    public static final String KEY_ADVERTISE_TYPE = "advertiseType";
+    public static final String KEY_ADVERTISE_TYPE_ADVERTISE = "ADVERTISE";
+    public static final String KEY_ADVERTISE_TYPE_NOTICE = "NOTICE";
+    public static final String KEY_ADVERTISE_IMAGE_URL = "advertisePic";
+    public static final String KEY_ADVERTISE_CONTENT_URL = "advertiseUrl";
+    public static final String KEY_ADVERTISE_CONTENT_TITLE = "advertiseInfo";
     public static final String KEY_ADVERTISE_SHOP_ID = "shopId";
     public static final String KEY_ADVERTISE_SHOP_NAME = "shopName";
     public static final String KEY_ADVERTISE_SHOP_FACE_URL = "faceUrl";
@@ -224,4 +206,14 @@ public class ApiConstants {
     public static final String KEY_ADDRESS_PHONE = "phone";
     public static final String KEY_ADDRESS_ADDRESS = "address";
     public static final String KEY_ADDRESS_IS_DEFAULT = "isDefault";
+
+    // ACCOUNT模块下的KEY:
+    public static final String KEY_ACCOUNT_USER_ID = "userId";
+    public static final String KEY_ACCOUNT_USER_NAME = "userName";
+    public static final String KEY_ACCOUNT_USER_ACCOUNT = "account";
+    public static final String KEY_ACCOUNT_USER_PHONE = "userPhone";
+    public static final String KEY_ACCOUNT_USER_PWD = "userPwd";
+    public static final String KEY_ACCOUNT_USER_EMAIL = "userEmail";
+    public static final String KEY_ACCOUNT_USER_FACE_URL = "userFaceUrl";
+    public static final String KEY_ACCOUNT_DEF_ADDRESS = "defAddress";
 }

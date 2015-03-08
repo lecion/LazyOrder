@@ -1,21 +1,22 @@
 <android.support.v4.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawe_menu_layout"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:mContext="com.cisoft.lazyorder.ui.main.MainActivity">
+    tools:context="com.cisoft.lazyorder.ui.main.MainActivity">
 
     <FrameLayout
-        android:id="@+id/drawer_menu_item_content"
+        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <fragment android:id="@+id/drawer_menu_fragment"
+    <fragment
+        android:id="@+id/navigation_drawer"
         android:layout_width="@dimen/navigation_drawer_width"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:name="com.cisoft.lazyorder.ui.main.DrawMenuFragment"
+        android:name="com.cisoft.lazyorder.ui.main.menu.DrawerMenuFragment"
         tools:layout="@layout/fragment_drawer_menu" />
 
 </android.support.v4.widget.DrawerLayout>

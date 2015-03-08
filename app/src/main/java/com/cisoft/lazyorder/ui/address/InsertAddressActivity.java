@@ -1,6 +1,6 @@
 package com.cisoft.lazyorder.ui.address;
 
-import android.app.ActionBar;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,18 +10,33 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.cisoft.lazyorder.AppContext;
 import com.cisoft.lazyorder.R;
-import com.cisoft.lazyorder.bean.address.Address;
+import com.cisoft.lazyorder.bean.account.User;
+import com.cisoft.lazyorder.bean.address.AddressInfo;
 import com.cisoft.lazyorder.core.address.AddressNetwork;
 import com.cisoft.lazyorder.core.address.AddressNetwork.OnInsertAddressFinish;
+import com.cisoft.lazyorder.ui.BaseActivity;
 import com.cisoft.lazyorder.util.DialogFactory;
 
-import org.kymjs.kjframe.KJActivity;
 import org.kymjs.kjframe.ui.BindView;
 import org.kymjs.kjframe.ui.ViewInject;
 import org.kymjs.kjframe.utils.StringUtils;
 
-public class InsertAddressActivity extends KJActivity {
+public class InsertAddressActivity extends BaseActivity {
+
+
+    /*
+	 * 进入此界面的模式
+	 * NETWORK_INSERT_MODE：
+	 *      需要通过网络提交到服务器且返回给上一个页面
+	 * NORMAL_INSERT_MODE：
+	 *      直接将添加的地址信息返回给上一个页面
+	 */
+    public static final String ENTER_MODE = "enterMode";
+    public static final int NETWORK_INSERT_MODE = 1;
+    public static final int NORMAL_INSERT_MODE = 2;
+
 
 	@BindView(id = R.id.et_input_name)
 	private EditText mEtInputName;
@@ -31,12 +46,17 @@ public class InsertAddressActivity extends KJActivity {
 	private EditText mEtInputAddress;
 	@BindView(id = R.id.btn_sure_insert_address, click = true)
 	private Button mBtnSureInsertAddress;
+    private Dialog mWaitInsertTipDialog;
+    private Dialog mSuccessInsertTipDialog;
 
+    private AppContext mAppContext;
 	private AddressNetwork mAddressNetwork;
-	private Dialog mWaitInsertTipDialog;
-	private Dialog mSuccessInsertTipDialog;
+	private User mLoginUser;
 
 	public static final String INSERTED_ADDRESS_OBJ = "insertAddress";
+
+    private int mEnterMode = NORMAL_INSERT_MODE;
+
 
 	@Override
 	public void setRootView() {
@@ -45,13 +65,12 @@ public class InsertAddressActivity extends KJActivity {
 
 	@Override
 	public void initData() {
+        mEnterMode = getIntent().getIntExtra(ENTER_MODE, NORMAL_INSERT_MODE);
 		mAddressNetwork = new AddressNetwork(InsertAddressActivity.this);
+        mAppContext = (AppContext) getApplication();
+        mLoginUser = mAppContext.getLoginInfo();
 	}
 
-	@Override
-	public void initWidget() {
-		initialTitleBar();
-	}
 
 	@Override
 	public void widgetClick(View v) {
@@ -71,18 +90,6 @@ public class InsertAddressActivity extends KJActivity {
 		default:
 			return super.onOptionsItemSelected(item);
 		}
-	}
-
-	/**
-	 * 初始化title bar
-	 */
-	private void initialTitleBar() {
-		ActionBar actionBar = getActionBar();
-		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-		actionBar.setDisplayShowTitleEnabled(true);
-		actionBar.setHomeButtonEnabled(true);
-		actionBar.setDisplayHomeAsUpEnabled(true);
-		actionBar.setTitle(getString(R.string.title_activity_insert_address));
 	}
 
 	/**
@@ -107,15 +114,26 @@ public class InsertAddressActivity extends KJActivity {
 			return;
 		}
 		if (!StringUtils.isPhone(inputPhone)) {
-			ViewInject.toast(getString(R.string.input_standard_phone_hint));
+			ViewInject.toast(getString(R.string.toast_input_standard_phone));
 			return;
 		}
 
-		Address addressObj = new Address();
+		AddressInfo addressObj = new AddressInfo();
 		addressObj.setName(inputName);
 		addressObj.setPhone(inputPhone);
 		addressObj.setAddress(inputAddress);
-		networkAddAddress(addressObj);
+
+        if(mEnterMode == NETWORK_INSERT_MODE){
+            networkAddAddress(addressObj);
+        } else {
+            Intent data = new Intent();
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(INSERTED_ADDRESS_OBJ,
+                    addressObj);
+            data.putExtras(bundle);
+            setResult(1, data);
+            InsertAddressActivity.this.finish();
+        }
 	}
 
 	/**
@@ -123,8 +141,8 @@ public class InsertAddressActivity extends KJActivity {
 	 * 
 	 * @param addressObj
 	 */
-	private void networkAddAddress(final Address addressObj) {
-		mAddressNetwork.insertAddressByUserId(1, addressObj,
+	private void networkAddAddress(final AddressInfo addressObj) {
+		mAddressNetwork.insertAddressByUserId(mLoginUser.getUserId(), addressObj,
 				new OnInsertAddressFinish() {
 					@Override
 					public void onPreStart() {
@@ -152,10 +170,9 @@ public class InsertAddressActivity extends KJActivity {
 					}
 
 					@Override
-					public void onFailure(int stateCode) {
+					public void onFailure(int stateCode, String errorMsg) {
 						closeWaitTip();
-						ViewInject.toast(mAddressNetwork
-								.getResponseStateInfo(stateCode));
+						ViewInject.toast(errorMsg);
 					}
 				});
 	}
@@ -167,7 +184,7 @@ public class InsertAddressActivity extends KJActivity {
 	private void showWaitTip() {
 		if (mWaitInsertTipDialog == null) {
 			mWaitInsertTipDialog = DialogFactory.createWaitToastDialog(this,
-                    getString(R.string.being_insert_address_tip));
+                    getString(R.string.toast_being_insert_address));
 			mWaitInsertTipDialog.setCancelable(false);
 			mWaitInsertTipDialog.setCanceledOnTouchOutside(false);
 		}
@@ -192,7 +209,7 @@ public class InsertAddressActivity extends KJActivity {
 		if (mSuccessInsertTipDialog == null) {
 			mSuccessInsertTipDialog = DialogFactory.createSuccessToastDialog(
                     InsertAddressActivity.this,
-                    getString(R.string.success_to_insert_address));
+                    getString(R.string.toast_success_to_insert_address));
 			mSuccessInsertTipDialog.setCancelable(false);
 			mSuccessInsertTipDialog.setCanceledOnTouchOutside(false);
 		}
@@ -209,4 +226,16 @@ public class InsertAddressActivity extends KJActivity {
 			mSuccessInsertTipDialog.dismiss();
 		}
 	}
+
+    public static void startFrom(Activity activity, int enterMode) {
+        Intent i = new Intent(activity, InsertAddressActivity.class);
+        i.putExtra(InsertAddressActivity.ENTER_MODE, enterMode);
+        activity.startActivity(i);
+    }
+
+    public static void startFrom(Activity activity, int enterMode, int requestCode) {
+        Intent i = new Intent(activity, InsertAddressActivity.class);
+        i.putExtra(InsertAddressActivity.ENTER_MODE, enterMode);
+        activity.startActivityForResult(i, requestCode);
+    }
 }

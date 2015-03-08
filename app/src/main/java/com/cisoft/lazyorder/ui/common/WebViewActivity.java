@@ -1,15 +1,16 @@
 package com.cisoft.lazyorder.ui.common;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuItem;
-
 import com.cisoft.lazyorder.R;
+import com.cisoft.lazyorder.finals.UrlConstants;
+import com.cisoft.lazyorder.ui.BaseActivity;
 import com.cisoft.lazyorder.widget.ProgressWebView;
-
-import org.kymjs.kjframe.KJActivity;
 import org.kymjs.kjframe.ui.BindView;
 
-public class WebViewActivity extends KJActivity {
+public class WebViewActivity extends BaseActivity {
 
     @BindView(id = R.id.wv_show_content)
     private ProgressWebView vbShowContent;
@@ -34,20 +35,8 @@ public class WebViewActivity extends KJActivity {
 
     @Override
     public void initWidget() {
-        initActionBar();
-
+        setTitle(contentTitle);
         vbShowContent.loadUrl(contentUrl);
-    }
-
-    /**
-     * 初始化标题栏
-     */
-    private void initActionBar() {
-        getActionBar().setDisplayShowHomeEnabled(true);
-        getActionBar().setDisplayShowTitleEnabled(true);
-        getActionBar().setHomeButtonEnabled(true);
-        getActionBar().setIcon(R.drawable.nav_back_arrow);
-        getActionBar().setTitle("  " + contentTitle);
     }
 
     @Override
@@ -64,5 +53,12 @@ public class WebViewActivity extends KJActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public static void startFrom(Activity activity, String contentTitle, String contentUrl) {
+        Intent intent = new Intent(activity, WebViewActivity.class);
+        intent.putExtra(CONENT_TITLE, contentTitle);
+        intent.putExtra(CONENT_URL, contentUrl);
+        activity.startActivity(intent);
     }
 }

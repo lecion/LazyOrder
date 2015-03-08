@@ -1,53 +1,52 @@
 package com.cisoft.lazyorder.ui.account;
 
+import android.app.Activity;
 import android.app.Dialog;
-import android.content.ContentValues;
-import android.database.ContentObserver;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.Build;
-import android.os.CountDownTimer;
+import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
-import android.view.Menu;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-
+import android.widget.ImageView;
+import android.widget.TextView;
 import com.cisoft.lazyorder.AppContext;
 import com.cisoft.lazyorder.R;
-import com.cisoft.lazyorder.core.common.CommonNetwork;
+import com.cisoft.lazyorder.bean.account.User;
+import com.cisoft.lazyorder.core.account.AccountNetwork;
+import com.cisoft.lazyorder.core.account.LoginStateObserver;
+import com.cisoft.lazyorder.ui.BaseActivity;
 import com.cisoft.lazyorder.util.DialogFactory;
-
 import org.kymjs.kjframe.KJActivity;
 import org.kymjs.kjframe.ui.BindView;
 import org.kymjs.kjframe.ui.ViewInject;
 import org.kymjs.kjframe.utils.StringUtils;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+public class LoginActivity extends BaseActivity {
 
-public class LoginActivity extends KJActivity {
+    @BindView(id = R.id.et_user_account)
+    private EditText mEtUserAccount;
+    @BindView(id = R.id.iv_delete_account, click = true)
+    private ImageView mIvDeleteAccount;
+    @BindView(id = R.id.et_user_password)
+    private EditText mEtUserPwd;
+    @BindView(id = R.id.iv_delete_password, click = true)
+    private ImageView mIvDeletePwd;
+    @BindView(id = R.id.btn_login, click = true)
+    private Button mBtnLogin;
+    @BindView(id = R.id.tv_forget_password, click = true)
+    private TextView mTvForgetPassword;
+    @BindView(id = R.id.tv_go_to_register, click = true)
+    private TextView mTvGoToRegister;
+    private Dialog mWaitTipDialog;
+    private Dialog mSuccessTipDialog;
 
-    @BindView(id = R.id.et_mobile_number)
-    private EditText etMobileNumber;
-
-    @BindView(id = R.id.et_input_code)
-    private EditText etInputCode;
-
-    @BindView(id = R.id.btn_obtain_code, click = true)
-    private Button btnObtainCode;
-
-    @BindView(id = R.id.btn_sure_login, click = true)
-    private Button btnSureLogin;
-
-    private ObtainCodeBtnEnableTimer obtainCodeBtnEnableTimer;
-    private CommonNetwork commonNetwork;
-    private SmsContent smsContent;
-
-    //重新发送验证码的间隔时间（单位：秒）
-    public static final int OBTAIN_CODE_INTERVAL = 30;
-
+    private LoginStateObserver mLoginObserver;
+    private AppContext mAppContext;
+    private AccountNetwork mAccountNetwork;
 
     @Override
     public void setRootView() {
@@ -56,259 +55,147 @@ public class LoginActivity extends KJActivity {
 
     @Override
     public void initData() {
-        smsContent = new SmsContent(new Handler());
-        getContentResolver().registerContentObserver(Uri.parse("content://sms/"), true, smsContent);
-        commonNetwork = new CommonNetwork(this);
+        mAppContext = (AppContext) getApplication();
+        mLoginObserver = LoginStateObserver.getInstance();
+        mAccountNetwork = new AccountNetwork(this);
     }
 
     @Override
     public void initWidget() {
-        initActionBar();
-    }
-
-    /**
-     * 初始化标题栏
-     */
-    private void initActionBar() {
-        getActionBar().setDisplayShowHomeEnabled(true);
-        getActionBar().setDisplayShowTitleEnabled(true);
-        getActionBar().setHomeButtonEnabled(true);
-        getActionBar().setIcon(R.drawable.nav_back_arrow);
-        getActionBar().setTitle("  用户登录");
-    }
-
-    /**
-     * 获取验证码
-     */
-    private void obtainAuthCode() {
-        String userMobileNumber = etMobileNumber.getText().toString();
-        if (StringUtils.isEmpty(userMobileNumber)) {
-            ViewInject.toast("请输入手机号码");
-            return;
-        }
-
-        if(!StringUtils.isPhone(userMobileNumber)){
-            ViewInject.toast("请输入正确的手机号码");
-            return;
-        }
-
-
-        /* 创建一个正在发送短信验证码的提示对话框 */
-        final Dialog obtainingTipDialog = DialogFactory.createWaitToastDialog(this, "正在发送短信验证码");
-        obtainingTipDialog.setCancelable(false);
-        obtainingTipDialog.setCanceledOnTouchOutside(false);
-        obtainingTipDialog.show();
-
-        commonNetwork.obtainSMSAuthCode(userMobileNumber, new CommonNetwork.OnSMSCodeSendFinish() {
-            @Override
-            public void onSuccess() {
-                obtainingTipDialog.dismiss();
-                ViewInject.toast("短信验证码已经发送,请等待...");
-
-                //使获取验证码的按钮在规定时间内不可用
-                if(obtainCodeBtnEnableTimer != null){
-                    obtainCodeBtnEnableTimer.cancel();
-                    obtainCodeBtnEnableTimer.start();
-                } else {
-                    obtainCodeBtnEnableTimer = new ObtainCodeBtnEnableTimer(OBTAIN_CODE_INTERVAL * 1000, 1000);
-                    obtainCodeBtnEnableTimer.start();
-                }
+        mEtUserAccount.addTextChangedListener(new TextWatcher() {
+            public void afterTextChanged(Editable s) {
+                int visible = StringUtils.isEmpty(s.toString()) ? View.GONE : View.VISIBLE;
+                mIvDeleteAccount.setVisibility(visible);
             }
 
-            @Override
-            public void onFailure(int stateCode) {
-                obtainingTipDialog.dismiss();
+            public void beforeTextChanged(CharSequence s, int arg1, int arg2, int arg3) {
+            }
 
-                ViewInject.toast(commonNetwork.getResponseStateInfo(stateCode));
+            public void onTextChanged(CharSequence s, int arg1, int arg2, int arg3) {
             }
         });
-    }
-
-
-
-
-
-    /**
-     * 执行确认登录操作
-     */
-    private void doSureLogin() {
-        final String userMobileNumber = etMobileNumber.getText().toString();
-        String authCode = etInputCode.getText().toString();
-
-        if (StringUtils.isEmpty(authCode)) {
-            ViewInject.toast("请输入验证码");
-            return;
-        }
-
-        if (StringUtils.isEmpty(userMobileNumber)) {
-            ViewInject.toast("请输入手机号码");
-            return;
-        }
-
-        if(!StringUtils.isPhone(userMobileNumber)){
-            ViewInject.toast("请输入正确的手机号码");
-            return;
-        }
-
-        /* 创建一个正在验证的提示对话框 */
-        final Dialog verifyingTipDialog = DialogFactory.createWaitToastDialog(this, "正在验证");
-        verifyingTipDialog.setCancelable(false);
-        verifyingTipDialog.setCanceledOnTouchOutside(false);
-        verifyingTipDialog.show();
-
-        commonNetwork.verifyPhoneBySMSAuthCode(userMobileNumber, authCode, new CommonNetwork.OnPhoneVerifyFinish() {
-            @Override
-            public void onSuccess() {
-                verifyingTipDialog.dismiss();
-
-                verifySuccessDialog(userMobileNumber);
+        mEtUserPwd.addTextChangedListener(new TextWatcher() {
+            public void afterTextChanged(Editable s) {
+                int visible = StringUtils.isEmpty(s.toString()) ? View.GONE : View.VISIBLE;
+                mIvDeletePwd.setVisibility(visible);
             }
-
-            @Override
-            public void onFailure(int stateCode) {
-                verifyingTipDialog.dismiss();
-
-                ViewInject.toast(commonNetwork.getResponseStateInfo(stateCode));
-            }
+            public void beforeTextChanged(CharSequence s, int arg1, int arg2, int arg3) {}
+            public void onTextChanged(CharSequence s, int arg1, int arg2, int arg3) {}
         });
-    }
-
-
-    /**
-     * 验证成功后的提示对话框
-     */
-    private void verifySuccessDialog(String userMobileNumber){
-        final Dialog dialog = DialogFactory.createSuccessToastDialog(this, "登录成功");
-        dialog.show();
-
-        AppContext app = (AppContext) getApplication();
-        app.loginByPhone(userMobileNumber);
-
-        new Handler().postDelayed(new Runnable() {
-            public void run() {
-                dialog.dismiss();
-
-                LoginActivity.this.finish();
-            }
-        }, 2000);
-
+        mEtUserAccount.setText(mAppContext.getRecentAccount());
     }
 
     @Override
     public void widgetClick(View v) {
         switch (v.getId()) {
-            case R.id.btn_sure_login:
-                doSureLogin();
+            case R.id.btn_login:
+                doUserLogin();
                 break;
-            case R.id.btn_obtain_code:
-                obtainAuthCode();
+            case R.id.iv_delete_account:
+                mEtUserAccount.setText("");
+                break;
+            case R.id.iv_delete_password:
+                mEtUserPwd.setText("");
+                break;
+            case R.id.tv_forget_password:
+                // TODO
+                break;
+            case R.id.tv_go_to_register:
+                skipActivity(LoginActivity.this, RegisterActivity.class);
                 break;
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        return super.onCreateOptionsMenu(menu);
-    }
+    /**
+     * 执行用户登录操作
+     */
+    private void doUserLogin() {
+        final String inputUserAccount = mEtUserAccount.getText().toString();
+        String inputUserPwd = mEtUserPwd.getText().toString();
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        getContentResolver().unregisterContentObserver(smsContent);
-        if(obtainCodeBtnEnableTimer != null) {
-            obtainCodeBtnEnableTimer.cancel();
-        }
-    }
-
-    /*
-    * 监听短信数据库
-    */
-    class SmsContent extends ContentObserver {
-
-        private Cursor cursor = null;
-
-        public SmsContent(Handler handler) {
-            super(handler);
+        if (StringUtils.isEmpty(inputUserAccount)) {
+            ViewInject.toast(getString(R.string.toast_user_account_can_not_be_empty));
+            return;
         }
 
-        @SuppressWarnings("deprecation")
-        @Override
-        public void onChange(boolean selfChange) {
-            super.onChange(selfChange);
+        if (StringUtils.isEmpty(inputUserPwd)) {
+            ViewInject.toast(getString(R.string.toast_password_can_not_be_empty));
+            return;
+        }
 
-            cursor = managedQuery(Uri.parse("content://sms/inbox"), new String[] { "_id", "address", "read", "body" },
-                    " read=? and body like ?", new String[] {"0", "%懒人点餐%"}, "_id desc");
-
-            if (cursor != null && cursor.getCount() > 0) {
-                ContentValues values = new ContentValues();
-                values.put("read", "1");
-                cursor.moveToNext();
-                int smsbodyColumn = cursor.getColumnIndex("body");
-                String smsBody = cursor.getString(smsbodyColumn);
-
-                etInputCode.setText(getDynamicPassword(smsBody));
+        mAccountNetwork.userLogin(inputUserAccount, inputUserPwd, new AccountNetwork.OnLoginCallback() {
+            @Override
+            public void onPreStart() {
+                showWaitTip();
             }
 
-            // 在用managedQuery的时候，不能主动调用close()方法， 否则在4.0+的系统上， 会发生崩溃
-            if (Build.VERSION.SDK_INT < 14) {
-                cursor.close();
-            }
-        }
-
-        /**
-         * 从字符串中截取连续6位数字组合 ([0-9]{" + 6 + "})截取六位数字 进行前后断言不能出现数字 用于从短信中获取动态密码
-         *
-         * @param str 短信内容
-         * @return 截取得到的6位动态密码
-         */
-        public String getDynamicPassword(String str) {
-            // 6是验证码的位数一般为六位
-            Pattern continuousNumberPattern = Pattern.compile("(?<![0-9])([0-9]{"
-                    + 6 + "})(?![0-9])");
-            Matcher m = continuousNumberPattern.matcher(str);
-            String dynamicPassword = "";
-            while (m.find()) {
-                System.out.print(m.group());
-                dynamicPassword = m.group();
+            @Override
+            public void onSuccess(User user) {
+                closeWaitTip();
+                showSuccessTip();
+                mAppContext.saveLoginInfo(user);
+                mAppContext.setRecentAccount(inputUserAccount);
+                mLoginObserver.notifyStateChanged();
+                // 2秒后返回上一页
+                new Handler().postDelayed(new Runnable() {
+                    public void run() {
+                        closeSuccessTip();
+                        LoginActivity.this.finish();
+                    }
+                }, 2000);
             }
 
-            return dynamicPassword;
-        }
+            @Override
+            public void onFailure(int stateCode, String errorMsg) {
+                closeWaitTip();
+                ViewInject.toast(errorMsg);
+            }
+        });
     }
 
 
     /**
-     * 使获取短信验证码的按钮可用的倒计时内部类
+     * 显示等待的提示对话框
      */
-    class ObtainCodeBtnEnableTimer extends CountDownTimer {
+    private void showWaitTip() {
+        if (mWaitTipDialog == null)
+            mWaitTipDialog = DialogFactory.createWaitToastDialog(this,
+                    getString(R.string.toast_being_login));
+        mWaitTipDialog.show();
+    }
 
-        public ObtainCodeBtnEnableTimer(long millisInFuture, long countDownInterval) {
-            super(millisInFuture, countDownInterval);
+    /**
+     * 关闭等待的提示对话框
+     */
+    private void closeWaitTip() {
+        if (mWaitTipDialog != null && mWaitTipDialog.isShowing()) {
+            mWaitTipDialog.dismiss();
         }
+    }
 
-        @Override
-        public void onFinish() {
-            btnObtainCode.setEnabled(true);
-            btnObtainCode.setText("重新获取");
-        }
+    /**
+     * 显示登录成功的对话框提示
+     */
+    private void showSuccessTip() {
+        if (mSuccessTipDialog == null)
+            mSuccessTipDialog = DialogFactory.createSuccessToastDialog(
+                    this,
+                    getString(R.string.toast_success_to_login));
+        mSuccessTipDialog.show();
+    }
 
-        @Override
-        public void onTick(long millisUntilFinished) {
-            btnObtainCode.setEnabled(false);
-            int leftWaitTime = (int)(millisUntilFinished / 1000);
-            btnObtainCode.setText(leftWaitTime + "s 重新获取");
+    /**
+     * 关闭登录成功的对话框提示
+     */
+    private void closeSuccessTip() {
+        if (mSuccessTipDialog != null
+                && mSuccessTipDialog.isShowing()) {
+            mSuccessTipDialog.dismiss();
         }
+    }
+
+    public static void startFrom(Activity activity) {
+        Intent intent = new Intent(activity, LoginActivity.class);
+        activity.startActivity(intent);
     }
 }

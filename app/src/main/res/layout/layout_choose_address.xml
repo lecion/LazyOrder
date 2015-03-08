@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/content_margin"
+    android:gravity="center_vertical"
+    android:padding="@dimen/content_padding"
+    android:background="@drawable/selector_list_cell">
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:singleLine="true"
+        android:text="点击选择地址"
+        android:textColor="@color/text_dark_gray_color"
+        android:textSize="14.0sp" />
+    <TextView
+        android:id="@+id/tv_phone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10.0dp"
+        android:layout_toLeftOf="@id/iv_is_default"
+        android:layout_toRightOf="@id/tv_name"
+        android:singleLine="true"
+        android:text=""
+        android:textColor="@color/text_dark_gray_color"
+        android:textSize="14.0sp" />
+    <TextView
+        android:id="@+id/tv_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/tv_name"
+        android:layout_below="@id/tv_name"
+        android:layout_marginTop="2.0dp"
+        android:layout_toLeftOf="@id/iv_is_default"
+        android:singleLine="true"
+        android:text=""
+        android:textColor="@color/text_dark_gray_color"
+        android:textSize="14.0sp" />
+</RelativeLayout>

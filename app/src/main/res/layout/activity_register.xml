@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_bg"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/content_padding"
+        android:layout_marginRight="@dimen/content_padding"
+        android:layout_marginTop="@dimen/content_padding"
+        android:background="@drawable/btn_radius_all_normal">
+
+        <EditText
+            android:id="@+id/et_mobile_number"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/cell_height"
+            android:layout_marginLeft="10.0dip"
+            android:layout_marginRight="10.0dip"
+            android:background="@android:color/transparent"
+            android:gravity="left|center"
+            android:hint="@string/input_phone_hint"
+            android:textColor="@color/text_edit_color"
+            android:textColorHint="@color/text_edit_hint_color"
+            android:textSize="16.0sp" />
+
+        <View
+            android:id="@+id/view_line_first"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/stroke"
+            android:layout_below="@+id/et_mobile_number"
+            android:background="@color/stroke" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/cell_height"
+            android:layout_below="@id/view_line_first"
+            android:background="@android:color/transparent"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/et_input_code"
+                android:layout_width="0.0dip"
+                android:layout_height="match_parent"
+                android:layout_weight="1.0"
+                android:background="@android:color/transparent"
+                android:layout_marginLeft="10.0dip"
+                android:layout_marginRight="10.0dip"
+                android:gravity="left|center"
+                android:hint="@string/input_auth_code_hint"
+                android:inputType="number"
+                android:maxLength="6"
+                android:textColor="@color/text_edit_color"
+                android:textColorHint="@color/text_edit_hint_color"
+                android:textSize="16.0sp" />
+            <Button
+                android:id="@+id/btn_obtain_code"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:paddingLeft="@dimen/content_padding"
+                android:paddingRight="@dimen/content_padding"
+                android:text="@string/btn_obtain_auth_code"
+                android:textColor="@color/white"
+                android:textSize="16.0sp"
+                android:background="@drawable/selector_red_corners_button" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/btn_next_step"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/cell_height"
+        android:layout_marginLeft="@dimen/content_padding"
+        android:layout_marginRight="@dimen/content_padding"
+        android:layout_marginTop="@dimen/content_padding"
+        android:background="@drawable/selector_red_corners_button"
+        android:text="@string/btn_next_step"
+        android:textColor="@color/white"
+        android:textSize="16.0sp" />
+</LinearLayout>

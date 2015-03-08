@@ -1,0 +1,10 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.cisoft.lazyorder.ui.express.PostExpressActivity">
+    <item
+        android:id="@+id/post_express"
+        android:title="@string/action_post_express"
+        android:icon="@drawable/icon_add"
+        android:orderInCategory="100"
+        android:showAsAction="always" />
+</menu>

@@ -1,58 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/gray_bg">
-    <LinearLayout
+    android:background="@color/gray_bg"
+    android:orientation="vertical">
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="@dimen/content_margin">
+        android:layout_marginLeft="@dimen/content_padding"
+        android:layout_marginRight="@dimen/content_padding"
+        android:layout_marginTop="@dimen/content_padding"
+        android:background="@drawable/btn_radius_all_normal" >
+
         <EditText
             android:id="@+id/et_input_name"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/content_margin"
-            android:padding="@dimen/content_padding"
-            android:gravity="left"
-            android:hint="@string/name"
+            android:layout_height="@dimen/cell_height"
+            android:layout_marginLeft="10.0dip"
+            android:layout_marginRight="10.0dip"
+            android:background="@android:color/transparent"
+            android:gravity="left|center"
+            android:hint="@string/text_name"
             android:textColor="@color/text_edit_color"
             android:textColorHint="@color/text_edit_hint_color"
-            android:textSize="18.0sp"
-            android:background="@drawable/text_field"/>
+            android:textSize="16.0sp" />
+
+        <View
+            android:id="@+id/view_line_first"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/stroke"
+            android:layout_below="@+id/et_input_name"
+            android:background="@color/stroke" />
+
         <EditText
             android:id="@+id/et_input_phone"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/content_margin"
-            android:background="@drawable/text_field"
-            android:gravity="left"
-            android:hint="@string/phone"
+            android:layout_height="@dimen/cell_height"
+            android:layout_below="@id/view_line_first"
+            android:layout_marginLeft="10.0dip"
+            android:layout_marginRight="10.0dip"
+            android:background="@android:color/transparent"
+            android:gravity="left|center"
+            android:inputType="phone"
+            android:hint="@string/text_phone"
             android:textColor="@color/text_edit_color"
             android:textColorHint="@color/text_edit_hint_color"
-            android:textSize="18.0sp"
-            android:padding="@dimen/content_padding" />
+            android:textSize="16.0sp" />
+
+        <View
+            android:id="@+id/view_line_second"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/stroke"
+            android:layout_below="@+id/et_input_phone"
+            android:background="@color/stroke" />
+
         <EditText
             android:id="@+id/et_input_address"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/content_margin"
-            android:background="@drawable/text_field"
-            android:gravity="left"
-            android:hint="@string/address"
+            android:layout_height="@dimen/cell_height"
+            android:layout_below="@id/view_line_second"
+            android:layout_marginLeft="10.0dip"
+            android:layout_marginRight="10.0dip"
+            android:background="@android:color/transparent"
+            android:gravity="left|center"
+            android:hint="@string/text_address"
             android:textColor="@color/text_edit_color"
             android:textColorHint="@color/text_edit_hint_color"
-            android:textSize="18.0sp"
-            android:padding="@dimen/content_padding" />
-        <Button
-            android:id="@+id/btn_sure_update_address"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15.0dp"
-            android:background="@drawable/selector_red_corners_button"
-            android:gravity="center"
-            android:text="@string/sure_update"
-            android:textColor="@color/white"
-            android:textSize="18.0sp" />
-    </LinearLayout>
-</ScrollView>
+            android:textSize="16.0sp" />
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/btn_sure_update_address"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/cell_height"
+        android:layout_marginLeft="@dimen/content_padding"
+        android:layout_marginRight="@dimen/content_padding"
+        android:layout_marginTop="@dimen/content_padding"
+        android:background="@drawable/selector_red_corners_button"
+        android:text="@string/btn_confirm_modify"
+        android:textColor="@color/white"
+        android:textSize="16.0sp" />
+
+</LinearLayout>

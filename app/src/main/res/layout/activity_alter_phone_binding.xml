@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/gray_bg"
+    tools:mContext="com.cisoft.lazyorder.ui.account.AlterPhoneBindingActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/cell_height"
+        android:layout_marginTop="@dimen/content_padding"
+        android:layout_marginLeft="@dimen/content_padding"
+        android:layout_marginRight="@dimen/content_padding"
+        android:background="@drawable/btn_radius_all_normal">
+
+        <EditText
+            android:id="@+id/et_new_phone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/content_margin"
+            android:layout_marginRight="@dimen/content_margin"
+            android:background="@android:color/transparent"
+            android:gravity="left|center"
+            android:hint="@string/input_new_phone_hint"
+            android:inputType="phone"
+            android:maxLength="11"
+            android:singleLine="true"
+            android:textColor="@color/text_edit_color"
+            android:textColorHint="@color/text_edit_hint_color"
+            android:textSize="16.0sp" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_confirm_modify"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/cell_height"
+        android:layout_marginLeft="@dimen/content_padding"
+        android:layout_marginRight="@dimen/content_padding"
+        android:layout_marginTop="@dimen/content_padding"
+        android:background="@drawable/selector_red_corners_button"
+        android:text="@string/btn_confirm_modify"
+        android:textColor="@color/white"
+        android:textSize="16.0sp" />
+</LinearLayout>

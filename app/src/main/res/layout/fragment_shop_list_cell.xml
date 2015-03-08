@@ -1,98 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/shop_bg_open"
-    android:orientation="horizontal"
-    android:padding="0dp"
-    android:gravity="center_vertical">
-	
-    <LinearLayout
+    android:background="@drawable/selector_list_cell">
+    <ImageView
+        android:id="@+id/iv_open_state_bg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp">
-        <ImageView
-	        android:id="@+id/iv_shop_face_img"
-	        android:layout_width="100dp"
-	        android:layout_height="100dp"
-	        android:scaleType="fitXY"
-	        android:background="@color/shop_face_border_color"
-	        android:src="@drawable/ic_launcher"/>
-    </LinearLayout>
-    
+        android:src="@drawable/shop_open_state"
+        android:layout_gravity="right|top"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:orientation="vertical">
-        
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="5dp">
-            <TextView
-		        android:id="@+id/tv_shop_name"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:singleLine="true"
-		        android:text="测试食堂"
-		        android:textColor="@color/shop_list_text_color"
-		        android:textSize="17sp" />
-        </LinearLayout>
-        
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="5dp">
-            <TextView
-		        android:id="@+id/tv_open_time_label"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:textSize="14sp"
-		        android:textColor="@color/shop_list_text_color"
-		        android:text="订餐时间：" />
-		    <TextView
-		        android:id="@+id/tv_open_time"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:textSize="14sp"
-		        android:singleLine="true"
-		        android:textColor="@color/shop_list_text_color"
-		        android:text="11:00-13:00" />
-        </LinearLayout>
-        
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="5dp"
             android:layout_marginBottom="10dp">
-            <TextView
-		        android:id="@+id/tv_month_sales_label"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:textSize="14sp"
-		        android:textColor="@color/shop_list_text_color"
-		        android:text="月销量：" />
-		    <TextView
-		        android:id="@+id/tv_month_sales"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:textSize="14sp"
-		        android:textColor="@color/shop_list_text_color"
-		        android:singleLine="true"
-		        android:text="3100" />
+            <ImageView
+                android:id="@+id/iv_shop_face_img"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:scaleType="fitXY"
+                android:background="@color/shop_face_border_color"
+                android:src="@drawable/ic_launcher"/>
         </LinearLayout>
-        
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp">
+                <TextView
+                    android:id="@+id/tv_shop_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:text="测试食堂"
+                    android:textColor="@color/shop_list_text_color"
+                    android:textSize="17sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp">
+                <TextView
+                    android:id="@+id/tv_open_time_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:textColor="@color/shop_list_text_color"
+                    android:text="订餐时间：" />
+                <TextView
+                    android:id="@+id/tv_open_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:singleLine="true"
+                    android:textColor="@color/shop_list_text_color"
+                    android:text="11:00-13:00" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="10dp">
+                <TextView
+                    android:id="@+id/tv_month_sales_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:textColor="@color/shop_list_text_color"
+                    android:text="月销量：" />
+                <TextView
+                    android:id="@+id/tv_month_sales"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:textColor="@color/shop_list_text_color"
+                    android:singleLine="true"
+                    android:text="3100" />
+            </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
-    
-    
-</LinearLayout>
+</FrameLayout>
+
+
+

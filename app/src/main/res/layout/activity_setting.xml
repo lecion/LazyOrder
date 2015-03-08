@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_bg">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/section_space">
+
+        <com.cisoft.lazyorder.widget.section.SectionView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <com.cisoft.lazyorder.widget.section.SectionListView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <com.cisoft.lazyorder.widget.section.SectionTextItemView
+                    android:id="@+id/clear_cache_setting"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:name="@string/settings_title_clear_cache" />
+                <com.cisoft.lazyorder.widget.section.SectionCheckBoxItemView
+                    android:id="@+id/no_drawing_mode_setting"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:name="@string/settings_title_no_drawing_mode" />
+            </com.cisoft.lazyorder.widget.section.SectionListView>
+        </com.cisoft.lazyorder.widget.section.SectionView>
+
+        <com.cisoft.lazyorder.widget.section.SectionView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <com.cisoft.lazyorder.widget.section.SectionListView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <com.cisoft.lazyorder.widget.section.SectionTextItemView
+                    android:id="@+id/feedback_setting"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:name="@string/settings_title_feedback" />
+                <com.cisoft.lazyorder.widget.section.SectionTextItemView
+                    android:id="@+id/check_update_setting"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:name="@string/settings_title_check_update" />
+                <com.cisoft.lazyorder.widget.section.SectionTextItemView
+                    android:id="@+id/about_us_setting"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:name="@string/settings_title_about_us" />
+                <com.cisoft.lazyorder.widget.section.SectionTextItemView
+                    android:id="@+id/function_desc_setting"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:name="@string/settings_title_function_desc" />
+                <com.cisoft.lazyorder.widget.section.SectionTextItemView
+                    android:id="@+id/welcome_page_setting"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:name="@string/settings_title_welcome_page" />
+            </com.cisoft.lazyorder.widget.section.SectionListView>
+        </com.cisoft.lazyorder.widget.section.SectionView>
+
+        <com.cisoft.lazyorder.widget.section.SectionView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <com.cisoft.lazyorder.widget.section.SectionListView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <com.cisoft.lazyorder.widget.section.SectionTextItemView
+                    android:id="@+id/logout_setting"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:name="@string/settings_title_logout" />
+            </com.cisoft.lazyorder.widget.section.SectionListView>
+        </com.cisoft.lazyorder.widget.section.SectionView>
+    </LinearLayout>
+</ScrollView>
