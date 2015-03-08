@@ -3,13 +3,12 @@ package com.cisoft.shop.order.model;
 import android.content.Context;
 
 import com.cisoft.shop.ApiConstants;
-import com.cisoft.shop.MainActivity;
-import com.cisoft.shop.MyApplication;
 import com.cisoft.shop.R;
+import com.cisoft.shop.bean.Expmer;
 import com.cisoft.shop.bean.Order;
-import com.cisoft.shop.bean.Shop;
 import com.cisoft.shop.goods.model.INetWorkFinished;
 import com.cisoft.shop.http.AbsService;
+import com.cisoft.shop.util.L;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,8 +29,8 @@ public class ExpressModel extends AbsService  {
 
     public void findExpressByState(String expressState, int page, int size, final INetWorkFinished<Order> finishedListener) {
         KJStringParams params = new KJStringParams();
-        Shop shop = ((MyApplication) ((MainActivity) context).getApplication()).getShop();
-        params.put(ApiConstants.KEY_ORDER_MER_ID, String.valueOf(shop.getId()));
+        Expmer expmer = L.getExpmer(context);
+        params.put(ApiConstants.KEY_ORDER_MER_ID, String.valueOf(expmer.getId()));
         params.put(ApiConstants.KEY_ORDER_ORDER_STATE, expressState);
         params.put(ApiConstants.KEY_ORDER_PAGE, String.valueOf(page));
         params.put(ApiConstants.KEY_ORDER_SIZE, String.valueOf(size));

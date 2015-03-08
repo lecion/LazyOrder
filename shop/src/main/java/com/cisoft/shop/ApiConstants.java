@@ -117,6 +117,25 @@ public class ApiConstants {
     public static final String KEY_ORDER_SETTLED_PRICE = "settledPrice";                           //结算后价格
 
 
+    //快递商家订单key
+    public static final String KEY_EXPRESS_EXPMER_ID = "expmerId";
+    public static final String KEY_EXPRESS_EXPRESS_STATE = "expressState";
+    public static final String KEY_EXPRESS_PAGE = "page";
+    public static final String KEY_EXPRESS_SIZE = "size";
+    public static final String KEY_EXPRESS_STATE = "state";
+    public static final String KEY_EXPRESS_DATA = "data";
+    public static final String KEY_EXPRESS_ID = "id";
+    public static final String KEY_EXPRESS_ADDRESS = "address";
+    public static final String KEY_EXPRESS_CONTENT = "content";
+    public static final String KEY_EXPRESS_DISTRIBUTION_PRICE = "distributionPrice";
+    public static final String KEY_EXPRESS_EXPRESS_NUMBER = "expressNumber";
+    public static final String KEY_EXPRESS_EXPRESS_TIME = "expressTime";
+    public static final String KEY_EXPRESS_GET_MESSAGE_TIME = "getMessageTime";
+    public static final String KEY_EXPRESS_MESSAGE = "message";
+    public static final String KEY_EXPRESS_STATUE = "statue";
+    public static final String KEY_EXPRESS_USER_NAME = "userName";
+    public static final String KEY_EXPRESS_USER_PHONE = "userPhone";
+    public static final String KEY_EXPRESS_EXPRESS_MERCHANT = "expressMerchant";
 
 
     public static final String KEY_MC_DATA = "data";
@@ -177,9 +196,5 @@ public class ApiConstants {
     public static final String KEY_EXPMER_PIC = "expmerPic";
     public static final String KEY_EXPMER_OPERATING_STATE = "operatingState";
     public static final String KEY_EXPMER_SALES = "sales";
-
-
-
-
 
 }
