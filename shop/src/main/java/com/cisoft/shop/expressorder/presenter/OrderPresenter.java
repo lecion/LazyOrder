@@ -5,8 +5,8 @@ import android.content.Context;
 import com.cisoft.shop.bean.ExpressOrder;
 import com.cisoft.shop.expressorder.view.IOrderView;
 import com.cisoft.shop.goods.model.INetWorkFinished;
-import com.cisoft.shop.goods.model.ShopModel;
 import com.cisoft.shop.order.model.ExpressModel;
+import com.cisoft.shop.welcome.model.ExpmerModel;
 
 import org.kymjs.aframe.ui.ViewInject;
 
@@ -18,12 +18,12 @@ import java.util.List;
 public class OrderPresenter {
     IOrderView view;
     ExpressModel model;
-    ShopModel shopModel;
+    ExpmerModel expmerModel;
 
     public OrderPresenter(Context context, IOrderView view) {
         this.view = view;
         model = new ExpressModel(context);
-        shopModel = new ShopModel(context);
+        expmerModel = new ExpmerModel(context);
     }
 
     public void onLoad() {
@@ -81,7 +81,7 @@ public class OrderPresenter {
         if (oldState == newState) {
             return;
         }
-        shopModel.updateOperateState(newState, new ShopModel.IUpdateOperateState() {
+        expmerModel.updateOperateState(newState, new ExpmerModel.IUpdateOperateState() {
             @Override
             public void onSuccess(int code) {
                 view.setOperatingState(newState);

@@ -20,6 +20,7 @@ public class Expmer extends AbsBean implements Serializable{
     private String pic;
     private int operatingState;
     private String sales;
+    private String name;
 
     public Expmer() {}
 
@@ -115,10 +116,20 @@ public class Expmer extends AbsBean implements Serializable{
                     setAddress(jsonObj.getString(ApiConstants.KEY_EXPMER_ADDRESS));
                 } else if (key.equals(ApiConstants.KEY_MER_CID)) {
                     setcID(ApiConstants.KEY_MER_CID);
+                } else if (key.equals(ApiConstants.KEY_EXPMER_EXPMER_NAME)){
+                    setName(jsonObj.getString(ApiConstants.KEY_EXPMER_EXPMER_NAME));
                 }
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

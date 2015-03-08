@@ -77,9 +77,9 @@ public class ShopModel extends AbsService {
     public void updateOperateState(int state, final IUpdateOperateState finishedListener) {
         Shop shop = L.getShop(context);
         KJStringParams params = new KJStringParams();
-        params.put(ApiConstants.KEY_MER_OPERATE_STATE, String.valueOf(state));
+        params.put(ApiConstants.KEY_MER_OPERATING_STATE, String.valueOf(state));
         params.put(ApiConstants.KEY_MER_MER_ID, String.valueOf(shop.getId()));
-        asyncUrlGet(ApiConstants.METHOD_MER_UPDATE_OPERATE_STATE, params, false, new SuccessCallback() {
+        asyncUrlGet(ApiConstants.METHOD_MER_UPDATE_OPERATING_STATE, params, false, new SuccessCallback() {
             @Override
             public void onSuccess(String result) throws JSONException {
                 JSONObject jsonObj = new JSONObject(result);

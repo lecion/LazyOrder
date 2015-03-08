@@ -41,7 +41,7 @@ public class ApiConstants {
     /* 这里存放API接口里的方法名,以"METHOD_+模块名"打头 */
     public static final String METHOD_MERCHANTS_FIND_BY_TYPE_ID = "findMerchantsOrCanteen";
     public static final String METHOD_MER_CATEGORY_FIND_ALL = "findAll";
-    public static final String METHOD_MER_UPDATE_OPERATE_STATE = "updateOperateState";
+    public static final String METHOD_MER_UPDATE_OPERATING_STATE = "updateOperatingState";
     public static final String METHOD_MER_MER_LOGIN = "merLogin";
 
 
@@ -60,6 +60,7 @@ public class ApiConstants {
     public static final String METHOD_HIS_ORDER_FIND_ALL = "findOrderByUserPhone";
 
     public static final String METHOD_EXPMER_EXPMER_LOGIN = "expmerLogin";
+    public static final String METHOD_EXPMER_UPDATE_OPERATING_STATE = "updateOperatingState";
 
     public static final String METHOD_EXPRESS_FIND_EXPRESS_BY_STATE = "findExpressByState";
 
@@ -79,16 +80,15 @@ public class ApiConstants {
     public static final String KEY_MER_CLOSE_TIME = "merCloseTime";
     public static final String KEY_MER_NAME = "merName";
     public static final String KEY_MER_FACE_PIC = "merPic";
+    /**
+     * 0表示未营业
+     * 1表示营业
+     */
     public static final String KEY_MER_OPERATING_STATE = "operatingState";
     public static final String KEY_MER_ADDRESS = "merAddress";
     public static final String KEY_MER_PROMOTION_INFO = "sales";
     public static final String KEY_MER_TYPE_ID = "typeId";
     public static final String KEY_MER_MER_ID = "merId";
-    /**
-     * 0表示未营业
-     * 1表示营业
-     */
-    public static final String KEY_MER_OPERATE_STATE = "operState";
     public static final String KEY_MER_MER_PHONE = "merPhone";
     public static final String KEY_MER_MER_PWD = "merPwd";
     public static final String KEY_MER_CID = "cID";
@@ -134,7 +134,7 @@ public class ApiConstants {
     public static final String KEY_EXPRESS_DISTRIBUTION_PRICE = "distributionPrice";
     public static final String KEY_EXPRESS_EXPRESS_NUMBER = "expressNumber";
     public static final String KEY_EXPRESS_EXPRESS_TIME = "expressTime";
-    public static final String KEY_EXPRESS_GET_MESSAGE_TIME = "getMessageTime";
+    public static final String KEY_EXPRESS_GET_MESSAGE_TIME = "getmessageTime";
     public static final String KEY_EXPRESS_MESSAGE = "message";
     public static final String KEY_EXPRESS_STATUE = "statue";
     public static final String KEY_EXPRESS_USER_NAME = "userName";
@@ -194,6 +194,7 @@ public class ApiConstants {
     public static final String KEY_EXPMER_ID = "id";
     public static final String KEY_EXPMER_EXPMER_PHONE = "expmerPhone";
     public static final String KEY_EXPMER_EXPMER_PWD = "expmerPwd";
+    public static final String KEY_EXPMER_EXPMER_NAME = "expmerName";
     public static final String KEY_EXPMER_CID = "cID";
     public static final String KEY_EXPMER_ADDRESS = "expmerAddress";
     public static final String KEY_EXPMER_OPENTIME = "expmerOpenTime";

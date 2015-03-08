@@ -2,6 +2,7 @@ package com.cisoft.shop.welcome.presenter;
 
 import android.content.Context;
 
+import com.cisoft.shop.AppConfig;
 import com.cisoft.shop.SpConstants;
 import com.cisoft.shop.bean.Expmer;
 import com.cisoft.shop.bean.Shop;
@@ -31,17 +32,17 @@ public class WelcomePresenter {
     }
 
     public void checkAccount() {
-        int type = PreferenceHelper.readInt(ctx, SpConstants.SP_FILE_NAME, SpConstants.KEY_LOGIN_TYPE, -1);
+        final int type = PreferenceHelper.readInt(ctx, SpConstants.SP_FILE_NAME, SpConstants.KEY_LOGIN_TYPE, -1);
         if (type != -1) {
 
             final String phone = PreferenceHelper.readString(ctx, SpConstants.SP_FILE_NAME, SpConstants.KEY_LOGIN_PHONE);
             final String pwd = PreferenceHelper.readString(ctx, SpConstants.SP_FILE_NAME, SpConstants.KEY_LOGIN_PWD);
-            if (type == 0) {
+            if (type == AppConfig.TYPE_MERCHANT) {
                 shopModel.merLogin(phone, pwd, new ShopModel.ILoginListener() {
                     @Override
                     public void onSuccess(JSONObject data) {
                         //更新账户信息
-                        IOUtil.saveLoginInfo(ctx, 0, phone, pwd, new Shop(data));
+                        IOUtil.saveLoginInfo(ctx, type, phone, pwd, new Shop(data));
                         view.skipToMain();
                     }
 
@@ -50,12 +51,12 @@ public class WelcomePresenter {
                         view.skipToLogin();
                     }
                 });
-            } else if (type == 1) {
+            } else if (type == AppConfig.TYPE_EXPMER) {
                 expmerModel.expmerLogin(phone, pwd, new ExpmerModel.ILoginListener() {
                     @Override
                     public void onSuccess(JSONObject data) {
                         //更新账户信息
-                        IOUtil.saveLoginInfo(ctx, 1, phone, pwd, new Expmer(data));
+                        IOUtil.saveLoginInfo(ctx, type, phone, pwd, new Expmer(data));
                         view.skipToMain();
                     }
 

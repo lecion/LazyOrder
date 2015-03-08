@@ -2,9 +2,11 @@ package com.cisoft.shop.welcome.model;
 
 import android.content.Context;
 
-import com.cisoft.shop.R;
 import com.cisoft.shop.ApiConstants;
+import com.cisoft.shop.R;
+import com.cisoft.shop.bean.Expmer;
 import com.cisoft.shop.http.AbsService;
+import com.cisoft.shop.util.L;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -45,6 +47,35 @@ public class ExpmerModel extends AbsService {
             @Override
             public void onFailure(int stateCode) {
                 loginListener.onFailure(getResponseStateInfo(stateCode));
+            }
+        });
+    }
+
+    /**
+     * 更改营业状态
+     * @param state
+     */
+    public void updateOperateState(int state, final IUpdateOperateState finishedListener) {
+        Expmer expmer = L.getExpmer(context);
+        KJStringParams params = new KJStringParams();
+        params.put(ApiConstants.KEY_EXPMER_OPERATING_STATE, String.valueOf(state));
+        params.put(ApiConstants.KEY_EXPRESS_EXPMER_ID, String.valueOf(expmer.getId()));
+        asyncUrlGet(ApiConstants.METHOD_EXPMER_UPDATE_OPERATING_STATE, params, false, new SuccessCallback() {
+            @Override
+            public void onSuccess(String result) throws JSONException {
+                JSONObject jsonObj = new JSONObject(result);
+                int state = jsonObj.getInt(ApiConstants.KEY_STATE);
+                String data = jsonObj.getString(ApiConstants.KEY_DATA);
+                if (state == 200) {
+                    finishedListener.onSuccess(state);
+                } else {
+                    finishedListener.onFailure(data);
+                }
+            }
+        }, new FailureCallback() {
+            @Override
+            public void onFailure(int stateCode) {
+                finishedListener.onFailure(getResponseStateInfo(stateCode));
             }
         });
     }

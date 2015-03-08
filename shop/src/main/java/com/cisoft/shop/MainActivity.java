@@ -44,7 +44,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class MainActivity extends BaseActivity implements GoodsFragment.OnFragmentInteractionListener, OrderFragment.OnFragmentInteractionListener{
+public class MainActivity extends BaseActivity implements GoodsFragment.OnFragmentInteractionListener, OrderFragment.OnFragmentInteractionListener, ExpressOrderFragment.OnFragmentInteractionListener{
 
     @BindView(id = R.id.drawer_layout)
     private DrawerLayout drawerLayout;

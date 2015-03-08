@@ -23,7 +23,6 @@ import android.widget.TextView;
 import com.cisoft.shop.R;
 import com.cisoft.shop.bean.Expmer;
 import com.cisoft.shop.bean.ExpressOrder;
-import com.cisoft.shop.bean.Order;
 import com.cisoft.shop.expressorder.presenter.OrderPresenter;
 import com.cisoft.shop.util.DeviceUtil;
 import com.cisoft.shop.util.L;
@@ -230,7 +229,7 @@ public class ExpressOrderFragment extends BaseFragment implements IOrderView {
      */
     private void initShopStatus() {
         Expmer expmer = L.getExpmer(this);
-        tvShopName.setText(expmer.getAddress());
+        tvShopName.setText(expmer.getName());
         tvShopTime.setText(expmer.getOpenTime() + "-" + expmer.getCloseTime());
         tvShopPrivilege.setText(expmer.getSales());
         KJBitmap.create().display(ivShopLogo, expmer.getPic());
@@ -361,7 +360,7 @@ public class ExpressOrderFragment extends BaseFragment implements IOrderView {
 
         @Override
         public long getItemId(int position) {
-            return ((Order)getItem(position)).getId();
+            return ((ExpressOrder)getItem(position)).getId();
         }
 
         @Override
