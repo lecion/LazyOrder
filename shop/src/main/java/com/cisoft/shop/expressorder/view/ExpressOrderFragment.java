@@ -1,4 +1,4 @@
-package com.cisoft.shop.order.view;
+package com.cisoft.shop.expressorder.view;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -21,9 +21,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.cisoft.shop.R;
+import com.cisoft.shop.bean.Expmer;
+import com.cisoft.shop.bean.ExpressOrder;
 import com.cisoft.shop.bean.Order;
-import com.cisoft.shop.bean.Shop;
-import com.cisoft.shop.order.presenter.OrderPresenter;
+import com.cisoft.shop.expressorder.presenter.OrderPresenter;
 import com.cisoft.shop.util.DeviceUtil;
 import com.cisoft.shop.util.L;
 import com.cisoft.shop.widget.DialogFactory;
@@ -43,7 +44,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class OrderFragment extends BaseFragment implements IOrderView{
+public class ExpressOrderFragment extends BaseFragment implements IOrderView {
 
     @BindView(id = R.id.iv_shop_logo)
     private ImageView ivShopLogo;
@@ -79,14 +80,13 @@ public class OrderFragment extends BaseFragment implements IOrderView{
 
     private int[] goodsStateColors = {Color.rgb(27, 137, 226), Color.rgb(178, 18, 29)};
 
-    private List<Order> orderList = null;
+    private List<ExpressOrder> orderList = null;
 
     private boolean isLoadMore = false;
 
     private int shopOldState;
 
     private static final String ARG_TAG = "tag";
-    private static final String ARG_LOGIN_TYPE = "loginType";
 
     private String FRAGMENT_TAG;
 
@@ -97,15 +97,15 @@ public class OrderFragment extends BaseFragment implements IOrderView{
     private int size = 5;
 
 
-    public static OrderFragment newInstance(String tag) {
-        OrderFragment fragment = new OrderFragment();
+    public static ExpressOrderFragment newInstance(String tag) {
+        ExpressOrderFragment fragment = new ExpressOrderFragment();
         Bundle args = new Bundle();
         args.putString(ARG_TAG, tag);
         fragment.setArguments(args);
         return fragment;
     }
 
-    public OrderFragment() {}
+    public ExpressOrderFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -123,7 +123,7 @@ public class OrderFragment extends BaseFragment implements IOrderView{
     @Override
     protected void initData() {
         presenter = new OrderPresenter(getActivity(), this);
-        orderList = new ArrayList<Order>();
+        orderList = new ArrayList<ExpressOrder>();
         orderListAdapter = new OrderListAdapter();
         presenter.onLoad();
         shopOldState = 0;
@@ -217,7 +217,7 @@ public class OrderFragment extends BaseFragment implements IOrderView{
         lvOrder.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Order order = (Order) lvOrder.getItemAtPosition(position);
+                ExpressOrder order = (ExpressOrder) lvOrder.getItemAtPosition(position);
                 OrderDetailDialog dialog = new OrderDetailDialog(order);
                 dialog.show(getFragmentManager(), order.getId() + "");
             }
@@ -229,11 +229,11 @@ public class OrderFragment extends BaseFragment implements IOrderView{
      * 初始化商店状态
      */
     private void initShopStatus() {
-        Shop shop = L.app(this).getShop();
-        tvShopName.setText(shop.getName());
-        tvShopTime.setText(shop.getOpenTime() + "-" + shop.getCloseTime());
-        tvShopPrivilege.setText(shop.getPromotionInfo());
-        KJBitmap.create().display(ivShopLogo, shop.getFaceImgUrl());
+        Expmer expmer = L.getExpmer(this);
+        tvShopName.setText(expmer.getAddress());
+        tvShopTime.setText(expmer.getOpenTime() + "-" + expmer.getCloseTime());
+        tvShopPrivilege.setText(expmer.getSales());
+        KJBitmap.create().display(ivShopLogo, expmer.getPic());
         spShopState.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.fragment_goods_shop_state_cell, shopOperatingStates));
         spShopState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -273,7 +273,7 @@ public class OrderFragment extends BaseFragment implements IOrderView{
     }
 
     @Override
-    public void setOrderList(List<Order> orderList) {
+    public void setOrderList(List<ExpressOrder> orderList) {
 //        Log.d("setGoodsList", orderList.toString());
         if (page == 1) {
             this.orderList.clear();
@@ -324,7 +324,7 @@ public class OrderFragment extends BaseFragment implements IOrderView{
 
     @Override
     public void setOrderStatus(int position, String state) {
-        orderList.get(position).setOrderState(state);
+        orderList.get(position).setStatue(state);
         orderListAdapter.notifyDataSetChanged();
     }
 
@@ -366,19 +366,18 @@ public class OrderFragment extends BaseFragment implements IOrderView{
 
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
-            final Order order = (Order) getItem(position);
+            final ExpressOrder order = (ExpressOrder) getItem(position);
             ViewHolder holder = null;
             if (convertView == null) {
                 holder = new ViewHolder();
                 convertView = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_order_list_cell, parent, false);
-
                 holder.tvOrderNumber = (TextView) convertView.findViewById(R.id.tv_order_number);
                 holder.tvOrderTimeGo = (TextView) convertView.findViewById(R.id.tv_order_time_go);
                 holder.btnOrderStatus = (Button) convertView.findViewById(R.id.btn_order_status);
                 convertView.setTag(holder);
             }
             holder = (ViewHolder) convertView.getTag();
-            final String state = order.getOrderState();
+            final String state = order.getStatue();
             holder.btnOrderStatus.setText(getOrderStatusText(state));
             holder.btnOrderStatus.setBackgroundDrawable(getOrderStatusBackground(state));
             holder.btnOrderStatus.setOnClickListener(new View.OnClickListener() {
@@ -387,8 +386,8 @@ public class OrderFragment extends BaseFragment implements IOrderView{
                     presenter.switchOrderStatus(order.getId(), position, getOperateState(state));
                 }
             });
-            holder.tvOrderNumber.setText("NO." + order.getOrderNumber());
-            holder.tvOrderTimeGo.setText(String.format("已下单"+ order.getTimeGo()) +"分钟");
+            holder.tvOrderNumber.setText("NO." + order.getExpressNumber());
+            holder.tvOrderTimeGo.setText(String.format("已下单"+ order.getExpressTime()) +"分钟");
             return convertView;
         }
 

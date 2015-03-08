@@ -24,6 +24,7 @@ import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
+import com.cisoft.shop.expressorder.view.ExpressOrderFragment;
 import com.cisoft.shop.goods.view.GoodsFragment;
 import com.cisoft.shop.login.view.LoginActivity;
 import com.cisoft.shop.order.view.OrderFragment;
@@ -167,7 +168,7 @@ public class MainActivity extends BaseActivity implements GoodsFragment.OnFragme
             switch (position) {
                 case 0:
                     ViewInject.toast("查看订单");
-                    getFragmentManager().beginTransaction().replace(R.id.fl_container, OrderFragment.newInstance("订单", loginType), "order").commit();
+                    getFragmentManager().beginTransaction().replace(R.id.fl_container, OrderFragment.newInstance("订单"), "order").commit();
                     break;
                 case 1:
                     ViewInject.toast("查看商品");
@@ -188,7 +189,7 @@ public class MainActivity extends BaseActivity implements GoodsFragment.OnFragme
             switch (position) {
                 case 0:
                     ViewInject.toast("查看订单");
-                    getFragmentManager().beginTransaction().replace(R.id.fl_container, OrderFragment.newInstance("订单", loginType), "order").commit();
+                    getFragmentManager().beginTransaction().replace(R.id.fl_container, ExpressOrderFragment.newInstance("订单"), "order").commit();
                     break;
                 case 1:
                     ViewInject.toast("已完成订单");
