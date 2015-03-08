@@ -61,6 +61,7 @@ public class ApiConstants {
 
     public static final String METHOD_EXPMER_EXPMER_LOGIN = "expmerLogin";
 
+    public static final String METHOD_EXPRESS_FIND_EXPRESS_BY_STATE = "findExpressByState";
 
 
 
@@ -136,6 +137,7 @@ public class ApiConstants {
     public static final String KEY_EXPRESS_USER_NAME = "userName";
     public static final String KEY_EXPRESS_USER_PHONE = "userPhone";
     public static final String KEY_EXPRESS_EXPRESS_MERCHANT = "expressMerchant";
+
 
 
     public static final String KEY_MC_DATA = "data";

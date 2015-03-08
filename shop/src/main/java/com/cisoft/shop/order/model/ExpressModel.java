@@ -30,11 +30,11 @@ public class ExpressModel extends AbsService  {
     public void findExpressByState(String expressState, int page, int size, final INetWorkFinished<Order> finishedListener) {
         KJStringParams params = new KJStringParams();
         Expmer expmer = L.getExpmer(context);
-        params.put(ApiConstants.KEY_ORDER_MER_ID, String.valueOf(expmer.getId()));
-        params.put(ApiConstants.KEY_ORDER_ORDER_STATE, expressState);
-        params.put(ApiConstants.KEY_ORDER_PAGE, String.valueOf(page));
-        params.put(ApiConstants.KEY_ORDER_SIZE, String.valueOf(size));
-        asyncUrlGet(ApiConstants.METHOD_ORDER_FIND_ORDERS_BY_MER_ID, params, false, new SuccessCallback() {
+        params.put(ApiConstants.KEY_EXPRESS_EXPMER_ID, String.valueOf(expmer.getId()));
+        params.put(ApiConstants.KEY_EXPRESS_EXPRESS_STATE, expressState);
+        params.put(ApiConstants.KEY_EXPRESS_PAGE, String.valueOf(page));
+        params.put(ApiConstants.KEY_EXPRESS_SIZE, String.valueOf(size));
+        asyncUrlGet(ApiConstants.METHOD_EXPRESS_FIND_EXPRESS_BY_STATE, params, false, new SuccessCallback() {
             @Override
             public void onSuccess(String result) throws JSONException {
                 List<Order> orderList = new ArrayList<Order>();
