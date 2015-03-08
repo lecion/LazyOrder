@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.content.Context;
 
 import com.cisoft.shop.MyApplication;
+import com.cisoft.shop.bean.Expmer;
 import com.cisoft.shop.bean.Shop;
 
 /**
@@ -33,5 +34,17 @@ public class L {
 
     public static Shop getShop(Context ctx) {
         return app(ctx).getShop();
+    }
+
+    public static Expmer getExpmer(Activity aty) {
+        return app(aty).getExpmer();
+    }
+
+    public static Expmer getExpmer(Fragment fragment) {
+        return app(fragment).getExpmer();
+    }
+
+    public static Expmer getExpmer(Context ctx) {
+        return app(ctx).getExpmer();
     }
 }
