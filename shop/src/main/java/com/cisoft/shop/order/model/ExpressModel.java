@@ -5,7 +5,7 @@ import android.content.Context;
 import com.cisoft.shop.ApiConstants;
 import com.cisoft.shop.R;
 import com.cisoft.shop.bean.Expmer;
-import com.cisoft.shop.bean.Order;
+import com.cisoft.shop.bean.ExpressOrder;
 import com.cisoft.shop.goods.model.INetWorkFinished;
 import com.cisoft.shop.http.AbsService;
 import com.cisoft.shop.util.L;
@@ -27,7 +27,7 @@ public class ExpressModel extends AbsService  {
         super(context, ApiConstants.MODULE_EXPRESS);
     }
 
-    public void findExpressByState(String expressState, int page, int size, final INetWorkFinished<Order> finishedListener) {
+    public void findExpressByState(String expressState, int page, int size, final INetWorkFinished<ExpressOrder> finishedListener) {
         KJStringParams params = new KJStringParams();
         Expmer expmer = L.getExpmer(context);
         params.put(ApiConstants.KEY_EXPRESS_EXPMER_ID, String.valueOf(expmer.getId()));
@@ -37,13 +37,13 @@ public class ExpressModel extends AbsService  {
         asyncUrlGet(ApiConstants.METHOD_EXPRESS_FIND_EXPRESS_BY_STATE, params, false, new SuccessCallback() {
             @Override
             public void onSuccess(String result) throws JSONException {
-                List<Order> orderList = new ArrayList<Order>();
+                List<ExpressOrder> orderList = new ArrayList<ExpressOrder>();
                 JSONObject jsonObj = null;
                 try {
                     jsonObj = new JSONObject(result);
                     JSONArray jsonArr = jsonObj.getJSONArray(ApiConstants.KEY_DATA);
                     for (int i = 0; i < jsonArr.length(); i++) {
-                        orderList.add(new Order(jsonArr.getJSONObject(i)));
+                        orderList.add(new ExpressOrder(jsonArr.getJSONObject(i)));
                     }
                     if (finishedListener != null) {
                         finishedListener.onSuccess(orderList);
@@ -63,11 +63,11 @@ public class ExpressModel extends AbsService  {
         });
     }
 
-    public void updateOrderState(int orderId, final String state, final ExpressModel.IUpdateOrderState finishedListener) {
+    public void updateExpressStatue(int expressId, final String state, final ExpressModel.IUpdateOrderState finishedListener) {
         KJStringParams params = new KJStringParams();
-        params.put(ApiConstants.KEY_ORDER_ORDER_ID, String.valueOf(orderId));
-        params.put(ApiConstants.KEY_ORDER_STATE, String.valueOf(orderId));
-        asyncUrlGet(ApiConstants.METHOD_ORDER_UPDATE_ORDER_STATE, params, false, new SuccessCallback() {
+        params.put(ApiConstants.KEY_EXPRESS_EXPRESS_ID, String.valueOf(expressId));
+        params.put(ApiConstants.KEY_EXPRESS_STATUE, String.valueOf(state));
+        asyncUrlGet(ApiConstants.METHOD_EXPRESS_UPDATE_EXPRESS_STATUE, params, false, new SuccessCallback() {
             @Override
             public void onSuccess(String result) throws JSONException {
                 JSONObject jsonObject= new JSONObject(result);

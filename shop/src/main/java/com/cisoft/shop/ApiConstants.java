@@ -63,6 +63,8 @@ public class ApiConstants {
 
     public static final String METHOD_EXPRESS_FIND_EXPRESS_BY_STATE = "findExpressByState";
 
+    public static final String METHOD_EXPRESS_UPDATE_EXPRESS_STATUE = "updateExpressStatue";
+
 
 
     /* 这里存放返回json的key,以"KEY_ + 模块名简写"打头,以模块扎堆↖(^ω^)↗ */
@@ -120,6 +122,7 @@ public class ApiConstants {
 
     //快递商家订单key
     public static final String KEY_EXPRESS_EXPMER_ID = "expmerId";
+    public static final String KEY_EXPRESS_EXPRESS_ID = "expressId";
     public static final String KEY_EXPRESS_EXPRESS_STATE = "expressState";
     public static final String KEY_EXPRESS_PAGE = "page";
     public static final String KEY_EXPRESS_SIZE = "size";

@@ -106,7 +106,7 @@ public class OrderModel extends AbsService implements IOrderModel {
     public void updateOrderState(int orderId, final String state, final OrderModel.IUpdateOrderState finishedListener) {
         KJStringParams params = new KJStringParams();
         params.put(ApiConstants.KEY_ORDER_ORDER_ID, String.valueOf(orderId));
-        params.put(ApiConstants.KEY_ORDER_STATE, String.valueOf(orderId));
+        params.put(ApiConstants.KEY_ORDER_STATE, String.valueOf(state));
         asyncUrlGet(ApiConstants.METHOD_ORDER_UPDATE_ORDER_STATE, params, false, new SuccessCallback() {
             @Override
             public void onSuccess(String result) throws JSONException {
