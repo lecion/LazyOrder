@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import com.cisoft.shop.AppConfig;
 import com.cisoft.shop.R;
 import com.cisoft.shop.MainActivity;
 import com.cisoft.shop.login.presenter.LoginPresenter;
@@ -79,12 +80,10 @@ public class LoginActivity extends BaseActivity implements ILoginView{
             etPwd.setText(pwd);
         }
         int type = IOUtil.getLoginType(this);
-        if (type != -1) {
-            if (type == 0) {
-                rbNormal.setChecked(true);
-            } else if (type == 1) {
-                rbExpress.setChecked(true);
-            }
+        if (type == AppConfig.TYPE_MERCHANT) {
+            rbNormal.setChecked(true);
+        } else if (type == AppConfig.TYPE_EXPMER) {
+            rbExpress.setChecked(true);
         }
     }
 

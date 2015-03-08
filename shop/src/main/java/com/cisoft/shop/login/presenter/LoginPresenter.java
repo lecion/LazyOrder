@@ -3,6 +3,7 @@ package com.cisoft.shop.login.presenter;
 import android.content.Context;
 import android.text.TextUtils;
 
+import com.cisoft.shop.AppConfig;
 import com.cisoft.shop.bean.Expmer;
 import com.cisoft.shop.bean.Shop;
 import com.cisoft.shop.goods.model.ShopModel;
@@ -45,7 +46,7 @@ public class LoginPresenter {
             public void onSuccess(JSONObject data) {
                 //登陆成功，保存商店信息
                 Shop shop = new Shop(data);
-                IOUtil.saveLoginInfo(context, 0, phone, pwd, shop);
+                IOUtil.saveLoginInfo(context, AppConfig.TYPE_MERCHANT, phone, pwd, shop);
                 view.skipToMainActivity();
             }
 
@@ -71,7 +72,7 @@ public class LoginPresenter {
             public void onSuccess(JSONObject data) {
                 //登陆成功，保存商店信息
                 Expmer shop = new Expmer(data);
-                IOUtil.saveLoginInfo(context, 1, phone, pwd, shop);
+                IOUtil.saveLoginInfo(context, AppConfig.TYPE_EXPMER, phone, pwd, shop);
                 view.skipToMainActivity();
             }
 

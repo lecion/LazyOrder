@@ -11,4 +11,8 @@ public class AppConfig {
 
     //是否是DEBUG模式（缓存会失效）
 	public static final boolean IS_DEBUG = false;
+
+    public static final int TYPE_MERCHANT = 1;
+
+    public static final int TYPE_EXPMER = 2;
 }
