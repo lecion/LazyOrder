@@ -9,6 +9,10 @@ public class ApiConstants {
     //public static final String SERVER_URL = "http://lazyorder.yliec.com";
     public static final String URL_SEPERATOR = "/";
 
+    public static final String ORDER_STATE_CREATE = "CREATE";
+    public static final String ORDER_STATE_READY = "READY";
+    public static final String ORDER_STATE_CANCEL = "CANCEL";
+
     /* 这里存放响应的状态码 */
     public static final int RESPONSE_STATE_SUCCESS = 200;
     public static final int RESPONSE_STATE_FAILURE = 404;

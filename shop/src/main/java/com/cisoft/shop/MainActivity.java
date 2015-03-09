@@ -25,6 +25,7 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
 import com.cisoft.shop.expressorder.view.ExpressOrderFragment;
+import com.cisoft.shop.finishorder.view.FinishOrderFragment;
 import com.cisoft.shop.goods.view.GoodsFragment;
 import com.cisoft.shop.login.view.LoginActivity;
 import com.cisoft.shop.order.view.OrderFragment;
@@ -44,7 +45,11 @@ import java.util.List;
 import java.util.Map;
 
 
-public class MainActivity extends BaseActivity implements GoodsFragment.OnFragmentInteractionListener, OrderFragment.OnFragmentInteractionListener, ExpressOrderFragment.OnFragmentInteractionListener{
+public class MainActivity extends BaseActivity implements
+        GoodsFragment.OnFragmentInteractionListener,
+        OrderFragment.OnFragmentInteractionListener,
+        ExpressOrderFragment.OnFragmentInteractionListener,
+        FinishOrderFragment.OnFragmentInteractionListener{
 
     @BindView(id = R.id.drawer_layout)
     private DrawerLayout drawerLayout;
@@ -176,6 +181,7 @@ public class MainActivity extends BaseActivity implements GoodsFragment.OnFragme
                     break;
                 case 2:
                     ViewInject.toast("已完成订单");
+                    getFragmentManager().beginTransaction().replace(R.id.fl_container, FinishOrderFragment.newInstance("已完成订单"), "finishOrder").commit();
                     break;
                 case 3:
                     ViewInject.toast("统计");

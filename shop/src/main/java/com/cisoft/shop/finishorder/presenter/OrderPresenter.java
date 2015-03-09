@@ -1,13 +1,14 @@
-package com.cisoft.shop.expressorder.presenter;
+package com.cisoft.shop.finishorder.presenter;
 
 import android.content.Context;
 
 import com.cisoft.shop.ApiConstants;
-import com.cisoft.shop.bean.ExpressOrder;
-import com.cisoft.shop.expressorder.model.ExpressModel;
-import com.cisoft.shop.expressorder.view.IOrderView;
+import com.cisoft.shop.bean.Order;
+import com.cisoft.shop.finishorder.view.IOrderView;
 import com.cisoft.shop.goods.model.INetWorkFinished;
-import com.cisoft.shop.welcome.model.ExpmerModel;
+import com.cisoft.shop.goods.model.ShopModel;
+import com.cisoft.shop.order.model.IOrderModel;
+import com.cisoft.shop.order.model.OrderModel;
 
 import org.kymjs.aframe.ui.ViewInject;
 
@@ -18,22 +19,22 @@ import java.util.List;
  */
 public class OrderPresenter {
     IOrderView view;
-    ExpressModel model;
-    ExpmerModel expmerModel;
+    IOrderModel model;
+    ShopModel shopModel;
 
     public OrderPresenter(Context context, IOrderView view) {
         this.view = view;
-        model = new ExpressModel(context);
-        expmerModel = new ExpmerModel(context);
+        model = new OrderModel(context);
+        shopModel = new ShopModel(context);
     }
 
     public void onLoad() {
         final int size = 5;
         view.setPage(1);
         view.showProgress();
-        model.findExpressByState(ApiConstants.ORDER_STATE_CREATE, 1, size, new INetWorkFinished<ExpressOrder>() {
+        model.findOrdersByMerId(ApiConstants.ORDER_STATE_READY, 1, size, new INetWorkFinished<Order>() {
             @Override
-            public void onSuccess(List<ExpressOrder> l) {
+            public void onSuccess(List<Order> l) {
                 if (l.size() == 0 || l.size() < size) {
                     view.setPullLoadEnable(false);
                 } else {
@@ -51,9 +52,9 @@ public class OrderPresenter {
     }
 
     public void loadMore(int page, final int size) {
-        model.findExpressByState(ApiConstants.ORDER_STATE_CREATE, page, size, new INetWorkFinished<ExpressOrder>() {
+        model.findOrdersByMerId(ApiConstants.ORDER_STATE_READY, page, size, new INetWorkFinished<Order>() {
             @Override
-            public void onSuccess(List<ExpressOrder> l) {
+            public void onSuccess(List<Order> l) {
                 if (l.size() == 0 || l.size() < size) {
                     view.setPullLoadEnable(false);
                     ViewInject.toast("已经加载完了~");
@@ -82,7 +83,7 @@ public class OrderPresenter {
         if (oldState == newState) {
             return;
         }
-        expmerModel.updateOperateState(newState, new ExpmerModel.IUpdateOperateState() {
+        shopModel.updateOperateState(newState, new ShopModel.IUpdateOperateState() {
             @Override
             public void onSuccess(int code) {
                 view.setOperatingState(newState);
@@ -104,7 +105,7 @@ public class OrderPresenter {
      */
     public void switchOrderStatus(int orderId, final int position, final String state) {
 
-        model.updateExpressStatue(orderId, state, new ExpressModel.IUpdateOrderState() {
+        model.updateOrderState(orderId, state, new OrderModel.IUpdateOrderState() {
             @Override
             public void onSuccess(int code) {
                 view.setOrderStatus(position, state);
