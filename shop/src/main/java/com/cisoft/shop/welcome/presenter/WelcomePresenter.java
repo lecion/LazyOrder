@@ -1,6 +1,7 @@
 package com.cisoft.shop.welcome.presenter;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.cisoft.shop.AppConfig;
 import com.cisoft.shop.SpConstants;
@@ -33,10 +34,9 @@ public class WelcomePresenter {
 
     public void checkAccount() {
         final int type = PreferenceHelper.readInt(ctx, SpConstants.SP_FILE_NAME, SpConstants.KEY_LOGIN_TYPE, -1);
-        if (type != -1) {
-
-            final String phone = PreferenceHelper.readString(ctx, SpConstants.SP_FILE_NAME, SpConstants.KEY_LOGIN_PHONE);
-            final String pwd = PreferenceHelper.readString(ctx, SpConstants.SP_FILE_NAME, SpConstants.KEY_LOGIN_PWD);
+        final String phone = PreferenceHelper.readString(ctx, SpConstants.SP_FILE_NAME, SpConstants.KEY_LOGIN_PHONE);
+        final String pwd = PreferenceHelper.readString(ctx, SpConstants.SP_FILE_NAME, SpConstants.KEY_LOGIN_PWD);
+        if (type != -1 && !TextUtils.isEmpty(pwd) && !TextUtils.isEmpty(phone)) {
             if (type == AppConfig.TYPE_MERCHANT) {
                 shopModel.merLogin(phone, pwd, new ShopModel.ILoginListener() {
                     @Override
