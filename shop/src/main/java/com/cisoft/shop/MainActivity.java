@@ -86,12 +86,12 @@ public class MainActivity extends BaseActivity implements
     @Override
     public void setRootView() {
         setContentView(R.layout.activity_main);
+        PushManager.getInstance().initialize(this.getApplicationContext());
 
         IntentFilter filter = new IntentFilter();
         filter.addAction("com.cisoft.receivemsg");
         receiver = new MyReceiver();
         getApplicationContext().registerReceiver(receiver, filter);
-        PushManager.getInstance().initialize(this.getApplicationContext());
         String clientId = PushManager.getInstance().getClientid(this);
 //        Log.d("MainActivity", clientId);
         bindAlias();
@@ -201,7 +201,7 @@ public class MainActivity extends BaseActivity implements
                     break;
                 case 1:
                     ViewInject.toast("已完成订单");
-                    getFragmentManager().beginTransaction().replace(R.id.fl_container, FinishOrderFragment.newInstance("已完成订单"), "finishexpressorder").commit();
+                    getFragmentManager().beginTransaction().replace(R.id.fl_container, FinishExpressOrderFragment.newInstance("已完成订单"), "finishexpressorder").commit();
                     break;
                 case 2:
                     ViewInject.toast("统计");
