@@ -62,7 +62,7 @@ public class MainActivity extends BaseActivity implements
     @BindView(id = R.id.fl_container)
     private FrameLayout flContainer;
 
-    @BindView(id = R.id.btn_new_msg)
+    @BindView(id = R.id.btn_new_msg, click = true)
     private Button btnNewMsg;
 
     private List<Map<String, ?>> drawerTitle;
@@ -218,6 +218,16 @@ public class MainActivity extends BaseActivity implements
         }
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btn_new_msg:
+                selectItem(0);
+                btnNewMsg.setVisibility(View.GONE);
+                break;
+        }
+    }
+
     /**
      * 执行注销
      */
@@ -358,13 +368,18 @@ public class MainActivity extends BaseActivity implements
         if (btnNewMsg.getVisibility() == View.VISIBLE) {
             Log.d("newOrders", "visible");
             //已经有新消息提示
-            btnNewMsg.setText(msg);
+            btnNewMsg.setText("您有新订单，点击查看");
+
         } else {
             //还没有新消息提示
+            Log.d("newOrders", isOrderFront() + "");
             btnNewMsg.setVisibility(View.VISIBLE);
-            btnNewMsg.setText(msg);
-            Log.d("newOrders", "invisible");
+            btnNewMsg.setText("您有新订单，点击查看");
         }
     }
 
+
+    private boolean isOrderFront() {
+        return getFragmentManager().findFragmentByTag("order").isVisible();
+    }
 }
