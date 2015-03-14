@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<CheckedTextView xmlns:android="http://schemas.android.com/apk/res/android"
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@android:id/text1"
-    style="?android:attr/dropDownItemStyle"
     android:singleLine="true"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:ellipsize="marquee"
     android:gravity="center"
@@ -11,5 +10,7 @@
     android:textSize="13sp"
     android:paddingTop="8dp"
     android:paddingBottom="8dp"
-    android:background="#ff1a9ee4"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:background="@drawable/selector_drop_list_button_bg"
     />

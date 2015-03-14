@@ -34,8 +34,8 @@
     <color name="gray_bg">#F2F2F2</color>
     <color name="white">#ffffffff</color>
     <color name="blue">#ff3993cf</color>
-    <color name="blue_dark">#ff0c72a9</color>
-    <color name="blue_light">#ff2383f3</color>
+    <color name="blue_dark">#ff0d9cd2</color>
+    <color name="blue_light">#10AFE9</color>
     <color name="green_dark">#ff25a044</color>
     <color name="green_light">#ff4dc060</color>
     <color name="red_dark">#ffcc0000</color>
