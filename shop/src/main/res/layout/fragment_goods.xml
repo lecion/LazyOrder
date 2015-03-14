@@ -76,6 +76,8 @@
         <Spinner
             android:id="@+id/sp_shop_state"
             style="@style/spinner_style"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@id/tv_shop_name"
             />
 
         <RelativeLayout
@@ -112,6 +114,8 @@
             <Spinner
                 android:id="@+id/sp_goods_category"
                 style="@style/spinner_style"
+                android:layout_alignParentRight="true"
+                android:layout_centerInParent="true"
                 />
         </RelativeLayout>
     </RelativeLayout>
