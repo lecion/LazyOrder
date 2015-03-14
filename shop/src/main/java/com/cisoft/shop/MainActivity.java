@@ -78,6 +78,7 @@ public class MainActivity extends BaseActivity implements
     private MyReceiver receiver;
 
     private int loginType;
+    private SimpleAdapter mDrawerAdapter;
 
     public MainActivity() {
         setHiddenActionBar(false);
@@ -102,6 +103,7 @@ public class MainActivity extends BaseActivity implements
     protected void initWidget() {
         initDrawer();
         selectItem(0);
+        lvDrawer.setSelector(R.drawable.abc_ab_share_pack_holo_dark);
     }
 
     @Override
@@ -115,29 +117,24 @@ public class MainActivity extends BaseActivity implements
     private void initDrawerTitle() {
         drawerTitle = new ArrayList<Map<String, ?>>();
         HashMap<String, Object> item = new HashMap<String, Object>();
-        item.put(KEY_ICON, R.drawable.ic_launcher);
+        item.put(KEY_ICON, R.drawable.order);
         item.put(KEY_TITLE, "查看订单");
         drawerTitle.add(item);
 
         if (loginType == AppConfig.TYPE_MERCHANT) {
             item = new HashMap<String, Object>();
-            item.put(KEY_ICON, R.drawable.ic_launcher);
+            item.put(KEY_ICON, R.drawable.goods);
             item.put(KEY_TITLE, "查看商品");
             drawerTitle.add(item);
         }
 
         item = new HashMap<String, Object>();
-        item.put(KEY_ICON, R.drawable.ic_launcher);
+        item.put(KEY_ICON, R.drawable.finishorder);
         item.put(KEY_TITLE, "已完成订单");
         drawerTitle.add(item);
 
         item = new HashMap<String, Object>();
-        item.put(KEY_ICON, R.drawable.ic_launcher);
-        item.put(KEY_TITLE, "统计");
-        drawerTitle.add(item);
-
-        item = new HashMap<String, Object>();
-        item.put(KEY_ICON, R.drawable.ic_launcher);
+        item.put(KEY_ICON, R.drawable.logout);
         item.put(KEY_TITLE, "注销");
         drawerTitle.add(item);
     }
@@ -146,13 +143,16 @@ public class MainActivity extends BaseActivity implements
      * 初始化抽屉
      */
     private void initDrawer() {
-        lvDrawer.setAdapter(new SimpleAdapter(this, drawerTitle, R.layout.activity_drawer_title_cell, new String[]{KEY_ICON, KEY_TITLE}, new int[]{R.id.iv_drawer_icon, R.id.tv_drawer_title}));
+        mDrawerAdapter = new SimpleAdapter(this, drawerTitle, R.layout.activity_drawer_title_cell, new String[]{KEY_ICON, KEY_TITLE}, new int[]{R.id.iv_drawer_icon, R.id.tv_drawer_title});
+        lvDrawer.setAdapter(mDrawerAdapter);
         lvDrawer.setOnItemClickListener(new DrawerItemClickListener());
         drawerToggle = new DrawerToggle(this, drawerLayout, R.drawable.ic_launcher, R.drawable.ic_launcher);
         drawerLayout.setDrawerListener(drawerToggle);
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
     }
+
+
 
 
 
@@ -186,9 +186,6 @@ public class MainActivity extends BaseActivity implements
                     getFragmentManager().beginTransaction().replace(R.id.fl_container, FinishOrderFragment.newInstance("已完成订单"), "finishOrder").commit();
                     break;
                 case 3:
-                    ViewInject.toast("统计");
-                    break;
-                case 4:
                     doLogout();
                     break;
             }
@@ -204,9 +201,6 @@ public class MainActivity extends BaseActivity implements
                     getFragmentManager().beginTransaction().replace(R.id.fl_container, FinishExpressOrderFragment.newInstance("已完成订单"), "finishexpressorder").commit();
                     break;
                 case 2:
-                    ViewInject.toast("统计");
-                    break;
-                case 3:
                     doLogout();
                     break;
             }
@@ -375,4 +369,6 @@ public class MainActivity extends BaseActivity implements
     private boolean isOrderFront() {
         return getFragmentManager().findFragmentByTag("order").isVisible();
     }
+
+
 }

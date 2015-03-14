@@ -25,4 +25,12 @@
     <string name="success_to_load_goods_category_list">加载商品类别列表成功</string>
     <string name="title_activity_login">LoginActivity</string>
 
+
+    <!--iconfont相关-->
+    <string name="iconfont_order">&#xe785;</string>
+    <string name="iconfont_goods">&#xe662;</string>
+    <string name="iconfont_finish_order">&#xe604;</string>
+    <string name="iconfont_logout">&#xe64a;</string>
+
+
 </resources>

@@ -44,4 +44,6 @@
     <color name="color_f7">#fff7f7f7</color>
     <color name="color_f6">#fff6f6f6</color>
     <color name="order_detail_price">#ffde4c00</color>
+    <color name="drawer_bg">#fff5f5ff</color>
+
 </resources>
