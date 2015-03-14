@@ -331,7 +331,6 @@ public class MainActivity extends BaseActivity implements
                     byte[] payload = data.getByteArray("payload");
                     if (payload != null) {
                         String rs = new String(payload);
-                        Log.d("GET_MESSAGE", rs);
                         Message msg = handler.obtainMessage();
                         msg.what = GET_MSG;
                         Bundle bundle = new Bundle();
@@ -341,8 +340,6 @@ public class MainActivity extends BaseActivity implements
                     }
                     break;
                 case PushConsts.GET_CLIENTID:
-                    String clientId = data.getString("clientid");
-                    Log.d("GET_CLIENTID", clientId);
                     break;
             }
         }
@@ -362,17 +359,13 @@ public class MainActivity extends BaseActivity implements
     };
 
     private void newOrders(Bundle data) {
-        //TODO 获得新订单更新UI
-        Log.d("DEBUGDEBUG", data.getString("msg"));
         String msg = data.getString("msg");
         if (btnNewMsg.getVisibility() == View.VISIBLE) {
-            Log.d("newOrders", "visible");
             //已经有新消息提示
             btnNewMsg.setText("您有新订单，点击查看");
 
         } else {
             //还没有新消息提示
-            Log.d("newOrders", isOrderFront() + "");
             btnNewMsg.setVisibility(View.VISIBLE);
             btnNewMsg.setText("您有新订单，点击查看");
         }
