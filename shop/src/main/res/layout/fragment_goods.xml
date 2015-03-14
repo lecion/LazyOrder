@@ -11,15 +11,15 @@
         android:layout_width="match_parent"
         android:layout_height="118dp"
         android:background="@color/white"
-        android:paddingTop="8dp"
         >
 
         <ImageView
             android:id="@+id/iv_shop_logo"
-            android:layout_width="70dp"
-            android:layout_height="50dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="8dp"
+            android:layout_width="@dimen/material_72"
+            android:layout_height="@dimen/material_56"
+            android:layout_marginLeft="@dimen/material_16"
+            android:layout_marginTop="@dimen/material_16"
+            android:layout_marginBottom="@dimen/material_16"
             android:src="@drawable/ic_launcher" />
 
         <TextView
@@ -27,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignTop="@id/iv_shop_logo"
-            android:layout_marginLeft="12dp"
+            android:layout_marginLeft="@dimen/material_16"
             android:layout_toRightOf="@id/iv_shop_logo"
             android:text="叮当超市"
             android:textSize="16sp"
@@ -91,7 +91,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:layout_marginLeft="16dp"
+                android:layout_marginLeft="@dimen/material_16"
                 android:orientation="horizontal">
 
                 <RadioButton
@@ -129,5 +129,6 @@
         android:layout_height="match_parent"
         android:headerDividersEnabled="false"
         android:footerDividersEnabled="false"
+        android:divider="@null"
         ></com.cisoft.shop.widget.RefreshDeleteListView>
 </LinearLayout>

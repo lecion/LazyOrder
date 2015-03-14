@@ -3,12 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:descendantFocusability="blocksDescendants"
-    android:background="@color/white"
-    android:paddingTop="16dp"
-    android:paddingBottom="16dp"
-    android:paddingLeft="12dp"
-    android:paddingRight="12dp"
-
+    android:paddingTop="@dimen/material_16"
+    android:paddingBottom="@dimen/material_16"
     >
 
     <Button
@@ -17,12 +13,12 @@
         android:layout_height="32dp"
         android:layout_centerVertical="true"
         android:textColor="@color/white"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
+        android:paddingLeft="@dimen/material_8"
+        android:paddingRight="@dimen/material_8"
         android:background="@drawable/selector_blue_corners_button"
-        android:layout_marginLeft="16dp"
         android:focusable="false"
         android:textSize="13sp"
+        android:layout_marginLeft="@dimen/material_16"
         />
 
     <TextView
@@ -40,7 +36,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:text="已下单20分钟" />
-
+        android:text="已下单20分钟"
+        android:layout_marginRight="@dimen/material_16"
+        />
 
 </RelativeLayout>

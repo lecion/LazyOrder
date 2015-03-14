@@ -2,19 +2,16 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:padding="8dp"
-    android:paddingRight="48dp"
-    android:paddingLeft="48dp"
     android:background="@color/white"
+    android:paddingTop="@dimen/material_16"
+    android:paddingBottom="@dimen/material_16"
     >
     <ImageView
         android:id="@+id/iv_goods_img"
         android:src="@drawable/ic_launcher"
-        android:layout_width="71dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="4dp"
-        android:paddingBottom="4dp"
-        android:layout_marginLeft="8dp"
+        android:layout_width="@dimen/material_72"
+        android:layout_height="@dimen/material_56"
+        android:layout_marginLeft="@dimen/material_16"
         />
 
     <TextView
@@ -24,7 +21,7 @@
         android:text="商品名称"
         android:layout_toRightOf="@id/iv_goods_img"
         android:layout_alignTop="@id/iv_goods_img"
-        android:layout_marginLeft="12dp"
+        android:layout_marginLeft="@dimen/material_16"
         android:textSize="16sp"
         />
 
@@ -57,20 +54,19 @@
         android:text="￥99"
         android:layout_alignParentRight="true"
         android:layout_alignTop="@id/tv_goods_name"
-        android:layout_marginRight="8dp"
+        android:layout_marginRight="@dimen/material_16"
         />
 
     <Button
         android:id="@+id/btn_goods_status"
-        android:layout_width="60dp"
-        android:layout_height="20dp"
+        android:layout_width="@dimen/material_72"
+        android:layout_height="@dimen/material_32"
         android:text="正在销售"
         android:layout_alignBottom="@id/iv_goods_img"
-        android:layout_marginRight="4dp"
-        android:background="#ff0000"
-        android:textSize="12sp"
-        android:layout_alignRight="@id/tv_goods_price"
+        android:layout_marginRight="@dimen/material_16"
+        android:textSize="11sp"
         android:textColor="@android:color/white"
+        android:layout_alignParentRight="true"
         />
 
 </RelativeLayout>

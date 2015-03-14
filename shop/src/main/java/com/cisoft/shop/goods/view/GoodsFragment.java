@@ -428,7 +428,7 @@ public class GoodsFragment extends BaseFragment implements IGoodsView{
             holder.tvGoodsSales.setText(String.valueOf(goods.getSalesNum()));
             holder.tvGoodsPrice.setText("￥" + String.valueOf(goods.getCmPrice()));
             holder.btnGoodsStatus.setText(goodsStates[goods.getState()]);
-            holder.btnGoodsStatus.setBackgroundColor(goodsStateColors[goods.getState()]);
+            holder.btnGoodsStatus.setBackgroundResource(getGoodsStateBG(goods.getState()));
             holder.btnGoodsStatus.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -436,6 +436,10 @@ public class GoodsFragment extends BaseFragment implements IGoodsView{
                 }
             });
             return convertView;
+        }
+
+        private int getGoodsStateBG(int state) {
+            return state == 0 ? R.drawable.selector_red_corners_button : R.drawable.selector_blue_corners_button;
         }
     }
 
