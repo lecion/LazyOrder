@@ -145,11 +145,6 @@
             android:name=".login.view.LoginActivity"
             android:label="@string/title_activity_login" />
 
-        <service
-            android:name=".MyService"
-            android:enabled="true"
-            android:exported="true" >
-        </service>
     </application>
 
 </manifest>

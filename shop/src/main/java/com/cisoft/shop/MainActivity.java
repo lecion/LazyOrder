@@ -13,7 +13,6 @@ import android.os.Message;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -75,7 +74,7 @@ public class MainActivity extends BaseActivity implements
 
     private  ActionBarDrawerToggle drawerToggle = null;
 
-    private MyReceiver receiver;
+    private NewMsgReceiver receiver;
 
     private int loginType;
     private SimpleAdapter mDrawerAdapter;
@@ -87,14 +86,8 @@ public class MainActivity extends BaseActivity implements
     @Override
     public void setRootView() {
         setContentView(R.layout.activity_main);
+        initReceiver();
         PushManager.getInstance().initialize(this.getApplicationContext());
-
-        IntentFilter filter = new IntentFilter();
-        filter.addAction("com.cisoft.receivemsg");
-        receiver = new MyReceiver();
-        getApplicationContext().registerReceiver(receiver, filter);
-        String clientId = PushManager.getInstance().getClientid(this);
-//        Log.d("MainActivity", clientId);
         bindAlias();
         loginType = IOUtil.getLoginType(this);
     }
@@ -103,12 +96,18 @@ public class MainActivity extends BaseActivity implements
     protected void initWidget() {
         initDrawer();
         selectItem(0);
-        lvDrawer.setSelector(R.drawable.abc_ab_share_pack_holo_dark);
     }
 
     @Override
     protected void initData() {
         initDrawerTitle();
+    }
+
+    private void initReceiver() {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("com.cisoft.shop.receivemsg");
+        receiver = new NewMsgReceiver();
+        getApplicationContext().registerReceiver(receiver, filter);
     }
 
     /**
@@ -152,12 +151,13 @@ public class MainActivity extends BaseActivity implements
         getActionBar().setHomeButtonEnabled(true);
     }
 
-
-
-
-
     @Override
     public void onFragmentInteraction(Uri uri) {
+    }
+
+    @Override
+    public void hideNewMsg() {
+        btnNewMsg.setVisibility(View.GONE);
     }
 
     /**
@@ -217,7 +217,6 @@ public class MainActivity extends BaseActivity implements
         switch (v.getId()) {
             case R.id.btn_new_msg:
                 selectItem(0);
-                btnNewMsg.setVisibility(View.GONE);
                 break;
         }
     }
@@ -310,16 +309,19 @@ public class MainActivity extends BaseActivity implements
         }
     }
 
-    public class MyReceiver extends BroadcastReceiver {
+    /**
+     * 接受推送消息的Receiver
+     */
+    public class NewMsgReceiver extends BroadcastReceiver {
         public static final int GET_MSG = 1;
 
-        public MyReceiver() {
+        public NewMsgReceiver() {
         }
 
         @Override
         public void onReceive(Context context, Intent intent) {
             Bundle data = intent.getExtras();
-            Log.d("onReceive", "MainActivity");
+//            Log.d("onReceive", "MainActivity");
             switch (data.getInt(PushConsts.CMD_ACTION)) {
                 case PushConsts.GET_MSG_DATA:
                     byte[] payload = data.getByteArray("payload");
@@ -343,7 +345,7 @@ public class MainActivity extends BaseActivity implements
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
-                case MyReceiver.GET_MSG:
+                case NewMsgReceiver.GET_MSG:
                     newOrders(msg.getData());
                     break;
                 default:

@@ -3,9 +3,6 @@ package com.cisoft.shop.receiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
-
-import com.cisoft.shop.MyService;
 
 public class PushReciever extends BroadcastReceiver {
     public PushReciever() {
@@ -13,9 +10,10 @@ public class PushReciever extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.d("onReceive", "PushReceiver:");
-        Intent i = new Intent(context, MyService.class);
+//        Log.d("onReceive", "PushReceiver:");
+        Intent i = new Intent();
+        i.setAction("com.cisoft.shop.receivemsg");
         i.putExtras(intent.getExtras());
-        context.startService(i);
+        context.sendBroadcast(i);
     }
 }

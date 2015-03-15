@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -342,8 +341,13 @@ public class ExpressOrderFragment extends BaseFragment implements IOrderView {
         lvOrder.showFooterNormal();
     }
 
+    @Override
+    public void hideNewMsg() {
+        mListener.hideNewMsg();
+    }
+
     public interface OnFragmentInteractionListener {
-        public void onFragmentInteraction(Uri uri);
+        public void hideNewMsg();
     }
 
     private class OrderListAdapter extends BaseAdapter {

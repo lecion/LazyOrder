@@ -42,6 +42,7 @@ public class OrderPresenter {
                 }
                 view.setOrderList(l);
                 view.hideProgress();
+                view.hideNewMsg();
             }
 
             @Override
