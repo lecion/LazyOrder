@@ -2,8 +2,8 @@ package com.cisoft.shop.goods.model;
 
 import android.content.Context;
 
+import com.cisoft.shop.Api;
 import com.cisoft.shop.R;
-import com.cisoft.shop.ApiConstants;
 import com.cisoft.shop.bean.Shop;
 import com.cisoft.shop.http.AbsService;
 import com.cisoft.shop.util.L;
@@ -22,7 +22,7 @@ import java.util.List;
 public class ShopModel extends AbsService {
 
     public ShopModel(Context context) {
-        super(context, ApiConstants.MODULE_MERCHANTS);
+        super(context, Api.MODULE_MERCHANTS);
     }
 
     /**
@@ -32,17 +32,17 @@ public class ShopModel extends AbsService {
      */
     public void loadShopDataByTypeId(int typeId, final int page, int pager, final INetWorkFinished<Shop> loadFinishCallback){
         KJStringParams params = new KJStringParams();
-        params.put(ApiConstants.KEY_MER_PAGE, String.valueOf(page));
-        params.put(ApiConstants.KEY_MER_PAGER, String.valueOf(pager));
-        params.put(ApiConstants.KEY_MER_TYPE_ID, String.valueOf(typeId));
+        params.put(Api.KEY_MER_PAGE, String.valueOf(page));
+        params.put(Api.KEY_MER_PAGER, String.valueOf(pager));
+        params.put(Api.KEY_MER_TYPE_ID, String.valueOf(typeId));
 
-        super.asyncUrlGet(ApiConstants.METHOD_MERCHANTS_FIND_BY_TYPE_ID, params, false, new SuccessCallback() {
+        super.asyncUrlGet(Api.METHOD_MERCHANTS_FIND_BY_TYPE_ID, params, false, new SuccessCallback() {
             @Override
             public void onSuccess(String result) {
                 List<Shop> shops = new ArrayList<Shop>();
                 try {
                     JSONObject jsonObj = new JSONObject(result);
-                    JSONArray shopArr = jsonObj.getJSONArray(ApiConstants.KEY_MER_DATA);
+                    JSONArray shopArr = jsonObj.getJSONArray(Api.KEY_MER_DATA);
                     JSONObject shopObj = null;
                     Shop shop = null;
                     for (int i = 0; i < shopArr.length(); i++) {
@@ -77,14 +77,14 @@ public class ShopModel extends AbsService {
     public void updateOperateState(int state, final IUpdateOperateState finishedListener) {
         Shop shop = L.getShop(context);
         KJStringParams params = new KJStringParams();
-        params.put(ApiConstants.KEY_MER_OPERATING_STATE, String.valueOf(state));
-        params.put(ApiConstants.KEY_MER_MER_ID, String.valueOf(shop.getId()));
-        asyncUrlGet(ApiConstants.METHOD_MER_UPDATE_OPERATING_STATE, params, false, new SuccessCallback() {
+        params.put(Api.KEY_MER_OPERATING_STATE, String.valueOf(state));
+        params.put(Api.KEY_MER_MER_ID, String.valueOf(shop.getId()));
+        asyncUrlGet(Api.METHOD_MER_UPDATE_OPERATING_STATE, params, false, new SuccessCallback() {
             @Override
             public void onSuccess(String result) throws JSONException {
                 JSONObject jsonObj = new JSONObject(result);
-                int state = jsonObj.getInt(ApiConstants.KEY_STATE);
-                String data = jsonObj.getString(ApiConstants.KEY_DATA);
+                int state = jsonObj.getInt(Api.KEY_STATE);
+                String data = jsonObj.getString(Api.KEY_DATA);
                 if (state == 200) {
                     finishedListener.onSuccess(state);
                 } else {
@@ -106,13 +106,13 @@ public class ShopModel extends AbsService {
      */
     public void merLogin(String merPhone, String merPwd, final ILoginListener loginListener) {
         KJStringParams params = new KJStringParams();
-        params.put(ApiConstants.KEY_MER_MER_PHONE, merPhone);
-        params.put(ApiConstants.KEY_MER_MER_PWD, merPwd);
-        asyncUrlGet(ApiConstants.METHOD_MER_MER_LOGIN, params, false, new SuccessCallback() {
+        params.put(Api.KEY_MER_MER_PHONE, merPhone);
+        params.put(Api.KEY_MER_MER_PWD, merPwd);
+        asyncUrlGet(Api.METHOD_MER_MER_LOGIN, params, false, new SuccessCallback() {
             @Override
             public void onSuccess(String result) throws JSONException {
                 JSONObject jsonObj = new JSONObject(result);
-                int state = jsonObj.getInt(ApiConstants.KEY_STATE);
+                int state = jsonObj.getInt(Api.KEY_STATE);
                 if (state == 200) {
                     //登陆成功
                     loginListener.onSuccess(jsonObj.getJSONObject("data"));
@@ -145,16 +145,16 @@ public class ShopModel extends AbsService {
     public String getResponseStateInfo(int stateCode) {
         String stateInfo = "";
         switch (stateCode) {
-            case ApiConstants.RESPONSE_STATE_ERROR_LOGIN:
+            case Api.RESPONSE_STATE_ERROR_LOGIN:
                 stateInfo = "账号或密码错误";
                 break;
-            case ApiConstants.RESPONSE_STATE_SUCCESS:
+            case Api.RESPONSE_STATE_SUCCESS:
                 stateInfo = "加载商品成功";
                 break;
-            case ApiConstants.RESPONSE_STATE_NOT_NET:
+            case Api.RESPONSE_STATE_NOT_NET:
                 stateInfo = context.getResources().getString(R.string.no_net_service);
                 break;
-            case ApiConstants.RESPONSE_STATE_SERVICE_EXCEPTION:
+            case Api.RESPONSE_STATE_SERVICE_EXCEPTION:
                 stateInfo = context.getResources().getString(R.string.service_have_error_exception);
                 break;
         }

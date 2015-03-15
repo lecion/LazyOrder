@@ -2,7 +2,7 @@ package com.cisoft.shop.expressorder.model;
 
 import android.content.Context;
 
-import com.cisoft.shop.ApiConstants;
+import com.cisoft.shop.Api;
 import com.cisoft.shop.R;
 import com.cisoft.shop.bean.Expmer;
 import com.cisoft.shop.bean.ExpressOrder;
@@ -24,24 +24,24 @@ import java.util.List;
 public class ExpressModel extends AbsService  {
 
     public ExpressModel(Context context) {
-        super(context, ApiConstants.MODULE_EXPRESS);
+        super(context, Api.MODULE_EXPRESS);
     }
 
     public void findExpressByState(String expressState, int page, int size, final INetWorkFinished<ExpressOrder> finishedListener) {
         KJStringParams params = new KJStringParams();
         Expmer expmer = L.getExpmer(context);
-        params.put(ApiConstants.KEY_EXPRESS_EXPMER_ID, String.valueOf(expmer.getId()));
-        params.put(ApiConstants.KEY_EXPRESS_EXPRESS_STATE, expressState);
-        params.put(ApiConstants.KEY_EXPRESS_PAGE, String.valueOf(page));
-        params.put(ApiConstants.KEY_EXPRESS_SIZE, String.valueOf(size));
-        asyncUrlGet(ApiConstants.METHOD_EXPRESS_FIND_EXPRESS_BY_STATE, params, false, new SuccessCallback() {
+        params.put(Api.KEY_EXPRESS_EXPMER_ID, String.valueOf(expmer.getId()));
+        params.put(Api.KEY_EXPRESS_EXPRESS_STATE, expressState);
+        params.put(Api.KEY_EXPRESS_PAGE, String.valueOf(page));
+        params.put(Api.KEY_EXPRESS_SIZE, String.valueOf(size));
+        asyncUrlGet(Api.METHOD_EXPRESS_FIND_EXPRESS_BY_STATE, params, false, new SuccessCallback() {
             @Override
             public void onSuccess(String result) throws JSONException {
                 List<ExpressOrder> orderList = new ArrayList<ExpressOrder>();
                 JSONObject jsonObj = null;
                 try {
                     jsonObj = new JSONObject(result);
-                    JSONArray jsonArr = jsonObj.getJSONArray(ApiConstants.KEY_DATA);
+                    JSONArray jsonArr = jsonObj.getJSONArray(Api.KEY_DATA);
                     for (int i = 0; i < jsonArr.length(); i++) {
                         orderList.add(new ExpressOrder(jsonArr.getJSONObject(i)));
                     }
@@ -51,7 +51,7 @@ public class ExpressModel extends AbsService  {
                 } catch (JSONException e) {
                     //这里是json格式不对，无法完成解析
                     if (finishedListener != null) {
-                        finishedListener.onFailure(getResponseStateInfo(ApiConstants.RESPONSE_STATE_SERVICE_EXCEPTION));
+                        finishedListener.onFailure(getResponseStateInfo(Api.RESPONSE_STATE_SERVICE_EXCEPTION));
                     }
                 }
             }
@@ -65,9 +65,9 @@ public class ExpressModel extends AbsService  {
 
     public void updateExpressStatue(int expressId, final String state, final ExpressModel.IUpdateOrderState finishedListener) {
         KJStringParams params = new KJStringParams();
-        params.put(ApiConstants.KEY_EXPRESS_EXPRESS_ID, String.valueOf(expressId));
-        params.put(ApiConstants.KEY_EXPRESS_STATUE, String.valueOf(state));
-        asyncUrlGet(ApiConstants.METHOD_EXPRESS_UPDATE_EXPRESS_STATUE, params, false, new SuccessCallback() {
+        params.put(Api.KEY_EXPRESS_EXPRESS_ID, String.valueOf(expressId));
+        params.put(Api.KEY_EXPRESS_STATUE, String.valueOf(state));
+        asyncUrlGet(Api.METHOD_EXPRESS_UPDATE_EXPRESS_STATUE, params, false, new SuccessCallback() {
             @Override
             public void onSuccess(String result) throws JSONException {
                 JSONObject jsonObject= new JSONObject(result);
@@ -91,16 +91,16 @@ public class ExpressModel extends AbsService  {
     public String getResponseStateInfo(int stateCode) {
         String stateInfo = "";
         switch (stateCode) {
-            case ApiConstants.RESPONSE_STATE_FAILURE:
+            case Api.RESPONSE_STATE_FAILURE:
                 stateInfo = context.getResources().getString(R.string.fail_to_load_goods_list);
                 break;
-            case ApiConstants.RESPONSE_STATE_SUCCESS:
+            case Api.RESPONSE_STATE_SUCCESS:
                 stateInfo = context.getResources().getString(R.string.success_to_load_goods_list);
                 break;
-            case ApiConstants.RESPONSE_STATE_NOT_NET:
+            case Api.RESPONSE_STATE_NOT_NET:
                 stateInfo = context.getResources().getString(R.string.no_net_service);
                 break;
-            case ApiConstants.RESPONSE_STATE_SERVICE_EXCEPTION:
+            case Api.RESPONSE_STATE_SERVICE_EXCEPTION:
                 stateInfo = context.getResources().getString(R.string.service_have_error_exception);
                 break;
         }

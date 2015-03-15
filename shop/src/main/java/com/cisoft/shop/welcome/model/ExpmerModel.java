@@ -2,7 +2,7 @@ package com.cisoft.shop.welcome.model;
 
 import android.content.Context;
 
-import com.cisoft.shop.ApiConstants;
+import com.cisoft.shop.Api;
 import com.cisoft.shop.R;
 import com.cisoft.shop.bean.Expmer;
 import com.cisoft.shop.http.AbsService;
@@ -18,7 +18,7 @@ import org.kymjs.aframe.http.KJStringParams;
 public class ExpmerModel extends AbsService {
 
     public ExpmerModel(Context context) {
-        super(context, ApiConstants.MODULE_EXPMER);
+        super(context, Api.MODULE_EXPMER);
     }
 
     /**
@@ -28,13 +28,13 @@ public class ExpmerModel extends AbsService {
      */
     public void expmerLogin(String phone, String pwd, final ILoginListener loginListener) {
         KJStringParams params = new KJStringParams();
-        params.put(ApiConstants.KEY_EXPMER_EXPMER_PHONE, phone);
-        params.put(ApiConstants.KEY_EXPMER_EXPMER_PWD, pwd);
-        asyncUrlGet(ApiConstants.METHOD_EXPMER_EXPMER_LOGIN, params, false, new SuccessCallback() {
+        params.put(Api.KEY_EXPMER_EXPMER_PHONE, phone);
+        params.put(Api.KEY_EXPMER_EXPMER_PWD, pwd);
+        asyncUrlGet(Api.METHOD_EXPMER_EXPMER_LOGIN, params, false, new SuccessCallback() {
             @Override
             public void onSuccess(String result) throws JSONException {
                 JSONObject jsonObj = new JSONObject(result);
-                int state = jsonObj.getInt(ApiConstants.KEY_STATE);
+                int state = jsonObj.getInt(Api.KEY_STATE);
                 if (state == 200) {
                     //登陆成功
                     loginListener.onSuccess(jsonObj.getJSONObject("data"));
@@ -58,14 +58,14 @@ public class ExpmerModel extends AbsService {
     public void updateOperateState(int state, final IUpdateOperateState finishedListener) {
         Expmer expmer = L.getExpmer(context);
         KJStringParams params = new KJStringParams();
-        params.put(ApiConstants.KEY_EXPMER_OPERATING_STATE, String.valueOf(state));
-        params.put(ApiConstants.KEY_EXPRESS_EXPMER_ID, String.valueOf(expmer.getId()));
-        asyncUrlGet(ApiConstants.METHOD_EXPMER_UPDATE_OPERATING_STATE, params, false, new SuccessCallback() {
+        params.put(Api.KEY_EXPMER_OPERATING_STATE, String.valueOf(state));
+        params.put(Api.KEY_EXPRESS_EXPMER_ID, String.valueOf(expmer.getId()));
+        asyncUrlGet(Api.METHOD_EXPMER_UPDATE_OPERATING_STATE, params, false, new SuccessCallback() {
             @Override
             public void onSuccess(String result) throws JSONException {
                 JSONObject jsonObj = new JSONObject(result);
-                int state = jsonObj.getInt(ApiConstants.KEY_STATE);
-                String data = jsonObj.getString(ApiConstants.KEY_DATA);
+                int state = jsonObj.getInt(Api.KEY_STATE);
+                String data = jsonObj.getString(Api.KEY_DATA);
                 if (state == 200) {
                     finishedListener.onSuccess(state);
                 } else {
@@ -96,16 +96,16 @@ public class ExpmerModel extends AbsService {
     public String getResponseStateInfo(int stateCode) {
         String stateInfo = "";
         switch (stateCode) {
-            case ApiConstants.RESPONSE_STATE_ERROR_LOGIN:
+            case Api.RESPONSE_STATE_ERROR_LOGIN:
                 stateInfo = "账号或密码错误";
                 break;
-            case ApiConstants.RESPONSE_STATE_SUCCESS:
+            case Api.RESPONSE_STATE_SUCCESS:
                 stateInfo = "加载商品成功";
                 break;
-            case ApiConstants.RESPONSE_STATE_NOT_NET:
+            case Api.RESPONSE_STATE_NOT_NET:
                 stateInfo = context.getResources().getString(R.string.no_net_service);
                 break;
-            case ApiConstants.RESPONSE_STATE_SERVICE_EXCEPTION:
+            case Api.RESPONSE_STATE_SERVICE_EXCEPTION:
                 stateInfo = context.getResources().getString(R.string.service_have_error_exception);
                 break;
         }

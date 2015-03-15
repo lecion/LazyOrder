@@ -20,7 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.cisoft.shop.ApiConstants;
+import com.cisoft.shop.Api;
 import com.cisoft.shop.R;
 import com.cisoft.shop.bean.Order;
 import com.cisoft.shop.bean.Shop;
@@ -394,15 +394,15 @@ public class FinishOrderFragment extends BaseFragment implements IOrderView {
         }
 
         private String getOperateState(String state) {
-            return state.equals(ApiConstants.ORDER_STATE_CREATE) ? ApiConstants.ORDER_STATE_READY : ApiConstants.ORDER_STATE_CREATE;
+            return state.equals(Api.ORDER_STATE_CREATE) ? Api.ORDER_STATE_READY : Api.ORDER_STATE_CREATE;
         }
 
         private String getOrderStatusText(String state) {
-            return state.equals(ApiConstants.ORDER_STATE_CREATE) ? "未准备" : "已准备";
+            return state.equals(Api.ORDER_STATE_CREATE) ? "未准备" : "已准备";
         }
 
         private Drawable getOrderStatusBackground(String state) {
-            return state.equals(ApiConstants.ORDER_STATE_CREATE) ? getResources().getDrawable(R.drawable.selector_red_corners_button) : getResources().getDrawable(R.drawable.selector_blue_corners_button);
+            return state.equals(Api.ORDER_STATE_CREATE) ? getResources().getDrawable(R.drawable.selector_red_corners_button) : getResources().getDrawable(R.drawable.selector_blue_corners_button);
         }
     }
 

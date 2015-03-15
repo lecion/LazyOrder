@@ -1,6 +1,6 @@
 package com.cisoft.shop.bean;
 
-import com.cisoft.shop.ApiConstants;
+import com.cisoft.shop.Api;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -100,24 +100,24 @@ public class Expmer extends AbsBean implements Serializable{
             String key = null;
             while (iterator.hasNext()) {
                 key = iterator.next();
-                if (key.equals(ApiConstants.KEY_EXPMER_ID)) {
-                    setId(jsonObj.getInt(ApiConstants.KEY_EXPMER_ID));
-                } else if(key.equals(ApiConstants.KEY_EXPMER_OPENTIME)) {
-                    setOpenTime(jsonObj.getString(ApiConstants.KEY_EXPMER_OPENTIME));
-                } else if(key.equals(ApiConstants.KEY_EXPMER_CLOSETIME)) {
-                    setCloseTime(jsonObj.getString(ApiConstants.KEY_EXPMER_CLOSETIME));
-                } else if(key.equals(ApiConstants.KEY_EXPMER_PIC)) {
-                    setPic(jsonObj.getString(ApiConstants.KEY_EXPMER_PIC));
-                } else if(key.equals(ApiConstants.KEY_EXPMER_OPERATING_STATE)) {
-                    setOperatingState(jsonObj.getInt(ApiConstants.KEY_EXPMER_OPERATING_STATE));
-                } else if(key.equals(ApiConstants.KEY_EXPMER_SALES)) {
-                    setSales(jsonObj.getString(ApiConstants.KEY_EXPMER_SALES));
-                } else if(key.equals(ApiConstants.KEY_EXPMER_ADDRESS)) {
-                    setAddress(jsonObj.getString(ApiConstants.KEY_EXPMER_ADDRESS));
-                } else if (key.equals(ApiConstants.KEY_MER_CID)) {
-                    setcID(ApiConstants.KEY_MER_CID);
-                } else if (key.equals(ApiConstants.KEY_EXPMER_EXPMER_NAME)){
-                    setName(jsonObj.getString(ApiConstants.KEY_EXPMER_EXPMER_NAME));
+                if (key.equals(Api.KEY_EXPMER_ID)) {
+                    setId(jsonObj.getInt(Api.KEY_EXPMER_ID));
+                } else if(key.equals(Api.KEY_EXPMER_OPENTIME)) {
+                    setOpenTime(jsonObj.getString(Api.KEY_EXPMER_OPENTIME));
+                } else if(key.equals(Api.KEY_EXPMER_CLOSETIME)) {
+                    setCloseTime(jsonObj.getString(Api.KEY_EXPMER_CLOSETIME));
+                } else if(key.equals(Api.KEY_EXPMER_PIC)) {
+                    setPic(jsonObj.getString(Api.KEY_EXPMER_PIC));
+                } else if(key.equals(Api.KEY_EXPMER_OPERATING_STATE)) {
+                    setOperatingState(jsonObj.getInt(Api.KEY_EXPMER_OPERATING_STATE));
+                } else if(key.equals(Api.KEY_EXPMER_SALES)) {
+                    setSales(jsonObj.getString(Api.KEY_EXPMER_SALES));
+                } else if(key.equals(Api.KEY_EXPMER_ADDRESS)) {
+                    setAddress(jsonObj.getString(Api.KEY_EXPMER_ADDRESS));
+                } else if (key.equals(Api.KEY_MER_CID)) {
+                    setcID(Api.KEY_MER_CID);
+                } else if (key.equals(Api.KEY_EXPMER_EXPMER_NAME)){
+                    setName(jsonObj.getString(Api.KEY_EXPMER_EXPMER_NAME));
                 }
             }
         } catch (JSONException e) {

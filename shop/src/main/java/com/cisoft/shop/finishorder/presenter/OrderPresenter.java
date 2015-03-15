@@ -2,7 +2,7 @@ package com.cisoft.shop.finishorder.presenter;
 
 import android.content.Context;
 
-import com.cisoft.shop.ApiConstants;
+import com.cisoft.shop.Api;
 import com.cisoft.shop.bean.Order;
 import com.cisoft.shop.finishorder.view.IOrderView;
 import com.cisoft.shop.goods.model.INetWorkFinished;
@@ -32,7 +32,7 @@ public class OrderPresenter {
         final int size = 5;
         view.setPage(1);
         view.showProgress();
-        model.findOrdersByMerId(ApiConstants.ORDER_STATE_READY, 1, size, new INetWorkFinished<Order>() {
+        model.findOrdersByMerId(Api.ORDER_STATE_READY, 1, size, new INetWorkFinished<Order>() {
             @Override
             public void onSuccess(List<Order> l) {
                 if (l.size() == 0 || l.size() < size) {
@@ -52,7 +52,7 @@ public class OrderPresenter {
     }
 
     public void loadMore(int page, final int size) {
-        model.findOrdersByMerId(ApiConstants.ORDER_STATE_READY, page, size, new INetWorkFinished<Order>() {
+        model.findOrdersByMerId(Api.ORDER_STATE_READY, page, size, new INetWorkFinished<Order>() {
             @Override
             public void onSuccess(List<Order> l) {
                 if (l.size() == 0 || l.size() < size) {

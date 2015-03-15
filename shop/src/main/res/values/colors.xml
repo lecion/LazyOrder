@@ -46,4 +46,9 @@
     <color name="order_detail_price">#ffde4c00</color>
     <color name="drawer_bg">#fff5f5ff</color>
 
+    <color name="card_background">@color/white</color>
+    <color name="card_shadow">#10000000</color>
+    <color name="lite_blue">#ff359ff2</color>
+    <color name="window_background">#00000000</color>
+    <color name="material_font_color">#239788</color>
 </resources>

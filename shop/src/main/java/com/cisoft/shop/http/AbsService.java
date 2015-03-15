@@ -2,8 +2,8 @@ package com.cisoft.shop.http;
 
 import android.content.Context;
 
+import com.cisoft.shop.Api;
 import com.cisoft.shop.R;
-import com.cisoft.shop.ApiConstants;
 import com.cisoft.shop.AppConfig;
 
 import org.json.JSONException;
@@ -62,7 +62,7 @@ public abstract class AbsService {
     	if (!SystemTool.checkNet(context)) {
     		ErrHandleUtils.sendNotNetReceiver(context);
     		if (failureCallback != null) {
-                failureCallback.onFailure(ApiConstants.RESPONSE_STATE_NOT_NET);
+                failureCallback.onFailure(Api.RESPONSE_STATE_NOT_NET);
             }
     		return;
     	}
@@ -77,8 +77,8 @@ public abstract class AbsService {
 
                 try {
                     JSONObject jsonObj = new JSONObject(result);
-                    int stateCode = jsonObj.getInt(ApiConstants.KEY_STATE);
-                    if (stateCode == ApiConstants.RESPONSE_STATE_SUCCESS) {
+                    int stateCode = jsonObj.getInt(Api.KEY_STATE);
+                    if (stateCode == Api.RESPONSE_STATE_SUCCESS) {
                         //获取数据正常,就保存到缓存里 */
                         if (isSaveCache && !AppConfig.IS_DEBUG)
                             httpCacher.add(url, result);
@@ -96,7 +96,7 @@ public abstract class AbsService {
 
                     //解析不了,就说明是服务器端的原因了
                     if (failureCallback != null) {
-                        failureCallback.onFailure(ApiConstants.RESPONSE_STATE_SERVICE_EXCEPTION);
+                        failureCallback.onFailure(Api.RESPONSE_STATE_SERVICE_EXCEPTION);
                     }
                 }
             }
@@ -107,9 +107,9 @@ public abstract class AbsService {
                     if (t instanceof MalformedURLException) {
                         ViewInject.longToast("不是标准的URL");
                     } else if (t instanceof IOException) {
-                        failureCallback.onFailure(ApiConstants.RESPONSE_STATE_NET_POOR);
+                        failureCallback.onFailure(Api.RESPONSE_STATE_NET_POOR);
                     } else {
-                        failureCallback.onFailure(ApiConstants.RESPONSE_STATE_FAILURE);
+                        failureCallback.onFailure(Api.RESPONSE_STATE_FAILURE);
                     }
                 }
             }
@@ -145,7 +145,7 @@ public abstract class AbsService {
         if (!SystemTool.checkNet(context)) {
             ErrHandleUtils.sendNotNetReceiver(context);
             if (failureCallback != null) {
-                failureCallback.onFailure(ApiConstants.RESPONSE_STATE_NOT_NET);
+                failureCallback.onFailure(Api.RESPONSE_STATE_NOT_NET);
             }
             return;
         }
@@ -162,8 +162,8 @@ public abstract class AbsService {
 
                 try {
                     JSONObject jsonObj = new JSONObject(result);
-                    int stateCode = jsonObj.getInt(ApiConstants.KEY_STATE);
-                    if (stateCode == ApiConstants.RESPONSE_STATE_SUCCESS) {
+                    int stateCode = jsonObj.getInt(Api.KEY_STATE);
+                    if (stateCode == Api.RESPONSE_STATE_SUCCESS) {
                         //获取数据正常,就保存到缓存里 */
                         if (isSaveCache && !AppConfig.IS_DEBUG)
                             httpCacher.add(url, result);
@@ -181,7 +181,7 @@ public abstract class AbsService {
 
                     //解析不了,就说明是服务器端的原因了
                     if (failureCallback != null) {
-                        failureCallback.onFailure(ApiConstants.RESPONSE_STATE_SERVICE_EXCEPTION);
+                        failureCallback.onFailure(Api.RESPONSE_STATE_SERVICE_EXCEPTION);
                     }
                 }
             }
@@ -192,9 +192,9 @@ public abstract class AbsService {
                     if (t instanceof MalformedURLException) {
                         ViewInject.longToast("不是标准的URL");
                     } else if (t instanceof IOException) {
-                        failureCallback.onFailure(ApiConstants.RESPONSE_STATE_NET_POOR);
+                        failureCallback.onFailure(Api.RESPONSE_STATE_NET_POOR);
                     } else {
-                        failureCallback.onFailure(ApiConstants.RESPONSE_STATE_FAILURE);
+                        failureCallback.onFailure(Api.RESPONSE_STATE_FAILURE);
                     }
                 }
             }
@@ -208,10 +208,10 @@ public abstract class AbsService {
      */
     protected String packageApiUrlByMethodNameAndParams(String methodName, KJStringParams params) {
         StringBuilder sb = new StringBuilder();
-        sb.append(ApiConstants.SERVER_URL);
-        sb.append(ApiConstants.URL_SEPERATOR);
+        sb.append(Api.SERVER_URL);
+        sb.append(Api.URL_SEPERATOR);
         sb.append(moduleName);
-        sb.append(ApiConstants.URL_SEPERATOR);
+        sb.append(Api.URL_SEPERATOR);
         sb.append(methodName);
         if (params != null) {
             sb.append("?");
@@ -230,13 +230,13 @@ public abstract class AbsService {
     public String getResponseStateInfo(int stateCode){
         String stateInfo = "";
         switch (stateCode) {
-            case ApiConstants.RESPONSE_STATE_NOT_NET:
+            case Api.RESPONSE_STATE_NOT_NET:
                 stateInfo = context.getResources().getString(R.string.no_net_service);
                 break;
-            case ApiConstants.RESPONSE_STATE_NET_POOR:
+            case Api.RESPONSE_STATE_NET_POOR:
                 stateInfo = context.getResources().getString(R.string.net_too_poor);
                 break;
-            case ApiConstants.RESPONSE_STATE_SERVICE_EXCEPTION:
+            case Api.RESPONSE_STATE_SERVICE_EXCEPTION:
                 stateInfo = context.getResources().getString(R.string.service_have_error_exception);
                 break;
         }

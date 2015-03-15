@@ -2,7 +2,7 @@ package com.cisoft.shop.expressorder.presenter;
 
 import android.content.Context;
 
-import com.cisoft.shop.ApiConstants;
+import com.cisoft.shop.Api;
 import com.cisoft.shop.bean.ExpressOrder;
 import com.cisoft.shop.expressorder.model.ExpressModel;
 import com.cisoft.shop.expressorder.view.IOrderView;
@@ -31,7 +31,7 @@ public class OrderPresenter {
         final int size = 5;
         view.setPage(1);
         view.showProgress();
-        model.findExpressByState(ApiConstants.ORDER_STATE_CREATE, 1, size, new INetWorkFinished<ExpressOrder>() {
+        model.findExpressByState(Api.ORDER_STATE_CREATE, 1, size, new INetWorkFinished<ExpressOrder>() {
             @Override
             public void onSuccess(List<ExpressOrder> l) {
                 if (l.size() == 0 || l.size() < size) {
@@ -52,7 +52,7 @@ public class OrderPresenter {
     }
 
     public void loadMore(int page, final int size) {
-        model.findExpressByState(ApiConstants.ORDER_STATE_CREATE, page, size, new INetWorkFinished<ExpressOrder>() {
+        model.findExpressByState(Api.ORDER_STATE_CREATE, page, size, new INetWorkFinished<ExpressOrder>() {
             @Override
             public void onSuccess(List<ExpressOrder> l) {
                 if (l.size() == 0 || l.size() < size) {

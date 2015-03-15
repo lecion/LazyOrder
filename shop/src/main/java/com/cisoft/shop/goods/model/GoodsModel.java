@@ -2,8 +2,8 @@ package com.cisoft.shop.goods.model;
 
 import android.content.Context;
 
+import com.cisoft.shop.Api;
 import com.cisoft.shop.R;
-import com.cisoft.shop.ApiConstants;
 import com.cisoft.shop.MainActivity;
 import com.cisoft.shop.MyApplication;
 import com.cisoft.shop.bean.Goods;
@@ -25,29 +25,29 @@ import java.util.List;
 public class GoodsModel extends AbsService implements IGoodsModel {
 
     protected GoodsModel(Context context, String moduleName) {
-        super(context, ApiConstants.MODULE_COMMODITY);
+        super(context, Api.MODULE_COMMODITY);
     }
 
     public GoodsModel(Context context) {
-        super(context, ApiConstants.MODULE_COMMODITY);
+        super(context, Api.MODULE_COMMODITY);
     }
 
     @Override
     public void loadGoodsList(int page, int size, int type, String sortType, final INetWorkFinished<Goods> finishedListener) {
         Shop shop = L.getShop(context);
         KJStringParams params = new KJStringParams();
-        params.put(ApiConstants.KEY_COM_MER_ID, String.valueOf(shop.getId()));
-        params.put(ApiConstants.KEY_COM_PAGE, String.valueOf(page));
-        params.put(ApiConstants.KEY_COM_SIZE, String.valueOf(size));
-        params.put(ApiConstants.KEY_COM_SORT, sortType);
-        asyncUrlGet(ApiConstants.METHOD_COMMODITY_FIND_ALL_BY_MER_ID, params, new SuccessCallback() {
+        params.put(Api.KEY_COM_MER_ID, String.valueOf(shop.getId()));
+        params.put(Api.KEY_COM_PAGE, String.valueOf(page));
+        params.put(Api.KEY_COM_SIZE, String.valueOf(size));
+        params.put(Api.KEY_COM_SORT, sortType);
+        asyncUrlGet(Api.METHOD_COMMODITY_FIND_ALL_BY_MER_ID, params, new SuccessCallback() {
             @Override
             public void onSuccess(String result) throws JSONException {
                 List<Goods> goodsList = new ArrayList<Goods>();
                 JSONObject jsonObj = null;
                 try {
                     jsonObj = new JSONObject(result);
-                    JSONArray jsonArr = jsonObj.getJSONArray(ApiConstants.KEY_DATA);
+                    JSONArray jsonArr = jsonObj.getJSONArray(Api.KEY_DATA);
                     for (int i = 0; i < jsonArr.length(); i++) {
                         goodsList.add(new Goods(jsonArr.getJSONObject(i)));
                     }
@@ -57,7 +57,7 @@ public class GoodsModel extends AbsService implements IGoodsModel {
                 } catch (JSONException e) {
                     //这里是json格式不对，无法完成解析
                     if (finishedListener != null) {
-                        finishedListener.onFailure(getResponseStateInfo(ApiConstants.RESPONSE_STATE_SERVICE_EXCEPTION));
+                        finishedListener.onFailure(getResponseStateInfo(Api.RESPONSE_STATE_SERVICE_EXCEPTION));
                     }
                 }
             }
@@ -75,16 +75,16 @@ public class GoodsModel extends AbsService implements IGoodsModel {
     public void loadGoodsListByType(int page, int size, int type, String sortType, final INetWorkFinished<Goods> finishedListener) {
         Shop shop = L.getShop(context);
         KJStringParams params = new KJStringParams();
-        params.put(ApiConstants.KEY_COM_MER_ID, String.valueOf(shop.getId()));
-        params.put(ApiConstants.KEY_COM_PAGE, String.valueOf(page));
-        params.put(ApiConstants.KEY_COM_SIZE, String.valueOf(size));
-        params.put(ApiConstants.KEY_COM_SORT, sortType);
+        params.put(Api.KEY_COM_MER_ID, String.valueOf(shop.getId()));
+        params.put(Api.KEY_COM_PAGE, String.valueOf(page));
+        params.put(Api.KEY_COM_SIZE, String.valueOf(size));
+        params.put(Api.KEY_COM_SORT, sortType);
         String methodName = "";
         if (type == 0) {
-            methodName = ApiConstants.METHOD_COMMODITY_FIND_ALL_BY_MER_ID;
+            methodName = Api.METHOD_COMMODITY_FIND_ALL_BY_MER_ID;
         } else {
-            params.put(ApiConstants.KEY_COM_TYPE_ID, String.valueOf(type));
-            methodName = ApiConstants.METHOD_COMMODITY_FIND_BY_MER_AND_TYPE_ID;
+            params.put(Api.KEY_COM_TYPE_ID, String.valueOf(type));
+            methodName = Api.METHOD_COMMODITY_FIND_BY_MER_AND_TYPE_ID;
         }
 
         asyncUrlGet(methodName, params, new SuccessCallback() {
@@ -94,7 +94,7 @@ public class GoodsModel extends AbsService implements IGoodsModel {
                 JSONObject jsonObj = null;
                 try {
                     jsonObj = new JSONObject(result);
-                    JSONArray jsonArr = jsonObj.getJSONArray(ApiConstants.KEY_DATA);
+                    JSONArray jsonArr = jsonObj.getJSONArray(Api.KEY_DATA);
                     for (int i = 0; i < jsonArr.length(); i++) {
                         goodsList.add(new Goods(jsonArr.getJSONObject(i)));
                     }
@@ -104,7 +104,7 @@ public class GoodsModel extends AbsService implements IGoodsModel {
                 } catch (JSONException e) {
                     //这里是json格式不对，无法完成解析
                     if (finishedListener != null) {
-                        finishedListener.onFailure(getResponseStateInfo(ApiConstants.RESPONSE_STATE_SERVICE_EXCEPTION));
+                        finishedListener.onFailure(getResponseStateInfo(Api.RESPONSE_STATE_SERVICE_EXCEPTION));
                     }
                 }
             }
@@ -122,14 +122,14 @@ public class GoodsModel extends AbsService implements IGoodsModel {
     public void updateComState(int state, final IUpdateGoodsState finishedListener) {
         Shop shop = ((MyApplication) ((MainActivity) context).getApplication()).getShop();
         KJStringParams params = new KJStringParams();
-        params.put(ApiConstants.KEY_COM_COM_ID, String.valueOf(shop.getId()));
-        params.put(ApiConstants.KEY_COM_COM_STATE, String.valueOf(state));
-        asyncUrlGet(ApiConstants.METHOD_COMMODITY_UPDATE_COM_STATE, params, false, new SuccessCallback() {
+        params.put(Api.KEY_COM_COM_ID, String.valueOf(shop.getId()));
+        params.put(Api.KEY_COM_COM_STATE, String.valueOf(state));
+        asyncUrlGet(Api.METHOD_COMMODITY_UPDATE_COM_STATE, params, false, new SuccessCallback() {
             @Override
             public void onSuccess(String result) throws JSONException {
                 JSONObject jsonObj = new JSONObject(result);
-                int state = jsonObj.getInt(ApiConstants.KEY_STATE);
-                String data = jsonObj.getString(ApiConstants.KEY_DATA);
+                int state = jsonObj.getInt(Api.KEY_STATE);
+                String data = jsonObj.getString(Api.KEY_DATA);
                 if (state == 200) {
                     finishedListener.onSuccess(state);
                 } else {
@@ -149,16 +149,16 @@ public class GoodsModel extends AbsService implements IGoodsModel {
     public String getResponseStateInfo(int stateCode) {
         String stateInfo = "";
         switch (stateCode) {
-            case ApiConstants.RESPONSE_STATE_FAILURE:
+            case Api.RESPONSE_STATE_FAILURE:
                 stateInfo = context.getResources().getString(R.string.fail_to_load_goods_list);
                 break;
-            case ApiConstants.RESPONSE_STATE_SUCCESS:
+            case Api.RESPONSE_STATE_SUCCESS:
                 stateInfo = context.getResources().getString(R.string.success_to_load_goods_list);
                 break;
-            case ApiConstants.RESPONSE_STATE_NOT_NET:
+            case Api.RESPONSE_STATE_NOT_NET:
                 stateInfo = context.getResources().getString(R.string.no_net_service);
                 break;
-            case ApiConstants.RESPONSE_STATE_SERVICE_EXCEPTION:
+            case Api.RESPONSE_STATE_SERVICE_EXCEPTION:
                 stateInfo = context.getResources().getString(R.string.service_have_error_exception);
                 break;
         }

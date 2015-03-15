@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:paddingBottom="16dp"
-    android:background="@drawable/shape_corners"
+    android:background="@drawable/shape_white_corners"
     >
     <RelativeLayout
         android:layout_width="match_parent"

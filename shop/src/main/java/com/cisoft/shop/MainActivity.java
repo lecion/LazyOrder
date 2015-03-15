@@ -226,12 +226,12 @@ public class MainActivity extends BaseActivity implements
      */
     private void doLogout() {
         IOUtil.clearLoginInfo(this);
-        DialogFactory.createConfirmDialog(this, "", "一定要离开我吗", "抹泪离去", "再逗逗我", new DialogFactory.IConfirm() {
+        DialogFactory.createMaterialDialog(this, "", "一定要离开我吗", "抹泪离去", "再逗逗我", new DialogFactory.IConfirm() {
             @Override
             public void onYes() {
                 skipActivity(MainActivity.this, LoginActivity.class);
             }
-        }).show();
+        }).show(getFragmentManager(), "logout");
     }
 
     private class DrawerToggle extends ActionBarDrawerToggle {

@@ -1,7 +1,7 @@
 package com.cisoft.shop.bean;
 
 
-import com.cisoft.shop.ApiConstants;
+import com.cisoft.shop.Api;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -108,28 +108,28 @@ public class ExpressOrder extends AbsBean {
             String key = null;
             while (iterator.hasNext()) {
                 key = iterator.next();
-                if (key.equals(ApiConstants.KEY_EXPRESS_ID)) {
-                    setId(jsonObj.getInt(ApiConstants.KEY_EXPRESS_ID));
-                } else if (key.equals(ApiConstants.KEY_EXPRESS_ADDRESS)) {
-                    setAddress(jsonObj.getString(ApiConstants.KEY_EXPRESS_ADDRESS));
-                } else if (key.equals(ApiConstants.KEY_EXPRESS_CONTENT)) {
-                    setContent(jsonObj.getString(ApiConstants.KEY_EXPRESS_CONTENT));
-                } else if (key.equals(ApiConstants.KEY_EXPRESS_DISTRIBUTION_PRICE)) {
-                    setDistributionPrice(jsonObj.getDouble(ApiConstants.KEY_EXPRESS_DISTRIBUTION_PRICE));
-                } else if (key.equals(ApiConstants.KEY_EXPRESS_EXPRESS_NUMBER)) {
-                    setExpressNumber(jsonObj.getString(ApiConstants.KEY_EXPRESS_EXPRESS_NUMBER));
-                } else if (key.equals(ApiConstants.KEY_EXPRESS_EXPRESS_TIME)) {
-                    setExpressTime(jsonObj.getString(ApiConstants.KEY_EXPRESS_EXPRESS_TIME));
-                } else if (key.equals(ApiConstants.KEY_EXPRESS_GET_MESSAGE_TIME)) {
-                    setGetMessageTime(jsonObj.getString(ApiConstants.KEY_EXPRESS_GET_MESSAGE_TIME));
-                } else if (key.equals(ApiConstants.KEY_EXPRESS_MESSAGE)) {
-                    setMessage(jsonObj.getString(ApiConstants.KEY_EXPRESS_MESSAGE));
-                } else if (key.equals(ApiConstants.KEY_EXPRESS_STATUE)) {
-                    setStatue(jsonObj.getString(ApiConstants.KEY_EXPRESS_STATUE));
-                } else if (key.equals(ApiConstants.KEY_EXPRESS_USER_NAME)) {
-                    setUserName(jsonObj.getString(ApiConstants.KEY_EXPRESS_USER_NAME));
-                } else if (key.equals(ApiConstants.KEY_EXPRESS_USER_PHONE)) {
-                    setUserPhone(jsonObj.getString(ApiConstants.KEY_EXPRESS_USER_PHONE));
+                if (key.equals(Api.KEY_EXPRESS_ID)) {
+                    setId(jsonObj.getInt(Api.KEY_EXPRESS_ID));
+                } else if (key.equals(Api.KEY_EXPRESS_ADDRESS)) {
+                    setAddress(jsonObj.getString(Api.KEY_EXPRESS_ADDRESS));
+                } else if (key.equals(Api.KEY_EXPRESS_CONTENT)) {
+                    setContent(jsonObj.getString(Api.KEY_EXPRESS_CONTENT));
+                } else if (key.equals(Api.KEY_EXPRESS_DISTRIBUTION_PRICE)) {
+                    setDistributionPrice(jsonObj.getDouble(Api.KEY_EXPRESS_DISTRIBUTION_PRICE));
+                } else if (key.equals(Api.KEY_EXPRESS_EXPRESS_NUMBER)) {
+                    setExpressNumber(jsonObj.getString(Api.KEY_EXPRESS_EXPRESS_NUMBER));
+                } else if (key.equals(Api.KEY_EXPRESS_EXPRESS_TIME)) {
+                    setExpressTime(jsonObj.getString(Api.KEY_EXPRESS_EXPRESS_TIME));
+                } else if (key.equals(Api.KEY_EXPRESS_GET_MESSAGE_TIME)) {
+                    setGetMessageTime(jsonObj.getString(Api.KEY_EXPRESS_GET_MESSAGE_TIME));
+                } else if (key.equals(Api.KEY_EXPRESS_MESSAGE)) {
+                    setMessage(jsonObj.getString(Api.KEY_EXPRESS_MESSAGE));
+                } else if (key.equals(Api.KEY_EXPRESS_STATUE)) {
+                    setStatue(jsonObj.getString(Api.KEY_EXPRESS_STATUE));
+                } else if (key.equals(Api.KEY_EXPRESS_USER_NAME)) {
+                    setUserName(jsonObj.getString(Api.KEY_EXPRESS_USER_NAME));
+                } else if (key.equals(Api.KEY_EXPRESS_USER_PHONE)) {
+                    setUserPhone(jsonObj.getString(Api.KEY_EXPRESS_USER_PHONE));
                 }
             }
         } catch (JSONException e) {

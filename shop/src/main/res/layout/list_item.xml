@@ -17,7 +17,7 @@
         android:src="@drawable/ic_launcher" />
 
     <TextView
-        android:id="@+id/title"
+        android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/icon"
@@ -29,7 +29,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/icon"
-        android:layout_alignLeft="@id/title"
+        android:layout_alignLeft="@id/tv_title"
         android:textColor="#ccc" />
 
     <TextView
@@ -37,7 +37,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_alignTop="@id/title"
+        android:layout_alignTop="@id/tv_title"
         android:textColor="#ccc" />
 
 </RelativeLayout>

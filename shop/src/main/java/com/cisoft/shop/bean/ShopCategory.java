@@ -1,7 +1,7 @@
 package com.cisoft.shop.bean;
 
 
-import com.cisoft.shop.ApiConstants;
+import com.cisoft.shop.Api;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -53,10 +53,10 @@ public class ShopCategory extends AbsBean{
             String key = null;
             while (iterator.hasNext()) {
                 key = iterator.next();
-                if (key.equals(ApiConstants.KEY_MC_CATEGORY_ID)) {
-                    this.id = jsonObj.getInt(ApiConstants.KEY_MC_CATEGORY_ID);
-                } else if (key.equals(ApiConstants.KEY_MC_CATEGORY_NAME)) {
-                    this.name = jsonObj.getString(ApiConstants.KEY_MC_CATEGORY_NAME);
+                if (key.equals(Api.KEY_MC_CATEGORY_ID)) {
+                    this.id = jsonObj.getInt(Api.KEY_MC_CATEGORY_ID);
+                } else if (key.equals(Api.KEY_MC_CATEGORY_NAME)) {
+                    this.name = jsonObj.getString(Api.KEY_MC_CATEGORY_NAME);
                 }
             }
         } catch (JSONException e) {

@@ -1,6 +1,6 @@
 package com.cisoft.shop.bean;
 
-import com.cisoft.shop.ApiConstants;
+import com.cisoft.shop.Api;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -77,16 +77,16 @@ public class OrderGoods extends AbsBean implements Serializable{
             String key = null;
             while (iterator.hasNext()) {
                 key = iterator.next();
-                if (key.equals(ApiConstants.KEY_ORDER_ID)) {
-                    setId(jsonObj.getInt(ApiConstants.KEY_ORDER_ID));
-                } else if (key.equals(ApiConstants.KEY_ORDER_COM_ID)) {
-                    setComId(jsonObj.getInt(ApiConstants.KEY_ORDER_COM_ID));
-                } else if (key.equals(ApiConstants.KEY_ORDER_COM_NAME)) {
-                    setComName(jsonObj.getString(ApiConstants.KEY_ORDER_COM_NAME));
-                } else if (key.equals(ApiConstants.KEY_ORDER_COM_NUM)) {
-                    setComNum(jsonObj.getInt(ApiConstants.KEY_ORDER_COM_NUM));
-                } else if (key.equals(ApiConstants.KEY_ORDER_COM_PRICE)){
-                    setPrice(jsonObj.getDouble(ApiConstants.KEY_ORDER_COM_PRICE));
+                if (key.equals(Api.KEY_ORDER_ID)) {
+                    setId(jsonObj.getInt(Api.KEY_ORDER_ID));
+                } else if (key.equals(Api.KEY_ORDER_COM_ID)) {
+                    setComId(jsonObj.getInt(Api.KEY_ORDER_COM_ID));
+                } else if (key.equals(Api.KEY_ORDER_COM_NAME)) {
+                    setComName(jsonObj.getString(Api.KEY_ORDER_COM_NAME));
+                } else if (key.equals(Api.KEY_ORDER_COM_NUM)) {
+                    setComNum(jsonObj.getInt(Api.KEY_ORDER_COM_NUM));
+                } else if (key.equals(Api.KEY_ORDER_COM_PRICE)){
+                    setPrice(jsonObj.getDouble(Api.KEY_ORDER_COM_PRICE));
                 }
             }
         } catch (JSONException e) {

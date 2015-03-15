@@ -3,7 +3,7 @@ package com.cisoft.shop;
 /**
  * Created by comet on 2014/10/18.
  */
-public class ApiConstants {
+public class Api {
 
     public static final String SERVER_URL = "http://comit-wh.net/lazyorder/index.php";
     //public static final String SERVER_URL = "http://lazyorder.yliec.com";

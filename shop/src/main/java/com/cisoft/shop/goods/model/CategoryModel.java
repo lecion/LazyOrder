@@ -2,8 +2,8 @@ package com.cisoft.shop.goods.model;
 
 import android.content.Context;
 
+import com.cisoft.shop.Api;
 import com.cisoft.shop.R;
-import com.cisoft.shop.ApiConstants;
 import com.cisoft.shop.MainActivity;
 import com.cisoft.shop.MyApplication;
 import com.cisoft.shop.bean.GoodsCategory;
@@ -24,25 +24,25 @@ import java.util.List;
  */
 public class CategoryModel extends AbsService {
     protected CategoryModel(Context context, String moduleName) {
-        super(context, ApiConstants.MODULE_COM_CATEGORY);
+        super(context, Api.MODULE_COM_CATEGORY);
     }
 
     public CategoryModel(Context context) {
-        super(context, ApiConstants.MODULE_COM_CATEGORY);
+        super(context, Api.MODULE_COM_CATEGORY);
     }
 
     public void loadCateogryByShopId(final INetWorkFinished<GoodsCategory> iNetWorkFinished) {
         Shop shop = ((MyApplication) ((MainActivity) context).getApplication()).getShop();
         KJStringParams params = new KJStringParams();
-        params.put(ApiConstants.KEY_CAT_MER_ID, String.valueOf(shop.getId()));
-        super.asyncUrlGet(ApiConstants.METHOD_CATEGORY_FIND_ALL_BY_MER_ID, params, new SuccessCallback() {
+        params.put(Api.KEY_CAT_MER_ID, String.valueOf(shop.getId()));
+        super.asyncUrlGet(Api.METHOD_CATEGORY_FIND_ALL_BY_MER_ID, params, new SuccessCallback() {
             @Override
             public void onSuccess(String result) throws JSONException {
                 List<GoodsCategory> goodsCategoryList = new ArrayList<GoodsCategory>();
                 goodsCategoryList.add(new GoodsCategory(0, "全部"));
                 try {
                     JSONObject jsonObj = new JSONObject(result);
-                    JSONArray goodsCategoryArr = jsonObj.getJSONArray(ApiConstants.KEY_DATA);
+                    JSONArray goodsCategoryArr = jsonObj.getJSONArray(Api.KEY_DATA);
                     for (int i = 0; i < goodsCategoryArr.length(); i++) {
                         goodsCategoryList.add(new GoodsCategory(goodsCategoryArr.getJSONObject(i)));
                     }
@@ -51,7 +51,7 @@ public class CategoryModel extends AbsService {
                     }
                 } catch (JSONException e) {
                     if (iNetWorkFinished != null) {
-                        iNetWorkFinished.onFailure(getResponseStateInfo(ApiConstants.RESPONSE_STATE_SERVICE_EXCEPTION));
+                        iNetWorkFinished.onFailure(getResponseStateInfo(Api.RESPONSE_STATE_SERVICE_EXCEPTION));
                     }
                 }
                 KJLoger.debug("loadCateogryByShopId " + goodsCategoryList);
@@ -72,16 +72,16 @@ public class CategoryModel extends AbsService {
     public String getResponseStateInfo(int stateCode) {
         String stateInfo = "";
         switch (stateCode) {
-            case ApiConstants.RESPONSE_STATE_FAILURE:
+            case Api.RESPONSE_STATE_FAILURE:
                 stateInfo = context.getResources().getString(R.string.fail_to_load_goods_category_list);
                 break;
-            case ApiConstants.RESPONSE_STATE_SUCCESS:
+            case Api.RESPONSE_STATE_SUCCESS:
                 stateInfo = context.getResources().getString(R.string.success_to_load_goods_category_list);
                 break;
-            case ApiConstants.RESPONSE_STATE_NOT_NET:
+            case Api.RESPONSE_STATE_NOT_NET:
                 stateInfo = context.getResources().getString(R.string.no_net_service);
                 break;
-            case ApiConstants.RESPONSE_STATE_SERVICE_EXCEPTION:
+            case Api.RESPONSE_STATE_SERVICE_EXCEPTION:
                 stateInfo = context.getResources().getString(R.string.service_have_error_exception);
                 break;
         }
