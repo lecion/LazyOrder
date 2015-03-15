@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.app.Dialog;
+import android.content.res.Configuration;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -15,8 +16,8 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.cisoft.shop.AppConfig;
-import com.cisoft.shop.R;
 import com.cisoft.shop.MainActivity;
+import com.cisoft.shop.R;
 import com.cisoft.shop.login.presenter.LoginPresenter;
 import com.cisoft.shop.util.DeviceUtil;
 import com.cisoft.shop.util.IOUtil;
@@ -26,7 +27,7 @@ import org.kymjs.aframe.ui.BindView;
 import org.kymjs.aframe.ui.ViewInject;
 import org.kymjs.aframe.ui.activity.BaseActivity;
 
-public class LoginActivity extends BaseActivity implements ILoginView{
+public class LoginActivity extends BaseActivity implements ILoginView {
 
     @BindView(id = R.id.iv_app_logo)
     private ImageView ivAppLogo;
@@ -92,26 +93,74 @@ public class LoginActivity extends BaseActivity implements ILoginView{
      * 执行登陆界面动画
      */
     private void startLoginAnimation() {
-        ObjectAnimator animator = ObjectAnimator.ofFloat(ivAppLogo, "translationY", DeviceUtil.getScreenHeight(LoginActivity.this), DeviceUtil.getScreenHeight(LoginActivity.this) / 5, DeviceUtil.getScreenHeight(LoginActivity.this) / 3, DeviceUtil.getScreenHeight(LoginActivity.this) / 5);
+        ObjectAnimator animator = ObjectAnimator.ofFloat(ivAppLogo, "translationY", DeviceUtil.getScreenHeight(LoginActivity.this), -DeviceUtil.getScreenHeight(LoginActivity.this) / 20, 0);
 //        animator.setStartDelay(200);
-        animator.setDuration(2500);
+        animator.setDuration(2000);
         animator.setInterpolator(new AccelerateDecelerateInterpolator());
         animator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
-                ValueAnimator anim = ValueAnimator.ofFloat(0, 1);
-                anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+//                ValueAnimator anim = ValueAnimator.ofFloat(0, 1);
+//                anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+//                    @Override
+//                    public void onAnimationUpdate(ValueAnimator animation) {
+//                        float value = (float) animation.getAnimatedValue();
+//                        etPhone.setAlpha(value);
+//                        etPwd.setAlpha(value);
+//                        btnLogin.setAlpha(value);
+//                        rgSelect.setAlpha(value);
+//                    }
+//                });
+//                anim.setDuration(500);
+//                anim.start();
+                final ObjectAnimator animator2 = ObjectAnimator.ofFloat(ivAppLogo, "translationX", DeviceUtil.getScreenWidth(LoginActivity.this) - ivAppLogo.getWidth() * 2);
+                animator2.setDuration(500);
+                animator2.addListener(new AnimatorListenerAdapter() {
                     @Override
-                    public void onAnimationUpdate(ValueAnimator animation) {
-                        float value = (float) animation.getAnimatedValue();
-                        etPhone.setAlpha(value);
-                        etPwd.setAlpha(value);
-                        btnLogin.setAlpha(value);
-                        rgSelect.setAlpha(value);
+                    public void onAnimationEnd(Animator animation) {
+                        ValueAnimator anim = ValueAnimator.ofFloat(0, 1);
+                        anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                            @Override
+                            public void onAnimationUpdate(ValueAnimator animation) {
+                                float value = (float) animation.getAnimatedValue();
+                                etPhone.setAlpha(value);
+                                etPwd.setAlpha(value);
+//                                etPwd.setAlpha(value);
+//                                btnLogin.setAlpha(value);
+//                                rgSelect.setAlpha(value);
+                            }
+                        });
+                        anim.setDuration(700);
+                        anim.addListener(new AnimatorListenerAdapter() {
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                ValueAnimator animator3 = ObjectAnimator.ofFloat(ivAppLogo, "translationX", 0);
+                                animator3.setDuration(500);
+                                animator3.addListener(new AnimatorListenerAdapter() {
+                                    @Override
+                                    public void onAnimationEnd(Animator animation) {
+                                        ValueAnimator anim2 = ValueAnimator.ofFloat(0, 1);
+                                        anim2.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                                            @Override
+                                            public void onAnimationUpdate(ValueAnimator animation) {
+                                                float value = (float) animation.getAnimatedValue();
+//                                                etPhone.setAlpha(value);
+                                                btnLogin.setAlpha(value);
+                                                rgSelect.setAlpha(value);
+                                            }
+                                        });
+
+                                        anim2.setDuration(700);
+                                        anim2.start();
+                                    }
+                                });
+                                animator3.start();
+                            }
+                        });
+                        anim.start();
                     }
                 });
-                anim.setDuration(700);
-                anim.start();
+                animator2.start();
             }
         });
         animator.start();
@@ -165,5 +214,21 @@ public class LoginActivity extends BaseActivity implements ILoginView{
 
     private boolean isMerLogin() {
         return rbNormal.isChecked();
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        if (DeviceUtil.isInputMethodShow(this)) {
+            ivAppLogo.setVisibility(View.GONE);
+        }
+        super.onWindowFocusChanged(hasFocus);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        if (DeviceUtil.isInputMethodShow(this)) {
+            ivAppLogo.setVisibility(View.GONE);
+        }
+        super.onConfigurationChanged(newConfig);
     }
 }
