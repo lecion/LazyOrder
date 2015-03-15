@@ -94,25 +94,11 @@ public class LoginActivity extends BaseActivity implements ILoginView {
      */
     private void startLoginAnimation() {
         ObjectAnimator animator = ObjectAnimator.ofFloat(ivAppLogo, "translationY", DeviceUtil.getScreenHeight(LoginActivity.this), -DeviceUtil.getScreenHeight(LoginActivity.this) / 20, 0);
-//        animator.setStartDelay(200);
         animator.setDuration(2000);
         animator.setInterpolator(new AccelerateDecelerateInterpolator());
         animator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
-//                ValueAnimator anim = ValueAnimator.ofFloat(0, 1);
-//                anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-//                    @Override
-//                    public void onAnimationUpdate(ValueAnimator animation) {
-//                        float value = (float) animation.getAnimatedValue();
-//                        etPhone.setAlpha(value);
-//                        etPwd.setAlpha(value);
-//                        btnLogin.setAlpha(value);
-//                        rgSelect.setAlpha(value);
-//                    }
-//                });
-//                anim.setDuration(500);
-//                anim.start();
                 final ObjectAnimator animator2 = ObjectAnimator.ofFloat(ivAppLogo, "translationX", DeviceUtil.getScreenWidth(LoginActivity.this) - ivAppLogo.getWidth() * 2);
                 animator2.setDuration(500);
                 animator2.addListener(new AnimatorListenerAdapter() {
@@ -125,9 +111,6 @@ public class LoginActivity extends BaseActivity implements ILoginView {
                                 float value = (float) animation.getAnimatedValue();
                                 etPhone.setAlpha(value);
                                 etPwd.setAlpha(value);
-//                                etPwd.setAlpha(value);
-//                                btnLogin.setAlpha(value);
-//                                rgSelect.setAlpha(value);
                             }
                         });
                         anim.setDuration(700);
@@ -144,7 +127,6 @@ public class LoginActivity extends BaseActivity implements ILoginView {
                                             @Override
                                             public void onAnimationUpdate(ValueAnimator animation) {
                                                 float value = (float) animation.getAnimatedValue();
-//                                                etPhone.setAlpha(value);
                                                 btnLogin.setAlpha(value);
                                                 rgSelect.setAlpha(value);
                                             }
