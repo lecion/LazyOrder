@@ -1,17 +1,17 @@
 package com.cisoft.shop.login.view;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
 import android.app.Dialog;
 import android.content.res.Configuration;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.BounceInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
@@ -21,10 +21,8 @@ import com.cisoft.shop.R;
 import com.cisoft.shop.login.presenter.LoginPresenter;
 import com.cisoft.shop.util.DeviceUtil;
 import com.cisoft.shop.util.IOUtil;
-import com.cisoft.shop.widget.DialogFactory;
 
 import org.kymjs.aframe.ui.BindView;
-import org.kymjs.aframe.ui.ViewInject;
 import org.kymjs.aframe.ui.activity.BaseActivity;
 
 public class LoginActivity extends BaseActivity implements ILoginView {
@@ -52,6 +50,9 @@ public class LoginActivity extends BaseActivity implements ILoginView {
 
     Dialog loadingDialog;
 
+    @BindView(id = R.id.pb_loading)
+    ProgressBar pbLoading;
+
     LoginPresenter loginPresenter;
 
     @Override
@@ -67,6 +68,18 @@ public class LoginActivity extends BaseActivity implements ILoginView {
     @Override
     protected void initWidget() {
         btnLogin.setOnClickListener(this);
+        rgSelect.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (checkedId == R.id.rb_normal) {
+                    rbNormal.setTextColor(getResources().getColor(R.color.material_font_color));
+                    rbExpress.setTextColor(getResources().getColor(R.color.material_blue_grey_800));
+                } else {
+                    rbNormal.setTextColor(getResources().getColor(R.color.material_blue_grey_800));
+                    rbExpress.setTextColor(getResources().getColor(R.color.material_font_color));
+                }
+            }
+        });
         startLoginAnimation();
         initInput();
     }
@@ -83,9 +96,12 @@ public class LoginActivity extends BaseActivity implements ILoginView {
         int type = IOUtil.getLoginType(this);
         if (type == AppConfig.TYPE_MERCHANT) {
             rbNormal.setChecked(true);
+            rbNormal.setTextColor(getResources().getColor(R.color.material_font_color));
         } else if (type == AppConfig.TYPE_EXPMER) {
             rbExpress.setChecked(true);
+            rbExpress.setTextColor(getResources().getColor(R.color.material_font_color));
         }
+
     }
 
 
@@ -93,59 +109,44 @@ public class LoginActivity extends BaseActivity implements ILoginView {
      * 执行登陆界面动画
      */
     private void startLoginAnimation() {
-        ObjectAnimator animator = ObjectAnimator.ofFloat(ivAppLogo, "translationY", DeviceUtil.getScreenHeight(LoginActivity.this), -DeviceUtil.getScreenHeight(LoginActivity.this) / 20, 0);
-        animator.setDuration(2000);
-        animator.setInterpolator(new AccelerateDecelerateInterpolator());
-        animator.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                final ObjectAnimator animator2 = ObjectAnimator.ofFloat(ivAppLogo, "translationX", DeviceUtil.getScreenWidth(LoginActivity.this) - ivAppLogo.getWidth() * 2);
-                animator2.setDuration(500);
-                animator2.addListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        ValueAnimator anim = ValueAnimator.ofFloat(0, 1);
-                        anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                            @Override
-                            public void onAnimationUpdate(ValueAnimator animation) {
-                                float value = (float) animation.getAnimatedValue();
-                                etPhone.setAlpha(value);
-                                etPwd.setAlpha(value);
-                            }
-                        });
-                        anim.setDuration(700);
-                        anim.addListener(new AnimatorListenerAdapter() {
-                            @Override
-                            public void onAnimationEnd(Animator animation) {
-                                ValueAnimator animator3 = ObjectAnimator.ofFloat(ivAppLogo, "translationX", 0);
-                                animator3.setDuration(500);
-                                animator3.addListener(new AnimatorListenerAdapter() {
-                                    @Override
-                                    public void onAnimationEnd(Animator animation) {
-                                        ValueAnimator anim2 = ValueAnimator.ofFloat(0, 1);
-                                        anim2.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                                            @Override
-                                            public void onAnimationUpdate(ValueAnimator animation) {
-                                                float value = (float) animation.getAnimatedValue();
-                                                btnLogin.setAlpha(value);
-                                                rgSelect.setAlpha(value);
-                                            }
-                                        });
+        int screenHeight = DeviceUtil.getScreenHeight(this);
 
-                                        anim2.setDuration(700);
-                                        anim2.start();
-                                    }
-                                });
-                                animator3.start();
-                            }
-                        });
-                        anim.start();
-                    }
-                });
-                animator2.start();
-            }
-        });
-        animator.start();
+        ObjectAnimator transLogoY = ObjectAnimator.ofFloat(ivAppLogo, "translationY", screenHeight, -screenHeight / 15, 0);
+        transLogoY.setDuration(2000);
+        transLogoY.setInterpolator(new AccelerateDecelerateInterpolator());
+
+        ObjectAnimator scaleLogoX = ObjectAnimator.ofFloat(ivAppLogo, View.SCALE_X, 1, 3, 1);
+        ObjectAnimator scaleLogoY = ObjectAnimator.ofFloat(ivAppLogo, View.SCALE_Y, 1, 3, 1);
+        scaleLogoX.setDuration(700);
+        scaleLogoY.setDuration(700);
+
+        ObjectAnimator rotateLogo = ObjectAnimator.ofFloat(ivAppLogo, View.ROTATION, -20, 20, -40, 40, -20, 20, 0);
+        rotateLogo.setInterpolator(new BounceInterpolator());
+        rotateLogo.setDuration(700);
+
+        AnimatorSet scale = new AnimatorSet();
+        scale.playTogether(scaleLogoX, scaleLogoY, rotateLogo);
+
+        ObjectAnimator alphaPhone = ObjectAnimator.ofFloat(etPhone, View.ALPHA, 0.0f, 1.0f);
+        alphaPhone.setDuration(300);
+
+        ObjectAnimator alphaPwd = ObjectAnimator.ofFloat(etPwd, View.ALPHA, 0.0f, 1.0f);
+        alphaPwd.setDuration(300);
+
+        ObjectAnimator alphaRadio = ObjectAnimator.ofFloat(rgSelect, View.ALPHA, 0.0f, 1.0f);
+        alphaRadio.setDuration(300);
+
+        ObjectAnimator alphaLogin = ObjectAnimator.ofFloat(btnLogin, View.ALPHA, 0.0f, 1.0f);
+        alphaLogin.setDuration(300);
+
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.play(transLogoY).before(alphaPhone);
+        animatorSet.play(alphaPwd).after(alphaPhone);
+        animatorSet.play(alphaRadio).after(alphaPwd);
+        animatorSet.play(alphaLogin).after(alphaRadio);
+        animatorSet.play(scale).after(alphaLogin);
+        animatorSet.start();
+
     }
 
     @Override
@@ -164,29 +165,60 @@ public class LoginActivity extends BaseActivity implements ILoginView {
 
     @Override
     public void showLoginProgress() {
-        if (loadingDialog == null) {
-            loadingDialog = DialogFactory.createToastDialog(this, "登陆中...");
-        }
-        if (!loadingDialog.isShowing()) {
-            loadingDialog.show();
-        }
+//        if (loadingDialog == null) {
+//            loadingDialog = DialogFactory.createToastDialog(this, "登陆中...");
+//        }
+//        if (!loadingDialog.isShowing()) {
+//            loadingDialog.show();
+//        }
+        ivAppLogo.setVisibility(View.GONE);
+        pbLoading.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideLoginProgress() {
-        if (loadingDialog != null) {
-            loadingDialog.dismiss();
-        }
+//        if (loadingDialog != null) {
+//            loadingDialog.dismiss();
+//        }
+        pbLoading.setVisibility(View.GONE);
+        ivAppLogo.setImageResource(R.drawable.baffled);
+        ivAppLogo.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void showLoginFailed(String msg) {
-        ViewInject.toast(msg);
+//        ViewInject.toast(msg);
+        ivAppLogo.setImageResource(R.drawable.crying);
+        ObjectAnimator scaleLogoX = ObjectAnimator.ofFloat(ivAppLogo, View.SCALE_X, 0.5f, 1.5f, 1);
+        ObjectAnimator scaleLogoY = ObjectAnimator.ofFloat(ivAppLogo, View.SCALE_Y, 0.5f, 1.5f, 1);
+        scaleLogoX.setDuration(700);
+        scaleLogoY.setDuration(700);
+
+        ObjectAnimator rotateLogo = ObjectAnimator.ofFloat(ivAppLogo, View.ROTATION, -20, 20, -40, 40, -20, 20, 0);
+        rotateLogo.setInterpolator(new BounceInterpolator());
+        rotateLogo.setDuration(700);
+
+        AnimatorSet shakeAndRotate = new AnimatorSet();
+        shakeAndRotate.playTogether(scaleLogoX, scaleLogoY, rotateLogo);
+        shakeAndRotate.start();
     }
 
     @Override
     public void showWrongInput() {
-        ViewInject.toast("请输入正确的手机号和密码");
+//        ViewInject.toast("请输入正确的手机号和密码");
+        ivAppLogo.setImageResource(R.drawable.sad);
+        ObjectAnimator scaleLogoX = ObjectAnimator.ofFloat(ivAppLogo, View.SCALE_X, 0.5f, 1.5f, 1);
+        ObjectAnimator scaleLogoY = ObjectAnimator.ofFloat(ivAppLogo, View.SCALE_Y, 0.5f, 1.5f, 1);
+        scaleLogoX.setDuration(700);
+        scaleLogoY.setDuration(700);
+
+        ObjectAnimator rotateLogo = ObjectAnimator.ofFloat(ivAppLogo, View.ROTATION, -20, 20, -40, 40, -20, 20, 0);
+        rotateLogo.setInterpolator(new BounceInterpolator());
+        rotateLogo.setDuration(700);
+
+        AnimatorSet shakeAndRotate = new AnimatorSet();
+        shakeAndRotate.playTogether(scaleLogoX, scaleLogoY, rotateLogo);
+        shakeAndRotate.start();
     }
 
     @Override

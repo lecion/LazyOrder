@@ -19,6 +19,8 @@
         android:inputType="textPassword"
         android:layout_marginLeft="@dimen/material_72"
         android:layout_marginRight="@dimen/material_32"
+        android:background="@drawable/selector_border"
+        android:layout_marginTop="@dimen/material_16"
         />
 
     <EditText
@@ -34,6 +36,7 @@
         android:inputType="phone"
         android:layout_marginLeft="@dimen/material_72"
         android:layout_marginRight="@dimen/material_32"
+        android:background="@drawable/selector_border"
         />
     <RadioGroup
         android:id="@+id/rg_select"
@@ -51,12 +54,21 @@
             android:layout_height="wrap_content"
             android:text="普通商家"
             android:checked="true"
+            android:background="@drawable/selector_rb_bg"
+            android:button="@null"
+            android:padding="@dimen/material_8"
+            android:layout_marginRight="@dimen/material_16"
             />
         <RadioButton
             android:id="@+id/rb_express"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="快递商家"/>
+            android:text="快递商家"
+            android:background="@drawable/selector_rb_bg"
+            android:button="@null"
+            android:padding="@dimen/material_8"
+            android:paddingLeft="@dimen/material_16"
+            />
         </RadioGroup>
     <Button
         android:id="@+id/btn_login"
@@ -74,9 +86,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/goods"
-        android:layout_above="@+id/et_pwd"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginRight="@dimen/material_16"
+        android:layout_above="@+id/et_phone"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/material_32"
+        />
+    <ProgressBar
+        android:id="@+id/pb_loading"
+        style="?android:attr/progressBarStyleInverse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/et_phone"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/material_32"
+        android:visibility="gone"
         />
 </RelativeLayout>

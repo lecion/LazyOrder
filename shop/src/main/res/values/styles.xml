@@ -84,4 +84,12 @@
         <item name="android:paddingRight">@dimen/material_8</item>
     </style>
 
+    <style name="material_circle_btn_style">
+        <item name="android:background">@drawable/circle_button</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/material_font_color</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingLeft">@dimen/material_8</item>
+        <item name="android:paddingRight">@dimen/material_8</item>
+    </style>
 </resources>

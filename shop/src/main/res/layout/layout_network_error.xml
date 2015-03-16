@@ -5,21 +5,17 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
+    android:background="@color/white"
     android:visibility="visible">
     >
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/have_not_goods_list"
-        android:textColor="#E70012"
-        android:textSize="16sp" />
 
     <Button
         android:id="@+id/btn_reload"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="重新加载"
+        android:text="加载失败\n\n重新加载"
+        android:padding="@dimen/material_72"
+        style="@style/material_btn_style"
         />
 
 </LinearLayout>

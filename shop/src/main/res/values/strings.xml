@@ -23,6 +23,7 @@
     <string name="have_not_goods_list">抱歉,目前还没有商品列表的数据</string>
     <string name="fail_to_load_goods_category_list">加载商品类别列表失败,请稍候再试</string>
     <string name="success_to_load_goods_category_list">加载商品类别列表成功</string>
+    <string name="fail_load">加载失败</string>
     <string name="title_activity_login">LoginActivity</string>
 
 
