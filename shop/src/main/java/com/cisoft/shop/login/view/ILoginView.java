@@ -10,7 +10,7 @@ public interface ILoginView {
 
     void showLoginFailed(String msg);
 
-    void showWrongInput();
+    void showWrongInput(int... ids);
 
     void skipToMainActivity();
 }

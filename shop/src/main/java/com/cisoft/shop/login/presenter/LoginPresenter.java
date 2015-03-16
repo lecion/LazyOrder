@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.cisoft.shop.AppConfig;
+import com.cisoft.shop.R;
 import com.cisoft.shop.bean.Expmer;
 import com.cisoft.shop.bean.Shop;
 import com.cisoft.shop.goods.model.ShopModel;
@@ -36,10 +37,19 @@ public class LoginPresenter {
      * 普通商家登陆
      */
     public void normalLogin(final String phone, final String pwd) {
-        if (TextUtils.isEmpty(phone) || TextUtils.isEmpty(pwd)) {
-            view.showWrongInput();
+        boolean inputWrong = false;
+        if (TextUtils.isEmpty(phone)) {
+            view.showWrongInput(R.id.et_phone);
+            inputWrong = true;
+        }
+        if (TextUtils.isEmpty(pwd)) {
+            view.showWrongInput(R.id.et_pwd);
+            inputWrong = true;
+        }
+        if (inputWrong) {
             return;
         }
+
         view.showLoginProgress();
         shopModel.merLogin(phone, pwd, new ShopModel.ILoginListener() {
             @Override
@@ -62,8 +72,16 @@ public class LoginPresenter {
      * 快递商家登陆
      */
     public void expressLogin(final String phone, final String pwd) {
-        if (TextUtils.isEmpty(phone) || TextUtils.isEmpty(pwd)) {
-            view.showWrongInput();
+        boolean inputWrong = false;
+        if (TextUtils.isEmpty(phone)) {
+            view.showWrongInput(R.id.et_phone);
+            inputWrong = true;
+        }
+        if (TextUtils.isEmpty(pwd)) {
+            view.showWrongInput(R.id.et_pwd);
+            inputWrong = true;
+        }
+        if (inputWrong) {
             return;
         }
         view.showLoginProgress();

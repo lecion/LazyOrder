@@ -7,37 +7,49 @@
     android:background="@color/white"
     tools:mContext="com.cisoft.shop.login.view.LoginActivity">
 
-    <EditText
-        android:id="@+id/et_pwd"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_centerInParent="true"
-        android:drawableLeft="@drawable/key"
-        android:alpha="0"
-        android:hint="密码"
-        android:drawablePadding="8dp"
-        android:inputType="textPassword"
-        android:layout_marginLeft="@dimen/material_72"
-        android:layout_marginRight="@dimen/material_32"
-        android:background="@drawable/selector_border"
-        android:layout_marginTop="@dimen/material_16"
+    <ImageView
+        android:id="@+id/iv_app_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/goods"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/material_48"
         />
 
     <EditText
         android:id="@+id/et_phone"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_centerInParent="true"
+        android:layout_below="@id/iv_app_logo"
         android:drawableLeft="@drawable/phone"
-        android:layout_above="@id/et_pwd"
         android:alpha="0"
         android:hint="手机"
         android:drawablePadding="8dp"
         android:inputType="phone"
-        android:layout_marginLeft="@dimen/material_72"
+        android:layout_marginLeft="@dimen/material_32"
         android:layout_marginRight="@dimen/material_32"
+        android:layout_marginTop="@dimen/material_48"
         android:background="@drawable/selector_border"
         />
+
+    <EditText
+        android:id="@+id/et_pwd"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_centerVertical="true"
+        android:drawableLeft="@drawable/key"
+        android:alpha="0"
+        android:hint="密码"
+        android:drawablePadding="8dp"
+        android:inputType="textPassword"
+        android:layout_marginLeft="@dimen/material_32"
+        android:layout_marginRight="@dimen/material_32"
+        android:background="@drawable/selector_border"
+        android:layout_marginTop="@dimen/material_16"
+        android:layout_below="@id/et_phone"
+        />
+
+
     <RadioGroup
         android:id="@+id/rg_select"
         android:layout_width="match_parent"
@@ -58,6 +70,7 @@
             android:button="@null"
             android:padding="@dimen/material_8"
             android:layout_marginRight="@dimen/material_16"
+            android:textColor="@color/material_font_color"
             />
         <RadioButton
             android:id="@+id/rb_express"
@@ -81,23 +94,14 @@
         android:layout_alignRight="@id/et_pwd"
         />
 
-    <ImageView
-        android:id="@+id/iv_app_logo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/goods"
-        android:layout_above="@+id/et_phone"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/material_32"
-        />
+
     <ProgressBar
         android:id="@+id/pb_loading"
         style="?android:attr/progressBarStyleInverse"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/et_phone"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/material_32"
-        android:visibility="gone"
+        android:visibility="invisible"
+        android:layout_marginTop="@dimen/material_48"
         />
 </RelativeLayout>

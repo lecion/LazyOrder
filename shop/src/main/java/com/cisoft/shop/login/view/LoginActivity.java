@@ -171,7 +171,7 @@ public class LoginActivity extends BaseActivity implements ILoginView {
 //        if (!loadingDialog.isShowing()) {
 //            loadingDialog.show();
 //        }
-        ivAppLogo.setVisibility(View.GONE);
+        ivAppLogo.setVisibility(View.INVISIBLE);
         pbLoading.setVisibility(View.VISIBLE);
     }
 
@@ -204,15 +204,31 @@ public class LoginActivity extends BaseActivity implements ILoginView {
     }
 
     @Override
-    public void showWrongInput() {
+    public void showWrongInput(int... ids) {
+        for (int id : ids) {
+            switch (id) {
+                case R.id.et_phone:
+                    animWrongView(etPhone);
+                    break;
+                case R.id.et_pwd:
+                    animWrongView(etPwd);
+                    break;
+            }
+        }
+    }
+
+    /**
+     * 生成动画
+     * @param v
+     */
+    public void animWrongView(View v) {
 //        ViewInject.toast("请输入正确的手机号和密码");
-        ivAppLogo.setImageResource(R.drawable.sad);
-        ObjectAnimator scaleLogoX = ObjectAnimator.ofFloat(ivAppLogo, View.SCALE_X, 0.5f, 1.5f, 1);
-        ObjectAnimator scaleLogoY = ObjectAnimator.ofFloat(ivAppLogo, View.SCALE_Y, 0.5f, 1.5f, 1);
+        ObjectAnimator scaleLogoX = ObjectAnimator.ofFloat(v, View.SCALE_X, 0.5f, 1.1f, 1);
+        ObjectAnimator scaleLogoY = ObjectAnimator.ofFloat(v, View.SCALE_Y, 0.5f, 1.1f, 1);
         scaleLogoX.setDuration(700);
         scaleLogoY.setDuration(700);
 
-        ObjectAnimator rotateLogo = ObjectAnimator.ofFloat(ivAppLogo, View.ROTATION, -20, 20, -40, 40, -20, 20, 0);
+        ObjectAnimator rotateLogo = ObjectAnimator.ofFloat(v, View.ROTATION, -10, 10, -20, 20, -10, 10, 0);
         rotateLogo.setInterpolator(new BounceInterpolator());
         rotateLogo.setDuration(700);
 
