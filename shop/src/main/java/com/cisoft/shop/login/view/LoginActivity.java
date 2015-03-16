@@ -1,12 +1,13 @@
 package com.cisoft.shop.login.view;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.app.Dialog;
 import android.content.res.Configuration;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.AccelerateInterpolator;
 import android.view.animation.BounceInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 
 import com.cisoft.shop.AppConfig;
 import com.cisoft.shop.MainActivity;
@@ -26,6 +28,9 @@ import org.kymjs.aframe.ui.BindView;
 import org.kymjs.aframe.ui.activity.BaseActivity;
 
 public class LoginActivity extends BaseActivity implements ILoginView {
+
+    @BindView(id = R.id.rl_container)
+    private RelativeLayout rlContainer;
 
     @BindView(id = R.id.iv_app_logo)
     private ImageView ivAppLogo;
@@ -48,12 +53,13 @@ public class LoginActivity extends BaseActivity implements ILoginView {
     @BindView(id = R.id.rb_express)
     private RadioButton rbExpress;
 
-    Dialog loadingDialog;
-
     @BindView(id = R.id.pb_loading)
     ProgressBar pbLoading;
 
     LoginPresenter loginPresenter;
+
+    private boolean isLogining;
+
 
     @Override
     public void setRootView() {
@@ -110,10 +116,11 @@ public class LoginActivity extends BaseActivity implements ILoginView {
      */
     private void startLoginAnimation() {
         int screenHeight = DeviceUtil.getScreenHeight(this);
+        int screenTop = DeviceUtil.dp2px(this, 108);
 
-        ObjectAnimator transLogoY = ObjectAnimator.ofFloat(ivAppLogo, "translationY", screenHeight, -screenHeight / 15, 0);
-        transLogoY.setDuration(2000);
-        transLogoY.setInterpolator(new AccelerateDecelerateInterpolator());
+        ObjectAnimator transLogoY = ObjectAnimator.ofFloat(ivAppLogo, "translationY", - screenTop, screenTop * 2, 0);
+        transLogoY.setDuration(1500);
+        transLogoY.setInterpolator(new BounceInterpolator());
 
         ObjectAnimator scaleLogoX = ObjectAnimator.ofFloat(ivAppLogo, View.SCALE_X, 1, 3, 1);
         ObjectAnimator scaleLogoY = ObjectAnimator.ofFloat(ivAppLogo, View.SCALE_Y, 1, 3, 1);
@@ -153,10 +160,12 @@ public class LoginActivity extends BaseActivity implements ILoginView {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_login:
-                if (isMerLogin()) {
-                    loginPresenter.normalLogin(etPhone.getText().toString(), etPwd.getText().toString());
-                } else {
-                    loginPresenter.expressLogin(etPhone.getText().toString(), etPwd.getText().toString());
+                if (!isLogining) {
+                    if (isMerLogin()) {
+                        loginPresenter.normalLogin(etPhone.getText().toString(), etPwd.getText().toString());
+                    } else {
+                        loginPresenter.expressLogin(etPhone.getText().toString(), etPwd.getText().toString());
+                    }
                 }
                 break;
         }
@@ -171,6 +180,7 @@ public class LoginActivity extends BaseActivity implements ILoginView {
 //        if (!loadingDialog.isShowing()) {
 //            loadingDialog.show();
 //        }
+        isLogining = true;
         ivAppLogo.setVisibility(View.INVISIBLE);
         pbLoading.setVisibility(View.VISIBLE);
     }
@@ -201,6 +211,7 @@ public class LoginActivity extends BaseActivity implements ILoginView {
         AnimatorSet shakeAndRotate = new AnimatorSet();
         shakeAndRotate.playTogether(scaleLogoX, scaleLogoY, rotateLogo);
         shakeAndRotate.start();
+        isLogining = false;
     }
 
     @Override
@@ -239,7 +250,27 @@ public class LoginActivity extends BaseActivity implements ILoginView {
 
     @Override
     public void skipToMainActivity() {
-        skipActivity(this, MainActivity.class);
+        successLoginAnim();
+    }
+
+    private void successLoginAnim() {
+        ObjectAnimator rotation = ObjectAnimator.ofFloat(rlContainer, View.ROTATION, 360 * 3);
+        rotation.setDuration(1500);
+        rotation.setInterpolator(new AccelerateInterpolator());
+        ObjectAnimator scaleX = ObjectAnimator.ofFloat(rlContainer, View.SCALE_X, 1f, 0f);
+        ObjectAnimator scaleY = ObjectAnimator.ofFloat(rlContainer, View.SCALE_Y, 1f, 0f);
+        scaleX.setDuration(1500);
+        scaleY.setDuration(1500);
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.playTogether(rotation, scaleX, scaleY);
+        animatorSet.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                skipActivity(LoginActivity.this, MainActivity.class);
+                overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
+            }
+        });
+        animatorSet.start();
     }
 
     private boolean isMerLogin() {

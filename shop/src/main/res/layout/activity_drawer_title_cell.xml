@@ -19,7 +19,7 @@
         android:id="@+id/tv_drawer_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="#ff0f0f0f"
+        android:textColor="@color/material_font_color"
         android:layout_gravity="center_vertical"
         android:textSize="16sp"
         />
