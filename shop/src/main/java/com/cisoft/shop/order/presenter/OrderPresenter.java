@@ -119,4 +119,23 @@ public class OrderPresenter {
         });
     }
 
+    /**
+     * 取消订单
+     * @param orderId   订单id
+     * @param position  取消订单在listView中的position
+     */
+    public void cancelOrder(int orderId, final int position) {
+        model.updateOrderState(orderId, "CANCEL", new OrderModel.IUpdateOrderState() {
+            @Override
+            public void onSuccess(int code) {
+                view.dismissView(position);
+            }
+
+            @Override
+            public void onFailure(String msg) {
+                ViewInject.toast(msg);
+            }
+        });
+    }
+
 }

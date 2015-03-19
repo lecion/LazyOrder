@@ -189,25 +189,29 @@ public class OrderFragment extends BaseFragment implements IOrderView{
             public void onMenuItemClick(final int position, SwipeMenu menu, int index) {
                 switch (index) {
                     case 0:
-                        final View dismissView = lvOrder.getTouchView();
-                        final ViewGroup.LayoutParams lp = dismissView.getLayoutParams();
-                        final int originHeight = dismissView.getHeight();
-                        ValueAnimator animator = ValueAnimator.ofInt(originHeight, 0).setDuration(300);
-                        animator.start();
-                        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                            @Override
-                            public void onAnimationUpdate(ValueAnimator animation) {
-                                lp.height = (int) animation.getAnimatedValue();
-                                dismissView.setLayoutParams(lp);
-                            }
-                        });
-                        animator.addListener(new AnimatorListenerAdapter() {
-                            @Override
-                            public void onAnimationEnd(Animator animation) {
-                                orderList.remove(position);
-                                orderListAdapter.notifyDataSetChanged();
-                            }
-                        });
+                        presenter.cancelOrder(orderList.get(position).getId(), position);
+//                        Log.d("position", position + "");
+//                        ViewInject.toast("position " + position);
+//
+//                        final View dismissView = lvOrder.getTouchView();
+//                        final ViewGroup.LayoutParams lp = dismissView.getLayoutParams();
+//                        final int originHeight = dismissView.getHeight();
+//                        ValueAnimator animator = ValueAnimator.ofInt(originHeight, 0).setDuration(300);
+//                        animator.start();
+//                        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+//                            @Override
+//                            public void onAnimationUpdate(ValueAnimator animation) {
+//                                lp.height = (int) animation.getAnimatedValue();
+//                                dismissView.setLayoutParams(lp);
+//                            }
+//                        });
+//                        animator.addListener(new AnimatorListenerAdapter() {
+//                            @Override
+//                            public void onAnimationEnd(Animator animation) {
+//                                orderList.remove(position);
+//                                orderListAdapter.notifyDataSetChanged();
+//                            }
+//                        });
                         break;
                 }
             }
@@ -345,6 +349,30 @@ public class OrderFragment extends BaseFragment implements IOrderView{
     @Override
     public void hideNewMsg() {
         mListener.hideNewMsg();
+    }
+
+    @Override
+    public void dismissView(final int position) {
+        final View dismissView = lvOrder.getTouchView();
+        final ViewGroup.LayoutParams lp = dismissView.getLayoutParams();
+        final int originHeight = dismissView.getHeight();
+        ValueAnimator animator = ValueAnimator.ofInt(originHeight, 0).setDuration(300);
+        animator.start();
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                lp.height = (int) animation.getAnimatedValue();
+                dismissView.setLayoutParams(lp);
+            }
+        });
+        animator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                orderList.remove(position);
+                orderListAdapter.notifyDataSetChanged();
+            }
+        });
+
     }
 
     public interface OnFragmentInteractionListener {
