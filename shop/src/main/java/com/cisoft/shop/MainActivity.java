@@ -133,6 +133,11 @@ public class MainActivity extends BaseActivity implements
         drawerTitle.add(item);
 
         item = new HashMap<String, Object>();
+        item.put(KEY_ICON, R.drawable.finishorder);
+        item.put(KEY_TITLE, "检查更新");
+        drawerTitle.add(item);
+
+        item = new HashMap<String, Object>();
         item.put(KEY_ICON, R.drawable.logout);
         item.put(KEY_TITLE, "注销");
         drawerTitle.add(item);
@@ -186,6 +191,9 @@ public class MainActivity extends BaseActivity implements
                     getFragmentManager().beginTransaction().replace(R.id.fl_container, FinishOrderFragment.newInstance("已完成订单"), "finishOrder").commit();
                     break;
                 case 3:
+                    checkUpdate();
+                    break;
+                case 4:
                     doLogout();
                     break;
             }
@@ -201,6 +209,9 @@ public class MainActivity extends BaseActivity implements
                     getFragmentManager().beginTransaction().replace(R.id.fl_container, FinishExpressOrderFragment.newInstance("已完成订单"), "finishexpressorder").commit();
                     break;
                 case 2:
+                    checkUpdate();
+                    break;
+                case 3:
                     doLogout();
                     break;
             }
@@ -210,6 +221,14 @@ public class MainActivity extends BaseActivity implements
         if (drawerLayout.isDrawerOpen(Gravity.LEFT)) {
             drawerLayout.closeDrawer(Gravity.LEFT);
         }
+    }
+
+    /**
+     * 检查软件更新
+     */
+    private void checkUpdate() {
+
+
     }
 
     @Override
