@@ -8,6 +8,7 @@ import com.cisoft.shop.bean.Expmer;
 import com.cisoft.shop.bean.ExpressOrder;
 import com.cisoft.shop.goods.model.INetWorkFinished;
 import com.cisoft.shop.http.AbsService;
+import com.cisoft.shop.order.model.OrderModel;
 import com.cisoft.shop.util.L;
 
 import org.json.JSONArray;
@@ -87,6 +88,31 @@ public class ExpressModel extends AbsService  {
     }
 
 
+    public void updateOrderState(int orderId, final String state, final OrderModel.IUpdateOrderState finishedListener) {
+        //TODO 快递商家订单修改状态接口
+        KJStringParams params = new KJStringParams();
+        params.put(Api.KEY_ORDER_ORDER_ID, String.valueOf(orderId));
+        params.put(Api.KEY_ORDER_STATE, String.valueOf(state));
+        asyncUrlGet(Api.METHOD_ORDER_UPDATE_ORDER_STATE, params, false, new SuccessCallback() {
+            @Override
+            public void onSuccess(String result) throws JSONException {
+                JSONObject jsonObject= new JSONObject(result);
+                int state = jsonObject.getInt("state");
+                if (state == 200) {
+                    finishedListener.onSuccess(state);
+                } else {
+                    finishedListener.onFailure(getResponseStateInfo(state));
+                }
+            }
+        }, new FailureCallback() {
+            @Override
+            public void onFailure(int stateCode) {
+                finishedListener.onFailure(getResponseStateInfo(stateCode));
+            }
+        });
+    }
+
+
     @Override
     public String getResponseStateInfo(int stateCode) {
         String stateInfo = "";
@@ -106,6 +132,8 @@ public class ExpressModel extends AbsService  {
         }
         return stateInfo;
     }
+
+
 
     public interface IUpdateOrderState {
         public void onSuccess(int code);

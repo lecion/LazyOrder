@@ -7,6 +7,7 @@ import com.cisoft.shop.bean.ExpressOrder;
 import com.cisoft.shop.expressorder.model.ExpressModel;
 import com.cisoft.shop.expressorder.view.IOrderView;
 import com.cisoft.shop.goods.model.INetWorkFinished;
+import com.cisoft.shop.order.model.OrderModel;
 import com.cisoft.shop.welcome.model.ExpmerModel;
 
 import org.kymjs.aframe.ui.ViewInject;
@@ -109,6 +110,25 @@ public class OrderPresenter {
             @Override
             public void onSuccess(int code) {
                 view.setOrderStatus(position, state);
+            }
+
+            @Override
+            public void onFailure(String msg) {
+                ViewInject.toast(msg);
+            }
+        });
+    }
+
+    /**
+     * 取消订单
+     * @param orderId   订单id
+     * @param position  取消订单在listView中的position
+     */
+    public void cancelOrder(int orderId, final int position) {
+        model.updateOrderState(orderId, "CANCEL", new OrderModel.IUpdateOrderState() {
+            @Override
+            public void onSuccess(int code) {
+                view.dismissView(position);
             }
 
             @Override

@@ -41,4 +41,6 @@ public interface IOrderView {
     void hideMoreProgress();
 
     void hideNewMsg();
+
+    void dismissView(int position);
 }
