@@ -51,4 +51,10 @@
     <color name="lite_blue">#ff359ff2</color>
     <color name="window_background">#00000000</color>
     <color name="material_font_color">#239788</color>
+
+    <color name="shiraz">#AF001B</color>
+    <color name="scarlett">#980011</color>
+    <color name="pale_chestnut">#D8ACAF</color>
+    <color name="guardsman_red">#B70011</color>
+    <color name="silver_sand">#C2C2C2</color>
 </resources>
