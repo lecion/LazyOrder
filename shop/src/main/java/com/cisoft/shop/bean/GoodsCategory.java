@@ -52,9 +52,9 @@ public class GoodsCategory extends AbsBean{
             while (iterator.hasNext()) {
                 key = iterator.next();
                 if (key.equals(Api.KEY_CAT_ID)) {
-                    this.id = jsonObj.getInt(Api.KEY_CAT_ID);
+                    this.id = jsonObj.getInt(key);
                 } else if (key.equals(Api.KEY_CAT_NAME)) {
-                    this.cateName = jsonObj.getString(Api.KEY_CAT_NAME);
+                    this.cateName = jsonObj.getString(key);
                 }
             }
         } catch (JSONException e) {

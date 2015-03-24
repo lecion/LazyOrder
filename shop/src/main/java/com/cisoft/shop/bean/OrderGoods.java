@@ -78,15 +78,15 @@ public class OrderGoods extends AbsBean implements Serializable{
             while (iterator.hasNext()) {
                 key = iterator.next();
                 if (key.equals(Api.KEY_ORDER_ID)) {
-                    setId(jsonObj.getInt(Api.KEY_ORDER_ID));
+                    setId(jsonObj.getInt(key));
                 } else if (key.equals(Api.KEY_ORDER_COM_ID)) {
-                    setComId(jsonObj.getInt(Api.KEY_ORDER_COM_ID));
+                    setComId(jsonObj.getInt(key));
                 } else if (key.equals(Api.KEY_ORDER_COM_NAME)) {
-                    setComName(jsonObj.getString(Api.KEY_ORDER_COM_NAME));
+                    setComName(jsonObj.getString(key));
                 } else if (key.equals(Api.KEY_ORDER_COM_NUM)) {
-                    setComNum(jsonObj.getInt(Api.KEY_ORDER_COM_NUM));
+                    setComNum(jsonObj.getInt(key));
                 } else if (key.equals(Api.KEY_ORDER_COM_PRICE)){
-                    setPrice(jsonObj.getDouble(Api.KEY_ORDER_COM_PRICE));
+                    setPrice(jsonObj.getDouble(key));
                 }
             }
         } catch (JSONException e) {

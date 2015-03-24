@@ -24,6 +24,7 @@ import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
+import com.cisoft.shop.bean.UpdateInfo;
 import com.cisoft.shop.expressorder.view.ExpressOrderFragment;
 import com.cisoft.shop.finishexpressorder.view.FinishExpressOrderFragment;
 import com.cisoft.shop.finishorder.view.FinishOrderFragment;
@@ -191,12 +192,22 @@ public class MainActivity extends BaseActivity implements
 
     @Override
     public void showNoUpdate() {
-
+        ViewInject.toast(this, getString(R.string.no_update));
     }
 
     @Override
-    public void showUpdateInfo() {
+    public void showUpdateInfo(final UpdateInfo info) {
+        DialogFactory.createMaterialDialog(this, "发现新版本", info.getUpdateInfo(), "现在更新", "不想更新", new DialogFactory.IConfirm() {
+            @Override
+            public void onYes() {
+                updatePresenter.startUpdate(info);
+            }
+        });
+    }
 
+    @Override
+    public void showErrorUpdate() {
+        ViewInject.toast(this, getString(R.string.error_update));
     }
 
     /**

@@ -33,5 +33,9 @@
     <string name="iconfont_finish_order">&#xe604;</string>
     <string name="iconfont_logout">&#xe64a;</string>
 
+    <!--检查更新-->
+    <string name="no_update">当前已经是最新版本啦~\(≧▽≦)/~</string>
+    <string name="error_update">更新失败，请检查网络设置</string>
+
 
 </resources>

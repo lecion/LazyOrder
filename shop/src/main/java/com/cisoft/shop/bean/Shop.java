@@ -139,25 +139,25 @@ public class Shop extends AbsBean implements Serializable{
             while (iterator.hasNext()) {
                 key = iterator.next();
                 if (key.equals(Api.KEY_MER_ID)) {
-                    this.id = jsonObj.getInt(Api.KEY_MER_ID);
+                    this.id = jsonObj.getInt(key);
                 } else if (key.equals(Api.KEY_MER_NAME)) {
-                    setName(jsonObj.getString(Api.KEY_MER_NAME));
+                    setName(jsonObj.getString(key));
                 } else if(key.equals(Api.KEY_MER_OPEN_TIME)) {
-                    setOpenTime(jsonObj.getString(Api.KEY_MER_OPEN_TIME));
+                    setOpenTime(jsonObj.getString(key));
                 } else if(key.equals(Api.KEY_MER_CLOSE_TIME)) {
-                    setCloseTime(jsonObj.getString(Api.KEY_MER_CLOSE_TIME));
+                    setCloseTime(jsonObj.getString(key));
                 } else if(key.equals(Api.KEY_MER_MONTH_SALES)) {
-                    setMonthSales(jsonObj.getInt(Api.KEY_MER_MONTH_SALES));
+                    setMonthSales(jsonObj.getInt(key));
                 } else if(key.equals(Api.KEY_MER_FACE_PIC)) {
-                    setFaceImgUrl(jsonObj.getString(Api.KEY_MER_FACE_PIC));
+                    setFaceImgUrl(jsonObj.getString(key));
                 } else if(key.equals(Api.KEY_MER_OPERATING_STATE)) {
-                    setOperatingState(jsonObj.getInt(Api.KEY_MER_OPERATING_STATE));
+                    setOperatingState(jsonObj.getInt(key));
                 } else if(key.equals(Api.KEY_MER_PROMOTION_INFO)) {
-                    setPromotionInfo(jsonObj.getString(Api.KEY_MER_PROMOTION_INFO));
+                    setPromotionInfo(jsonObj.getString(key));
                 } else if(key.equals(Api.KEY_MER_ADDRESS)) {
-                    setAddress(jsonObj.getString(Api.KEY_MER_ADDRESS));
+                    setAddress(jsonObj.getString(key));
                 } else if (key.equals(Api.KEY_MER_NODISTRIBUTION_PRICE)) {
-                    setNodistributionPrice(jsonObj.getInt(Api.KEY_MER_NODISTRIBUTION_PRICE));
+                    setNodistributionPrice(jsonObj.getInt(key));
                 } else if (key.equals(Api.KEY_MER_CID)) {
                     setcID(Api.KEY_MER_CID);
                 }

@@ -131,31 +131,31 @@ public class Order extends AbsBean {
             while (iterator.hasNext()) {
                 key = iterator.next();
                 if (key.equals(Api.KEY_ORDER_ID)) {
-                    this.id = jsonObj.getInt(Api.KEY_ORDER_ID);
+                    this.id = jsonObj.getInt(key);
                 } else if (key.equals(Api.KEY_ORDER_USER_PHONE)) {
-                    this.userPhone =  jsonObj.getString(Api.KEY_ORDER_USER_PHONE);
+                    this.userPhone =  jsonObj.getString(key);
                 } else if (key.equals(Api.KEY_ORDER_USER_NAME)) {
-                    this.userName =  jsonObj.getString(Api.KEY_ORDER_USER_NAME);
+                    this.userName =  jsonObj.getString(key);
                 } else if (key.equals(Api.KEY_ORDER_TIME_GO)) {
-                    this.timeGo = jsonObj.getString(Api.KEY_ORDER_TIME_GO);
+                    this.timeGo = jsonObj.getString(key);
                 } else if (key.equals(Api.KEY_ORDER_ORDER_STATE)) {
-                    this.orderState = jsonObj.getString(Api.KEY_ORDER_ORDER_STATE);
+                    this.orderState = jsonObj.getString(key);
                 } else if (key.equals(Api.KEY_ORDER_ORDER_NUMBER)) {
-                    this.orderNumber = jsonObj.getString(Api.KEY_ORDER_ORDER_NUMBER);
+                    this.orderNumber = jsonObj.getString(key);
                 } else if (key.equals(Api.KEY_ORDER_ORDER_CONTENT)) {
-                    this.content = jsonObj.getString(Api.KEY_ORDER_ORDER_CONTENT);
+                    this.content = jsonObj.getString(key);
                 } else if (key.equals(Api.KEY_ORDER_RDER_PRICE)) {
-                    this.orderPrice = jsonObj.getDouble(Api.KEY_ORDER_RDER_PRICE);
+                    this.orderPrice = jsonObj.getDouble(key);
                 } else if (key.equals(Api.KEY_ORDER_DISTRIBUTION_PRICE)) {
-                    setDistributionPrice(jsonObj.getDouble(Api.KEY_ORDER_DISTRIBUTION_PRICE));
+                    setDistributionPrice(jsonObj.getDouble(key));
                 } else if (key.equals(Api.kEY_ORDER_ADDRESS)) {
-                    setAddress(jsonObj.getString(Api.kEY_ORDER_ADDRESS));
+                    setAddress(jsonObj.getString(key));
                 } else if (key.equals(Api.KEY_ORDER_DEDUCTION)) {
-                    setDeduction(jsonObj.getDouble(Api.KEY_ORDER_DEDUCTION));
+                    setDeduction(jsonObj.getDouble(key));
                 } else if (key.equals(Api.KEY_ORDER_SETTLED_PRICE)) {
-                    setSettledPrice(jsonObj.getDouble(Api.KEY_ORDER_SETTLED_PRICE));
+                    setSettledPrice(jsonObj.getDouble(key));
                 }else if (key.equals(Api.KEY_ORDER_ORDER_COMMODITY_VO_LIST)) {
-                    JSONArray goodListArr = jsonObj.getJSONArray(Api.KEY_ORDER_ORDER_COMMODITY_VO_LIST);
+                    JSONArray goodListArr = jsonObj.getJSONArray(key);
                     JSONObject goodsObj = null;
                     for (int i = 0; i < goodListArr.length(); i++) {
                         goodsObj = goodListArr.getJSONObject(i);

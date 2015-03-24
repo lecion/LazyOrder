@@ -124,21 +124,21 @@ public class Goods extends AbsBean implements Serializable{
             while (iterator.hasNext()) {
                 key = iterator.next();
                 if (key.equals(Api.KEY_COM_ID)) {
-                    this.id = jsonObj.getInt(Api.KEY_COM_ID);
+                    this.id = jsonObj.getInt(key);
                 } else if (key.equals(Api.KEY_COM_NAME)) {
-                    this.cmName = jsonObj.getString(Api.KEY_COM_NAME);
+                    this.cmName = jsonObj.getString(key);
                 } else if(key.equals(Api.KEY_COM_PICTURE)) {
-                    this.cmPicture = jsonObj.getString(Api.KEY_COM_PICTURE);
+                    this.cmPicture = jsonObj.getString(key);
                 } else if(key.equals(Api.KEY_COM_CAT_ID)) {
-                    this.cateId = jsonObj.getInt(Api.KEY_COM_CAT_ID);
+                    this.cateId = jsonObj.getInt(key);
                 } else if(key.equals(Api.KEY_COM_CAT_NAME)) {
-                    this.catName = jsonObj.getString(Api.KEY_COM_CAT_NAME);
+                    this.catName = jsonObj.getString(key);
                 } else if(key.equals(Api.KEY_COM_SALES_NUM)) {
-                    this.salesNum = jsonObj.getInt(Api.KEY_COM_SALES_NUM);
+                    this.salesNum = jsonObj.getInt(key);
                 } else if(key.equals(Api.KEY_COM_PRICE)) {
-                    this.cmPrice = jsonObj.getInt(Api.KEY_COM_PRICE);
+                    this.cmPrice = jsonObj.getInt(key);
                 } else if (key.equals(Api.KEY_COM_COM_STATE)) {
-                    this.state = jsonObj.getInt(Api.KEY_COM_COM_STATE);
+                    this.state = jsonObj.getInt(key);
                 }
             }
         } catch (JSONException e) {

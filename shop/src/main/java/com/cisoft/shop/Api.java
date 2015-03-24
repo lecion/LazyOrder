@@ -42,6 +42,8 @@ public class Api {
 
     public static final String MODULE_EXPRESS = "express";
 
+    public static final String MODULE_SETTING = "setting";
+
     /* 这里存放API接口里的方法名,以"METHOD_+模块名"打头 */
     public static final String METHOD_MERCHANTS_FIND_BY_TYPE_ID = "findMerchantsOrCanteen";
     public static final String METHOD_MER_CATEGORY_FIND_ALL = "findAll";
@@ -70,7 +72,7 @@ public class Api {
 
     public static final String METHOD_EXPRESS_UPDATE_EXPRESS_STATUE = "updateExpressStatue";
 
-
+    public static final String METHOD_CHECK_UPDATE = "checkUpdate";
 
     /* 这里存放返回json的key,以"KEY_ + 模块名简写"打头,以模块扎堆↖(^ω^)↗ */
 
@@ -206,5 +208,10 @@ public class Api {
     public static final String KEY_EXPMER_PIC = "expmerPic";
     public static final String KEY_EXPMER_OPERATING_STATE = "operatingState";
     public static final String KEY_EXPMER_SALES = "sales";
+
+    public static final String KEY_SETTING_VERSION_CODE = "versionCode";
+    public static final String KEY_SETTING_VERSION_NAME = "versionName";
+    public static final String KEY_SETTING_DOWNLOAD_URL = "downloadUrl";
+    public static final String KEY_SETTING_UPDATE_CONTENT = "updateContent";
 
 }

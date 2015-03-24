@@ -1,5 +1,7 @@
 package com.cisoft.shop.update.view;
 
+import com.cisoft.shop.bean.UpdateInfo;
+
 /**
  * Created by Lecion on 3/24/15.
  */
@@ -10,5 +12,7 @@ public interface IUpdateView {
 
     void showNoUpdate();
 
-    void showUpdateInfo();
+    void showUpdateInfo(UpdateInfo info);
+
+    void showErrorUpdate();
 }

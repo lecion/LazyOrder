@@ -101,23 +101,23 @@ public class Expmer extends AbsBean implements Serializable{
             while (iterator.hasNext()) {
                 key = iterator.next();
                 if (key.equals(Api.KEY_EXPMER_ID)) {
-                    setId(jsonObj.getInt(Api.KEY_EXPMER_ID));
+                    setId(jsonObj.getInt(key));
                 } else if(key.equals(Api.KEY_EXPMER_OPENTIME)) {
-                    setOpenTime(jsonObj.getString(Api.KEY_EXPMER_OPENTIME));
+                    setOpenTime(jsonObj.getString(key));
                 } else if(key.equals(Api.KEY_EXPMER_CLOSETIME)) {
-                    setCloseTime(jsonObj.getString(Api.KEY_EXPMER_CLOSETIME));
+                    setCloseTime(jsonObj.getString(key));
                 } else if(key.equals(Api.KEY_EXPMER_PIC)) {
-                    setPic(jsonObj.getString(Api.KEY_EXPMER_PIC));
+                    setPic(jsonObj.getString(key));
                 } else if(key.equals(Api.KEY_EXPMER_OPERATING_STATE)) {
-                    setOperatingState(jsonObj.getInt(Api.KEY_EXPMER_OPERATING_STATE));
+                    setOperatingState(jsonObj.getInt(key));
                 } else if(key.equals(Api.KEY_EXPMER_SALES)) {
-                    setSales(jsonObj.getString(Api.KEY_EXPMER_SALES));
+                    setSales(jsonObj.getString(key));
                 } else if(key.equals(Api.KEY_EXPMER_ADDRESS)) {
-                    setAddress(jsonObj.getString(Api.KEY_EXPMER_ADDRESS));
+                    setAddress(jsonObj.getString(key));
                 } else if (key.equals(Api.KEY_MER_CID)) {
-                    setcID(Api.KEY_MER_CID);
+                    setcID(jsonObj.getString(key));
                 } else if (key.equals(Api.KEY_EXPMER_EXPMER_NAME)){
-                    setName(jsonObj.getString(Api.KEY_EXPMER_EXPMER_NAME));
+                    setName(jsonObj.getString(key));
                 }
             }
         } catch (JSONException e) {

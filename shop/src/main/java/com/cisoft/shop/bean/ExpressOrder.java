@@ -111,25 +111,25 @@ public class ExpressOrder extends AbsBean {
                 if (key.equals(Api.KEY_EXPRESS_ID)) {
                     setId(jsonObj.getInt(Api.KEY_EXPRESS_ID));
                 } else if (key.equals(Api.KEY_EXPRESS_ADDRESS)) {
-                    setAddress(jsonObj.getString(Api.KEY_EXPRESS_ADDRESS));
+                    setAddress(jsonObj.getString(key));
                 } else if (key.equals(Api.KEY_EXPRESS_CONTENT)) {
-                    setContent(jsonObj.getString(Api.KEY_EXPRESS_CONTENT));
+                    setContent(jsonObj.getString(key));
                 } else if (key.equals(Api.KEY_EXPRESS_DISTRIBUTION_PRICE)) {
-                    setDistributionPrice(jsonObj.getDouble(Api.KEY_EXPRESS_DISTRIBUTION_PRICE));
+                    setDistributionPrice(jsonObj.getDouble(key));
                 } else if (key.equals(Api.KEY_EXPRESS_EXPRESS_NUMBER)) {
-                    setExpressNumber(jsonObj.getString(Api.KEY_EXPRESS_EXPRESS_NUMBER));
+                    setExpressNumber(jsonObj.getString(key));
                 } else if (key.equals(Api.KEY_EXPRESS_EXPRESS_TIME)) {
-                    setExpressTime(jsonObj.getString(Api.KEY_EXPRESS_EXPRESS_TIME));
+                    setExpressTime(jsonObj.getString(key));
                 } else if (key.equals(Api.KEY_EXPRESS_GET_MESSAGE_TIME)) {
-                    setGetMessageTime(jsonObj.getString(Api.KEY_EXPRESS_GET_MESSAGE_TIME));
+                    setGetMessageTime(jsonObj.getString(key));
                 } else if (key.equals(Api.KEY_EXPRESS_MESSAGE)) {
-                    setMessage(jsonObj.getString(Api.KEY_EXPRESS_MESSAGE));
+                    setMessage(jsonObj.getString(key));
                 } else if (key.equals(Api.KEY_EXPRESS_STATUE)) {
-                    setStatue(jsonObj.getString(Api.KEY_EXPRESS_STATUE));
+                    setStatue(jsonObj.getString(key));
                 } else if (key.equals(Api.KEY_EXPRESS_USER_NAME)) {
-                    setUserName(jsonObj.getString(Api.KEY_EXPRESS_USER_NAME));
+                    setUserName(jsonObj.getString(key));
                 } else if (key.equals(Api.KEY_EXPRESS_USER_PHONE)) {
-                    setUserPhone(jsonObj.getString(Api.KEY_EXPRESS_USER_PHONE));
+                    setUserPhone(jsonObj.getString(key));
                 }
             }
         } catch (JSONException e) {
