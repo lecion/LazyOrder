@@ -2,6 +2,7 @@ package com.cisoft.shop.util;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -47,5 +48,22 @@ public class DeviceUtil {
         }
         Log.d("isInputMethodShow", "false");
         return false;
+    }
+
+    public static String getVersionName(Context ctx) {
+        try {
+            return ctx.getPackageManager().getPackageInfo(ctx.getPackageName(), 0).versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            return "1.0";
+        }
+    }
+
+    public static int getVersionCode(Context ctx) {
+        try {
+            return ctx.getPackageManager().getPackageInfo(ctx.getPackageName(), 0).versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            return 1;
+        }
     }
 }

@@ -1,6 +1,7 @@
 package com.cisoft.shop;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -29,6 +30,8 @@ import com.cisoft.shop.finishorder.view.FinishOrderFragment;
 import com.cisoft.shop.goods.view.GoodsFragment;
 import com.cisoft.shop.login.view.LoginActivity;
 import com.cisoft.shop.order.view.OrderFragment;
+import com.cisoft.shop.update.presenter.UpdatePresenter;
+import com.cisoft.shop.update.view.IUpdateView;
 import com.cisoft.shop.util.IOUtil;
 import com.cisoft.shop.util.L;
 import com.cisoft.shop.widget.DialogFactory;
@@ -50,7 +53,8 @@ public class MainActivity extends BaseActivity implements
         OrderFragment.OnFragmentInteractionListener,
         ExpressOrderFragment.OnFragmentInteractionListener,
         FinishOrderFragment.OnFragmentInteractionListener,
-        FinishExpressOrderFragment.OnFragmentInteractionListener {
+        FinishExpressOrderFragment.OnFragmentInteractionListener,
+        IUpdateView{
 
     @BindView(id = R.id.drawer_layout)
     private DrawerLayout drawerLayout;
@@ -76,8 +80,12 @@ public class MainActivity extends BaseActivity implements
 
     private NewMsgReceiver receiver;
 
+    private Dialog updateDialog;
+
     private int loginType;
     private SimpleAdapter mDrawerAdapter;
+
+    UpdatePresenter updatePresenter;
 
     public MainActivity() {
         setHiddenActionBar(false);
@@ -100,6 +108,7 @@ public class MainActivity extends BaseActivity implements
 
     @Override
     protected void initData() {
+        updatePresenter = new UpdatePresenter(this, this);
         initDrawerTitle();
     }
 
@@ -165,6 +174,31 @@ public class MainActivity extends BaseActivity implements
         btnNewMsg.setVisibility(View.GONE);
     }
 
+    @Override
+    public void showUpdateProgress() {
+        if (updateDialog == null) {
+            updateDialog = DialogFactory.createToastDialog(this, "正在检查更新...");
+        }
+        updateDialog.show();
+    }
+
+    @Override
+    public void hideUpdateProgress() {
+        if (updateDialog != null) {
+            updateDialog.hide();
+        }
+    }
+
+    @Override
+    public void showNoUpdate() {
+
+    }
+
+    @Override
+    public void showUpdateInfo() {
+
+    }
+
     /**
      * 抽屉点击监听器
      */
@@ -227,8 +261,7 @@ public class MainActivity extends BaseActivity implements
      * 检查软件更新
      */
     private void checkUpdate() {
-
-
+        updatePresenter.checkUpdate();
     }
 
     @Override
