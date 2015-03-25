@@ -34,7 +34,7 @@ public class GoodsPresenter{
     public void onLoad(int type, String sortType) {
         view.setPage(1);
         view.showProgress();
-        final int size = 5;
+        final int size = 10;
         categoryModel.loadCateogryByShopId(new INetWorkFinished<GoodsCategory>() {
             @Override
             public void onSuccess(List<GoodsCategory> l) {
@@ -119,9 +119,9 @@ public class GoodsPresenter{
         this.onLoad(type, IGoodsView.SORT_SALES);
     }
 
-    public void switchGoodsStatus(final int position, final int state) {
+    public void switchGoodsStatus(final int position, int comId, final int state) {
         final int result = state == 1 ? 0 : 1;
-        model.updateComState(result, new GoodsModel.IUpdateGoodsState(){
+        model.updateComState(comId, result, new GoodsModel.IUpdateGoodsState(){
 
             @Override
             public void onSuccess(int code) {

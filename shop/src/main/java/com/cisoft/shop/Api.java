@@ -6,8 +6,9 @@ package com.cisoft.shop;
 public class Api {
 
     public static final String SERVER_URL = "http://123.56.84.203:8584/Lazyer";
-    //public static final String SERVER_URL = "http://lazyorder.yliec.com";
+//    public static final String SERVER_URL = "http://lazyorder.yliec.com";
     public static final String URL_SEPERATOR = "/";
+    public static final String FILE_SUFFIX = ".json";
 
     public static final String ORDER_STATE_CREATE = "CREATE";
     public static final String ORDER_STATE_READY = "READY";
@@ -25,6 +26,7 @@ public class Api {
     /* 这里存放全局使用的key */
     public static final String KEY_STATE = "state";
     public static final String KEY_DATA = "data";
+    public static final String KEY_MESSAGE = "message";
 
     /* 这里存放API接口里的模块名（控制器名）,以"MODULE_"打头 */
     public static final String MODULE_MERCHANTS = "merchants";
@@ -111,7 +113,7 @@ public class Api {
     public static final String KEY_ORDER_USER_PHONE = "userPhone";
     public static final String KEY_ORDER_USER_NAME = "userName";
     public static final String KEY_ORDER_TIME_GO = "timeGo";                                //已下单时间
-    public static final String KEY_ORDER_ORDER_STATE = "orderState";                        //订单状态 CRAETE（最新订单）   READY（已准备）
+    public static final String KEY_ORDER_ORDER_STATE = "orderStatue";                        //订单状态 CRAETE（最新订单）   READY（已准备）
     public static final String KEY_ORDER_STATE = "state";                        //订单状态 CRAETE（最新订单）   READY（已准备）
     public static final String KEY_ORDER_ORDER_NUMBER = "orderNumber";
     public static final String KEY_ORDER_ORDER_CONTENT = "content";

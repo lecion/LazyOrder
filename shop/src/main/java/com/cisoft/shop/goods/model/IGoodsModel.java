@@ -8,5 +8,5 @@ import com.cisoft.shop.bean.Goods;
 public interface IGoodsModel {
     void loadGoodsList(int page, int size, int type, String sortType, INetWorkFinished<Goods> finishedListener);
     void loadGoodsListByType(int page, int size, int type, String sortType, INetWorkFinished<Goods> finishedListener);
-    void updateComState(int state, GoodsModel.IUpdateGoodsState iUpdateGoodsState);
+    void updateComState(int comId, int state, GoodsModel.IUpdateGoodsState iUpdateGoodsState);
 }

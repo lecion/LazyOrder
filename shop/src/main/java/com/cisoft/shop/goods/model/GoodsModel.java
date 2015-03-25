@@ -1,11 +1,10 @@
 package com.cisoft.shop.goods.model;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.cisoft.shop.Api;
 import com.cisoft.shop.R;
-import com.cisoft.shop.MainActivity;
-import com.cisoft.shop.MyApplication;
 import com.cisoft.shop.bean.Goods;
 import com.cisoft.shop.bean.Shop;
 import com.cisoft.shop.http.AbsService;
@@ -119,21 +118,21 @@ public class GoodsModel extends AbsService implements IGoodsModel {
     }
 
     @Override
-    public void updateComState(int state, final IUpdateGoodsState finishedListener) {
-        Shop shop = ((MyApplication) ((MainActivity) context).getApplication()).getShop();
+    public void updateComState(int comId, int state, final IUpdateGoodsState finishedListener) {
         KJStringParams params = new KJStringParams();
-        params.put(Api.KEY_COM_COM_ID, String.valueOf(shop.getId()));
+        params.put(Api.KEY_COM_COM_ID, String.valueOf(comId));
         params.put(Api.KEY_COM_COM_STATE, String.valueOf(state));
         asyncUrlGet(Api.METHOD_COMMODITY_UPDATE_COM_STATE, params, false, new SuccessCallback() {
             @Override
             public void onSuccess(String result) throws JSONException {
+                Log.d("onSuccess", result);
                 JSONObject jsonObj = new JSONObject(result);
                 int state = jsonObj.getInt(Api.KEY_STATE);
-                String data = jsonObj.getString(Api.KEY_DATA);
+                String msg = jsonObj.getString(Api.KEY_MESSAGE);
                 if (state == 200) {
                     finishedListener.onSuccess(state);
                 } else {
-                    finishedListener.onFailure(data);
+                    finishedListener.onFailure(msg);
                 }
             }
         }, new FailureCallback() {

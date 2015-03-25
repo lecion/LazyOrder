@@ -3,8 +3,8 @@ package com.cisoft.shop.http;
 import android.content.Context;
 
 import com.cisoft.shop.Api;
-import com.cisoft.shop.R;
 import com.cisoft.shop.AppConfig;
+import com.cisoft.shop.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -68,7 +68,6 @@ public abstract class AbsService {
     	}
 
         final String url = packageApiUrlByMethodNameAndParams(methodName, params);
-
         kjHttp.urlGet(url, new StringCallBack() {
             @Override
             public void onSuccess(String result) {
@@ -212,12 +211,11 @@ public abstract class AbsService {
         sb.append(Api.URL_SEPERATOR);
         sb.append(moduleName);
         sb.append(Api.URL_SEPERATOR);
-        sb.append(methodName);
+        sb.append(methodName).append(Api.FILE_SUFFIX);
         if (params != null) {
             sb.append("?");
             sb.append(params.toString());
         }
-
         return sb.toString();
     }
 

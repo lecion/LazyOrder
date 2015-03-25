@@ -1,6 +1,7 @@
 package com.cisoft.shop.goods.model;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.cisoft.shop.Api;
 import com.cisoft.shop.R;
@@ -113,10 +114,12 @@ public class ShopModel extends AbsService {
             public void onSuccess(String result) throws JSONException {
                 JSONObject jsonObj = new JSONObject(result);
                 int state = jsonObj.getInt(Api.KEY_STATE);
+
                 if (state == 200) {
                     //登陆成功
                     loginListener.onSuccess(jsonObj.getJSONObject("data"));
                 } else {
+                    Log.d("LoginPresenter", state+"");
                     loginListener.onFailure(getResponseStateInfo(state));
                 }
 

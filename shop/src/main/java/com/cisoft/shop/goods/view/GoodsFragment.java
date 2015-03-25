@@ -432,7 +432,7 @@ public class GoodsFragment extends BaseFragment implements IGoodsView{
             holder.btnGoodsStatus.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    presenter.switchGoodsStatus(position, goods.getState());
+                    presenter.switchGoodsStatus(position, goods.getId(), goods.getState());
                 }
             });
             return convertView;
