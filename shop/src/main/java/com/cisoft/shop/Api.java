@@ -5,7 +5,7 @@ package com.cisoft.shop;
  */
 public class Api {
 
-    public static final String SERVER_URL = "http://comit-wh.net/lazyorder/index.php";
+    public static final String SERVER_URL = "http://123.56.84.203:8584/Lazyer";
     //public static final String SERVER_URL = "http://lazyorder.yliec.com";
     public static final String URL_SEPERATOR = "/";
 
@@ -20,6 +20,7 @@ public class Api {
     public static final int RESPONSE_STATE_NOT_NET = 102;
     public static final int RESPONSE_STATE_NET_POOR = 101;
     public static final int RESPONSE_STATE_ERROR_LOGIN = 400;
+
 
     /* 这里存放全局使用的key */
     public static final String KEY_STATE = "state";
@@ -209,6 +210,7 @@ public class Api {
     public static final String KEY_EXPMER_OPERATING_STATE = "operatingState";
     public static final String KEY_EXPMER_SALES = "sales";
 
+    public static final String KEY_SETTING_TYPE = "type";
     public static final String KEY_SETTING_VERSION_CODE = "versionCode";
     public static final String KEY_SETTING_VERSION_NAME = "versionName";
     public static final String KEY_SETTING_DOWNLOAD_URL = "downloadUrl";

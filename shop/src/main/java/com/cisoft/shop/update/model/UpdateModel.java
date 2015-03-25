@@ -9,6 +9,7 @@ import com.cisoft.shop.http.AbsService;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.kymjs.aframe.http.KJStringParams;
 
 /**
  * Created by Lecion on 3/24/15.
@@ -22,7 +23,9 @@ public class UpdateModel extends AbsService{
     }
 
     public void checkUpdate(final UpdateLisnter lisenter) {
-        asyncUrlGet(Api.METHOD_CHECK_UPDATE, null, new SuccessCallback() {
+        KJStringParams params = new KJStringParams();
+        params.put(Api.KEY_SETTING_TYPE, "MERCHANT");
+        asyncUrlGet(Api.METHOD_CHECK_UPDATE, params, new SuccessCallback() {
             @Override
             public void onSuccess(String result) throws JSONException {
                 JSONObject jsonObject = new JSONObject(result);
