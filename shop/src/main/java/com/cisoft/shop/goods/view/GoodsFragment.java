@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,9 +25,10 @@ import com.cisoft.shop.bean.Goods;
 import com.cisoft.shop.bean.GoodsCategory;
 import com.cisoft.shop.bean.Shop;
 import com.cisoft.shop.goods.presenter.GoodsPresenter;
+import com.cisoft.shop.util.DeviceUtil;
 import com.cisoft.shop.util.L;
 import com.cisoft.shop.widget.DialogFactory;
-import com.cisoft.shop.widget.RefreshDeleteListView;
+import com.cisoft.shop.widget.MyListView;
 
 import org.kymjs.aframe.bitmap.KJBitmap;
 import org.kymjs.aframe.ui.BindView;
@@ -56,7 +58,7 @@ public class GoodsFragment extends BaseFragment implements IGoodsView{
     private Spinner spGoodsCategory;
 
     @BindView(id = R.id.lv_goods)
-    private RefreshDeleteListView lvGoods;
+    private MyListView lvGoods;
 
     @BindView(id = R.id.rb_pop)
     private RadioButton rbPop;
@@ -174,7 +176,7 @@ public class GoodsFragment extends BaseFragment implements IGoodsView{
     private void initGoodsList() {
         lvGoods.setPullLoadEnable(false);
         //lvGoods.setEmptyView(llShowNoValueTip);
-        lvGoods.setOnRefreshListener(new RefreshDeleteListView.OnRefreshListener() {
+        lvGoods.setOnRefreshListener(new MyListView.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 lvGoods.stopRefreshData();
@@ -423,7 +425,9 @@ public class GoodsFragment extends BaseFragment implements IGoodsView{
                 convertView.setTag(holder);
             }
             holder = (ViewHolder) convertView.getTag();
-            KJBitmap.create().display(holder.ivGoodsImg, goods.getCmPicture(), holder.ivGoodsImg.getWidth(), holder.ivGoodsImg.getHeight());
+            if (!TextUtils.isEmpty(goods.getCmPicture()) && goods.getCmPicture().startsWith("http")) {
+                KJBitmap.create().display(holder.ivGoodsImg, goods.getCmPicture(), DeviceUtil.dp2px(getActivity(), 72), DeviceUtil.dp2px(getActivity(), 56));
+            }
             holder.tvGoodsName.setText(goods.getCmName());
             holder.tvGoodsSales.setText(String.valueOf(goods.getSalesNum()));
             holder.tvGoodsPrice.setText("￥" + String.valueOf(goods.getCmPrice()));

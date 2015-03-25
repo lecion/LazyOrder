@@ -1,7 +1,6 @@
 package com.cisoft.shop.goods.model;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.cisoft.shop.Api;
 import com.cisoft.shop.R;
@@ -125,7 +124,6 @@ public class GoodsModel extends AbsService implements IGoodsModel {
         asyncUrlGet(Api.METHOD_COMMODITY_UPDATE_COM_STATE, params, false, new SuccessCallback() {
             @Override
             public void onSuccess(String result) throws JSONException {
-                Log.d("onSuccess", result);
                 JSONObject jsonObj = new JSONObject(result);
                 int state = jsonObj.getInt(Api.KEY_STATE);
                 String msg = jsonObj.getString(Api.KEY_MESSAGE);

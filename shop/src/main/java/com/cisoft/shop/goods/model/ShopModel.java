@@ -85,11 +85,11 @@ public class ShopModel extends AbsService {
             public void onSuccess(String result) throws JSONException {
                 JSONObject jsonObj = new JSONObject(result);
                 int state = jsonObj.getInt(Api.KEY_STATE);
-                String data = jsonObj.getString(Api.KEY_DATA);
+                String msg = jsonObj.getString(Api.KEY_MESSAGE);
                 if (state == 200) {
                     finishedListener.onSuccess(state);
                 } else {
-                    finishedListener.onFailure(data);
+                    finishedListener.onFailure(msg);
                 }
             }
         }, new FailureCallback() {

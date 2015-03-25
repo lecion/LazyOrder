@@ -366,4 +366,12 @@ public class MyListView extends ListView implements AbsListView.OnScrollListener
 
 		public void onLoadMore();
 	}
+
+    public void showFooterLoading() {
+        footerView.loading();
+    }
+
+    public void showFooterNormal() {
+        footerView.normal();
+    }
 }
