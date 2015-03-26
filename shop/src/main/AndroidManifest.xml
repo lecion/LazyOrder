@@ -153,6 +153,8 @@
             android:screenOrientation="portrait"
             />
 
+        <service android:name=".util.UpdateService"/>
+
     </application>
 
 </manifest>

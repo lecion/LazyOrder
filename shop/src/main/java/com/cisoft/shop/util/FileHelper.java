@@ -45,7 +45,7 @@ public class FileHelper {
 	private static FileHelper instance = null;
 	
 	private FileHelper() {
-		
+		init();
 	}
 	
 	/**

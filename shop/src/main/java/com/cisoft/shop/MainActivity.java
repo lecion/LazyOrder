@@ -202,7 +202,7 @@ public class MainActivity extends BaseActivity implements
             public void onYes() {
                 updatePresenter.startUpdate(info);
             }
-        });
+        }).show(getFragmentManager(), "updateDialog");
     }
 
     @Override

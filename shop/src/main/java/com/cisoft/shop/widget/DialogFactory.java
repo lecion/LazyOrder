@@ -92,6 +92,7 @@ public class DialogFactory {
                     @Override
                     public void onClick(View v) {
                         onClick.onYes();
+                        dismiss();
                     }
                 });
                 btnNo.setOnClickListener(new View.OnClickListener() {

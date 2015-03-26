@@ -2,16 +2,13 @@ package com.cisoft.shop.util;
 
 import android.app.Notification;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Handler;
+import android.os.AsyncTask;
 import android.os.IBinder;
-import android.os.Message;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.cisoft.shop.Api;
@@ -29,98 +26,32 @@ import java.net.URL;
 
 public class UpdateService extends Service {
 	private final int NOTIFICATION_DOWNLOAD = 1;
-	private final int DOWNLOAD_COMPLETED = 1;
-	private final int DOWNLOAD_FAILED = 2;
 	private Notification notification = null;
 	private NotificationCompat.Builder builder = null;
 	private NotificationManager manager = null;
-	private Handler handler = new Handler(){
-		public void handleMessage(Message msg) {
-			switch (msg.what) {
-			case DOWNLOAD_COMPLETED:
-				notification.contentView.setTextViewText(R.id.tv_notification, "下载完成，点击安装");
-				File apkfile = new File(FileHelper.getInstance().getApkDir() + File.separator + "cyxbs.apk");
-		        if (!apkfile.exists()) {  
-		            return;
-		        }  
-		        Intent i = new Intent(Intent.ACTION_VIEW);  
-		        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);  
-		        i.setDataAndType(Uri.parse("file://" + apkfile.toString()), "application/vnd.android.package-archive");  
-		        PendingIntent pendingIntent = PendingIntent.getActivity(UpdateService.this, 0, i, 0);
-				notification.contentIntent = pendingIntent;
-		        manager.notify(NOTIFICATION_DOWNLOAD, notification);
-		        
-				break;
-			case DOWNLOAD_FAILED:
-                ViewInject.toast("下载失败...");
-				break;
-			}
-			stopSelf();
-		};
-	};
-	
 	@Override
 	public IBinder onBind(Intent arg0) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		Log.v("下载地址", intent.getStringExtra(Api.KEY_SETTING_DOWNLOAD_URL));
 		final String url = intent.getStringExtra(Api.KEY_SETTING_DOWNLOAD_URL);
-		createNotification();
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				downloadFile(url);
-			}
-			
-			@SuppressWarnings("deprecation")
-			public void downloadFile(String downloadUrl) {
-				URL url = null;
-				try {
-					url = new URL(downloadUrl);
-					HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-					InputStream is = conn.getInputStream();
-					FileOutputStream fos = new FileOutputStream(new File(FileHelper.getInstance().getApkDir() + File.separator + "cyxbs.apk"));
-					int totalLength = conn.getContentLength();
-					int readLength = 0;
-					int totalReadLength = 0;
-					int percent = 0;
-					byte[] buffer = new byte[500];
-					while ((readLength = is.read(buffer)) > 0) {
-						fos.write(buffer, 0, readLength);
-						totalReadLength += readLength;
-						//Log.v("已下载", totalReadLength + "");
-						percent = totalReadLength * 100 / totalLength;
-						if (percent % 10 == 0) {
-							notification.contentView.setProgressBar(R.id.pb_notification, 100, percent, false);
-							notification.contentView.setTextViewText(R.id.tv_notification, "已下载" + percent + "%");
-							manager.notify(NOTIFICATION_DOWNLOAD, notification);
-						}
-					}
-					if (percent == 100) {
-						handler.sendEmptyMessage(DOWNLOAD_COMPLETED);
-					} else {
-						handler.sendEmptyMessage(DOWNLOAD_FAILED);
-					}
-				} catch (MalformedURLException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}).start();
+        download(url);
 		return super.onStartCommand(intent, flags, startId);
 	}
-	
-	@Override
+
+    private void download(String url) {
+        DownloadTask task = new DownloadTask();
+        task.execute(url);
+    }
+
+    @Override
 	public void onCreate() {
 		super.onCreate();
-		NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-		manager.cancel(0);
-	}
+        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        manager.cancel(0);
+    }
 	
 	private void createNotification() {
 		manager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -136,4 +67,79 @@ public class UpdateService extends Service {
 		notification = builder.build();
 		manager.notify(NOTIFICATION_DOWNLOAD, notification);
 	}
+
+    private class DownloadTask extends AsyncTask<String,  Integer, Boolean> {
+
+        @Override
+        protected void onPreExecute() {
+            createNotification();
+            ViewInject.toast("已进入后台开始下载...");
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Boolean doInBackground(String... params) {
+            return downloadFile(params[0]);
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            int percent = values[0];
+            notification.contentView.setProgressBar(R.id.pb_notification, 100, percent, false);
+            notification.contentView.setTextViewText(R.id.tv_notification, "已下载" + percent + "%");
+            manager.notify(NOTIFICATION_DOWNLOAD, notification);
+            super.onProgressUpdate(values);
+        }
+
+        @Override
+        protected void onPostExecute(Boolean success) {
+            if (success) {
+                File apkfile = new File(FileHelper.getInstance().getApkDir() + File.separator + "lazyorder_shop.apk");
+                if (!apkfile.exists()) {
+                    ViewInject.toast("下载出现异常，请重试！");
+                    return;
+                }
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                i.setDataAndType(Uri.parse("file://" + apkfile.toString()), "application/vnd.android.package-archive");
+                startActivity(i);
+            } else {
+                ViewInject.toast("下载失败，请重试！");
+            }
+            super.onPostExecute(success);
+        }
+
+        private boolean downloadFile(String downloadUrl) {
+            URL url = null;
+            try {
+                url = new URL(downloadUrl);
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                InputStream is = conn.getInputStream();
+                FileOutputStream fos = new FileOutputStream(new File(FileHelper.getInstance().getApkDir() + File.separator + "lazyorder_shop.apk"));
+                int totalLength = conn.getContentLength();
+                int readLength = 0;
+                int totalReadLength = 0;
+                int percent = 0;
+                byte[] buffer = new byte[500];
+                while ((readLength = is.read(buffer)) > 0) {
+                    fos.write(buffer, 0, readLength);
+                    totalReadLength += readLength;
+                    percent = totalReadLength * 100 / totalLength;
+                    if (percent % 10 == 0) {
+                        publishProgress(percent);
+                    }
+                }
+                if (percent == 100) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return false;
+        }
+    }
 }
