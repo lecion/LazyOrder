@@ -138,7 +138,7 @@ public class Order extends AbsBean {
                     this.userName =  jsonObj.getString(key);
                 } else if (key.equals(Api.KEY_ORDER_TIME_GO)) {
                     this.timeGo = jsonObj.getString(key);
-                } else if (key.equals(Api.KEY_ORDER_ORDER_STATE)) {
+                } else if (key.equals(Api.KEY_ORDER_ORDER_STATUE)) {
                     this.orderState = jsonObj.getString(key);
                 } else if (key.equals(Api.KEY_ORDER_ORDER_NUMBER)) {
                     this.orderNumber = jsonObj.getString(key);

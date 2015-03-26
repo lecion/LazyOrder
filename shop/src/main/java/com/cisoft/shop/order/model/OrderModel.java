@@ -70,7 +70,7 @@ public class OrderModel extends AbsService implements IOrderModel {
         KJStringParams params = new KJStringParams();
         Shop shop = L.getShop(context);
         params.put(Api.KEY_ORDER_MER_ID, String.valueOf(shop.getId()));
-        params.put(Api.KEY_ORDER_ORDER_STATE, orderState);
+        params.put(Api.KEY_ORDER_ORDER_STATUE, orderState);
         params.put(Api.KEY_ORDER_PAGE, String.valueOf(page));
         params.put(Api.KEY_ORDER_SIZE, String.valueOf(size));
         asyncUrlGet(Api.METHOD_ORDER_FIND_ORDERS_BY_MER_ID, params, false, new SuccessCallback() {
@@ -106,7 +106,7 @@ public class OrderModel extends AbsService implements IOrderModel {
     public void updateOrderState(int orderId, final String state, final OrderModel.IUpdateOrderState finishedListener) {
         KJStringParams params = new KJStringParams();
         params.put(Api.KEY_ORDER_ORDER_ID, String.valueOf(orderId));
-        params.put(Api.KEY_ORDER_STATE, String.valueOf(state));
+        params.put(Api.KEY_ORDER_ORDER_STATUE, String.valueOf(state));
         asyncUrlGet(Api.METHOD_ORDER_UPDATE_ORDER_STATE, params, false, new SuccessCallback() {
             @Override
             public void onSuccess(String result) throws JSONException {

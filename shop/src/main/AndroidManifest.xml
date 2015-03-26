@@ -14,7 +14,6 @@
     <uses-permission android:name="getui.permission.GetuiService.com.cisoft.shop" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.GET_TASKS" />
-
     <!-- 自定义权限 -->
     <permission
         android:name="getui.permission.GetuiService.com.cisoft.shop"
@@ -25,10 +24,13 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme"
+        >
         <activity
             android:name=".welcome.view.WelcomeActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -39,6 +41,7 @@
             android:name=".MainActivity"
             android:label="@string/app_name"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             >
         </activity>
         <activity
@@ -147,6 +150,7 @@
             android:name=".login.view.LoginActivity"
             android:label="@string/title_activity_login"
             android:windowSoftInputMode="adjustResize|stateHidden"
+            android:screenOrientation="portrait"
             />
 
     </application>

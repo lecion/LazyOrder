@@ -113,7 +113,7 @@ public class Api {
     public static final String KEY_ORDER_USER_PHONE = "userPhone";
     public static final String KEY_ORDER_USER_NAME = "userName";
     public static final String KEY_ORDER_TIME_GO = "timeGo";                                //已下单时间
-    public static final String KEY_ORDER_ORDER_STATE = "orderStatue";                        //订单状态 CRAETE（最新订单）   READY（已准备）
+    public static final String KEY_ORDER_ORDER_STATUE = "orderStatue";                        //订单状态 CRAETE（最新订单）   READY（已准备）
     public static final String KEY_ORDER_STATE = "state";                        //订单状态 CRAETE（最新订单）   READY（已准备）
     public static final String KEY_ORDER_ORDER_NUMBER = "orderNumber";
     public static final String KEY_ORDER_ORDER_CONTENT = "content";
