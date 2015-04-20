@@ -1,2 +1,4 @@
 /build
 /src/androidTest/
+app-release.apk
+manifest-merger-release-report.txt
