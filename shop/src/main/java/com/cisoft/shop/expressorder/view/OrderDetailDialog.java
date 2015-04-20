@@ -31,9 +31,24 @@ public class OrderDetailDialog extends DialogFragment {
 
     private ExpressOrder order;
 
-    public OrderDetailDialog(ExpressOrder order) {
-        this.order = order;
+
+    public static OrderDetailDialog newInstance(ExpressOrder order) {
+        OrderDetailDialog dialog = new OrderDetailDialog();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("order", order);
+        dialog.setArguments(bundle);
+        return dialog;
     }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Bundle args = getArguments();
+        if (args != null) {
+            order = args.getParcelable("order");
+        }
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

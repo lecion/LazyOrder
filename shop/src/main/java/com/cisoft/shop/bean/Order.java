@@ -1,6 +1,9 @@
 package com.cisoft.shop.bean;
 
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.cisoft.shop.Api;
 
 import org.json.JSONArray;
@@ -14,7 +17,7 @@ import java.util.List;
 /**
  * Created by Lecion on 2014-12-09
  */
-public class Order extends AbsBean {
+public class Order extends AbsBean implements Parcelable{
 
     private int id;
     private String userPhone;
@@ -29,6 +32,22 @@ public class Order extends AbsBean {
     private double settledPrice;
     private double deduction;
     private List<OrderGoods> goodsList;
+
+    public Order(int id, String userPhone, String userName, String timeGo, String orderState, String orderNumber, String content, double orderPrice, double distributionPrice, String address, double settledPrice, double deduction, List<OrderGoods> goodsList) {
+        this.id = id;
+        this.userPhone = userPhone;
+        this.userName = userName;
+        this.timeGo = timeGo;
+        this.orderState = orderState;
+        this.orderNumber = orderNumber;
+        this.content = content;
+        this.orderPrice = orderPrice;
+        this.distributionPrice = distributionPrice;
+        this.address = address;
+        this.settledPrice = settledPrice;
+        this.deduction = deduction;
+        this.goodsList = goodsList;
+    }
 
     public double getDistributionPrice() {
         return distributionPrice;
@@ -183,4 +202,54 @@ public class Order extends AbsBean {
     public void setDeduction(double deduction) {
         this.deduction = deduction;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(userPhone);
+        dest.writeString(userName);
+        dest.writeString(timeGo);
+        dest.writeString(orderState);
+        dest.writeString(orderNumber);
+        dest.writeString(content);
+        dest.writeDouble(orderPrice);
+        dest.writeDouble(distributionPrice);
+        dest.writeString(address);
+        dest.writeDouble(settledPrice);
+        dest.writeDouble(deduction);
+        dest.writeList(goodsList);
+
+    }
+
+    public static final Creator<Order> CREATOR = new Creator<Order>() {
+        @Override
+        public Order createFromParcel(Parcel source) {
+            Order order = new Order(
+                    source.readInt(),
+                    source.readString(),
+                    source.readString(),
+                    source.readString(),
+                    source.readString(),
+                    source.readString(),
+                    source.readString(),
+                    source.readDouble(),
+                    source.readDouble(),
+                    source.readString(),
+                    source.readDouble(),
+                    source.readDouble(),
+                    source.readArrayList(new ArrayList<OrderGoods>().getClass().getClassLoader())
+            );
+            return order;
+        }
+
+        @Override
+        public Order[] newArray(int size) {
+            return new Order[0];
+        }
+    };
 }

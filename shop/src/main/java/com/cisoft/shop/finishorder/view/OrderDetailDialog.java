@@ -38,8 +38,21 @@ public class OrderDetailDialog extends DialogFragment {
 
     private Order order;
 
-    public OrderDetailDialog(Order order) {
-        this.order = order;
+    public static OrderDetailDialog newInstance(Order order) {
+        OrderDetailDialog dialog = new OrderDetailDialog();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("order", order);
+        dialog.setArguments(bundle);
+        return dialog;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Bundle args = getArguments();
+        if (args != null) {
+            order = args.getParcelable("order");
+        }
     }
 
     @Override

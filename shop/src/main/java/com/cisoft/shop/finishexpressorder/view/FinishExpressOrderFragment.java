@@ -217,7 +217,7 @@ public class FinishExpressOrderFragment extends BaseFragment implements IOrderVi
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ExpressOrder order = (ExpressOrder) lvOrder.getItemAtPosition(position);
-                OrderDetailDialog dialog = new OrderDetailDialog(order);
+                OrderDetailDialog dialog = OrderDetailDialog.newInstance(order);
                 dialog.show(getFragmentManager(), order.getId() + "");
             }
         });

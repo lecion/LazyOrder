@@ -221,7 +221,7 @@ public class OrderFragment extends BaseFragment implements IOrderView{
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Order order = (Order) lvOrder.getItemAtPosition(position);
-                OrderDetailDialog dialog = new OrderDetailDialog(order);
+                OrderDetailDialog dialog = OrderDetailDialog.newInstance(order);
                 dialog.show(getFragmentManager(), order.getId() + "");
             }
         });

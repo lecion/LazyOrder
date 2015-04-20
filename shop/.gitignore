@@ -1,4 +1,5 @@
 /build
 /src/androidTest/
 app-release.apk
+shop-release.apk
 manifest-merger-release-report.txt
