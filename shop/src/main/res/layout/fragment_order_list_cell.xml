@@ -11,7 +11,6 @@
         android:id="@+id/btn_order_status"
         android:layout_width="wrap_content"
         android:layout_height="32dp"
-        android:layout_centerVertical="true"
         android:textColor="@color/white"
         android:paddingLeft="@dimen/material_8"
         android:paddingRight="@dimen/material_8"
@@ -19,15 +18,17 @@
         android:focusable="false"
         android:textSize="13sp"
         android:layout_marginLeft="@dimen/material_16"
+        android:layout_centerVertical="true"
         />
 
     <TextView
         android:id="@+id/tv_order_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
         android:textStyle="bold"
         android:textSize="16sp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/material_16"
         />
 
     <TextView
@@ -35,9 +36,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:text="已下单20分钟"
         android:layout_marginRight="@dimen/material_16"
+        android:layout_marginTop="@dimen/material_8"
+        android:layout_below="@id/tv_order_number"
+
+
         />
 
 </RelativeLayout>

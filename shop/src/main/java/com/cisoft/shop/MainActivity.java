@@ -15,9 +15,9 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -159,6 +159,7 @@ public class MainActivity extends BaseActivity implements
     private void initDrawer() {
         mDrawerAdapter = new SimpleAdapter(this, drawerTitle, R.layout.activity_drawer_title_cell, new String[]{KEY_ICON, KEY_TITLE}, new int[]{R.id.iv_drawer_icon, R.id.tv_drawer_title});
         lvDrawer.setAdapter(mDrawerAdapter);
+        lvDrawer.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
         lvDrawer.setOnItemClickListener(new DrawerItemClickListener());
         drawerToggle = new DrawerToggle(this, drawerLayout, R.drawable.ic_launcher, R.drawable.ic_launcher);
         drawerLayout.setDrawerListener(drawerToggle);
@@ -216,6 +217,8 @@ public class MainActivity extends BaseActivity implements
     private class DrawerItemClickListener implements AdapterView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            lvDrawer.clearChoices();
+            lvDrawer.setItemChecked(position, true);
             selectItem(position);
         }
     }
@@ -224,15 +227,12 @@ public class MainActivity extends BaseActivity implements
         if (loginType == AppConfig.TYPE_MERCHANT) {
             switch (position) {
                 case 0:
-                    ViewInject.toast("查看订单");
                     getFragmentManager().beginTransaction().replace(R.id.fl_container, OrderFragment.newInstance("订单"), "order").commit();
                     break;
                 case 1:
-                    ViewInject.toast("查看商品");
                     getFragmentManager().beginTransaction().replace(R.id.fl_container, GoodsFragment.newInstance("商品"), "goods").commit();
                     break;
                 case 2:
-                    ViewInject.toast("已完成订单");
                     getFragmentManager().beginTransaction().replace(R.id.fl_container, FinishOrderFragment.newInstance("已完成订单"), "finishOrder").commit();
                     break;
                 case 3:
@@ -246,11 +246,9 @@ public class MainActivity extends BaseActivity implements
         } else if (loginType == AppConfig.TYPE_EXPMER) {
             switch (position) {
                 case 0:
-                    ViewInject.toast("查看订单");
                     getFragmentManager().beginTransaction().replace(R.id.fl_container, ExpressOrderFragment.newInstance("订单"), "order").commit();
                     break;
                 case 1:
-                    ViewInject.toast("已完成订单");
                     getFragmentManager().beginTransaction().replace(R.id.fl_container, FinishExpressOrderFragment.newInstance("已完成订单"), "finishexpressorder").commit();
                     break;
                 case 2:
@@ -323,12 +321,6 @@ public class MainActivity extends BaseActivity implements
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
