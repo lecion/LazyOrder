@@ -6,7 +6,7 @@ package com.cisoft.lazyorder.finals;
 public class ApiConstants {
 
 
-    public final static String HOST = "lazyorder.duapp.com";
+    public final static String HOST = "123.56.84.203:8584/Lazyer";
     public final static String HTTP = "http://";
     public final static String HTTPS = "https://";
     public static final String URL_SEPERATOR = "/";

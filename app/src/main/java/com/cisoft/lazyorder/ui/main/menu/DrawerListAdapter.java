@@ -17,22 +17,22 @@ import java.util.List;
  */
 public class DrawerListAdapter extends BaseAdapter {
 
-    private Context mContext;
-    private List<MenuFragmentManager.MenuItem> mData;
+    private Context context;
+    private DrawerMenuItem[] menuItems;
 
-    public DrawerListAdapter(Context context, List<MenuFragmentManager.MenuItem> data){
-        mContext = context;
-        mData = data;
+    public DrawerListAdapter(Context context, DrawerMenuItem[] menuItems){
+        this.context = context;
+        this.menuItems = menuItems;
     }
 
     @Override
     public int getCount() {
-        return mData.size();
+        return menuItems.length;
     }
 
     @Override
-    public MenuFragmentManager.MenuItem getItem(int position) {
-        return mData.get(position);
+    public DrawerMenuItem getItem(int position) {
+        return menuItems[position];
     }
 
     @Override
@@ -45,7 +45,7 @@ public class DrawerListAdapter extends BaseAdapter {
         ViewHolder holder = null;
 
         if (convertView == null) {
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.fragment_drawer_menu_list_cell, null);
+            convertView = LayoutInflater.from(context).inflate(R.layout.fragment_drawer_menu_list_cell, null);
             holder = new ViewHolder();
             holder.tvMenuTitle = (TextView) convertView.findViewById(R.id.menu_title);
             holder.ivMenuIcon = (ImageView) convertView.findViewById(R.id.menu_icon);
@@ -54,9 +54,9 @@ public class DrawerListAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        MenuFragmentManager.MenuItem menuItem = mData.get(position);
-        holder.tvMenuTitle.setText(menuItem.title);
-        holder.ivMenuIcon.setImageResource(menuItem.iconResId);
+        DrawerMenuItem menuItem = getItem(position);
+        holder.tvMenuTitle.setText(menuItem.getTitleId());
+        holder.ivMenuIcon.setImageResource(menuItem.getIconId());
 
         return convertView;
 

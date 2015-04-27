@@ -84,6 +84,7 @@ public class ShopListAdapter extends BaseAdapter {
         holder.tvOpenTime.setText(shop.getOpenTime() + "-" + shop.getCloseTime());
         holder.tvMonthSales.setText(String.valueOf(shop.getMonthSales()));
         mKjBitmap.display(holder.ivShopFaceImg, shop.getFaceImgUrl(),
+                R.drawable.icon_loading,
                 DensityUtils.dip2px(mContext, 100), DensityUtils.dip2px(mContext, 100));
 
         return convertView;

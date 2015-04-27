@@ -1,11 +1,8 @@
 package com.cisoft.lazyorder;
 
 import android.content.Context;
-
 import com.cisoft.lazyorder.finals.SPConstants;
-
 import org.kymjs.kjframe.utils.PreferenceHelper;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;

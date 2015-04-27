@@ -35,7 +35,6 @@ import org.kymjs.kjframe.widget.RoundImageView;
  */
 public class DrawerMenuFragment extends FrameFragment implements I_LoginStateObserver{
 
-    private MenuFragmentManager mMenuFragmentManager;
     private NavigationDrawerCallbacks mCallbacks;
     private DrawerLayout mDrawerLayout;
     @BindView(id = R.id.ll_go_to_usercenter, click = true)
@@ -74,7 +73,6 @@ public class DrawerMenuFragment extends FrameFragment implements I_LoginStateObs
 
     @Override
     protected void initData() {
-        mMenuFragmentManager = MenuFragmentManager.getInstance(getActivity());
         mUserLearnedDrawer = PreferenceHelper.readBoolean(getActivity(), SPConstants.SP_FILE_NAME,
                 SPConstants.KEY_DRAWER_USER_LEARNED, false);
         LoginStateObserver.getInstance().attach(this);
@@ -90,8 +88,7 @@ public class DrawerMenuFragment extends FrameFragment implements I_LoginStateObs
                 selectItem(position);
             }
         });
-        mDrawerListView.setAdapter(new DrawerListAdapter(getActivity(),
-                mMenuFragmentManager.mMenuItems));
+        mDrawerListView.setAdapter(new DrawerListAdapter(getActivity(), DrawerMenuItem.values()));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         initUserInfoByLoginState();
         selectItem(mCurrentSelectedPosition);
@@ -165,7 +162,8 @@ public class DrawerMenuFragment extends FrameFragment implements I_LoginStateObs
         if (mAppContext.isLogin()) {
             mTvUserAccount.setText(mAppContext.getLoginAccount());
             Utility.getKjBitmapInstance().display(mIvUserFace,
-                    mAppContext.getLoginInfo().getUserFaceUrl());
+                    mAppContext.getLoginInfo().getUserFaceUrl(),
+                    R.drawable.default_user_face);
         } else {
             mTvUserAccount.setText("请登录");
             mIvUserFace.setImageResource(R.drawable.default_user_face);
@@ -175,13 +173,13 @@ public class DrawerMenuFragment extends FrameFragment implements I_LoginStateObs
     public void selectItem(int position) {
         mCurrentSelectedPosition = position;
         if (mDrawerListView != null) {
-            mDrawerListView.setItemChecked(position, true);
+            mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         }
         if (mDrawerLayout != null) {
             mDrawerLayout.closeDrawer(mDrawerMenuView);
         }
         if (mCallbacks != null) {
-            mCallbacks.onNavigationDrawerItemSelected(position);
+            mCallbacks.onNavigationDrawerItemSelected(mCurrentSelectedPosition);
         }
     }
 

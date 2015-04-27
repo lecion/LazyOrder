@@ -14,6 +14,9 @@ import org.kymjs.kjframe.bitmap.BitmapConfig;
  * Created by Lecion on 11/4/14.
  */
 public class Utility {
+
+    private static KJBitmap kjBitmap = null;
+
     public static void setListViewHeightBasedOnChildren(ListView listView) {
         ListAdapter listAdapter = listView.getAdapter();
         if (listAdapter == null) {
@@ -33,11 +36,13 @@ public class Utility {
     }
 
     public static KJBitmap getKjBitmapInstance() {
-        BitmapConfig bitmapConfig = new BitmapConfig();
-        bitmapConfig.CACHEPATH = AppConfig.IMAGE_CACHE_PATH;
-        KJBitmap KjBitmap = KJBitmap.create(bitmapConfig);
+        if (kjBitmap == null) {
+            BitmapConfig bitmapConfig = new BitmapConfig();
+            bitmapConfig.CACHEPATH = AppConfig.IMAGE_CACHE_PATH;
+            kjBitmap = KJBitmap.create(bitmapConfig);
+        }
 
-        return KjBitmap;
+        return kjBitmap;
     }
 
     public static boolean isIntentAvailable(Context context, Intent intent) {

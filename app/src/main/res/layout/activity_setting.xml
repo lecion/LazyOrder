@@ -61,15 +61,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:name="@string/settings_title_welcome_page" />
-            </com.cisoft.lazyorder.widget.section.SectionListView>
-        </com.cisoft.lazyorder.widget.section.SectionView>
-
-        <com.cisoft.lazyorder.widget.section.SectionView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <com.cisoft.lazyorder.widget.section.SectionListView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
                 <com.cisoft.lazyorder.widget.section.SectionTextItemView
                     android:id="@+id/logout_setting"
                     android:layout_width="wrap_content"

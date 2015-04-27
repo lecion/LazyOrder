@@ -29,6 +29,8 @@ public class RefreshListViewHeader extends LinearLayout {
 	public final static int STATE_NORMAL = 0;
 	public final static int STATE_READY = 1;
 	public final static int STATE_REFRESHING = 2;
+    public final static int STATE_REFRESH_COMPLETE = 3;
+    public final static int STATE_REFRESH_FAIL = 4;
 
 	public RefreshListViewHeader(Context context) {
 		super(context);
@@ -75,6 +77,11 @@ public class RefreshListViewHeader extends LinearLayout {
 		} else {	// 显示箭头图片
 			arrowImageView.setVisibility(View.VISIBLE);
 			progressBar.setVisibility(View.INVISIBLE);
+            if (state == STATE_REFRESH_COMPLETE) {
+                arrowImageView.setImageResource(R.drawable.refresh_success);
+            } else if (state == STATE_REFRESH_FAIL) {
+                arrowImageView.setImageResource(R.drawable.refresh_fail);
+            }
 		}
 		
 		switch(state){
@@ -85,6 +92,9 @@ public class RefreshListViewHeader extends LinearLayout {
 			if (mState == STATE_REFRESHING) {
 				arrowImageView.clearAnimation();
 			}
+            if (mState == STATE_REFRESH_COMPLETE) {
+                arrowImageView.setImageResource(R.drawable.listview_arrow);
+            }
 			hintTextView.setText(R.string.listview_header_hint_normal);
 			break;
 		case STATE_READY:
@@ -97,7 +107,12 @@ public class RefreshListViewHeader extends LinearLayout {
 		case STATE_REFRESHING:
 			hintTextView.setText(R.string.listview_header_hint_loading);
 			break;
-			default:
+        case STATE_REFRESH_COMPLETE:
+            hintTextView.setText(R.string.listview_header_hint_refresh_complete);
+            break;
+        case STATE_REFRESH_FAIL:
+            hintTextView.setText(R.string.listview_header_hint_refresh_fail);
+            break;
 		}
 		
 		mState = state;

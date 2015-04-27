@@ -147,7 +147,7 @@ public class AdvertiseRotator extends FrameLayout implements View.OnClickListene
         adWidth = getWidth();
         adHeight = getHeight();
         ImageView mImageView;
-        loadingBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher);
+        loadingBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.icon_loading);
         if (adImageList.size() != 0) adImageList.clear();
         for(int i = 0; i < adCount; i++) {
             mImageView = new ImageView(context);
@@ -287,7 +287,7 @@ public class AdvertiseRotator extends FrameLayout implements View.OnClickListene
         protected void onPostExecute(Void result) {
             KJBitmap kjBitmap = Utility.getKjBitmapInstance();
             for (int i = 0; i< adCount; i++) {
-                kjBitmap.display(adImageList.get(i), advertises.get(i).getImageUrl(), adWidth, adHeight);
+                kjBitmap.display(adImageList.get(i), advertises.get(i).getImageUrl(), R.drawable.icon_loading, adWidth, adHeight);
             }
         }
     }

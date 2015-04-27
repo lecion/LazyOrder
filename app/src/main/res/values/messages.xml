@@ -63,4 +63,6 @@
     <string name="toast_fail_to_load_build_list">加载楼栋列表失败,请稍候再试</string>
     <string name="toast_fail_to_query_goods_list">暂未搜索到您要找的商品</string>
     <string name="toast_fail_to_load_goods_list">加载商品列表失败,请稍候再试</string>
+
+    <string name="toast_exit_app">再按一次退出程序</string>
 </resources>

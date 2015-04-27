@@ -28,6 +28,7 @@ import com.cisoft.lazyorder.ui.main.menu.BaseMenuItemFragment;
 import com.cisoft.lazyorder.util.DialogFactory;
 import com.cisoft.lazyorder.widget.AdvertiseRotator;
 import com.cisoft.lazyorder.widget.EmptyView;
+import com.cisoft.lazyorder.widget.ProgressingDialog;
 import com.cisoft.lazyorder.widget.RefreshListView;
 import org.kymjs.kjframe.ui.BindView;
 import org.kymjs.kjframe.ui.ViewInject;
@@ -48,6 +49,8 @@ public class ShopFragment extends BaseMenuItemFragment implements ActionBar.OnNa
     private AdvertiseRotator mImageAdRotator;
     private EmptyView mEmptyView;
     private Dialog mWaitTipDialog;
+
+    private ProgressingDialog progressingDialog;
 
     private ShopCategoryNetwork mShopCategoryNetwork;
     private ShopNetwork mShopNetwork;
@@ -221,7 +224,7 @@ public class ShopFragment extends BaseMenuItemFragment implements ActionBar.OnNa
         mShopCategoryNetwork.loadShopCategoryListData(mSchoolId, new ShopCategoryNetwork.OnCategoryLoadCallback() {
             @Override
             public void onPreStart() {
-                showWaitTip();
+//                showWaitTip();
             }
 
             @Override
@@ -295,7 +298,8 @@ public class ShopFragment extends BaseMenuItemFragment implements ActionBar.OnNa
             @Override
             public void onSuccess(List<Shop> shops) {
                 if (isRefresh)
-                    mLvShopListView.stopRefreshData();
+                    mLvShopListView.completeRefresh(true);
+//                    mLvShopListView.stopRefreshData();
                 else
                     closeWaitTip();
 
@@ -318,7 +322,8 @@ public class ShopFragment extends BaseMenuItemFragment implements ActionBar.OnNa
             @Override
             public void onFailure(int stateCode, String errorMsg) {
                 if (isRefresh)
-                    mLvShopListView.stopRefreshData();
+                    mLvShopListView.completeRefresh(false);
+//                    mLvShopListView.stopRefreshData();
                 else
                     closeWaitTip();
 
@@ -339,10 +344,13 @@ public class ShopFragment extends BaseMenuItemFragment implements ActionBar.OnNa
      *
      */
     private void showWaitTip() {
-        if (mWaitTipDialog == null)
-            mWaitTipDialog = DialogFactory.createWaitToastDialog(getActivity(),
-                    getActivity().getString(R.string.toast_wait));
-        mWaitTipDialog.show();
+//        if (mWaitTipDialog == null)
+//            mWaitTipDialog = DialogFactory.createWaitToastDialog(getActivity(),
+//                    getActivity().getString(R.string.toast_wait));
+//        mWaitTipDialog.show();
+        if (progressingDialog == null)
+            progressingDialog = new ProgressingDialog(getActivity(), R.string.toast_wait);
+        progressingDialog.show();
     }
 
     /**
@@ -350,21 +358,25 @@ public class ShopFragment extends BaseMenuItemFragment implements ActionBar.OnNa
      *
      */
     private void closeWaitTip() {
-        if (mWaitTipDialog != null && mWaitTipDialog.isShowing()) {
-            mWaitTipDialog.dismiss();
+//        if (mWaitTipDialog != null && mWaitTipDialog.isShowing()) {
+//            mWaitTipDialog.dismiss();
+//        }
+        if (progressingDialog != null && progressingDialog.isShowing()) {
+            progressingDialog.dismiss();
         }
     }
 
 
     /**
      * title bar上的列表式导航的点击处理
+     * PS:第一次加载默认会自动触发第一项
      */
     @Override
     public boolean onNavigationItemSelected(int position, long l) {
         mShopCategoryId = mShopCategoryListData.get(position).getId();
         mEmptyView.hideEmptyView();
-        loadShopListData(false);
-
+//        loadShopListData(true);
+        mLvShopListView.startRefresh();
         return true;
     }
 

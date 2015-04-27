@@ -3,7 +3,6 @@ package com.cisoft.lazyorder.ui.goods;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,11 +19,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import com.cisoft.lazyorder.R;
 import com.cisoft.lazyorder.bean.goods.Goods;
-import com.cisoft.lazyorder.bean.shop.Shop;
 import com.cisoft.lazyorder.util.Utility;
 import com.cisoft.lazyorder.widget.OrderNumView;
-
 import org.kymjs.kjframe.KJBitmap;
+import org.kymjs.kjframe.utils.DensityUtils;
 
 import java.util.List;
 
@@ -89,8 +87,7 @@ public class GoodsListAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        final Goods item = (Goods) getItem(position);
-        ViewHolder holder;
+        ViewHolder holder = null;
         if (convertView == null) {
             holder = new ViewHolder();
             convertView = LayoutInflater.from(context).inflate(R.layout.fragment_goods_list_cell, parent, false);
@@ -104,9 +101,15 @@ public class GoodsListAdapter extends BaseAdapter {
             holder.addAndSubNumView = (OrderNumView) convertView.findViewById(R.id.order_num_view);
             holder.btnAddToCart = (Button) convertView.findViewById(R.id.btn_add_to_cart);
             convertView.setTag(holder);
+        } else {
+            holder = (ViewHolder)convertView.getTag();
         }
-        holder = (ViewHolder) convertView.getTag();
-        kjb.display(holder.ivGoodsThumb, item.getCmPicture(), holder.ivGoodsThumb.getWidth(), holder.ivGoodsThumb.getHeight());
+        final Goods item = getItem(position);
+        kjb.display(holder.ivGoodsThumb,
+                item.getCmPicture(),
+                R.drawable.icon_loading,
+                DensityUtils.dip2px(context, 74),
+                DensityUtils.dip2px(context, 53));
         holder.tvGoodsTitle.setText(item.getCmName());
         holder.tvGoodsAddress.setText(shopAddress);
         holder.tvGoodsCount.setText(String.valueOf(item.getSalesNum()));

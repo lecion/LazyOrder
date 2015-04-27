@@ -3,18 +3,23 @@ package com.cisoft.lazyorder.ui.main;
 import android.app.ActionBar;
 import android.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import com.cisoft.lazyorder.R;
+import com.cisoft.lazyorder.ui.main.menu.BaseMenuItemFragment;
 import com.cisoft.lazyorder.ui.main.menu.DrawerMenuFragment;
-import com.cisoft.lazyorder.ui.main.menu.MenuFragmentManager;
+import com.cisoft.lazyorder.ui.main.menu.DrawerMenuItem;
 import org.kymjs.kjframe.KJActivity;
 import org.kymjs.kjframe.ui.ViewInject;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends KJActivity implements DrawerMenuFragment.NavigationDrawerCallbacks{
 
+    private Map<DrawerMenuItem, BaseMenuItemFragment> fragments = new HashMap();
     private DrawerMenuFragment navDrawerFragment;
-    private MenuFragmentManager.MenuItem currMenuItem;
+    private DrawerMenuItem currMenuItem;
     private CharSequence mTitle;
     private long lastKeyTime;
 
@@ -35,16 +40,29 @@ public class MainActivity extends KJActivity implements DrawerMenuFragment.Navig
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
-        currMenuItem = MenuFragmentManager.getInstance(this).get(position);
+        currMenuItem = DrawerMenuItem.values()[position];
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.container, currMenuItem.fragment)
+                .replace(R.id.container, obtainFragment(currMenuItem))
                 .commit();
     }
 
+    public BaseMenuItemFragment obtainFragment(DrawerMenuItem menuItem) {
+        BaseMenuItemFragment fragment = fragments.get(menuItem);
+        if (fragment == null) {
+            try {
+                fragment = (BaseMenuItemFragment) Class.forName(menuItem.getFragName()).newInstance();
+                fragments.put(menuItem, fragment);
+            } catch (Exception e) {
+                Log.e("TAG", "fail to create menu item fragment");
+            }
+        }
+        return fragment;
+    }
+
     public void onSectionAttached(int position) {
-        mTitle = MenuFragmentManager.getInstance(this)
-                .get(position).title;
+        int titleId = DrawerMenuItem.values()[position].getTitleId();
+        mTitle = getString(titleId);
     }
 
     public void restoreActionBar() {
@@ -66,15 +84,15 @@ public class MainActivity extends KJActivity implements DrawerMenuFragment.Navig
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if(keyCode == KeyEvent.KEYCODE_BACK){
-            if (currMenuItem.position == 0) {
+            if (currMenuItem == DrawerMenuItem.MENU_SHOP) {
                 if((System.currentTimeMillis() - lastKeyTime) > 2000){
                     lastKeyTime = System.currentTimeMillis();
-                    ViewInject.toast("再按一次退出程序");
-                }else{
+                    ViewInject.toast(getString(R.string.toast_exit_app));
+                } else {
                     finish();
                 }
             } else {
-                navDrawerFragment.selectItem(0);
+                navDrawerFragment.selectItem(DrawerMenuItem.MENU_SHOP.ordinal());
             }
             return true;
         }

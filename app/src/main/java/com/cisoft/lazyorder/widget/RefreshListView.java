@@ -1,6 +1,7 @@
 package com.cisoft.lazyorder.widget;
 
 import android.content.Context;
+import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -12,7 +13,6 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Scroller;
 import android.widget.TextView;
-
 import com.cisoft.lazyorder.R;
 
 /**
@@ -34,9 +34,6 @@ public class RefreshListView extends ListView implements AbsListView.OnScrollLis
 
 	private RefreshListViewHeader headerView;
 	private RelativeLayout headerViewContent;
-
-    //HeadView上次更新的时间
-    private TextView headerTimeView;
 
     //HeadView的高度
 	private int headerViewHeight;
@@ -96,8 +93,6 @@ public class RefreshListView extends ListView implements AbsListView.OnScrollLis
 		headerView = new RefreshListViewHeader(context);
 		headerViewContent = (RelativeLayout) headerView
 				.findViewById(R.id.listview_header_content);
-		headerTimeView = (TextView) headerView
-				.findViewById(R.id.listview_header_time);
 		addHeaderView(headerView);
 
 		footerView = new RefreshListViewFooter(context);
@@ -160,6 +155,49 @@ public class RefreshListView extends ListView implements AbsListView.OnScrollLis
 	}
 
     /**
+     * 开始下拉刷新
+     */
+    public void startRefresh() {
+        headerView.setVisiableHeight(headerViewHeight);
+        if (enablePullRefresh) {
+            pullRefreshing = true;
+            headerView.setState(RefreshListViewHeader.STATE_REFRESHING);
+            if (listViewListener != null) {
+                listViewListener.onRefresh();
+            }
+        }
+        resetHeaderHeight();
+    }
+
+    /**
+     * 下拉刷新完成
+     */
+    public void completeRefresh(boolean isSuccess) {
+        if (pullRefreshing == true) {
+            int state = isSuccess ? RefreshListViewHeader.STATE_REFRESH_COMPLETE : RefreshListViewHeader.STATE_REFRESH_FAIL;
+            headerView.setState(state);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    pullRefreshing = false;
+                    resetHeaderHeight();
+                }
+            }, 1000);
+        }
+    }
+
+    /**
+     * 开始加载更多
+     */
+    private void startLoadMore() {
+        pullLoading = true;
+        footerView.setState(RefreshListViewFooter.STATE_LOADING);
+        if (listViewListener != null) {
+            listViewListener.onLoadMore();
+        }
+    }
+
+    /**
      * 停止刷新（方便外界调用，做一次封装）
      */
     public void stopRefreshData() {
@@ -168,34 +206,25 @@ public class RefreshListView extends ListView implements AbsListView.OnScrollLis
     }
 
 
-	/**
-	 * 停止下拉刷新,重置HeadView的高度
-	 */
-	public void stopRefresh() {
-		if (pullRefreshing == true) {
-			pullRefreshing = false;
-			resetHeaderHeight();
-		}
-	}
+    /**
+     * 停止下拉刷新,重置HeadView的高度
+     */
+    public void stopRefresh() {
+        if (pullRefreshing == true) {
+            pullRefreshing = false;
+            resetHeaderHeight();
+        }
+    }
 
-	/**
-	 * 停止加载更多,重置FooterView的高度
-	 */
-	public void stopLoadMore() {
-		if (pullLoading == true) {
-			pullLoading = false;
-			footerView.setState(RefreshListViewFooter.STATE_NORMAL);
-		}
-	}
-
-	/**
-	 * 设置最后一次下拉刷新的时间
-	 * 
-	 * @param time
-	 */
-	public void setRefreshTime(String time) {
-		headerTimeView.setText(time);
-	}
+    /**
+     * 停止加载更多,重置FooterView的高度
+     */
+    public void stopLoadMore() {
+        if (pullLoading == true) {
+            pullLoading = false;
+            footerView.setState(RefreshListViewFooter.STATE_NORMAL);
+        }
+    }
 
 	private void invokeOnScrolling() {
 		if (scrollListener instanceof OnScrollListener) {
@@ -255,14 +284,6 @@ public class RefreshListView extends ListView implements AbsListView.OnScrollLis
 			scroller.startScroll(0, bottomMargin, 0, -bottomMargin,
                     SCROLL_DURATION);
 			invalidate();
-		}
-	}
-
-	private void startLoadMore() {
-		pullLoading = true;
-		footerView.setState(RefreshListViewFooter.STATE_LOADING);
-		if (listViewListener != null) {
-			listViewListener.onLoadMore();
 		}
 	}
 
@@ -349,18 +370,17 @@ public class RefreshListView extends ListView implements AbsListView.OnScrollLis
 		}
 	}
 
-	public void setOnRefreshListener(OnRefreshListener l) {
+    public interface OnScrollListener extends AbsListView.OnScrollListener {
+        public void onScrolling(View view);
+    }
+
+    public void setOnRefreshListener(OnRefreshListener l) {
 		listViewListener = l;
 	}
 
-
-	public interface OnScrollListener extends AbsListView.OnScrollListener {
-		public void onScrolling(View view);
-	}
-
-
 	public interface OnRefreshListener {
-		public void onRefresh();
+
+        public void onRefresh();
 
 		public void onLoadMore();
 	}

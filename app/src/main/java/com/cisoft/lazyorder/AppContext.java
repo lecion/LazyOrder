@@ -117,7 +117,7 @@ public class AppContext extends Application {
             setProperty(ApiConstants.KEY_ACCOUNT_USER_NAME, user.getUserName());
             setProperty(ApiConstants.KEY_ACCOUNT_USER_EMAIL, user.getUserEmail());
             setProperty(ApiConstants.KEY_ACCOUNT_USER_PHONE, user.getUserPhone());
-            setProperty(ApiConstants.KEY_ACCOUNT_USER_PWD, user.getUserPwd());
+            setProperty(ApiConstants.KEY_ACCOUNT_USER_FACE_URL, user.getUserFaceUrl());
 
             if (user.getDefAddressInfo() != null
                     && !StringUtils.isEmpty(user.getDefAddressInfo().getName())
@@ -141,6 +141,7 @@ public class AppContext extends Application {
         lu.setUserPhone(getProperty(ApiConstants.KEY_ACCOUNT_USER_PHONE));
         lu.setUserEmail(getProperty(ApiConstants.KEY_ACCOUNT_USER_EMAIL));
         lu.setUserPwd(getProperty(ApiConstants.KEY_ACCOUNT_USER_PWD));
+        lu.setUserFaceUrl(getProperty(ApiConstants.KEY_ACCOUNT_USER_FACE_URL));
 
         if (!StringUtils.isEmpty(getProperty(ApiConstants.KEY_ADDRESS_NAME))
                 && !StringUtils.isEmpty(getProperty(ApiConstants.KEY_ADDRESS_PHONE))

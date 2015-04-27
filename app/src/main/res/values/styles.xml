@@ -51,6 +51,13 @@
         <item name="android:backgroundDimEnabled">true</item><!-- 设置屏幕变暗 -->
     </style>
 
+    <style name="ProgressingDialog" parent="@android:style/Theme.Holo.Light.Dialog">
+        <item name="android:windowBackground">@drawable/common_dialog_bg</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:windowCloseOnTouchOutside">false</item>
+    </style>
 
     <style name="goods_btn_style">
         <item name="android:layout_width">48dp</item>

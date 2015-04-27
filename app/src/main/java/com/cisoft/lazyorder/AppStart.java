@@ -20,7 +20,7 @@ public class AppStart extends KJActivity {
     @Override
     public void setRootView() {
         mImageView = new ImageView(this);
-        mImageView.setBackgroundResource(R.drawable.ic_launcher);
+        mImageView.setBackgroundResource(R.drawable.welcome);
         mImageView.setScaleType(ImageView.ScaleType.FIT_XY);
         setContentView(mImageView);
     }
